@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		57AC16002879EA2200C7D878 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AC15FF2879EA2200C7D878 /* AppDelegate.swift */; };
 		57AC16022879EA2200C7D878 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AC16012879EA2200C7D878 /* SceneDelegate.swift */; };
-		57AC16042879EA2200C7D878 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AC16032879EA2200C7D878 /* ViewController.swift */; };
-		57AC16072879EA2200C7D878 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57AC16052879EA2200C7D878 /* Main.storyboard */; };
+		57AC16042879EA2200C7D878 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AC16032879EA2200C7D878 /* CatalogViewController.swift */; };
 		57AC16092879EA2500C7D878 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57AC16082879EA2500C7D878 /* Assets.xcassets */; };
 		57AC160C2879EA2500C7D878 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57AC160A2879EA2500C7D878 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -19,8 +18,7 @@
 		57AC15FC2879EA2200C7D878 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57AC15FF2879EA2200C7D878 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57AC16012879EA2200C7D878 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		57AC16032879EA2200C7D878 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		57AC16062879EA2200C7D878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		57AC16032879EA2200C7D878 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
 		57AC16082879EA2500C7D878 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57AC160B2879EA2500C7D878 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57AC160D2879EA2500C7D878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,13 +56,60 @@
 			children = (
 				57AC15FF2879EA2200C7D878 /* AppDelegate.swift */,
 				57AC16012879EA2200C7D878 /* SceneDelegate.swift */,
-				57AC16032879EA2200C7D878 /* ViewController.swift */,
-				57AC16052879EA2200C7D878 /* Main.storyboard */,
+				57AC1618287AD7B700C7D878 /* LoginScreen */,
+				57AC1619287AD7C500C7D878 /* CreateAccountScreen */,
+				57AC1617287AD79F00C7D878 /* CatalogScreen */,
+				57AC161A287AD9C700C7D878 /* CategoryScreen */,
+				57AC161B287ADA6700C7D878 /* ProductScreen */,
+				57AC161C287ADA8D00C7D878 /* ShoppingBagScreen */,
 				57AC16082879EA2500C7D878 /* Assets.xcassets */,
 				57AC160A2879EA2500C7D878 /* LaunchScreen.storyboard */,
 				57AC160D2879EA2500C7D878 /* Info.plist */,
 			);
 			path = "07 RayBan Store";
+			sourceTree = "<group>";
+		};
+		57AC1617287AD79F00C7D878 /* CatalogScreen */ = {
+			isa = PBXGroup;
+			children = (
+				57AC16032879EA2200C7D878 /* CatalogViewController.swift */,
+			);
+			path = CatalogScreen;
+			sourceTree = "<group>";
+		};
+		57AC1618287AD7B700C7D878 /* LoginScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LoginScreen;
+			sourceTree = "<group>";
+		};
+		57AC1619287AD7C500C7D878 /* CreateAccountScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CreateAccountScreen;
+			sourceTree = "<group>";
+		};
+		57AC161A287AD9C700C7D878 /* CategoryScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CategoryScreen;
+			sourceTree = "<group>";
+		};
+		57AC161B287ADA6700C7D878 /* ProductScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProductScreen;
+			sourceTree = "<group>";
+		};
+		57AC161C287ADA8D00C7D878 /* ShoppingBagScreen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ShoppingBagScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,7 +173,6 @@
 			files = (
 				57AC160C2879EA2500C7D878 /* LaunchScreen.storyboard in Resources */,
 				57AC16092879EA2500C7D878 /* Assets.xcassets in Resources */,
-				57AC16072879EA2200C7D878 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,7 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57AC16042879EA2200C7D878 /* ViewController.swift in Sources */,
+				57AC16042879EA2200C7D878 /* CatalogViewController.swift in Sources */,
 				57AC16002879EA2200C7D878 /* AppDelegate.swift in Sources */,
 				57AC16022879EA2200C7D878 /* SceneDelegate.swift in Sources */,
 			);
@@ -168,14 +212,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		57AC16052879EA2200C7D878 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				57AC16062879EA2200C7D878 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		57AC160A2879EA2500C7D878 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -313,9 +349,9 @@
 				INFOPLIST_FILE = "07 RayBan Store/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,7 +361,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -341,9 +377,9 @@
 				INFOPLIST_FILE = "07 RayBan Store/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -353,7 +389,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
