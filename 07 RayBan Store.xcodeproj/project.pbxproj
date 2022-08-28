@@ -12,9 +12,11 @@
 		57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081628A503B600FE5FC9 /* ViewController.swift */; };
 		57FF081C28A503B700FE5FC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57FF081B28A503B700FE5FC9 /* Assets.xcassets */; };
 		57FF081F28A503B700FE5FC9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57FF081D28A503B700FE5FC9 /* LaunchScreen.storyboard */; };
+		F6BE35325CAA04607AC7FA1F /* Pods_07_RayBan_Store.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_07_RayBan_Store.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF080F28A503B600FE5FC9 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF081228A503B600FE5FC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF081428A503B600FE5FC9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +24,8 @@
 		57FF081B28A503B700FE5FC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57FF081E28A503B700FE5FC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57FF082028A503B700FE5FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		69243D96E0170934A5734306 /* Pods-07 RayBan Store.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-07 RayBan Store.release.xcconfig"; path = "Target Support Files/Pods-07 RayBan Store/Pods-07 RayBan Store.release.xcconfig"; sourceTree = "<group>"; };
+		73267EFE8ACDDDE096C72367 /* Pods-07 RayBan Store.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-07 RayBan Store.debug.xcconfig"; path = "Target Support Files/Pods-07 RayBan Store/Pods-07 RayBan Store.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6BE35325CAA04607AC7FA1F /* Pods_07_RayBan_Store.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E1A53091ECA2C5B553C9356 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				73267EFE8ACDDDE096C72367 /* Pods-07 RayBan Store.debug.xcconfig */,
+				69243D96E0170934A5734306 /* Pods-07 RayBan Store.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		577301F828BBFA50007FB72F /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				57FF081B28A503B700FE5FC9 /* Assets.xcassets */,
+				57FF081D28A503B700FE5FC9 /* LaunchScreen.storyboard */,
+				57FF082028A503B700FE5FC9 /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
 		57FF080628A503B600FE5FC9 = {
 			isa = PBXGroup;
 			children = (
 				57FF081128A503B600FE5FC9 /* 07 RayBan Store */,
 				57FF081028A503B600FE5FC9 /* Products */,
+				4E1A53091ECA2C5B553C9356 /* Pods */,
+				B99DCD7E15723BF8F9999736 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,11 +83,17 @@
 				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
 				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
 				57FF081628A503B600FE5FC9 /* ViewController.swift */,
-				57FF081B28A503B700FE5FC9 /* Assets.xcassets */,
-				57FF081D28A503B700FE5FC9 /* LaunchScreen.storyboard */,
-				57FF082028A503B700FE5FC9 /* Info.plist */,
+				577301F828BBFA50007FB72F /* SupportingFiles */,
 			);
 			path = "07 RayBan Store";
+			sourceTree = "<group>";
+		};
+		B99DCD7E15723BF8F9999736 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +103,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57FF082328A503B700FE5FC9 /* Build configuration list for PBXNativeTarget "07 RayBan Store" */;
 			buildPhases = (
+				61FA22104201613F8AFF7171 /* [CP] Check Pods Manifest.lock */,
 				57FF080B28A503B600FE5FC9 /* Sources */,
 				57FF080C28A503B600FE5FC9 /* Frameworks */,
 				57FF080D28A503B600FE5FC9 /* Resources */,
+				5781E1SWIFTLINT8001842E1 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -128,6 +162,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5781E1SWIFTLINT8001842E1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		61FA22104201613F8AFF7171 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-07 RayBan Store-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		57FF080B28A503B600FE5FC9 /* Sources */ = {
@@ -270,6 +346,7 @@
 		};
 		57FF082428A503B700FE5FC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73267EFE8ACDDDE096C72367 /* Pods-07 RayBan Store.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -277,7 +354,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P3BYVBK57Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "07 RayBan Store/Info.plist";
+				INFOPLIST_FILE = "07 RayBan Store/SupportingFiles/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -298,6 +375,7 @@
 		};
 		57FF082528A503B700FE5FC9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69243D96E0170934A5734306 /* Pods-07 RayBan Store.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -305,7 +383,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P3BYVBK57Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "07 RayBan Store/Info.plist";
+				INFOPLIST_FILE = "07 RayBan Store/SupportingFiles/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
