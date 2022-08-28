@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */ = {isa = PBXBuildFile; fileRef = 577301F928BBFB4E007FB72F /* ClassDiagram.mdj */; };
+		577301FC28BBFD29007FB72F /* AppDesign.png in Resources */ = {isa = PBXBuildFile; fileRef = 577301FB28BBFD29007FB72F /* AppDesign.png */; };
 		57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081228A503B600FE5FC9 /* AppDelegate.swift */; };
 		57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081428A503B600FE5FC9 /* SceneDelegate.swift */; };
 		57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081628A503B600FE5FC9 /* ViewController.swift */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_07_RayBan_Store.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		577301F928BBFB4E007FB72F /* ClassDiagram.mdj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ClassDiagram.mdj; sourceTree = "<group>"; };
+		577301FB28BBFD29007FB72F /* AppDesign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppDesign.png; sourceTree = "<group>"; };
 		57FF080F28A503B600FE5FC9 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF081228A503B600FE5FC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF081428A503B600FE5FC9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 		57FF081128A503B600FE5FC9 /* 07 RayBan Store */ = {
 			isa = PBXGroup;
 			children = (
+				577301FB28BBFD29007FB72F /* AppDesign.png */,
+				577301F928BBFB4E007FB72F /* ClassDiagram.mdj */,
 				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
 				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
 				57FF081628A503B600FE5FC9 /* ViewController.swift */,
@@ -157,6 +163,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				57FF081F28A503B700FE5FC9 /* LaunchScreen.storyboard in Resources */,
+				577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */,
+				577301FC28BBFD29007FB72F /* AppDesign.png in Resources */,
 				57FF081C28A503B700FE5FC9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
