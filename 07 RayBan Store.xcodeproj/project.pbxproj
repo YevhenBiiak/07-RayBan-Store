@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */ = {isa = PBXBuildFile; fileRef = 577301F928BBFB4E007FB72F /* ClassDiagram.mdj */; };
 		577301FC28BBFD29007FB72F /* AppDesign.png in Resources */ = {isa = PBXBuildFile; fileRef = 577301FB28BBFD29007FB72F /* AppDesign.png */; };
+		5773020428BBFE9A007FB72F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020328BBFE9A007FB72F /* Product.swift */; };
+		5773020628BBFF6E007FB72F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020528BBFF6E007FB72F /* User.swift */; };
+		5773020828BC010F007FB72F /* ProductsGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020728BC010F007FB72F /* ProductsGateway.swift */; };
+		5773020A28BC0226007FB72F /* ObtainProductsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020928BC0226007FB72F /* ObtainProductsUseCase.swift */; };
+		5773020C28BC0368007FB72F /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020B28BC0368007FB72F /* AuthenticationUseCase.swift */; };
+		5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020D28BC040E007FB72F /* AuthGateway.swift */; };
+		5773021028BCE474007FB72F /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020F28BCE474007FB72F /* Result.swift */; };
 		57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081228A503B600FE5FC9 /* AppDelegate.swift */; };
 		57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081428A503B600FE5FC9 /* SceneDelegate.swift */; };
 		57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081628A503B600FE5FC9 /* ViewController.swift */; };
@@ -21,6 +28,13 @@
 		182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_07_RayBan_Store.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		577301F928BBFB4E007FB72F /* ClassDiagram.mdj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ClassDiagram.mdj; sourceTree = "<group>"; };
 		577301FB28BBFD29007FB72F /* AppDesign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppDesign.png; sourceTree = "<group>"; };
+		5773020328BBFE9A007FB72F /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		5773020528BBFF6E007FB72F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		5773020728BC010F007FB72F /* ProductsGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsGateway.swift; sourceTree = "<group>"; };
+		5773020928BC0226007FB72F /* ObtainProductsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObtainProductsUseCase.swift; sourceTree = "<group>"; };
+		5773020B28BC0368007FB72F /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
+		5773020D28BC040E007FB72F /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
+		5773020F28BCE474007FB72F /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		57FF080F28A503B600FE5FC9 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF081228A503B600FE5FC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		57FF081428A503B600FE5FC9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,14 +67,78 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		577301F828BBFA50007FB72F /* SupportingFiles */ = {
+		577301F828BBFA50007FB72F /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
+				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
 				57FF081B28A503B700FE5FC9 /* Assets.xcassets */,
 				57FF081D28A503B700FE5FC9 /* LaunchScreen.storyboard */,
 				57FF082028A503B700FE5FC9 /* Info.plist */,
 			);
-			path = SupportingFiles;
+			path = Application;
+			sourceTree = "<group>";
+		};
+		577301FD28BBFDEF007FB72F /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				577301FE28BBFDFD007FB72F /* Entities */,
+				5773020028BBFE17007FB72F /* UseCases */,
+				577301FF28BBFE05007FB72F /* Gateways */,
+				5773020F28BCE474007FB72F /* Result.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		577301FE28BBFDFD007FB72F /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				5773020328BBFE9A007FB72F /* Product.swift */,
+				5773020528BBFF6E007FB72F /* User.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		577301FF28BBFE05007FB72F /* Gateways */ = {
+			isa = PBXGroup;
+			children = (
+				5773020728BC010F007FB72F /* ProductsGateway.swift */,
+				5773020D28BC040E007FB72F /* AuthGateway.swift */,
+			);
+			path = Gateways;
+			sourceTree = "<group>";
+		};
+		5773020028BBFE17007FB72F /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				5773020928BC0226007FB72F /* ObtainProductsUseCase.swift */,
+				5773020B28BC0368007FB72F /* AuthenticationUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		5773020128BBFE3D007FB72F /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		5773020228BBFE51007FB72F /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				57FF081628A503B600FE5FC9 /* ViewController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		5773021128BCE7C5007FB72F /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				577301FB28BBFD29007FB72F /* AppDesign.png */,
+				577301F928BBFB4E007FB72F /* ClassDiagram.mdj */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 		57FF080628A503B600FE5FC9 = {
@@ -84,12 +162,11 @@
 		57FF081128A503B600FE5FC9 /* 07 RayBan Store */ = {
 			isa = PBXGroup;
 			children = (
-				577301FB28BBFD29007FB72F /* AppDesign.png */,
-				577301F928BBFB4E007FB72F /* ClassDiagram.mdj */,
-				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
-				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
-				57FF081628A503B600FE5FC9 /* ViewController.swift */,
-				577301F828BBFA50007FB72F /* SupportingFiles */,
+				5773021128BCE7C5007FB72F /* Documents */,
+				577301FD28BBFDEF007FB72F /* Domain */,
+				5773020128BBFE3D007FB72F /* Repository */,
+				5773020228BBFE51007FB72F /* Presentation */,
+				577301F828BBFA50007FB72F /* Application */,
 			);
 			path = "07 RayBan Store";
 			sourceTree = "<group>";
@@ -219,8 +296,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
+				5773020A28BC0226007FB72F /* ObtainProductsUseCase.swift in Sources */,
+				5773020628BBFF6E007FB72F /* User.swift in Sources */,
+				5773020828BC010F007FB72F /* ProductsGateway.swift in Sources */,
+				5773020428BBFE9A007FB72F /* Product.swift in Sources */,
 				57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */,
+				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */,
+				5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */,
+				5773020C28BC0368007FB72F /* AuthenticationUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
