@@ -7,9 +7,12 @@
 
 import Foundation
 
+typealias Cents = Int
+
 struct Product: Codable {
     let id: String
-    let name: String
+    let title: String
     let category: String
-    let price: Int
+    let details: String
+    let price: Cents
 }

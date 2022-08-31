@@ -9,6 +9,20 @@ import Foundation
 
 struct User {
     let id: String
-    let name: String
+    let firstName: String
+    let lastName: String?
     let email: String
+    let shippingAddress: String?
+    
+    func fullName() -> String {
+        "\(firstName) \(lastName ?? "")"
+    }
+}
+
+struct NewUser {
+    let firstName: String
+    let lastName: String
+    let email: String
+    let password: String
+    let shippingAddress: String
 }
