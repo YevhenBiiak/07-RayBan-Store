@@ -8,15 +8,15 @@
 import Foundation
 
 protocol AuthProvider {
-    func login(email: String, password: String, completionHandler: @escaping (Result<User>) -> Void)
-    func register(newUser: NewUser, completionHandler: @escaping (Result<User>) -> Void)
-    func loginWithFacebook(completionHandler: @escaping (Result<User>) -> Void)
+    func login(email: String, password: String, completionHandler: @escaping (Result<Profile>) -> Void)
+    func register(email: String, password: String, completionHandler: @escaping (Result<Profile>) -> Void)
+    func loginWithFacebook(completionHandler: @escaping (Result<Profile>) -> Void)
     func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void)
 }
 
 protocol AuthLocalStorage {
     var isUserAuthenticated: Bool { get }
-    func createUserProfile(_ user: User)
+    func createUserProfile(_ user: Profile)
     func deleteUserProfile()
 }
 
@@ -36,43 +36,50 @@ class AuthGatewayImpl: AuthGateway {
         authLocalStorage.isUserAuthenticated
     }
     
-    func login(email: String, password: String, completionHandler: @escaping (Result<Bool>) -> Void) {
-        authProvider.login(email: email, password: password) { [weak self] result in
-            self?.handleAuthResult(result, completionHandler: completionHandler)
-        }
+    func login(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        
     }
     
-    func register(newUser: NewUser, completionHandler: @escaping (Result<Bool>) -> Void) {
-        authProvider.register(newUser: newUser) { [weak self] result in
-            self?.handleAuthResult(result, completionHandler: completionHandler)
-        }
+    func register(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        
     }
     
-    func loginWithFacebook(completionHandler: @escaping (Result<Bool>) -> Void) {
-        authProvider.loginWithFacebook { [weak self] result in
-            self?.handleAuthResult(result, completionHandler: completionHandler)
-        }
+    func loginWithFacebook(completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        
     }
     
     func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void) {
-        authProvider.forgotPassword(email: email) { result in
-            completionHandler(result)
-        }
+        
     }
     
-    func logout() {
-        authLocalStorage.deleteUserProfile()
-    }
-    
-    // MARK: - Private methods
-    
-    private func handleAuthResult(_ result: Result<User>, completionHandler: @escaping (Result<Bool>) -> Void) {
-        switch result {
-        case .success(let user):
-            authLocalStorage.createUserProfile(user)
-            completionHandler(.success(true))
-        case .failure(let error):
-            completionHandler(.failure(error))
-        }
+    func logout() throws {
+        
     }
 }
+
+/* MARK: - Firebase
+ 
+if Auth.auth().currentUser != nil {
+    // ...
+}
+
+Auth.auth().signIn(withEmail: email, password: password) { authResult, error in }
+
+Auth.auth().createUser(withEmail: email, password: password) { authResult, error in }
+ 
+let credential = OAuthProvider.credential(withProviderID: "facebook.com", idToken: idTokenString!, rawNonce: nonce)
+Auth.auth().signIn(with: credential) { authResult, error in }
+
+Auth.auth().sendPasswordReset(withEmail: email) { error in }
+ 
+Auth.auth().currentUser?.updateEmail(to: email) { error in }
+ 
+Auth.auth().currentUser?.updatePassword(to: password) { error in }
+
+do {
+    try Auth.auth().signOut()
+} catch {
+    print(error)
+}
+ 
+*/

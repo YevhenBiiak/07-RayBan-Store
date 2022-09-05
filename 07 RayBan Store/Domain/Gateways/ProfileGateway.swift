@@ -7,6 +7,8 @@
 
 import Foundation
 
+// The Profile is stored in local storage, created after authorization or registration, sent to the server when an order is created
 protocol ProfileGateway {
-    func update(profile: User, completionHandler: @escaping (Result<Bool>) -> Void)
+    func getProfile() throws -> ProfileDTO
+    func saveProfile(_ profile: ProfileDTO) throws
 }

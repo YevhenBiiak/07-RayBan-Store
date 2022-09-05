@@ -9,7 +9,7 @@ import Foundation
 
 class LocalStorageImpl {
     
-    private var profile: User?
+    private var profile: Profile?
     private var cart: Cart?
     
 }
@@ -22,21 +22,7 @@ extension LocalStorageImpl: AuthLocalStorage {
         profile != nil
     }
     
-    func createUserProfile(_ user: User) {
-        profile = user
-    }
-    
-}
-
-// MARK: - ProfileLocalStorage
-    
-extension LocalStorageImpl: ProfileLocalStorage {
-    
-    var isProfileFilled: Bool {
-        profile?.lastName != nil && profile?.shippingAddress != nil
-    }
-    
-    func updateUserProfile(_ user: User) {
+    func createUserProfile(_ user: Profile) {
         profile = user
     }
     
@@ -46,11 +32,14 @@ extension LocalStorageImpl: ProfileLocalStorage {
 }
 
 // MARK: - ProfileLocalStorage
-
-extension LocalStorageImpl: CartLocalStorage {
     
-    var isCartEmpty: Bool {
-        cart != nil
+extension LocalStorageImpl: ProfileLocalStorage {
+    
+    var isProfileFilled: Bool {
+        profile?.lastName != nil && profile?.address != nil
     }
     
+    func updateUserProfile(_ user: Profile) {
+        profile = user
+    }
 }

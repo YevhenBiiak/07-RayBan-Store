@@ -7,12 +7,12 @@
 
 import Foundation
 
-typealias Cents = Int
+typealias Cent = Int
 
-struct Product: Codable {
+struct Product {
     let id: String
     let title: String
     let category: String
     let details: String
-    let price: Cents
+    let price: Cent
 }

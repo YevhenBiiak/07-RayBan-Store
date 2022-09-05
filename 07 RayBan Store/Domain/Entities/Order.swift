@@ -8,18 +8,17 @@
 import Foundation
 
 struct Order {
-    let id: String
-    let userId: String
+    let customerId: String
     let items: [OrderItem]
     let shippingMethods: String
     let shippindAddress: String
-    let price: Cents
+    let price: Cent
 }
 
 // MARK: - Order Item
 
 struct OrderItem {
-    let products: Product
+    let product: Product
     let amount: Int
-    let price: Cents
+    let price: Cent
 }

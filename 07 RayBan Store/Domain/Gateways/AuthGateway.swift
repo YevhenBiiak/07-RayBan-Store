@@ -9,10 +9,9 @@ import Foundation
 
 protocol AuthGateway {
     var isUserAuthenticated: Bool { get }
-    
-    func login(email: String, password: String, completionHandler: @escaping (Result<Bool>) -> Void)
-    func register(newUser: NewUser, completionHandler: @escaping (Result<Bool>) -> Void)
-    func loginWithFacebook(completionHandler: @escaping (Result<Bool>) -> Void)
+    func login(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
+    func register(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
+    func loginWithFacebook(completionHandler: @escaping (Result<ProfileDTO>) -> Void)
     func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void)
-    func logout()
+    func logout() throws
 }

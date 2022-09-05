@@ -21,8 +21,8 @@ protocol ImageCacher {
 
 class ProductGatewayImpl: ProductGateway {
     
-    private let apiProduct: ApiProduct
     private let apiClient: ApiClient
+    private let apiProduct: ApiProduct
     private let imageCacher: ImageCacher
     
     init(apiProduct: ApiProduct, apiClient: ApiClient, imageCacher: ImageCacher) {
@@ -31,9 +31,23 @@ class ProductGatewayImpl: ProductGateway {
         self.imageCacher = imageCacher
     }
     
-    func retrieveProducts(completionHandler: @escaping (Result<[Product]>) -> Void) {
-        apiProduct.fetchProducts { result in
-            completionHandler(result)
-        }
+    func fetchProduct(byId productId: String, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
+        
+    }
+    
+    func fetchProducts(first: Int?, skip: Int?, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+        
+    }
+    
+    func fetchProducts(byCategoryName category: String, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+        
+    }
+    
+    func fetchProducts(byIdentifiers identifiers: [String], completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+        
+    }
+    
+    func fetchImageData(byProductId productId: String, completionHandler: @escaping (Result<ProductImageDataDTO>) -> Void) {
+        
     }
 }

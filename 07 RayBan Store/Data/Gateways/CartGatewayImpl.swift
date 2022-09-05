@@ -11,41 +11,19 @@ protocol ApiCart {
     func sendOrder()
 }
 
-protocol CartLocalStorage {
-    var isCartEmpty: Bool { get }
-}
-
-class CartGatewayImpl: CartGateway {
+class CartGatewayImpl: CartItemsGateway {
     
     private let apiCart: ApiCart
-    private let cartLocalStorage: CartLocalStorage
     
-    init(apiCart: ApiCart, cartLocalStorage: CartLocalStorage) {
+    init(apiCart: ApiCart) {
         self.apiCart = apiCart
-        self.cartLocalStorage = cartLocalStorage
     }
 
-    var isCartEmpty: Bool {
-        cartLocalStorage.isCartEmpty
-    }
-    
-    func add(_ product: Product, completionHandler: @escaping (Result<[CartItem]>) -> Void) {
+    func fetchCartItems(byCustomerId customerId: String, completionHandler: @escaping (Result<[CartItemDTO]>) -> Void) {
         
     }
     
-    func delete(productId: String, completionHandler: @escaping (Result<[CartItem]>) -> Void) {
+    func saveCartItems(_ items: [CartItemDTO], forCustomerId customerId: String, completionHandler: @escaping (Result<[CartItemDTO]>) -> Void) {
         
-    }
-    
-    func update(id: String, amount: Int, completionHandler: @escaping (Result<[CartItem]>) -> Void) {
-        
-    }
-    
-    func getItems(completionHandler: @escaping (Result<[CartItem]>) -> Void) {
-        
-    }
-    
-    func createOrder(completionHandler: @escaping (Result<[OrderItem]>) -> Void) {
-        apiCart.sendOrder()
     }
 }

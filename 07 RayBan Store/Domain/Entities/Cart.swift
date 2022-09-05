@@ -8,15 +8,13 @@
 import Foundation
 
 struct Cart {
-    let userId: String
     var items: [CartItem]
     
-    init(userId: String, items: [CartItem] = []) {
-        self.userId = userId
-        self.items = items
+    var isCartEmpty: Bool {
+        totalPrice() < 50_00
     }
     
-    mutating func addItem(product: Product, amount: Int) {
+    mutating func add(product: Product, amount: Int) {
         let item = CartItem(product: product, amount: amount)
         items.append(item)
     }
@@ -27,29 +25,23 @@ struct Cart {
         }
     }
     
-    mutating func deleteItem(productId: String) {
+    mutating func delete(productId: String) {
         items = items.filter { $0.product.id != productId }
     }
     
-    func getItems() -> [CartItem] {
-        return items
-    }
-    
-    func createOrder(id: String, shippingMethods: String, shippindAddress: String) -> Order {
+    func createOrder(customerId: String, shippindAddress: String, shippingMethods: String) -> Order {
         let orderItems = items.map {
-            OrderItem(products: $0.product, amount: $0.amount, price: $0.price())
+            OrderItem(product: $0.product, amount: $0.amount, price: $0.price())
         }
         
-        return Order(
-            id: id,
-            userId: userId,
-            items: orderItems,
-            shippingMethods: shippingMethods,
-            shippindAddress: shippindAddress,
-            price: totalPrice())
+        return Order(customerId: customerId,
+                     items: orderItems,
+                     shippingMethods: shippingMethods,
+                     shippindAddress: shippindAddress,
+                     price: totalPrice())
     }
     
-    func totalPrice() -> Cents {
+    func totalPrice() -> Cent {
         items.map { $0.price() }.reduce(0, +)
     }
 }
@@ -60,7 +52,7 @@ struct CartItem {
     let product: Product
     var amount: Int
     
-    func price() -> Cents {
+    func price() -> Cent {
         product.price * amount
     }
 }

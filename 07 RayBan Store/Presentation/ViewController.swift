@@ -9,23 +9,37 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let authProvider = AuthProviderImpl()
-    let profileLocalStorage = LocalStorageImpl()
+    lazy var apiProfile = ApiProfileImpl()
+    lazy var authProvider = AuthProviderImpl(apiProfile: apiProfile)
+    lazy var profileLocalStorage = LocalStorageImpl()
     lazy var authGateway = AuthGatewayImpl(authProvider: authProvider, authLocalStorage: profileLocalStorage)
-    lazy var authUseCases = AuthUseCasesImpl(authGateway: authGateway)
     
-    let apiProduct = ApiProductImpl()
-    let apiClient = ApiClientImpl()
-    let imageCacher = ImageCacherImpl()
+    lazy var apiProduct = ApiProductImpl()
+    lazy var apiClient = ApiClientImpl()
+    lazy var imageCacher = ImageCacherImpl()
     lazy var productGateway = ProductGatewayImpl(apiProduct: apiProduct, apiClient: apiClient, imageCacher: imageCacher)
-    lazy var productUseCases = ProductUseCasesImpl(productGateway: productGateway)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        productUseCases.retrieveProducts { result in
-            print(result)
-        }
+        //class MyViewController {
+        //    lazy var apiProfile = ApiProfileImpl()
+        //    lazy var authProvider = AuthProviderImpl(apiProfile: apiProfile)
+        //    lazy var profileLocalStorage = LocalStorageImpl()
+        //    lazy var authGateway = AuthGatewayImpl(authProvider: authProvider, authLocalStorage: profileLocalStorage)
+        //
+        //    func viewDidLoad() {
+        //
+        //        let useCase: UseCase = IsUserAuthenticatedUseCase(gateway: authGateway)
+        //        useCase.execute { result in
+        //            if let _ = try? result.get() {
+        //
+        //            }
+        //        }
+        //    }
+        //}
+        
+//        useCase = LoginUseCase(gateway: authGateway)
         
 //        print("isUserAuthenticated:", authUseCases.isUserAuthenticated)
 //

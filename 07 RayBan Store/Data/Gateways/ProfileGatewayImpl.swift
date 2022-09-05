@@ -8,16 +8,15 @@
 import Foundation
 
 protocol ApiProfile {
-    func update(profile: User, completionHandler: @escaping (Result<Bool>) -> Void)
+    func update(profile: Profile, completionHandler: @escaping (Result<Bool>) -> Void)
 }
 
 protocol ProfileLocalStorage {
-    var isProfileFilled: Bool { get }
-    func updateUserProfile(_ user: User)
-    func deleteUserProfile()
+    func updateUserProfile(_ user: Profile)
 }
 
-class ProfileGatewayImpl: ProfileGateway {
+class ProfileGatewayImpl {//}: ProfileGateway {
+    
     private let apiProfile: ApiProfile
     private let profileLocalStorage: ProfileLocalStorage
     
@@ -26,15 +25,4 @@ class ProfileGatewayImpl: ProfileGateway {
         self.profileLocalStorage = profileLocalStorage
     }
     
-    func update(profile: User, completionHandler: @escaping (Result<Bool>) -> Void) {
-        apiProfile.update(profile: profile) { [weak self] result in
-            switch result {
-            case .success(let flag):
-                self?.profileLocalStorage.updateUserProfile(profile)
-                completionHandler(.success(flag))
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
 }
