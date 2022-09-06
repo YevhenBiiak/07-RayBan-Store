@@ -7,7 +7,11 @@
 
 import Foundation
 
-class AddCartItemUseCase: UseCase<AddCartItemRequest, AddCartItemResponse, Never> {
+protocol AddCartItemUseCase {
+    func execute(_ request: AddCartItemRequest, completionHandler: @escaping (Result<AddCartItemResponse>) -> Void)
+}
+
+class AddCartItemUseCaseImpl: AddCartItemUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -17,7 +21,7 @@ class AddCartItemUseCase: UseCase<AddCartItemRequest, AddCartItemResponse, Never
         self.cartItemsGateway = cartItemsGateway
     }
     
-    override func execute(_ request: AddCartItemRequest, completionHandler: @escaping (Result<AddCartItemResponse>) -> Void) {
+    func execute(_ request: AddCartItemRequest, completionHandler: @escaping (Result<AddCartItemResponse>) -> Void) {
         let product = request.productDTO.asProduct
         let amount = request.amount
         do {

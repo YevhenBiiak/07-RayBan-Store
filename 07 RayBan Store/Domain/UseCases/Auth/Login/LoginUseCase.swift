@@ -7,7 +7,11 @@
 
 import Foundation
 
-class LoginUseCase: UseCase<LoginRequest, Bool, Never> {
+protocol LoginUseCase {
+    func execute(_ request: LoginRequest, completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class LoginUseCaseImpl: LoginUseCase {
     
     private let profileGateway: ProfileGateway
     private let authGateway: AuthGateway
@@ -17,9 +21,16 @@ class LoginUseCase: UseCase<LoginRequest, Bool, Never> {
         self.profileGateway = profileGateway
     }
     
-    override func execute(_ request: LoginRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(_ request: LoginRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
         let email = request.email
         let password = request.password
+        
+        do {
+            try Validator.validateEmail(email)
+            try Validator.validatePassword(password)
+        } catch let error {
+            completionHandler(.failure(error))
+        }
         
         authGateway.login(email: email, password: password) { result in
             switch result {

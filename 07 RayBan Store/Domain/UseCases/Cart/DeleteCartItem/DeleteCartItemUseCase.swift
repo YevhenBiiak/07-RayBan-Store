@@ -7,7 +7,11 @@
 
 import Foundation
 
-class DeleteCartItemUseCase: UseCase<DeleteCartItemRequest, DeleteCartItemResponse, Never> {
+protocol DeleteCartItemUseCase {
+    func execute(_ request: DeleteCartItemRequest, completionHandler: @escaping (Result<DeleteCartItemResponse>) -> Void)
+}
+
+class DeleteCartItemUseCaseImpl: DeleteCartItemUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -17,7 +21,7 @@ class DeleteCartItemUseCase: UseCase<DeleteCartItemRequest, DeleteCartItemRespon
         self.cartItemsGateway = cartItemsGateway
     }
     
-    override func execute(_ request: DeleteCartItemRequest, completionHandler: @escaping (Result<DeleteCartItemResponse>) -> Void) {
+    func execute(_ request: DeleteCartItemRequest, completionHandler: @escaping (Result<DeleteCartItemResponse>) -> Void) {
         let productId = request.productId
         do {
             let profileId = try profileGateway.getProfile().id

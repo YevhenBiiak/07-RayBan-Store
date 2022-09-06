@@ -7,7 +7,11 @@
 
 import Foundation
 
-class ForgotPasswordUseCase: UseCase<ForgotPasswordRequest, Bool, Never> {
+protocol ForgotPasswordUseCase {
+    func execute(_ request: ForgotPasswordRequest, completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class ForgotPasswordUseCaseImpl: ForgotPasswordUseCase {
     
     private let authGateway: AuthGateway
     
@@ -15,9 +19,15 @@ class ForgotPasswordUseCase: UseCase<ForgotPasswordRequest, Bool, Never> {
         self.authGateway = gateway
     }
     
-    override func execute(_ request: ForgotPasswordRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(_ request: ForgotPasswordRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
         let email = request.email
         
+        do {
+            try Validator.validateEmail(email)
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+ 
         authGateway.forgotPassword(email: email) { result in
             completionHandler(result)
         }

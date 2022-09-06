@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UpdateCartItemAmountRequest: RequestModel {
+struct UpdateCartItemAmountRequest {
     let productId: String
     let amount: Int
 }

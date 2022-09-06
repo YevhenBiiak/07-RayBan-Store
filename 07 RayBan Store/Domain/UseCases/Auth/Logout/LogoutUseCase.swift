@@ -7,7 +7,11 @@
 
 import Foundation
 
-class LogoutUseCase: UseCase<Never, Never, Never> {
+protocol LogoutUseCase {
+    func execute()
+}
+
+class LogoutUseCaseImpl: LogoutUseCase {
     
     private let authGateway: AuthGateway
     
@@ -15,7 +19,7 @@ class LogoutUseCase: UseCase<Never, Never, Never> {
         self.authGateway = authGateway
     }
     
-    override func execute() {
+    func execute() {
         try? authGateway.logout()
     }
 }

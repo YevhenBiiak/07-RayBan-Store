@@ -12,5 +12,5 @@ protocol ProductGateway {
     func fetchProducts(first: Int?, skip: Int?, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
     func fetchProducts(byCategoryName category: String, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
     func fetchProducts(byIdentifiers identifiers: [String], completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
-    func fetchImageData(byProductId productId: String, completionHandler: @escaping (Result<ProductImageDataDTO>) -> Void)
+    func fetchImages(byProductId productId: String, completionHandler: @escaping (Result<ProductImagesDTO>) -> Void)
 }

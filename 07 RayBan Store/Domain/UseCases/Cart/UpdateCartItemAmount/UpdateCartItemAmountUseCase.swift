@@ -7,7 +7,11 @@
 
 import Foundation
 
-class UpdateCartItemAmountUseCase: UseCase<UpdateCartItemAmountRequest, UpdateCartItemAmountResponse, Never> {
+protocol UpdateCartItemAmountUseCase {
+    func execute(_ request: UpdateCartItemAmountRequest, completionHandler: @escaping (Result<UpdateCartItemAmountResponse>) -> Void)
+}
+
+class UpdateCartItemAmountUseCaseImpl: UpdateCartItemAmountUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -17,7 +21,7 @@ class UpdateCartItemAmountUseCase: UseCase<UpdateCartItemAmountRequest, UpdateCa
         self.cartItemsGateway = cartItemsGateway
     }
     
-    override func execute(_ request: UpdateCartItemAmountRequest, completionHandler: @escaping (Result<UpdateCartItemAmountResponse>) -> Void) {
+    func execute(_ request: UpdateCartItemAmountRequest, completionHandler: @escaping (Result<UpdateCartItemAmountResponse>) -> Void) {
         let productId = request.productId
         let amount = request.amount
         do {

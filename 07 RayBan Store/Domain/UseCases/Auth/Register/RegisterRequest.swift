@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RegisterRequest: RequestModel {
+struct RegisterRequest {
     let email: String
     let password: String
 }

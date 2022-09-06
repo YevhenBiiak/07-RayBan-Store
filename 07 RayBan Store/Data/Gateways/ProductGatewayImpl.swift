@@ -47,7 +47,7 @@ class ProductGatewayImpl: ProductGateway {
         
     }
     
-    func fetchImageData(byProductId productId: String, completionHandler: @escaping (Result<ProductImageDataDTO>) -> Void) {
+    func fetchImages(byProductId productId: String, completionHandler: @escaping (Result<ProductImagesDTO>) -> Void) {
         
     }
 }

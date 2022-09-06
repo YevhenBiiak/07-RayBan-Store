@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UpdateProfileRequest: RequestModel {
+struct UpdateProfileRequest {
     let firstName: String?
     let lastName: String?
     let address: String?

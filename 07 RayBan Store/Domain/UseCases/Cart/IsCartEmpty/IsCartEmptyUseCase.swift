@@ -7,7 +7,11 @@
 
 import Foundation
 
-class IsCartEmptyUseCase: UseCase<Never, Bool, Never> {
+protocol IsCartEmptyUseCase {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class IsCartEmptyUseCaseImpl: IsCartEmptyUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -17,7 +21,7 @@ class IsCartEmptyUseCase: UseCase<Never, Bool, Never> {
         self.cartItemsGateway = cartItemsGateway
     }
     
-    override func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
         do {
             let profileId = try profileGateway.getProfile().id
             cartItemsGateway.fetchCartItems(byCustomerId: profileId) { result in

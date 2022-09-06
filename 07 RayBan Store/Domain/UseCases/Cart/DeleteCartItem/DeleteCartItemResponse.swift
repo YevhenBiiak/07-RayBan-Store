@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct DeleteCartItemResponse: ResponseModel {
+struct DeleteCartItemResponse {
     let cartItems: [CartItemDTO]
 }

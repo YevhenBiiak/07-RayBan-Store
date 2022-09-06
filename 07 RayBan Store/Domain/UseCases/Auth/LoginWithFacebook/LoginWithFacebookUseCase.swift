@@ -7,7 +7,11 @@
 
 import Foundation
 
-class LoginWithFacebookUseCase: UseCase<Never, Bool, Never> {
+protocol LoginWithFacebookUseCase {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class LoginWithFacebookUseCaseImpl: LoginWithFacebookUseCase {
     
     private let authGateway: AuthGateway
     private let profileGateway: ProfileGateway
@@ -17,7 +21,7 @@ class LoginWithFacebookUseCase: UseCase<Never, Bool, Never> {
         self.profileGateway = profileGateway
     }
     
-    override func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
         authGateway.loginWithFacebook { result in
             switch result {
             case .success(let profileDTO):

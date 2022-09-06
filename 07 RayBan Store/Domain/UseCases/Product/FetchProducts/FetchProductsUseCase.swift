@@ -7,7 +7,11 @@
 
 import Foundation
 
-class FetchProductsUseCase: UseCase<FetchProductsRequest, FetchProductsResponse, Never> {
+protocol FetchProductsUseCase {
+    func execute(_ request: FetchProductsRequest, completionHandler: @escaping (Result<FetchProductsResponse>) -> Void)
+}
+
+class FetchProductsUseCaseImpl: FetchProductsUseCase {
     
     private let productGateway: ProductGateway
     
@@ -15,7 +19,7 @@ class FetchProductsUseCase: UseCase<FetchProductsRequest, FetchProductsResponse,
         self.productGateway = productGateway
     }
     
-    override func execute(_ request: FetchProductsRequest, completionHandler: @escaping (Result<FetchProductsResponse>) -> Void) {
+    func execute(_ request: FetchProductsRequest, completionHandler: @escaping (Result<FetchProductsResponse>) -> Void) {
         if let category = request.category {
             productGateway.fetchProducts(byCategoryName: category) { result in
                 switch result {

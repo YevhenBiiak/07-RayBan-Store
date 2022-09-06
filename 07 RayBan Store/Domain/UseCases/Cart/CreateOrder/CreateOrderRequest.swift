@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CreateOrderRequest: RequestModel {
+struct CreateOrderRequest {
     let shippingAddress: String
     let shippingMethods: String
 }

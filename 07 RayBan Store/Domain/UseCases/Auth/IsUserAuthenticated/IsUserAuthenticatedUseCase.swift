@@ -7,7 +7,11 @@
 
 import Foundation
 
-class IsUserAuthenticatedUseCase: UseCase<Never, Never, Bool> {
+protocol IsUserAuthenticatedUseCase {
+    func execute() -> Bool
+}
+
+class IsUserAuthenticatedUseCaseImpl: IsUserAuthenticatedUseCase {
     
     private let authGateway: AuthGateway
 
@@ -15,7 +19,7 @@ class IsUserAuthenticatedUseCase: UseCase<Never, Never, Bool> {
         self.authGateway = authGateway
     }
     
-    override func execute() -> Bool {
+    func execute() -> Bool {
         authGateway.isUserAuthenticated
     }
 }

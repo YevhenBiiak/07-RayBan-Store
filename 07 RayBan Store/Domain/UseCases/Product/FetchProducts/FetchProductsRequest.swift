@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FetchProductsRequest: RequestModel {
+struct FetchProductsRequest {
     let productId: String?
     let category: String?
 }

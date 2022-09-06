@@ -7,7 +7,11 @@
 
 import Foundation
 
-class UpdateProfileUseCase: UseCase<UpdateProfileRequest, Bool, Never> {
+protocol UpdateProfileUseCase {
+    func execute(_ request: UpdateProfileRequest, completionHandler: @escaping (Result<Bool>) -> Void) 
+}
+
+class UpdateProfileUseCaseImpl: UpdateProfileUseCase {
     
     private let profileGateway: ProfileGateway
     
@@ -15,7 +19,7 @@ class UpdateProfileUseCase: UseCase<UpdateProfileRequest, Bool, Never> {
         self.profileGateway = profileGateway
     }
     
-    override func execute(_ request: UpdateProfileRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(_ request: UpdateProfileRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
         do {
             var profileDTO = try profileGateway.getProfile()
             updateProfile(&profileDTO, withUpdateProfileRequest: request)

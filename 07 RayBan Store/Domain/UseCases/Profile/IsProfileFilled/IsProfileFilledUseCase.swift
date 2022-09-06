@@ -7,7 +7,11 @@
 
 import Foundation
 
-class IsProfileFilledUseCase: UseCase<Never, Bool, Never> {
+protocol IsProfileFilledUseCase {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class IsProfileFilledUseCaseImpl: IsProfileFilledUseCase {
     
     private let profileGateway: ProfileGateway
     
@@ -15,7 +19,7 @@ class IsProfileFilledUseCase: UseCase<Never, Bool, Never> {
         self.profileGateway = profileGateway
     }
     
-    override func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
         do {
             let profileDTO = try profileGateway.getProfile()
             completionHandler(.success(profileDTO.asProfile.isProfileFilled))

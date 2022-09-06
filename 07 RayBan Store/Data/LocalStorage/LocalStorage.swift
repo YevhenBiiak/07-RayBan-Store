@@ -35,10 +35,6 @@ extension LocalStorageImpl: AuthLocalStorage {
     
 extension LocalStorageImpl: ProfileLocalStorage {
     
-    var isProfileFilled: Bool {
-        profile?.lastName != nil && profile?.address != nil
-    }
-    
     func updateUserProfile(_ user: Profile) {
         profile = user
     }

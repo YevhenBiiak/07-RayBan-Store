@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AddCartItemRequest: RequestModel {
+struct AddCartItemRequest {
     let productDTO: ProductDTO
     let amount: Int
 }

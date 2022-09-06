@@ -7,7 +7,11 @@
 
 import Foundation
 
-class FetchCartItemsUseCase: UseCase<Never, FetchCartItemsResponse, Never> {
+protocol FetchCartItemsUseCase {
+    func execute(completionHandler: @escaping (Result<FetchCartItemsResponse>) -> Void)
+}
+
+class FetchCartItemsUseCaseImpl: FetchCartItemsUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -17,7 +21,7 @@ class FetchCartItemsUseCase: UseCase<Never, FetchCartItemsResponse, Never> {
         self.cartItemsGateway = cartItemsGateway
     }
     
-    override func execute(completionHandler: @escaping (Result<FetchCartItemsResponse>) -> Void) {
+    func execute(completionHandler: @escaping (Result<FetchCartItemsResponse>) -> Void) {
         do {
             let profileId = try profileGateway.getProfile().id
             cartItemsGateway.fetchCartItems(byCustomerId: profileId) { result in

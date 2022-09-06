@@ -7,7 +7,11 @@
 
 import Foundation
 
-class RegisterUseCase: UseCase<RegisterRequest, Bool, Never> {
+protocol RegisterUseCase {
+    func execute(_ request: RegisterRequest, completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+class RegisterUseCaseImpl: RegisterUseCase {
     
     private let authGateway: AuthGateway
     private let profileGateway: ProfileGateway
@@ -17,10 +21,17 @@ class RegisterUseCase: UseCase<RegisterRequest, Bool, Never> {
         self.profileGateway = profileGateway
     }
     
-    override func execute(_ request: RegisterRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
+    func execute(_ request: RegisterRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
         let email = request.email
         let password = request.password
         
+        do {
+            try Validator.validateEmail(email)
+            try Validator.validatePassword(password)
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+ 
         authGateway.register(email: email, password: password) { result in
             switch result {
             case .success(let profileDTO):

@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct DeleteCartItemRequest: RequestModel {
+struct DeleteCartItemRequest {
     let productId: String
 }

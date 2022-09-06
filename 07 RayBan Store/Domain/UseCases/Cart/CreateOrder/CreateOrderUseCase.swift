@@ -7,7 +7,11 @@
 
 import Foundation
 
-class CreateOrderUseCase: UseCase<CreateOrderRequest, CreateOrderResponse, Never> {
+protocol CreateOrderUseCase {
+    func execute(_ request: CreateOrderRequest, completionHandler: @escaping (Result<CreateOrderResponse>) -> Void)
+}
+
+class CreateOrderUseCaseImpl: CreateOrderUseCase {
     
     private let profileGateway: ProfileGateway
     private let cartItemsGateway: CartItemsGateway
@@ -19,7 +23,7 @@ class CreateOrderUseCase: UseCase<CreateOrderRequest, CreateOrderResponse, Never
         self.orderGateway = orderGateway
     }
     
-    override func execute(_ request: CreateOrderRequest, completionHandler: @escaping (Result<CreateOrderResponse>) -> Void) {
+    func execute(_ request: CreateOrderRequest, completionHandler: @escaping (Result<CreateOrderResponse>) -> Void) {
         do {
             let profileId = try profileGateway.getProfile().id
             cartItemsGateway.fetchCartItems(byCustomerId: profileId) { [weak self] result in

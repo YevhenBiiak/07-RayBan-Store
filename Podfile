@@ -8,5 +8,8 @@ target '07 RayBan Store' do
   # Pods for 07 RayBan Store
 
   pod 'SwiftLint'
+  pod 'FirebaseAuth'
+  pod 'FirebaseDatabase'
+  pod 'FBSDKLoginKit'
 
 end

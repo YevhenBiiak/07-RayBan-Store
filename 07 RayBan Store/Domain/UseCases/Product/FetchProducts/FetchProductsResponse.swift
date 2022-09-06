@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct FetchProductsResponse: ResponseModel {
+struct FetchProductsResponse {
     let products: [ProductDTO]
 }

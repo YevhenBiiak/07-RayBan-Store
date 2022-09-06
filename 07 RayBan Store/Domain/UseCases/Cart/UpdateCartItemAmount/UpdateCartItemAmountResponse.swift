@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UpdateCartItemAmountResponse: ResponseModel {
+struct UpdateCartItemAmountResponse {
     let cartItems: [CartItemDTO]
 }

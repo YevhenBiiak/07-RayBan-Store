@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct CreateOrderResponse: ResponseModel {
+struct CreateOrderResponse {
     let order: OrderDTO
 }
