@@ -6,64 +6,32 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FirebaseDatabase
 
 class ViewController: UIViewController {
-    
-    lazy var apiProfile = ApiProfileImpl()
-    lazy var authProvider = AuthProviderImpl(apiProfile: apiProfile)
-    lazy var profileLocalStorage = LocalStorageImpl()
-    lazy var authGateway = AuthGatewayImpl(authProvider: authProvider, authLocalStorage: profileLocalStorage)
-    
-    lazy var apiProduct = ApiProductImpl()
-    lazy var apiClient = ApiClientImpl()
-    lazy var imageCacher = ImageCacherImpl()
-    lazy var productGateway = ProductGatewayImpl(apiProduct: apiProduct, apiClient: apiClient, imageCacher: imageCacher)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //class MyViewController {
-        //    lazy var apiProfile = ApiProfileImpl()
-        //    lazy var authProvider = AuthProviderImpl(apiProfile: apiProfile)
-        //    lazy var profileLocalStorage = LocalStorageImpl()
-        //    lazy var authGateway = AuthGatewayImpl(authProvider: authProvider, authLocalStorage: profileLocalStorage)
-        //
-        //    func viewDidLoad() {
-        //
-        //        let useCase: UseCase = IsUserAuthenticatedUseCase(gateway: authGateway)
-        //        useCase.execute { result in
-        //            if let _ = try? result.get() {
-        //
-        //            }
-        //        }
-        //    }
-        //}
+        let firebaseDB = Database.database().reference()
         
-//        useCase = LoginUseCase(gateway: authGateway)
+        let profile = ProfileDTO(id: "adsfdsfasdcwecec", firstName: nil, lastName: nil, email: "test@gmail.com", address: nil)
+//        firebaseDB.child("customers").child(profile.id).setValue(profile.asDictionary)
+
+        firebaseDB.child("customers").child(profile.id).child("cart").setValue(["2367345": ["amount": 1], "234555": ["amount": 2]])
         
-//        print("isUserAuthenticated:", authUseCases.isUserAuthenticated)
-//
-//        authUseCases.loginWithFacebook { result in
-//            switch result {
-//            case.success(let flag):
-//                print("loginWithFacebook flag:", flag)
-//            case.failure(let error):
-//                print("loginWithFacebook error:", error)
-//            }
-//        }
-//
-//        print("isUserAuthenticated:", authUseCases.isUserAuthenticated)
-//        authUseCase.logout()
-//        print("isUserAuthenticated:", authUseCases.isUserAuthenticated)
-//
-//        authUseCases.login(email: "fbname@mail.com", password: "123") { result in
-//            switch result {
-//            case.success(let flag):
-//                print("login flag:", flag)
-//            case.failure(let error):
-//                print("login error:", error)
-//            }
-//        }
+        firebaseDB.child("customers").child(profile.id).getData { error, data in
+            if let data = data {
+//                print( data.value as? [String: Any] ?? "")
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: data.value, options: [])
+                    let struc = try JSONDecoder().decode(ProfileDTO.self, from: data)
+                    print(struc)
+                } catch {
+
+                }
+            }
+        }
     }
-    
 }

@@ -6,68 +6,120 @@
 //
 
 import Foundation
-// import firabaseSDK
-// import fbSDK
-
-enum AppError: Error {
-    case custom(String)
-}
+import FirebaseAuth
+import FBSDKLoginKit
 
 class AuthProviderImpl: AuthProvider {
-    // let FirabaseAuthSDK
-    // let FaceBookAuthSDK
-    private var user: Profile?
-    
-    private let apiProfile: ApiProfile
-    
-    init(apiProfile: ApiProfile) {
-        self.apiProfile = apiProfile
-    }
     
     // MARK: - AuthProvider protocol
     
-    func login(email: String, password: String, completionHandler: @escaping (Result<Profile>) -> Void) {
-        guard let user = user else {
-            return completionHandler(.failure(AppError.custom("users DB is empty")))
-        }
-        if user.email == email {
-            completionHandler(.success(user))
-        } else {
-            completionHandler(.failure(AppError.custom("email is not exist")))
+    func getUserId() -> String? {
+        Auth.auth().currentUser?.uid
+    }
+    
+    func login(email: String, password: String, completionHandler: @escaping (Result<UserId>) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
+            self?.handleFIRLoginResult(result, error: error, completion: completionHandler)
         }
     }
     
-    func register(email: String, password: String, completionHandler: @escaping (Result<Profile>) -> Void) {
-        guard user?.email == email else {
-            return completionHandler(.failure(AppError.custom("user with this email is exist")))
+    func register(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+            self?.handelFIRRegisterResult(result, error: error, completion: completionHandler)
+        }
+    }
+    
+    func loginWithFacebook(completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        let loginManager = LoginManager()
+        loginManager.logIn(permissions: [], from: nil) { [weak self] result, error in
+            self?.handleFBLoginResult(result, error: error, completion: completionHandler)
+        }
+    }
+    
+    func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                return completionHandler(.failure(error))
+            }
+            completionHandler(.success(true))
+        }
+    }
+    
+    func logout() throws {
+        try Auth.auth().signOut()
+    }
+    
+    // MARK: - Private methods
+    
+    private func handleFIRLoginResult(_ result: AuthDataResult?, error: Error?, completion: @escaping (Result<UserId>) -> Void) {
+        if let error = error {
+            return completion(.failure(error))
         }
         
-        let user = Profile(
-            id: UUID().uuidString,
+        if let userId = result?.user.uid {
+            completion(.success(userId))
+        }
+    }
+    
+    private func handelFIRRegisterResult(_ result: AuthDataResult?, error: Error?, completion: @escaping (Result<ProfileDTO>) -> Void) {
+        if let error = error {
+            return completion(.failure(error))
+        }
+        
+        guard let id = result?.user.uid,
+              let email = result?.user.email
+        else { return }
+        
+        let profile = ProfileDTO(
+            id: id,
             firstName: nil,
             lastName: nil,
             email: email,
             address: nil)
         
-        completionHandler(.success(user))
-        self.user = user
+        completion(.success(profile))
     }
     
-    func loginWithFacebook(completionHandler: @escaping (Result<Profile>) -> Void) {
-        let user = Profile(
-            id: UUID().uuidString,
-            firstName: "FBName",
-            lastName: nil,
-            email: "fbname@mail.com",
-            address: nil)
+    private func handleFBLoginResult(_ result: LoginManagerLoginResult?, error: Error?, completion: @escaping (Result<ProfileDTO>) -> Void) {
+        if let error = error {
+            return completion(.failure(error))
+        }
         
-        completionHandler(.success(user))
-        self.user = user
+        let token = result?.token?.tokenString
+        let request = GraphRequest(
+            graphPath: "me",
+            parameters: ["fields": "email, first_name, last_name"],
+            tokenString: token,
+            version: nil,
+            httpMethod: .get)
+        
+        request.start { _, result, error in
+            
+            if let error = error {
+                return completion(.failure(error))
+            }
+            
+            print(result)
+            
+            let credential: AuthCredential = FacebookAuthProvider.credential(withAccessToken: token!)
+            Auth.auth().signIn(with: credential) { result, error in
+                if let error = error {
+                    return completion(.failure(error))
+                }
+                
+                guard let id = result?.user.uid,
+                      let email = result?.user.email
+                else { return }
+                
+                let profile = ProfileDTO(
+                    id: id,
+                    firstName: nil,
+                    lastName: nil,
+                    email: email,
+                    address: nil)
+                
+                completion(.success(profile))
+            }
+        }
     }
-    
-    func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void) {
-        // firebase.forgotPassword(email)
-        completionHandler(.success(true))
-    }
-    
 }

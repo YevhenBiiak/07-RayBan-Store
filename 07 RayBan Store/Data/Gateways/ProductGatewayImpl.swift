@@ -6,33 +6,20 @@
 //
 
 import Foundation
+import FirebaseDatabase
 
 protocol ApiProduct {
-    func fetchProducts(completionHandler: @escaping (Result<[Product]>) -> Void)
+    
 }
 
 protocol ApiClient {
     
 }
 
-protocol ImageCacher {
-    
-}
-
 class ProductGatewayImpl: ProductGateway {
     
-    private let apiClient: ApiClient
-    private let apiProduct: ApiProduct
-    private let imageCacher: ImageCacher
-    
-    init(apiProduct: ApiProduct, apiClient: ApiClient, imageCacher: ImageCacher) {
-        self.apiProduct = apiProduct
-        self.apiClient = apiClient
-        self.imageCacher = imageCacher
-    }
-    
     func fetchProduct(byId productId: String, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
-        
+        Database.database().reference()
     }
     
     func fetchProducts(first: Int?, skip: Int?, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {

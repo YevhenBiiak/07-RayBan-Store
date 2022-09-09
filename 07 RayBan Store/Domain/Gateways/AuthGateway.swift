@@ -7,11 +7,13 @@
 
 import Foundation
 
+typealias UserId = String
+
 protocol AuthGateway {
-    var isUserAuthenticated: Bool { get }
-    func login(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
-    func register(email: String, password: String, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
-    func loginWithFacebook(completionHandler: @escaping (Result<ProfileDTO>) -> Void)
+    func getUserId() -> String?
+    func login(email: String, password: String, completionHandler: @escaping (Result<UserId>) -> Void)
+    func register(email: String, password: String, completionHandler: @escaping (Result<UserId>) -> Void)
+    func loginWithFacebook(completionHandler: @escaping (Result<UserId>) -> Void)
     func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void)
     func logout() throws
 }

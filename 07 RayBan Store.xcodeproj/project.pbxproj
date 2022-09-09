@@ -41,15 +41,15 @@
 		574F27A728C7922A0092D293 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F27A628C7922A0092D293 /* Validator.swift */; };
 		574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F27A828C7A6C70092D293 /* LoginViewController.swift */; };
 		574F27AB28C7C5A40092D293 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 574F27AA28C7C5A40092D293 /* GoogleService-Info.plist */; };
+		574F27AD28CB5A510092D293 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F27AC28CB5A510092D293 /* Session.swift */; };
 		57508A4A28BE4BBF000328AC /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A4928BE4BBF000328AC /* Cart.swift */; };
 		57508A4C28BE4DF7000328AC /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A4B28BE4DF7000328AC /* Order.swift */; };
 		57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5128BEA041000328AC /* AuthGatewayImpl.swift */; };
 		57508A5428BEA7D9000328AC /* ProductGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */; };
 		57508A5828BF45E5000328AC /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5728BF45E5000328AC /* AuthProvider.swift */; };
-		57508A5A28BF54E5000328AC /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5928BF54E5000328AC /* LocalStorage.swift */; };
+		57508A5A28BF54E5000328AC /* ProfileRemoteRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5928BF54E5000328AC /* ProfileRemoteRepositoryImpl.swift */; };
 		57508A5D28BFB34B000328AC /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5C28BFB34B000328AC /* ApiClient.swift */; };
 		57508A5F28BFB372000328AC /* ApiProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5E28BFB372000328AC /* ApiProduct.swift */; };
-		57508A6128BFB3A4000328AC /* ImageCacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6028BFB3A4000328AC /* ImageCacher.swift */; };
 		57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6428BFD48A000328AC /* ProfileGateway.swift */; };
 		57508A6728BFD525000328AC /* ProfileGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6628BFD525000328AC /* ProfileGatewayImpl.swift */; };
 		57508A6928BFDC71000328AC /* CartItemsGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6828BFDC71000328AC /* CartItemsGateway.swift */; };
@@ -62,7 +62,6 @@
 		5773020A28BC0226007FB72F /* FetchProductsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020928BC0226007FB72F /* FetchProductsUseCase.swift */; };
 		5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020D28BC040E007FB72F /* AuthGateway.swift */; };
 		5773021028BCE474007FB72F /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020F28BCE474007FB72F /* Result.swift */; };
-		577B93BC28C0D93100E31B88 /* ApiProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93BB28C0D93100E31B88 /* ApiProfile.swift */; };
 		577B93C428C1E12100E31B88 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C328C1E12100E31B88 /* LoginRequest.swift */; };
 		577B93CA28C1F8B400E31B88 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C928C1F8B400E31B88 /* LoginUseCase.swift */; };
 		577B93D028C2059E00E31B88 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93CF28C2059E00E31B88 /* RegisterUseCase.swift */; };
@@ -113,15 +112,15 @@
 		574F27A628C7922A0092D293 /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		574F27A828C7A6C70092D293 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		574F27AA28C7C5A40092D293 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		574F27AC28CB5A510092D293 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		57508A4928BE4BBF000328AC /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
 		57508A4B28BE4DF7000328AC /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		57508A5128BEA041000328AC /* AuthGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGatewayImpl.swift; sourceTree = "<group>"; };
 		57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGatewayImpl.swift; sourceTree = "<group>"; };
 		57508A5728BF45E5000328AC /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
-		57508A5928BF54E5000328AC /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		57508A5928BF54E5000328AC /* ProfileRemoteRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteRepositoryImpl.swift; sourceTree = "<group>"; };
 		57508A5C28BFB34B000328AC /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		57508A5E28BFB372000328AC /* ApiProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProduct.swift; sourceTree = "<group>"; };
-		57508A6028BFB3A4000328AC /* ImageCacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacher.swift; sourceTree = "<group>"; };
 		57508A6428BFD48A000328AC /* ProfileGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGateway.swift; sourceTree = "<group>"; };
 		57508A6628BFD525000328AC /* ProfileGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGatewayImpl.swift; sourceTree = "<group>"; };
 		57508A6828BFDC71000328AC /* CartItemsGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemsGateway.swift; sourceTree = "<group>"; };
@@ -134,7 +133,6 @@
 		5773020928BC0226007FB72F /* FetchProductsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchProductsUseCase.swift; sourceTree = "<group>"; };
 		5773020D28BC040E007FB72F /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
 		5773020F28BCE474007FB72F /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		577B93BB28C0D93100E31B88 /* ApiProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProfile.swift; sourceTree = "<group>"; };
 		577B93C328C1E12100E31B88 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		577B93C928C1F8B400E31B88 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
 		577B93CF28C2059E00E31B88 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
@@ -311,29 +309,27 @@
 			isa = PBXGroup;
 			children = (
 				57508A5128BEA041000328AC /* AuthGatewayImpl.swift */,
-				57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */,
 				57508A6628BFD525000328AC /* ProfileGatewayImpl.swift */,
+				57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */,
 				57508A6A28BFDC8D000328AC /* CartGatewayImpl.swift */,
 			);
 			path = Gateways;
 			sourceTree = "<group>";
 		};
-		57508A5028BE9ED8000328AC /* LocalStorage */ = {
+		57508A5028BE9ED8000328AC /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				57508A5928BF54E5000328AC /* LocalStorage.swift */,
-				57508A6028BFB3A4000328AC /* ImageCacher.swift */,
+				57508A5928BF54E5000328AC /* ProfileRemoteRepositoryImpl.swift */,
 			);
-			path = LocalStorage;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		57508A5B28BFB315000328AC /* APIs */ = {
 			isa = PBXGroup;
 			children = (
+				57508A5728BF45E5000328AC /* AuthProvider.swift */,
 				57508A5C28BFB34B000328AC /* ApiClient.swift */,
 				57508A5E28BFB372000328AC /* ApiProduct.swift */,
-				577B93BB28C0D93100E31B88 /* ApiProfile.swift */,
-				57508A5728BF45E5000328AC /* AuthProvider.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -402,7 +398,7 @@
 				574F275C28C368A40092D293 /* DTOs */,
 				57508A4F28BE9ECC000328AC /* Gateways */,
 				57508A5B28BFB315000328AC /* APIs */,
-				57508A5028BE9ED8000328AC /* LocalStorage */,
+				57508A5028BE9ED8000328AC /* Repositories */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -482,6 +478,7 @@
 			isa = PBXGroup;
 			children = (
 				5773020F28BCE474007FB72F /* Result.swift */,
+				574F27AC28CB5A510092D293 /* Session.swift */,
 				574F27A628C7922A0092D293 /* Validator.swift */,
 			);
 			path = Common;
@@ -700,7 +697,7 @@
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
 				577B93D028C2059E00E31B88 /* RegisterUseCase.swift in Sources */,
 				5773020A28BC0226007FB72F /* FetchProductsUseCase.swift in Sources */,
-				57508A5A28BF54E5000328AC /* LocalStorage.swift in Sources */,
+				57508A5A28BF54E5000328AC /* ProfileRemoteRepositoryImpl.swift in Sources */,
 				577B93C428C1E12100E31B88 /* LoginRequest.swift in Sources */,
 				5773020628BBFF6E007FB72F /* Profile.swift in Sources */,
 				574F277028C38C990092D293 /* UpdateProfileRequest.swift in Sources */,
@@ -741,17 +738,16 @@
 				574F275928C360550092D293 /* FetchProductsRequest.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
-				577B93BC28C0D93100E31B88 /* ApiProfile.swift in Sources */,
 				574F279128C531BF0092D293 /* DeleteCartItemRequest.swift in Sources */,
 				574F277C28C38F860092D293 /* AddCartItemUseCase.swift in Sources */,
 				57508A5F28BFB372000328AC /* ApiProduct.swift in Sources */,
+				574F27AD28CB5A510092D293 /* Session.swift in Sources */,
 				574F278628C390680092D293 /* AddCartItemRequest.swift in Sources */,
 				574F276828C377750092D293 /* ProductImagesDTO.swift in Sources */,
 				57508A6728BFD525000328AC /* ProfileGatewayImpl.swift in Sources */,
 				574F276428C372450092D293 /* FetchProductImagesRequest.swift in Sources */,
 				574F278428C38FA90092D293 /* CreateOrderUseCase.swift in Sources */,
 				574F279F28C66EC90092D293 /* CreateOrderRequest.swift in Sources */,
-				57508A6128BFB3A4000328AC /* ImageCacher.swift in Sources */,
 				574F277E28C38F8E0092D293 /* DeleteCartItemUseCase.swift in Sources */,
 				5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */,
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,

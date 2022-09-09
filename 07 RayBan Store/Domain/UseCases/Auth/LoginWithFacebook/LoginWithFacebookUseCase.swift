@@ -14,23 +14,17 @@ protocol LoginWithFacebookUseCase {
 class LoginWithFacebookUseCaseImpl: LoginWithFacebookUseCase {
     
     private let authGateway: AuthGateway
-    private let profileGateway: ProfileGateway
 
-    init(authGateway: AuthGateway, profileGateway: ProfileGateway) {
+    init(authGateway: AuthGateway) {
         self.authGateway = authGateway
-        self.profileGateway = profileGateway
     }
     
     func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
         authGateway.loginWithFacebook { result in
             switch result {
-            case .success(let profileDTO):
-                do {
-                    try self.profileGateway.saveProfile(profileDTO)
-                    completionHandler(.success(true))
-                } catch {
-                    completionHandler(.failure(error))
-                }
+            case .success(let userId):
+                Session.shared.userId = userId
+                completionHandler(.success(true))
             case .failure(let error):
                 completionHandler(.failure(error))
             }

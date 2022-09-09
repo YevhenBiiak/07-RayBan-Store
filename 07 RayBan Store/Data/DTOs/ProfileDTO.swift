@@ -25,4 +25,16 @@ extension ProfileDTO {
             email: self.email,
             address: self.address)
     }
+    
+    var asDictionary: [String: Any] {
+        var dictionary = [String: Any]()
+        
+        dictionary["id"] = id
+        dictionary["email"] = email
+        dictionary["firstName"] = firstName
+        dictionary["lastName"] = lastName
+        dictionary["address"] = address
+        
+        return dictionary
+    }
 }

@@ -20,6 +20,8 @@ class IsUserAuthenticatedUseCaseImpl: IsUserAuthenticatedUseCase {
     }
     
     func execute() -> Bool {
-        authGateway.isUserAuthenticated
+        guard let userId = authGateway.getUserId() else { return false }
+        Session.shared.userId = userId
+        return true
     }
 }

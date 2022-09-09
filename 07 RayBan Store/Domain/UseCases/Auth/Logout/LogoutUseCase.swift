@@ -21,5 +21,6 @@ class LogoutUseCaseImpl: LogoutUseCase {
     
     func execute() {
         try? authGateway.logout()
+        Session.shared.userId = ""
     }
 }

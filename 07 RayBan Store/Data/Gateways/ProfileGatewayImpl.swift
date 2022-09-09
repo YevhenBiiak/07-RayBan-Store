@@ -7,22 +7,24 @@
 
 import Foundation
 
-protocol ApiProfile {
-    func update(profile: Profile, completionHandler: @escaping (Result<Bool>) -> Void)
+protocol ProfileRemoteRepository {
+    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
+    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void)
 }
 
-protocol ProfileLocalStorage {
-    func updateUserProfile(_ user: Profile)
-}
-
-class ProfileGatewayImpl {//}: ProfileGateway {
+class ProfileGatewayImpl: ProfileGateway {
     
-    private let apiProfile: ApiProfile
-    private let profileLocalStorage: ProfileLocalStorage
+    private let profileRemoteRepository: ProfileRemoteRepository
     
-    init(apiProfile: ApiProfile, profileLocalStorage: ProfileLocalStorage) {
-        self.apiProfile = apiProfile
-        self.profileLocalStorage = profileLocalStorage
+    init(profileRemoteRepository: ProfileRemoteRepository) {
+        self.profileRemoteRepository = profileRemoteRepository
     }
     
+    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
+        profileRemoteRepository.fetchProfile(byUserId: userId, completionHandler: completionHandler)
+    }
+    
+    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void) {
+        profileRemoteRepository.saveProfile(profile, forUserId: userId, completionHandler: completionHandler)
+    }
 }

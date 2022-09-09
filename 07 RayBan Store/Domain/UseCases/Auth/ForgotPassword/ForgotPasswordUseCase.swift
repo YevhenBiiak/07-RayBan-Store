@@ -25,7 +25,7 @@ class ForgotPasswordUseCaseImpl: ForgotPasswordUseCase {
         do {
             try Validator.validateEmail(email)
         } catch let error {
-            completionHandler(.failure(error))
+            return completionHandler(.failure(error))
         }
  
         authGateway.forgotPassword(email: email) { result in

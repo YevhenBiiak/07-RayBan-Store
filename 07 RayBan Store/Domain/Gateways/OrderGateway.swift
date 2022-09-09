@@ -9,5 +9,5 @@ import Foundation
 
 protocol OrderGateway {
     func fetchOrders(byCustomerId customerId: String, completionHandler: @escaping (Result<[OrderDTO]>) -> Void)
-    func saveOrder(_ order: OrderDTO, forCustomerId customerId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void)
+    func createOrder(_ order: OrderDTO, forCustomerId customerId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void)
 }
