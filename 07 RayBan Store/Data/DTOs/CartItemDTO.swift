@@ -13,11 +13,15 @@ struct CartItemDTO: Codable {
 }
 
 // Data mapping
-extension Array where Element == CartItemDTO {
+extension Array: DictionaryConvertible where Element == CartItemDTO {
     var asCartItems: [CartItem] {
         self.map { item in
             CartItem(product: item.product.asProduct, amount: item.amount)
         }
+    }
+    
+    var asDictionary: [String: Any] {
+        ["cart": self]
     }
 }
 

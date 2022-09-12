@@ -24,10 +24,16 @@ struct OrderItemDTO: Codable {
 
 // Data mapping
 extension Array where Element == OrderItem {
-    var asOrderItemDTO: [OrderItemDTO] {
+    var asOrderItemsDTO: [OrderItemDTO] {
         self.map { item in
             OrderItemDTO(product: item.product.asProductDTO, amount: item.amount)
         }
+    }
+}
+
+extension OrderDTO: DictionaryConvertible {
+    var asDictionary: [String: Any] {
+        ["\(Date.now.timeIntervalSince1970)": self]
     }
 }
 
@@ -36,7 +42,7 @@ extension Order {
         OrderDTO(id: nil,
                  status: nil,
                  customerId: self.customerId,
-                 items: self.items.asOrderItemDTO,
+                 items: self.items.asOrderItemsDTO,
                  shippingMethods: self.shippingMethods,
                  shippindAddress: self.shippindAddress,
                  price: self.price)

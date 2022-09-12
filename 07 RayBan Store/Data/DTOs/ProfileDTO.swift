@@ -25,7 +25,9 @@ extension ProfileDTO {
             email: self.email,
             address: self.address)
     }
-    
+}
+
+extension ProfileDTO: DictionaryConvertible {
     var asDictionary: [String: Any] {
         var dictionary = [String: Any]()
         

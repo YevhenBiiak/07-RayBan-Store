@@ -7,24 +7,23 @@
 
 import Foundation
 
-protocol ProfileRemoteRepository {
-    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
-    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void)
-}
-
 class ProfileGatewayImpl: ProfileGateway {
     
-    private let profileRemoteRepository: ProfileRemoteRepository
+    private let remoteRepository: RemoteRepository
     
-    init(profileRemoteRepository: ProfileRemoteRepository) {
-        self.profileRemoteRepository = profileRemoteRepository
+    init(remoteRepository: RemoteRepository) {
+        self.remoteRepository = remoteRepository
     }
     
     func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
-        profileRemoteRepository.fetchProfile(byUserId: userId, completionHandler: completionHandler)
+        remoteRepository.executeFetchRequest(ofType: .profile(id: userId)) { (result: Result<ProfileDTO>) in
+            completionHandler(result)
+        }
     }
     
     func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void) {
-        profileRemoteRepository.saveProfile(profile, forUserId: userId, completionHandler: completionHandler)
+        remoteRepository.executeSaveRequest(ofType: .saveProfile(profile, userId: userId)) { result in
+            completionHandler(result)
+        }
     }
 }
