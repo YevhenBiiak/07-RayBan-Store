@@ -13,9 +13,9 @@ protocol UpdateCartItemAmountUseCase {
 
 class UpdateCartItemAmountUseCaseImpl: UpdateCartItemAmountUseCase {
     
-    private let cartItemsGateway: CartItemsGateway
+    private let cartItemsGateway: CartGateway
 
-    init(cartItemsGateway: CartItemsGateway) {
+    init(cartItemsGateway: CartGateway) {
         self.cartItemsGateway = cartItemsGateway
     }
     
@@ -24,14 +24,14 @@ class UpdateCartItemAmountUseCaseImpl: UpdateCartItemAmountUseCase {
         let amount = request.amount
         let userId = Session.shared.userId
         
-        cartItemsGateway.fetchCartItems(byCustomerId: userId) { [weak self] result in
+        cartItemsGateway.fetchCartItems(byUserId: userId) { [weak self] result in
             switch result {
             case .success(let cartItemsDTO):
                 
                 var cart = Cart(items: cartItemsDTO.asCartItems)
                 cart.update(productId: productId, amount: amount)
                 
-                self?.cartItemsGateway.saveCartItems(cart.items.asCartItemsDTO, forCustomerId: userId) { result in
+                self?.cartItemsGateway.saveCartItems(cart.items.asCartItemsDTO, forUserId: userId) { result in
                     switch result {
                     case .success(let cartItemsDTO):
                         let updateCartItemAmountResponse = UpdateCartItemAmountResponse(cartItems: cartItemsDTO)

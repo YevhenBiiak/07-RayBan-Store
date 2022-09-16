@@ -13,10 +13,10 @@ protocol CreateOrderUseCase {
 
 class CreateOrderUseCaseImpl: CreateOrderUseCase {
     
-    private let cartItemsGateway: CartItemsGateway
+    private let cartItemsGateway: CartGateway
     private let orderGateway: OrderGateway
 
-    init(cartItemsGateway: CartItemsGateway, orderGateway: OrderGateway) {
+    init(cartItemsGateway: CartGateway, orderGateway: OrderGateway) {
         self.cartItemsGateway = cartItemsGateway
         self.orderGateway = orderGateway
     }
@@ -26,14 +26,14 @@ class CreateOrderUseCaseImpl: CreateOrderUseCase {
         let shippingMethods = request.shippingMethods
         let userId = Session.shared.userId
         
-        cartItemsGateway.fetchCartItems(byCustomerId: userId) { [weak self] result in
+        cartItemsGateway.fetchCartItems(byUserId: userId) { [weak self] result in
             switch result {
             case .success(let cartItemsDTO):
                 
                 let cart = Cart(items: cartItemsDTO.asCartItems)
-                let order = cart.createOrder(customerId: userId, shippindAddress: shippingAddress, shippingMethods: shippingMethods)
+                let order = cart.createOrder(userId: userId, shippindAddress: shippingAddress, shippingMethods: shippingMethods)
                 
-                self?.orderGateway.createOrder(order.asOrderDTO, forCustomerId: userId) { result in
+                self?.orderGateway.createOrder(order.asOrderDTO, forUserId: userId) { result in
                     switch result {
                     case .success(let orderDTO):
                         let createOrderResponse = CreateOrderResponse(order: orderDTO)

@@ -18,7 +18,7 @@ class RemoteRepositoryImpl: RemoteRepository {
     private let database: DatabaseReference = Database.database().reference()
     
     func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
-        var dbQuery = database.child(request.path).queryEqual(toValue: request.value, childKey: request.key)
+        var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue, childKey: request.queryKey)
         
         if let limit = request.limit {
             dbQuery = dbQuery.queryLimited(toFirst: limit)
@@ -58,7 +58,7 @@ protocol RemoteRepository {
  
 class RemoteRepositoryImpl: RemoteRepository {
     
-    private let profileDB = Database.database().reference().child("customers")
+    private let profileDB = Database.database().reference().child("users")
     
     func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
         profileDB.child(userId).getData { error, snapshot in

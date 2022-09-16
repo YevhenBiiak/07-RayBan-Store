@@ -8,11 +8,11 @@
 import Foundation
 
 class ProductImages: Codable {
-    var main: Data
+    var main: Data?
     var main2: Data?
-    var perspective: Data
-    var front: Data
-    var frontClosed: Data
-    var back: Data
-    var left: Data
+    var perspective: Data?
+    var front: Data?
+    var frontClosed: Data?
+    var back: Data?
+    var left: Data?
 }

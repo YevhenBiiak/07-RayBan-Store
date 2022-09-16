@@ -7,6 +7,7 @@ target '07 RayBan Store' do
 
   # Pods for 07 RayBan Store
 
+  pod 'SteviaLayout'
   pod 'SwiftLint'
   pod 'FirebaseAuth'
   pod 'FirebaseDatabase'

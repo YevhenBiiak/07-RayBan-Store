@@ -22,7 +22,7 @@ class ProfileGatewayImpl: ProfileGateway {
     }
     
     func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void) {
-        remoteRepository.executeSaveRequest(ofType: .saveProfile(profile, userId: userId)) { result in
+        remoteRepository.executeSaveRequest(ofType: .profile(profile, userId: userId)) { result in
             completionHandler(result)
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct Order {
-    let customerId: String
+    let userId: String
     let items: [OrderItem]
     let shippingMethods: String
     let shippindAddress: String

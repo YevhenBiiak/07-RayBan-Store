@@ -29,12 +29,12 @@ struct Cart {
         items = items.filter { $0.product.id != productId }
     }
     
-    func createOrder(customerId: String, shippindAddress: String, shippingMethods: String) -> Order {
+    func createOrder(userId: String, shippindAddress: String, shippingMethods: String) -> Order {
         let orderItems = items.map {
             OrderItem(product: $0.product, amount: $0.amount, price: $0.price())
         }
         
-        return Order(customerId: customerId,
+        return Order(userId: userId,
                      items: orderItems,
                      shippingMethods: shippingMethods,
                      shippindAddress: shippindAddress,

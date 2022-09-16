@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FBSDKLoginKit
 import FirebaseDatabase
 
 class ViewController: UIViewController {
@@ -16,16 +15,16 @@ class ViewController: UIViewController {
         
         let db = Database.database().reference()
                 
-        db.child("customers").queryEqual(toValue: nil, childKey: nil).queryLimited(toFirst: 3).getData { error, snapshot in
+        db.child("customers/a458ghpr9fhd").queryEqual(toValue: nil, childKey: "cart").getData { error, snapshot in
             
             print(snapshot)
         }
         
-//        firebaseDB.child("customers").child(profile.id).setValue(profile.asDictionary)
+//        firebaseDB.child("users").child(profile.id).setValue(profile.asDictionary)
 //
-//        firebaseDB.child("customers").child(profile.id).child("cart").setValue(["2367345": ["amount": 1], "234555": ["amount": 2]])
+//        firebaseDB.child("users").child(profile.id).child("cart").setValue(["2367345": ["amount": 1], "234555": ["amount": 2]])
 //        
-//        firebaseDB.child("customers").child(profile.id).getData { error, data in
+//        firebaseDB.child("users").child(profile.id).getData { error, data in
 //            if let data = data {
 //                print( data.value as? [String: Any] ?? "")
 //                do {

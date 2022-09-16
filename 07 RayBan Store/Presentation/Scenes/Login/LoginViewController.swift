@@ -11,6 +11,8 @@ class LoginViewController: UIViewController, LoginView {
     
     var configurator: LoginConfigurator!
     var presenter: LoginPresenter!
+    
+    var rootView: LoginRootView!
         
     // MARK: - Life Cycle and overridden methods
     
@@ -18,7 +20,6 @@ class LoginViewController: UIViewController, LoginView {
         super.viewDidLoad()
         configurator.configure(loginViewController: self)
 
-        presenter.viewDidLoad()
     }
 
     func displayError(_ error: Error) {

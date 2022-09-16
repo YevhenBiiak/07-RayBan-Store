@@ -10,7 +10,7 @@ import Foundation
 struct OrderDTO: Codable {
     let id: String?      // nil when call createOrder
     let status: String?  // nil when call createOrder
-    let customerId: String
+    let userId: String
     let items: [OrderItemDTO]
     let shippingMethods: String
     let shippindAddress: String
@@ -41,7 +41,7 @@ extension Order {
     var asOrderDTO: OrderDTO {
         OrderDTO(id: nil,
                  status: nil,
-                 customerId: self.customerId,
+                 userId: self.userId,
                  items: self.items.asOrderItemsDTO,
                  shippingMethods: self.shippingMethods,
                  shippindAddress: self.shippindAddress,

@@ -36,7 +36,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // All products
     func fetchProducts(first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: nil, limit: 20)) { [weak self] (result: Result<[ProductDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: nil, limit: first)) { [weak self] (result: Result<[ProductDTO]>) in
             switch result {
             case .success(var products):
                 products = Array(products.dropFirst(skip).prefix(first))

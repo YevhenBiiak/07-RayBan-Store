@@ -16,7 +16,6 @@ protocol LoginView: AnyObject {
 }
 
 protocol LoginPresenter {
-    func viewDidLoad()
     func loginButtonTapped(email: String, password: String)
 }
 
@@ -32,10 +31,6 @@ class LoginPresenterImpl: LoginPresenter {
         self.loginRouter = loginRouter
     }
     
-    func viewDidLoad() {
-        
-    }
-    
     func loginButtonTapped(email: String, password: String) {
         let loginRequest = LoginRequest(email: email, password: password)
         loginUseCase.execute(loginRequest) { [weak self] result in
@@ -47,16 +42,4 @@ class LoginPresenterImpl: LoginPresenter {
             }
         }
     }
-}
-
-protocol LoginConfigurator {
-    func configure(loginViewController: LoginViewController)
-}
-
-class LoginConfiguratorImpl: LoginConfigurator {
-    
-    func configure(loginViewController: LoginViewController) {
-        
-    }
-    
 }

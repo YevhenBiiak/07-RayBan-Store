@@ -10,36 +10,43 @@ import Foundation
 enum FetchRequest {
     case profile(id: String)
     case products(id: String?, category: String?, limit: Int?)
-    case orders
+    case cartItems(userId: String)
+    case orders(userId: String, limit: Int?)
     
     var path: String {
         switch self {
-        case .profile:
-            return "customers"
-        case .products:
-            return "products"
-        case .orders:
-            return "orders"
+        case .profile(id: let id):
+            return "users/\(id)"
+        case .products(id: let id, _, _):
+            return "products/\(id ?? "")"
+        case .cartItems(userId: let id):
+            return "users/\(id)/cart"
+        case .orders(userId: let id, _):
+            return "users/\(id)/orders"
         }
     }
     
-    var key: String? {
+    var queryKey: String? {
         switch self {
-        case .profile(id: let id):
-            return id
-        case .products(id: let id, _, _):
-            return id
+        case .profile:
+            return nil
+        case .products(_, category: let category, _):
+            return category == nil ? nil : "category"
+        case .cartItems:
+            return nil
         case .orders:
             return nil
         }
     }
     
-    var value: String? {
+    var queryValue: String? {
         switch self {
         case .profile:
             return nil
         case .products(_, category: let category, _):
             return category
+        case .cartItems:
+            return nil
         case .orders:
             return nil
         }
@@ -51,8 +58,10 @@ enum FetchRequest {
             return nil
         case .products(_, _, limit: let limit):
             return limit == nil ? nil : UInt(limit!)
-        case .orders:
-            return nil
+        case .cartItems:
+            return nil 
+        case .orders(_, limit: let limit):
+            return limit == nil ? nil : UInt(limit!)
         }
     }
 }

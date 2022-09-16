@@ -13,16 +13,16 @@ protocol FetchCartItemsUseCase {
 
 class FetchCartItemsUseCaseImpl: FetchCartItemsUseCase {
     
-    private let cartItemsGateway: CartItemsGateway
+    private let cartItemsGateway: CartGateway
 
-    init(cartItemsGateway: CartItemsGateway) {
+    init(cartItemsGateway: CartGateway) {
         self.cartItemsGateway = cartItemsGateway
     }
     
     func execute(completionHandler: @escaping (Result<FetchCartItemsResponse>) -> Void) {
         let userId = Session.shared.userId
         
-        cartItemsGateway.fetchCartItems(byCustomerId: userId) { result in
+        cartItemsGateway.fetchCartItems(byUserId: userId) { result in
             switch result {
             case .success(let cartItemsDTO):
                 

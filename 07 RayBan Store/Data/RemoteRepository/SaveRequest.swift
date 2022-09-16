@@ -8,39 +8,39 @@
 import Foundation
 
 enum SaveRequest {
-    case saveProfile(_ profile: ProfileDTO, userId: String)
-    case saveCartItems(_ items: [CartItemDTO], userId: String)
-    case saveOrder(_ order: OrderDTO, userId: String)
+    case profile(_ profile: ProfileDTO, userId: String)
+    case cartItems(_ items: [CartItemDTO], userId: String)
+    case order(_ order: OrderDTO, userId: String)
     
     var path: String {
         switch self {
-        case .saveProfile:
-            return "customers"
-        case .saveCartItems:
-            return "customers"
-        case .saveOrder:
+        case .profile:
+            return "users"
+        case .cartItems:
+            return "users"
+        case .order:
             return "orders"
         }
     }
     
     var key: String {
         switch self {
-        case .saveProfile(_, userId: let userId):
+        case .profile(_, userId: let userId):
             return userId
-        case .saveCartItems(_, userId: let userId):
+        case .cartItems(_, userId: let userId):
             return "\(userId)/cart"
-        case .saveOrder(_, userId: let userId):
+        case .order(_, userId: let userId):
             return userId
         }
     }
     
     var value: DictionaryConvertible {
         switch self {
-        case .saveProfile(let profile, _):
+        case .profile(let profile, _):
             return profile
-        case .saveCartItems(let items, _):
+        case .cartItems(let items, _):
             return items
-        case .saveOrder(let order, _):
+        case .order(let order, _):
             return order
         }
     }
