@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    
+    <!----------- Facebook API ----------->
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
@@ -29,7 +29,26 @@
     <key>FacebookAdvertiserIDCollectionEnabled</key>
     <string>TRUE</string>
     
+    <!----------- Statusbar style ----------->
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
     
+    <!----------- Custom Fonts ------------>
+    <key>UIAppFonts</key>
+        <array>
+            <string>Oswald-Bold.ttf</string>
+            <string>Oswald-SemiBold.ttf</string>
+            <string>Oswald-Medium.ttf</string>
+            <string>Oswald-Regular.ttf</string>
+            <string>Oswald-ExtraLight.ttf</string>
+            <string>Oswald-Light.ttf</string>
+            <string>Lato-Thin.ttf</string>
+            <string>Lato-Bold.ttf</string>
+            <string>Lato-Black.ttf</string>
+            <string>Lato-Regular.ttf</string>
+            <string>Lato-Light.ttf</string>
+        </array>
+
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>

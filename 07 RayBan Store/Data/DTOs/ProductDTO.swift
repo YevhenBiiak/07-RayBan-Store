@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 struct ProductDTO: Codable {
-    let id: String
+    let id: Int
     let title: String
     let category: String
-    let details: String
+    let description: String
     let price: Int
     var images: ProductImages?
 }
@@ -23,7 +23,7 @@ extension ProductDTO {
         Product(id: self.id,
                 title: self.title,
                 category: self.category,
-                details: self.details,
+                details: self.description,
                 price: self.price)
     }
 }
@@ -33,7 +33,7 @@ extension Product {
         ProductDTO(id: self.id,
                    title: self.title,
                    category: self.category,
-                   details: self.details,
+                   description: self.details,
                    price: self.price,
                    images: nil)
     }

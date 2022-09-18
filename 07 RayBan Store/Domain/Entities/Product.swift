@@ -10,7 +10,7 @@ import Foundation
 typealias Cent = Int
 
 struct Product {
-    let id: String
+    let id: Int
     let title: String
     let category: String
     let details: String

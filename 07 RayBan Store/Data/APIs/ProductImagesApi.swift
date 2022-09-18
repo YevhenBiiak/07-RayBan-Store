@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProductImageApiImpl: ProductImagesApi {
+class ProductImagesApiImpl: ProductImagesApi {
     private enum Image: String {
         case main = "__001.png"
         case main2 = "__002.png"
@@ -26,13 +26,19 @@ class ProductImageApiImpl: ProductImagesApi {
         return URLSession(configuration: config)
     }()
     
-    private let baseURL = "https://images.ray-ban.com/is/image/RayBan"
-    
-    func getMainImage(forProductId productId: String, completion: @escaping (Data?, Error?) -> Void) {
-        loadImage(.main, forProductId: productId, width: 500, hexColor: "f2f2f2", completion: completion)
+    func getMainImage(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void) {
+        let width = 500
+        let hexColor = "f2f2f2"
+        let images = ProductImages()
+        
+        loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
+            if let error = error { return completion(images, error) }
+            images.main = data
+            completion(images, nil)
+        }
     }
     
-    func getAllImages(forProductId productId: String, completion: @escaping (ProductImages?, Error?) -> Void) {
+    func getAllImages(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void) {
         let width = 800
         let hexColor = "f2f2f2"
         let images = ProductImages()
@@ -40,43 +46,47 @@ class ProductImageApiImpl: ProductImagesApi {
         loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
             if let error = error { return completion(images, error) }
             images.main = data
+            completion(images, nil)
         }
         loadImage(.back, forProductId: productId, width: width, hexColor: hexColor) { data, error in
             if let error = error { return completion(images, error) }
             images.back = data
+            completion(images, nil)
         }
         loadImage(.front, forProductId: productId, width: width, hexColor: hexColor) { data, error in
             if let error = error { return completion(images, error) }
             images.front = data
+            completion(images, nil)
         }
         loadImage(.perspective, forProductId: productId, width: width, hexColor: hexColor) { data, error in
             if let error = error { return completion(images, error) }
             images.perspective = data
+            completion(images, nil)
         }
         loadImage(.left, forProductId: productId, width: width, hexColor: hexColor) { data, error in
             if let error = error { return completion(images, error) }
             images.left = data
+            completion(images, nil)
         }
-        
-        completion(images, nil)
     }
     
     // MARK: - Private methods
     
-    private func loadImage(_ type: ProductImageApiImpl.Image,
-                           forProductId productId: String,
+    private func loadImage(_ type: ProductImagesApiImpl.Image,
+                           forProductId productId: Int,
                            width: Int,
                            hexColor: String,
                            completion: @escaping (Data?, Error?) -> Void) {
         
-        var urlComponent = URLComponents(string: baseURL)
-        urlComponent?.path = "/\(productId)\(Image.main.rawValue)"
-        urlComponent?.queryItems = [URLQueryItem(name: "impolicy", value: "RB_Product"),
+        var urlComponent = URLComponents()
+        urlComponent.scheme = "https"
+        urlComponent.host = "images.ray-ban.com"
+        urlComponent.path = "/is/image/RayBan/\(productId)\(type.rawValue)"
+        urlComponent.queryItems = [URLQueryItem(name: "impolicy", value: "RB_Product"),
                                     URLQueryItem(name: "width", value: "\(width)"),
-                                    URLQueryItem(name: "bgc", value: "%23\(hexColor)")]
+                                    URLQueryItem(name: "bgc", value: "#\(hexColor)")]
+        guard let url = urlComponent.url else { return }
         
-        guard let url = urlComponent?.url else { return }
-
         let task = session.dataTask(with: url) { data, _, error in
             completion(data, error)
         }

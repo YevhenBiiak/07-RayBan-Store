@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ProductImagesApi {
-    func getMainImage(forProductId productId: String, completion: @escaping (Data?, Error?) -> Void)
-    func getAllImages(forProductId productId: String, completion: @escaping (ProductImages?, Error?) -> Void)
+    func getMainImage(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void)
+    func getAllImages(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void)
 }
 
 class ProductGatewayImpl: ProductGateway {
@@ -27,19 +27,23 @@ class ProductGatewayImpl: ProductGateway {
         remoteRepository.executeFetchRequest(ofType: .products(id: productId, category: nil, limit: nil)) { [weak self] (result: Result<ProductDTO>) in
             switch result {
             case .success(let product):
+                completionHandler(.success(product))
+                
                 self?.loadAllImagesForProduct(product, completionHandler: completionHandler)
             case .failure(let error):
-                return completionHandler(.failure(error))
+                completionHandler(.failure(error))
             }
         }
     }
     
     // All products
     func fetchProducts(first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: nil, limit: first)) { [weak self] (result: Result<[ProductDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: nil, limit: first + skip)) { [weak self] (result: Result<[ProductDTO]>) in
             switch result {
             case .success(var products):
                 products = Array(products.dropFirst(skip).prefix(first))
+                completionHandler(.success(products))
+                
                 self?.loadMainImageForProducts(products, completionHandler: completionHandler)
             case .failure(let error):
                 completionHandler(.failure(error))
@@ -49,10 +53,12 @@ class ProductGatewayImpl: ProductGateway {
     
     // Products by category
     func fetchProducts(byCategoryName category: String, first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: category, limit: 20)) { [weak self] (result: Result<[ProductDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: category, limit: first + skip)) { [weak self] (result: Result<[ProductDTO]>) in
             switch result {
             case .success(var products):
                 products = Array(products.dropFirst(skip).prefix(first))
+                completionHandler(.success(products))
+                
                 self?.loadMainImageForProducts(products, completionHandler: completionHandler)
             case .failure(let error):
                 completionHandler(.failure(error))
@@ -70,34 +76,41 @@ class ProductGatewayImpl: ProductGateway {
                 case .success(let product):
                     products.append(product)
                 case .failure(let error):
-                    return completionHandler(.failure(error))
+                    completionHandler(.failure(error))
                 }
             }
         }
         
         products = Array(products.dropFirst(skip).prefix(first))
+        completionHandler(.success(products))
+        
         loadMainImageForProducts(products, completionHandler: completionHandler)
     }
     
     // MARK: - Private methods
     
     private func loadMainImageForProducts(_ products: [ProductDTO], completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        for product in products {
-            productImagesApi.getMainImage(forProductId: product.id) { data, error in
+        var products = products
+        
+        for (index, product) in products.enumerated() {
+            products[index].images = ProductImages()
+            
+            productImagesApi.getMainImage(forProductId: product.id) { productImages, error in
                 if let error = error {
                     return completionHandler(.failure(error))
                 }
                 
-                if let data = data {
-                    product.images?.main = data
+                if let images = productImages {
+                    products[index].images = images
+                    completionHandler(.success(products))
                 }
             }
         }
-        completionHandler(.success(products))
     }
     
     private func loadAllImagesForProduct(_ product: ProductDTO, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
         var product = product
+        
         productImagesApi.getAllImages(forProductId: product.id) { productImages, error in
             if let error = error {
                 return completionHandler(.failure(error))
@@ -105,8 +118,8 @@ class ProductGatewayImpl: ProductGateway {
             
             if let images = productImages {
                 product.images = images
+                completionHandler(.success(product))
             }
         }
-        completionHandler(.success(product))
     }
 }

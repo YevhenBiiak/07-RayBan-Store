@@ -8,6 +8,6 @@
 import Foundation
 
 struct UpdateCartItemAmountRequest {
-    let productId: String
+    let productId: Int
     let amount: Int
 }

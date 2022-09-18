@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		571EDB9928D61A1C00C8EBAA /* UINavigationBar +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9828D61A1C00C8EBAA /* UINavigationBar +.swift */; };
+		571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */; };
+		571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */; };
+		571EDBA028D61D2200C8EBAA /* UIFont +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9F28D61D2200C8EBAA /* UIFont +.swift */; };
 		5720BF6528D4DF84003EBAA6 /* OrderGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720BF6428D4DF84003EBAA6 /* OrderGatewayImpl.swift */; };
 		5720BF6728D4E646003EBAA6 /* LoginConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720BF6628D4E646003EBAA6 /* LoginConfigurator.swift */; };
 		5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720BF6828D4E69A003EBAA6 /* LoginRouter.swift */; };
@@ -71,6 +75,23 @@
 		577B93D328C2064600E31B88 /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D228C2064600E31B88 /* RegisterRequest.swift */; };
 		577B93D728C20FE300E31B88 /* LoginWithFacebookUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D628C20FE300E31B88 /* LoginWithFacebookUseCase.swift */; };
 		577B93DD28C21A8900E31B88 /* LogoutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93DC28C21A8900E31B88 /* LogoutUseCase.swift */; };
+		5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000228D5FC7D003766F0 /* ProductsRootView.swift */; };
+		5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000628D5FCFC003766F0 /* UIColor +.swift */; };
+		5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000828D5FD94003766F0 /* ProductViewCell.swift */; };
+		5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */; };
+		5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000E28D5FE68003766F0 /* ProductsViewController.swift */; };
+		5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784001028D5FEBC003766F0 /* ProductsPresenter.swift */; };
+		57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17328D77E4500A9007B /* Lato-Thin.ttf */; };
+		57BDD18028D77E4500A9007B /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17428D77E4500A9007B /* Lato-Bold.ttf */; };
+		57BDD18128D77E4500A9007B /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17528D77E4500A9007B /* Lato-Black.ttf */; };
+		57BDD18228D77E4500A9007B /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17628D77E4500A9007B /* Lato-Regular.ttf */; };
+		57BDD18328D77E4500A9007B /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17728D77E4500A9007B /* Lato-Light.ttf */; };
+		57BDD18428D77E4500A9007B /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17928D77E4500A9007B /* Oswald-Bold.ttf */; };
+		57BDD18528D77E4500A9007B /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17A28D77E4500A9007B /* Oswald-SemiBold.ttf */; };
+		57BDD18628D77E4500A9007B /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17B28D77E4500A9007B /* Oswald-Medium.ttf */; };
+		57BDD18728D77E4500A9007B /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17C28D77E4500A9007B /* Oswald-Regular.ttf */; };
+		57BDD18828D77E4500A9007B /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17D28D77E4500A9007B /* Oswald-ExtraLight.ttf */; };
+		57BDD18928D77E4500A9007B /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17E28D77E4500A9007B /* Oswald-Light.ttf */; };
 		57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081228A503B600FE5FC9 /* AppDelegate.swift */; };
 		57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081428A503B600FE5FC9 /* SceneDelegate.swift */; };
 		57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081628A503B600FE5FC9 /* ViewController.swift */; };
@@ -81,6 +102,11 @@
 
 /* Begin PBXFileReference section */
 		182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_07_RayBan_Store.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		571EDB9828D61A1C00C8EBAA /* UINavigationBar +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar +.swift"; sourceTree = "<group>"; };
+		571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton +.swift"; sourceTree = "<group>"; };
+		571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRouter.swift; sourceTree = "<group>"; };
+		571EDB9F28D61D2200C8EBAA /* UIFont +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont +.swift"; sourceTree = "<group>"; };
+		571EDBA128D6223400C8EBAA /* FBSDKCoreKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FBSDKCoreKit.xcframework; path = Pods/FBSDKCoreKit/XCFrameworks/FBSDKCoreKit.xcframework; sourceTree = "<group>"; };
 		5720BF6428D4DF84003EBAA6 /* OrderGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderGatewayImpl.swift; sourceTree = "<group>"; };
 		5720BF6628D4E646003EBAA6 /* LoginConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginConfigurator.swift; sourceTree = "<group>"; };
 		5720BF6828D4E69A003EBAA6 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
@@ -147,6 +173,23 @@
 		577B93D928C2199900E31B88 /* ForgotPasswordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordUseCase.swift; sourceTree = "<group>"; };
 		577B93DA28C2199900E31B88 /* ForgotPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequest.swift; sourceTree = "<group>"; };
 		577B93DC28C21A8900E31B88 /* LogoutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutUseCase.swift; sourceTree = "<group>"; };
+		5784000228D5FC7D003766F0 /* ProductsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRootView.swift; sourceTree = "<group>"; };
+		5784000628D5FCFC003766F0 /* UIColor +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor +.swift"; sourceTree = "<group>"; };
+		5784000828D5FD94003766F0 /* ProductViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewCell.swift; sourceTree = "<group>"; };
+		5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsConfigurator.swift; sourceTree = "<group>"; };
+		5784000E28D5FE68003766F0 /* ProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewController.swift; sourceTree = "<group>"; };
+		5784001028D5FEBC003766F0 /* ProductsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsPresenter.swift; sourceTree = "<group>"; };
+		57BDD17328D77E4500A9007B /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
+		57BDD17428D77E4500A9007B /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		57BDD17528D77E4500A9007B /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		57BDD17628D77E4500A9007B /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		57BDD17728D77E4500A9007B /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		57BDD17928D77E4500A9007B /* Oswald-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Bold.ttf"; sourceTree = "<group>"; };
+		57BDD17A28D77E4500A9007B /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
+		57BDD17B28D77E4500A9007B /* Oswald-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Medium.ttf"; sourceTree = "<group>"; };
+		57BDD17C28D77E4500A9007B /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		57BDD17D28D77E4500A9007B /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
+		57BDD17E28D77E4500A9007B /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
 		57FA9D2E28C3322100DEB112 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		57FF080F28A503B600FE5FC9 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF081228A503B600FE5FC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +221,15 @@
 				69243D96E0170934A5734306 /* Pods-07 RayBan Store.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		571EDB9E28D61B3600C8EBAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5784000228D5FC7D003766F0 /* ProductsRootView.swift */,
+				5784000828D5FD94003766F0 /* ProductViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		574F275528C349810092D293 /* IsUserAuthenticated */ = {
@@ -287,6 +339,7 @@
 		574F27A228C68D1D0092D293 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5784000128D5FC67003766F0 /* Products */,
 				574F27A528C68D900092D293 /* Login */,
 			);
 			path = Scenes;
@@ -416,6 +469,7 @@
 		5773020228BBFE51007FB72F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				5784000428D5FCE0003766F0 /* Common */,
 				574F27A228C68D1D0092D293 /* Scenes */,
 				57FF081628A503B600FE5FC9 /* ViewController.swift */,
 			);
@@ -527,6 +581,72 @@
 			path = Logout;
 			sourceTree = "<group>";
 		};
+		5784000128D5FC67003766F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				571EDB9E28D61B3600C8EBAA /* Views */,
+				5784001028D5FEBC003766F0 /* ProductsPresenter.swift */,
+				5784000E28D5FE68003766F0 /* ProductsViewController.swift */,
+				571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */,
+				5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */,
+			);
+			path = Products;
+			sourceTree = "<group>";
+		};
+		5784000428D5FCE0003766F0 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				5784000B28D5FDDD003766F0 /* Fonts */,
+				5784000A28D5FDD2003766F0 /* Extensions */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		5784000A28D5FDD2003766F0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5784000628D5FCFC003766F0 /* UIColor +.swift */,
+				571EDB9828D61A1C00C8EBAA /* UINavigationBar +.swift */,
+				571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */,
+				571EDB9F28D61D2200C8EBAA /* UIFont +.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5784000B28D5FDDD003766F0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				57BDD17228D77E4500A9007B /* Lato */,
+				57BDD17828D77E4500A9007B /* Oswald */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		57BDD17228D77E4500A9007B /* Lato */ = {
+			isa = PBXGroup;
+			children = (
+				57BDD17328D77E4500A9007B /* Lato-Thin.ttf */,
+				57BDD17428D77E4500A9007B /* Lato-Bold.ttf */,
+				57BDD17528D77E4500A9007B /* Lato-Black.ttf */,
+				57BDD17628D77E4500A9007B /* Lato-Regular.ttf */,
+				57BDD17728D77E4500A9007B /* Lato-Light.ttf */,
+			);
+			path = Lato;
+			sourceTree = "<group>";
+		};
+		57BDD17828D77E4500A9007B /* Oswald */ = {
+			isa = PBXGroup;
+			children = (
+				57BDD17928D77E4500A9007B /* Oswald-Bold.ttf */,
+				57BDD17A28D77E4500A9007B /* Oswald-SemiBold.ttf */,
+				57BDD17B28D77E4500A9007B /* Oswald-Medium.ttf */,
+				57BDD17C28D77E4500A9007B /* Oswald-Regular.ttf */,
+				57BDD17D28D77E4500A9007B /* Oswald-ExtraLight.ttf */,
+				57BDD17E28D77E4500A9007B /* Oswald-Light.ttf */,
+			);
+			path = Oswald;
+			sourceTree = "<group>";
+		};
 		57FF080628A503B600FE5FC9 = {
 			isa = PBXGroup;
 			children = (
@@ -561,6 +681,7 @@
 		B99DCD7E15723BF8F9999736 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				571EDBA128D6223400C8EBAA /* FBSDKCoreKit.xcframework */,
 				182FDD2E74C1FCC59D858C5A /* Pods_07_RayBan_Store.framework */,
 			);
 			name = Frameworks;
@@ -627,10 +748,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57BDD18028D77E4500A9007B /* Lato-Bold.ttf in Resources */,
+				57BDD18528D77E4500A9007B /* Oswald-SemiBold.ttf in Resources */,
 				57FF081F28A503B700FE5FC9 /* LaunchScreen.storyboard in Resources */,
+				57BDD18728D77E4500A9007B /* Oswald-Regular.ttf in Resources */,
+				57BDD18428D77E4500A9007B /* Oswald-Bold.ttf in Resources */,
+				57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */,
 				577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */,
+				57BDD18228D77E4500A9007B /* Lato-Regular.ttf in Resources */,
+				57BDD18328D77E4500A9007B /* Lato-Light.ttf in Resources */,
+				57BDD18128D77E4500A9007B /* Lato-Black.ttf in Resources */,
 				574F27AB28C7C5A40092D293 /* GoogleService-Info.plist in Resources */,
+				57BDD18928D77E4500A9007B /* Oswald-Light.ttf in Resources */,
+				57BDD18828D77E4500A9007B /* Oswald-ExtraLight.ttf in Resources */,
 				577301FC28BBFD29007FB72F /* AppDesign.png in Resources */,
+				57BDD18628D77E4500A9007B /* Oswald-Medium.ttf in Resources */,
 				57FF081C28A503B700FE5FC9 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -702,6 +834,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5720BF6528D4DF84003EBAA6 /* OrderGatewayImpl.swift in Sources */,
+				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
+				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
 				5763FFAC28CD09B400E48713 /* FetchRequest.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
 				57508A6928BFDC71000328AC /* CartGateway.swift in Sources */,
@@ -724,20 +858,26 @@
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
 				574F278D28C4BC530092D293 /* OrderDTO.swift in Sources */,
 				57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */,
+				5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */,
 				577B93D328C2064600E31B88 /* RegisterRequest.swift in Sources */,
 				57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */,
 				5763FFAE28CD09D800E48713 /* SaveRequest.swift in Sources */,
 				5773020428BBFE9A007FB72F /* Product.swift in Sources */,
 				577B93D728C20FE300E31B88 /* LoginWithFacebookUseCase.swift in Sources */,
 				57508A5D28BFB34B000328AC /* ProductImagesApi.swift in Sources */,
+				571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */,
+				5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */,
 				574F277228C38D430092D293 /* ProfileDTO.swift in Sources */,
 				574F278228C38F9F0092D293 /* FetchCartItemsUseCase.swift in Sources */,
 				574F275B28C364920092D293 /* GetProductsResponse.swift in Sources */,
 				574F278028C38F970092D293 /* UpdateCartItemAmountUseCase.swift in Sources */,
 				574F276C28C38AFE0092D293 /* IsProfileFilledUseCase.swift in Sources */,
+				5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */,
 				57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */,
+				571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */,
 				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				574F279D28C539D50092D293 /* FetchCartItemsResponse.swift in Sources */,
+				5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */,
 				574F275728C349AB0092D293 /* IsUserAuthenticatedUseCase.swift in Sources */,
 				5720BF6B28D4EA2D003EBAA6 /* LoginRootView.swift in Sources */,
 				57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */,
@@ -758,11 +898,13 @@
 				5720BF6728D4E646003EBAA6 /* LoginConfigurator.swift in Sources */,
 				574F276828C377750092D293 /* ProductImages.swift in Sources */,
 				57508A6728BFD525000328AC /* ProfileGatewayImpl.swift in Sources */,
+				571EDBA028D61D2200C8EBAA /* UIFont +.swift in Sources */,
 				574F278428C38FA90092D293 /* CreateOrderUseCase.swift in Sources */,
 				574F279F28C66EC90092D293 /* CreateOrderRequest.swift in Sources */,
 				574F277E28C38F8E0092D293 /* DeleteCartItemUseCase.swift in Sources */,
 				5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */,
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,
+				571EDB9928D61A1C00C8EBAA /* UINavigationBar +.swift in Sources */,
 				577B93CA28C1F8B400E31B88 /* LoginUseCase.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
 			);

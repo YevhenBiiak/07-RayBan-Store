@@ -11,7 +11,8 @@ struct Cart {
     var items: [CartItem]
     
     var isCartEmpty: Bool {
-        totalPrice() < 50_00
+        items.isEmpty
+        //totalPrice() < 50_00
     }
     
     mutating func add(product: Product, amount: Int) {
@@ -19,13 +20,13 @@ struct Cart {
         items.append(item)
     }
     
-    mutating func update(productId: String, amount: Int) {
+    mutating func update(productId: Int, amount: Int) {
         for (i, item) in items.enumerated() where item.product.id == productId {
             items[i].amount = amount
         }
     }
     
-    mutating func delete(productId: String) {
+    mutating func delete(productId: Int) {
         items = items.filter { $0.product.id != productId }
     }
     

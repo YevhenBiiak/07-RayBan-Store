@@ -27,11 +27,13 @@ class RemoteRepositoryImpl: RemoteRepository {
         dbQuery.getData { error, snapshot in
             if let error = error { return completionHandler(.failure(error)) }
             guard let jsonObjc = snapshot?.value else { return }
-            
+//            print(jsonObjc)
             do {
                 let data = try JSONSerialization.data(withJSONObject: jsonObjc)
+//                print(data)
                 let entity = try JSONDecoder().decode(T.self, from: data)
-                
+//                print(T.self)
+//                print(entity)
                 completionHandler(.success(entity))
             } catch {
                 completionHandler(.failure(error))
@@ -50,43 +52,10 @@ class RemoteRepositoryImpl: RemoteRepository {
     }
 }
 
-/*
-protocol RemoteRepository {
-    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void)
-    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void)
+struct Prod: Decodable {
+    let category: String
+    let description: String
+    let id: Int
+    let price: Int
+    let title: String
 }
- 
-class RemoteRepositoryImpl: RemoteRepository {
-    
-    private let profileDB = Database.database().reference().child("users")
-    
-    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
-        profileDB.child(userId).getData { error, snapshot in
-            if let error = error {
-                return completionHandler(.failure(error))
-            }
-            
-            guard let jsonObjc = snapshot?.value else { return }
-            
-            do {
-                let data = try JSONSerialization.data(withJSONObject: jsonObjc, options: [])
-                let profileDTO = try JSONDecoder().decode(ProfileDTO.self, from: data)
-                
-                completionHandler(.success(profileDTO))
-            } catch {
-                completionHandler(.failure(error))
-            }
-        }
-    }
-    
-    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void) {
-        profileDB.child(userId).setValue(profile.asDictionary) { error, _ in
-            if let error = error {
-                return completionHandler(.failure(error))
-            }
-            
-            completionHandler(.success(true))
-        }
-    }
-}
-*/
