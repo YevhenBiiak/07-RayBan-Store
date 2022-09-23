@@ -13,12 +13,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let db = Database.database().reference()
-                
-        db.child("customers/a458ghpr9fhd").queryEqual(toValue: nil, childKey: "cart").getData { error, snapshot in
-            
-            print(snapshot)
-        }
+//        let db = Database.database().reference()
+//
+//        db.child("customers/a458ghpr9fhd").queryEqual(toValue: nil, childKey: "cart").getData { error, snapshot in
+//
+//            print(snapshot)
+//        }
         
 //        firebaseDB.child("users").child(profile.id).setValue(profile.asDictionary)
 //

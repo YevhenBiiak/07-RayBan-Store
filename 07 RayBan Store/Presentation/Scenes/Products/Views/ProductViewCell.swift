@@ -8,18 +8,8 @@
 import UIKit
 import Stevia
 
-protocol ProductViewCell {
-    func setIsNew(flag: Bool)
-    func setImage(_ data: Data?)
-    func setTitle(_ title: String)
-    func setPrice(_ price: Int)
-}
-
-class ProductsCollectionViewCell: UICollectionViewCell, ProductViewCell {
-    static var cellIdentifier: String {
-        String(describing: self)
-    }
-        
+class ProductsCollectionViewCell: UICollectionViewCell {
+    
     let productImageView: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = UIColor.appGray

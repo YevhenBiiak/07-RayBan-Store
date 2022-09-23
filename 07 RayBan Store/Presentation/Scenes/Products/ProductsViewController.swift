@@ -13,6 +13,8 @@ class ProductsViewController: UIViewController, ProductsView {
     var presenter: ProductsPresenter!
     var rootView: ProductsRootView!
     
+    private var viewModels: [ProductViewModel] = []
+    
     override func loadView() {
         configurator.configure(productsViewController: self)
         view = rootView
@@ -26,6 +28,31 @@ class ProductsViewController: UIViewController, ProductsView {
         presenter.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // add logo image to navigationBar
+        let logo = UIImage(named: "logo")!
+        navigationController?.navigationBar.addLogoImage(logo)
+    }
+    
+    // MARK: - ProductsView
+    
+    func display(title: String) {
+        self.title = title
+    }
+    
+    func display(viewModels: [ProductViewModel]) {
+        self.viewModels = viewModels
+        rootView.productsCollectionView.reloadData()
+    }
+    
+    func displayError(title: String, message: String?) {
+        self.title = title
+    }
+    
+    // MARK: - Private methods
+    
     private func setupCollectinView() {
         rootView.productsCollectionView.register(ProductsCollectionViewCell.self, forCellWithReuseIdentifier: ProductsCollectionViewCell.cellIdentifier)
         
@@ -38,10 +65,6 @@ class ProductsViewController: UIViewController, ProductsView {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.Oswald.medium.withSize(0.1)]
         navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont.Oswald.medium.withSize(30)]
-        
-        // add logo image to navigationBar
-        let logo = UIImage(named: "logo")!
-        navigationController?.navigationBar.addLogoImage(logo)
         
         // add BarButtonItems to rightBarButtonItems
         let searchButton = UIButton.buttonWithSFImage(name: "magnifyingglass", color: UIColor.appBlack, size: 15, weight: .semibold)
@@ -68,20 +91,7 @@ class ProductsViewController: UIViewController, ProductsView {
             UIBarButtonItem(customView: searchButton)
         ]
         
-    }
-    
-    // MARK: - ProductsView
-    
-    func displayTitle(_ title: String) {
-        self.title = title
-    }
-    
-    func displayError(title: String, message: String?) {
-        self.title = title
-    }
-    
-    func reloadView() {
-        rootView.productsCollectionView.reloadData()
+        navigationItem.backButtonTitle = ""
     }
 }
 
@@ -89,14 +99,20 @@ class ProductsViewController: UIViewController, ProductsView {
 
 extension ProductsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.numberOfProducts()
+        return viewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.cellIdentifier, for: indexPath)
         
         if let cell = cell as? ProductsCollectionViewCell {
-            presenter.configure(cell: cell, forRowAt: indexPath)
+            let product = viewModels[indexPath.item]
+            
+            cell.setIsNew(flag: true)
+            cell.setTitle(product.title)
+            
+            cell.setImage(product.images.first)
+            cell.setPrice(product.price)
         }
         
         return cell
@@ -106,7 +122,9 @@ extension ProductsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension ProductsViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter.didSelectItems(atIndexPath: indexPath)
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

@@ -18,6 +18,7 @@ class RemoteRepositoryImpl: RemoteRepository {
     private let database: DatabaseReference = Database.database().reference()
     
     func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
+        print(request)
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue, childKey: request.queryKey)
         
         if let limit = request.limit {
@@ -27,7 +28,7 @@ class RemoteRepositoryImpl: RemoteRepository {
         dbQuery.getData { error, snapshot in
             if let error = error { return completionHandler(.failure(error)) }
             guard let jsonObjc = snapshot?.value else { return }
-//            print(jsonObjc)
+            print(jsonObjc)
             do {
                 let data = try JSONSerialization.data(withJSONObject: jsonObjc)
 //                print(data)

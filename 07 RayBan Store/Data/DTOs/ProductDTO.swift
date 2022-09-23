@@ -12,7 +12,7 @@ struct ProductDTO: Codable {
     let id: Int
     let title: String
     let category: String
-    let description: String
+    let details: String
     let price: Int
     var images: ProductImages?
 }
@@ -23,8 +23,32 @@ extension ProductDTO {
         Product(id: self.id,
                 title: self.title,
                 category: self.category,
-                details: self.description,
+                details: self.details,
                 price: self.price)
+    }
+    
+    var asProductViewModel: ProductViewModel {
+        ProductViewModel(id: self.id,
+                         title: self.title,
+                         category: self.category,
+                         details: self.details,
+                         price: self.price,
+                         images: [self.images?.main,
+                                  self.images?.main2,
+                                  self.images?.perspective,
+                                  self.images?.front,
+                                  self.images?.frontClosed,
+                                  self.images?.back,
+                                  self.images?.left
+                                 ].compactMap { $0 })
+    }
+}
+
+extension Array where Element == ProductDTO {
+    var asProductsViewModel: [ProductViewModel] {
+        self.map { item in
+            item.asProductViewModel
+        }
     }
 }
 
@@ -33,7 +57,7 @@ extension Product {
         ProductDTO(id: self.id,
                    title: self.title,
                    category: self.category,
-                   description: self.details,
+                   details: self.details,
                    price: self.price,
                    images: nil)
     }

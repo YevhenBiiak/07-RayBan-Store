@@ -8,22 +8,21 @@
 import Foundation
 
 protocol ProductsRouter {
-    
+    func presentProductDetailsScene(product: ProductDTO)
 }
 
 protocol ProductsView: AnyObject {
-    func displayTitle(_ title: String)
+    func display(title: String)
     func displayError(title: String, message: String?)
-    func reloadView()
+    func display(viewModels: [ProductViewModel])
 }
 
 protocol ProductsPresenter {
     func viewDidLoad()
-    func numberOfProducts() -> Int
-    func configure(cell: ProductViewCell, forRowAt indexPath: IndexPath)
     func searchButtonTapped()
     func cartButtonTapped()
     func menuButtonTapped()
+    func didSelectItems(atIndexPath indexPath: IndexPath)
 }
 
 class ProductsPresenterImpl: ProductsPresenter {
@@ -47,28 +46,17 @@ class ProductsPresenterImpl: ProductsPresenter {
             case .success(let response):
                 self?.products = response.products
                 DispatchQueue.main.async {
-                    self?.view?.displayTitle("PRODUCTS")
-                    self?.view?.reloadView()
+                    self?.view?.display(title: "PRODUCTS")
+                    self?.view?.display(viewModels: self?.products.asProductsViewModel ?? [])
                 }
             case .failure(let error):
                 self?.view?.displayError(title: error.localizedDescription, message: nil)
             }
         }
-        
     }
     
     func numberOfProducts() -> Int {
         products.count
-    }
-    
-    func configure(cell: ProductViewCell, forRowAt indexPath: IndexPath) {
-        let product = products[indexPath.row]
-        
-        cell.setIsNew(flag: true)
-        cell.setTitle(product.title)
-        
-        cell.setImage(product.images?.main)
-        cell.setPrice(product.price)
     }
     
     func searchButtonTapped() {
@@ -79,5 +67,10 @@ class ProductsPresenterImpl: ProductsPresenter {
     }
     func menuButtonTapped() {
         print("menuButtonTapped")
+    }
+    
+    func didSelectItems(atIndexPath indexPath: IndexPath) {
+        let product = products[indexPath.item]
+        router.presentProductDetailsScene(product: product)
     }
 }
