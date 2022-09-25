@@ -30,12 +30,13 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     
     func display(viewModel: ProductViewModel) {
         self.viewModel = viewModel
+//        print(viewModel.images) 
         rootView.setPriceForTrailingButton(price: viewModel.price)
         rootView.productDetailsCollectionView.reloadData()
     }
     
     func displayError(title: String, message: String?) {
-        print(title, message)
+        print("ERROR: ", title)
     }
     
     private func setupCollectinView() {
@@ -91,6 +92,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
             let cell: ProductDescriptionCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
             cell.titleLabel.text = viewModel?.title
             cell.setNumberOfColors(3)
+            cell.colorsSegmentedControl.removeAllSegments()
             cell.colorsSegmentedControl.insertSegment(withTitle: "RED", at: 0, animated: false)
             cell.colorsSegmentedControl.insertSegment(withTitle: "GREEN", at: 1, animated: false)
             cell.colorsSegmentedControl.insertSegment(withTitle: "BLUE", at: 2, animated: false)

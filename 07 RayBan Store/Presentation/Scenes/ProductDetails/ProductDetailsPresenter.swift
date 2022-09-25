@@ -35,8 +35,9 @@ class ProductDetailsPresenterImpl: ProductDetailsPresenter {
     
     func viewDidLoad() {
         view?.display(viewModel: product.asProductViewModel)
-        /*
-        let request = GetProductsRequest(query: .identifier(id: "\(product.id)"))
+        
+        let request = GetProductsRequest(query: .identifier(id: product.id))
+        
         getProductsUseCase.execute(request) { [weak self] (result: Result<GetProductsResponse>) in
             switch result {
             case .success(let response):
@@ -49,6 +50,5 @@ class ProductDetailsPresenterImpl: ProductDetailsPresenter {
                 self?.view?.displayError(title: error.localizedDescription, message: nil)
             }
         }
-        */
     }
 }

@@ -23,8 +23,8 @@ class ProductGatewayImpl: ProductGateway {
     }
     
     // One product
-    func fetchProduct(byIdentifier productId: String, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: productId, category: nil, limit: nil)) { [weak self] (result: Result<ProductDTO>) in
+    func fetchProduct(byIdentifier productId: Int, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
+        remoteRepository.executeFetchRequest(ofType: .productById(id: productId)) { [weak self] (result: Result<ProductDTO>) in
             switch result {
             case .success(let product):
                 completionHandler(.success(product))
@@ -38,7 +38,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // All products
     func fetchProducts(first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: nil, limit: first + skip)) { [weak self] (result: Result<[ProductDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .products(limit: UInt(first) + UInt(skip))) { [weak self] (result: Result<[ProductDTO]>) in
             switch result {
             case .success(var products):
                 products = Array(products.dropFirst(skip).prefix(first))
@@ -53,7 +53,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // Products by category
     func fetchProducts(byCategoryName category: String, first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(id: nil, category: category, limit: first + skip)) { [weak self] (result: Result<[ProductDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .productsByCategory(category: category, limit: UInt(first) + UInt(skip))) { [weak self] (result: Result<[ProductDTO]>) in
             switch result {
             case .success(var products):
                 products = Array(products.dropFirst(skip).prefix(first))
@@ -67,11 +67,11 @@ class ProductGatewayImpl: ProductGateway {
     }
     
     // Array of products id
-    func fetchProducts(byIdentifiers identifiers: [String], first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+    func fetchProducts(byIdentifiers identifiers: [Int], first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
         var products: [ProductDTO] = []
         
         for id in identifiers {
-            remoteRepository.executeFetchRequest(ofType: .products(id: id, category: nil, limit: nil)) { (result: Result<ProductDTO>) in
+            remoteRepository.executeFetchRequest(ofType: .productById(id: id)) { (result: Result<ProductDTO>) in
                 switch result {
                 case .success(let product):
                     products.append(product)

@@ -8,9 +8,8 @@
 import Foundation
 
 protocol ProductGateway {
-    func fetchProduct(byIdentifier productId: String, completionHandler: @escaping (Result<ProductDTO>) -> Void)
+    func fetchProduct(byIdentifier productId: Int, completionHandler: @escaping (Result<ProductDTO>) -> Void)
     func fetchProducts(first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
     func fetchProducts(byCategoryName category: String, first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
-    func fetchProducts(byIdentifiers identifiers: [String], first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
+    func fetchProducts(byIdentifiers identifiers: [Int], first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void)
 }
-// func fetchImages(byProductId productId: String, completionHandler: @escaping (Result<ProductImagesDTO>) -> Void)

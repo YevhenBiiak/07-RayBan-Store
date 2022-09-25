@@ -49,6 +49,7 @@ class ProductsViewController: UIViewController, ProductsView {
     
     func displayError(title: String, message: String?) {
         self.title = title
+        print(title)
     }
     
     // MARK: - Private methods

@@ -18,27 +18,34 @@ class RemoteRepositoryImpl: RemoteRepository {
     private let database: DatabaseReference = Database.database().reference()
     
     func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
-        print(request)
-        var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue, childKey: request.queryKey)
+        var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
         
-        if let limit = request.limit {
-            dbQuery = dbQuery.queryLimited(toFirst: limit)
-        }
+        if let queryKey = request.queryKey { dbQuery = dbQuery.queryOrdered(byChild: queryKey) }
+        if let limit = request.limit { dbQuery = dbQuery.queryLimited(toFirst: limit) }
         
-        dbQuery.getData { error, snapshot in
-            if let error = error { return completionHandler(.failure(error)) }
-            guard let jsonObjc = snapshot?.value else { return }
-            print(jsonObjc)
+        dbQuery.observeSingleEvent(of: .value) { snapshot in
+            guard var someType = snapshot.value else { return }
+            
+            // if someType is still Dictionary -> get values
+            if let dict = someType as? NSDictionary {
+                someType = dict.allValues
+            }
+            // if result type is Array -> do nothing
+            if T.self is any Collection.Type {}
+            // else if result isn't array and someType is an Array -> get last element
+            else if let array = someType as? NSArray {
+                someType = array.lastObject ?? []
+            }
+            
             do {
-                let data = try JSONSerialization.data(withJSONObject: jsonObjc)
-//                print(data)
+                let data = try JSONSerialization.data(withJSONObject: someType)
                 let entity = try JSONDecoder().decode(T.self, from: data)
-//                print(T.self)
-//                print(entity)
                 completionHandler(.success(entity))
             } catch {
                 completionHandler(.failure(error))
             }
+        } withCancel: { error in
+            completionHandler(.failure(error))
         }
     }
     
@@ -51,12 +58,4 @@ class RemoteRepositoryImpl: RemoteRepository {
             completionHandler(.success(true))
         }
     }
-}
-
-struct Prod: Decodable {
-    let category: String
-    let description: String
-    let id: Int
-    let price: Int
-    let title: String
 }
