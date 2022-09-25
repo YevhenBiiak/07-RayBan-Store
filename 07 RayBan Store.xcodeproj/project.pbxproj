@@ -731,8 +731,8 @@
 		57BDD19128D7885000A9007B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5752CE3B28DB7473001BAE4A /* Cells */,
 				57BDD19228D7886400A9007B /* ProductDetailsRootView.swift */,
+				5752CE3B28DB7473001BAE4A /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";

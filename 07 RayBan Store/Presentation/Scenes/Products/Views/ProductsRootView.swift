@@ -10,28 +10,37 @@ import Stevia
 
 class ProductsRootView: UIView {
     
-    let productsCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = UIColor.appWhite
-        return collectionView
-    }()
+    var productsCollectionView: UICollectionView!
     
     // MARK: - Initializers and overridden methods
 
     init() {
         super.init(frame: .zero)
-        addSubviews()
+        setupCollectinView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addSubviews() {
-        subviews(
-            productsCollectionView
-        )
+    // MARK: - Private methods
+    
+    private func setupCollectinView() {
+        productsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
         
+        subviews( productsCollectionView )
         productsCollectionView.width(100%).height(100%)
+    }
+    
+    private func creatrLayout() -> UICollectionViewLayout {
+        let item = NSCollectionLayoutItem(layoutSize: .init(
+            widthDimension: .fractionalWidth(0.4875),
+            heightDimension: .estimated(130)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(130)), subitems: [item])
+        group.interItemSpacing = .flexible(1)
+        let section = NSCollectionLayoutSection(group: group)
+        return UICollectionViewCompositionalLayout(section: section)
     }
 }

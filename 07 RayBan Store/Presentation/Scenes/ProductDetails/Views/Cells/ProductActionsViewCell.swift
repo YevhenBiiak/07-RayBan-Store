@@ -18,7 +18,7 @@ class ProductActionsCollectionViewCell: UICollectionViewCell {
     }()
     
     let applePayButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.system)
+        let button = UIButton(type: .system)
         button.backgroundColor = UIColor.appBlack
         button.tintColor = UIColor.appWhite
         let image = UIImage(systemName: "applelogo")!
@@ -28,7 +28,7 @@ class ProductActionsCollectionViewCell: UICollectionViewCell {
     }()
     
     private let addToCartButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.system)
+        let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.bold
         button.backgroundColor = UIColor.appRed
         button.tintColor = UIColor.appWhite

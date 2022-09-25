@@ -36,7 +36,7 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.Oswald.medium
         label.textColor = UIColor.appBlack
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 1
         return label
     }()
@@ -61,11 +61,6 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.appWhite
-        
-        layer.borderColor = UIColor.systemGray.cgColor
-        layer.borderWidth = 0.25
-        
         addSubview()
     }
     
@@ -83,12 +78,16 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         productImageView.image = UIImage(data: data ?? Data())
     }
     
+    func setColors(number: Int) {
+        colorsLabel.text = "\(number) COLORS".uppercased()
+    }
+    
     func setTitle(_ title: String) {
-        titleLabel.text = title
+        titleLabel.text = title.uppercased()
     }
     
     func setPrice(_ price: Int) {
-        priceLabel.text = "$ " + String(format: "%.2f", Double(price))
+        priceLabel.text = "price: $ " + String(format: "%.2f", Double(price))
     }
     
     // MARK: - Private methods
@@ -109,8 +108,8 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         productImageView.width(100%).top(0).heightEqualsWidth()
         newLabel.right(padding).top(padding)
         colorsLabel.left(padding).bottom(padding)
-        titleLabel.width(100%).height(40).Top == productImageView.Bottom + padding
-        buyButton.width(55%).height(40).left(padding).bottom(padding).Top == titleLabel.Bottom + padding
-        priceLabel.right(padding).CenterY == buyButton.CenterY
+        titleLabel.width(90%).centerHorizontally().Top == productImageView.Bottom + padding
+        priceLabel.width(90%).centerHorizontally().Top == titleLabel.Bottom + padding
+        buyButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
     }
 }
