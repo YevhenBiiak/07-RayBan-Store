@@ -8,9 +8,9 @@
 import UIKit
 import Stevia
 
-class ProductDescriptionCollectionViewCell: UICollectionViewCell {
+class ProductDescriptionViewCell: UICollectionViewCell {
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = UIFont.Oswald.bold.withSize(18)
@@ -52,12 +52,16 @@ class ProductDescriptionCollectionViewCell: UICollectionViewCell {
         addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
     }
     
-    func setNumberOfColors(_ num: Int) {
+    func setTitle(title: String?) {
+        titleLabel.text = title?.uppercased()
+    }
+    
+    func setColors(number: Int) {
         let text = NSMutableAttributedString(string: "COLORS")
         let attrs: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.appDarkGray
         ]
-        let attrString = NSAttributedString(string: "  \(num)", attributes: attrs)
+        let attrString = NSAttributedString(string: "  \(number)", attributes: attrs)
         text.append(attrString)
         colorsLabel.attributedText = text
     }

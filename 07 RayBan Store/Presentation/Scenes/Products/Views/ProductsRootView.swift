@@ -16,7 +16,7 @@ class ProductsRootView: UIView {
 
     init() {
         super.init(frame: .zero)
-        setupCollectinView()
+        configureCollectinView()
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +25,7 @@ class ProductsRootView: UIView {
     
     // MARK: - Private methods
     
-    private func setupCollectinView() {
+    private func configureCollectinView() {
         productsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
         
         subviews( productsCollectionView )
@@ -41,6 +41,13 @@ class ProductsRootView: UIView {
             heightDimension: .estimated(130)), subitems: [item])
         group.interItemSpacing = .flexible(1)
         let section = NSCollectionLayoutSection(group: group)
+        
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .absolute(44)),
+                elementKind: "header", alignment: .top)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
         return UICollectionViewCompositionalLayout(section: section)
     }
 }

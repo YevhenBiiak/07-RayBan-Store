@@ -8,7 +8,8 @@
 import Foundation
 
 protocol ProductsRouter {
-    func presentProductDetailsScene(product: ProductDTO)
+    func presentProductDetails(product: ProductDTO)
+    func presentMenuList()
 }
 
 protocol ProductsView: AnyObject {
@@ -20,7 +21,6 @@ protocol ProductsView: AnyObject {
 protocol ProductsPresenter {
     func viewDidLoad()
     func searchButtonTapped()
-    func cartButtonTapped()
     func menuButtonTapped()
     func didSelectItems(atIndexPath indexPath: IndexPath)
 }
@@ -46,8 +46,8 @@ class ProductsPresenterImpl: ProductsPresenter {
             case .success(let response):
                 self?.products = response.products
                 DispatchQueue.main.async {
-                    self?.view?.display(title: "PRODUCTS")
                     self?.view?.display(viewModels: self?.products.asProductsViewModel ?? [])
+                    self?.view?.display(title: "SUNGLASSES")
                 }
             case .failure(let error):
                 self?.view?.displayError(title: error.localizedDescription, message: nil)
@@ -62,15 +62,12 @@ class ProductsPresenterImpl: ProductsPresenter {
     func searchButtonTapped() {
         print("searchButtonTapped")
     }
-    func cartButtonTapped() {
-        print("cartButtonTapped")
-    }
     func menuButtonTapped() {
-        print("menuButtonTapped")
+        router.presentMenuList()
     }
     
     func didSelectItems(atIndexPath indexPath: IndexPath) {
         let product = products[indexPath.item]
-        router.presentProductDetailsScene(product: product)
+        router.presentProductDetails(product: product)
     }
 }

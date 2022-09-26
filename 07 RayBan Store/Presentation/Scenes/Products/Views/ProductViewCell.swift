@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class ProductsCollectionViewCell: UICollectionViewCell {
+class ProductsViewCell: UICollectionViewCell {
     
     let productImageView: UIImageView = {
         let image = UIImageView()
@@ -61,7 +61,7 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview()
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -87,17 +87,16 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     }
     
     func setPrice(_ price: Int) {
-        priceLabel.text = "price: $ " + String(format: "%.2f", Double(price))
+        priceLabel.text = "$ " + String(format: "%.2f", Double(price))
     }
     
     // MARK: - Private methods
     
-    private func addSubview() {
+    private func configureLayout() {
         subviews(
             productImageView.subviews(
                 newLabel,
-                colorsLabel
-            ),
+                colorsLabel),
             titleLabel,
             buyButton,
             priceLabel

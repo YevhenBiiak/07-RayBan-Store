@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class ProductActionsCollectionViewCell: UICollectionViewCell {
+class ProductActionsViewCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
@@ -27,7 +27,7 @@ class ProductActionsCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    private let addToCartButton: UIButton = {
+    let addToCartButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.bold
         button.backgroundColor = UIColor.appRed

@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class ProductPropertyCollectionViewCell: UICollectionViewCell {
+class ProductPropertyViewCell: UICollectionViewCell {
     
     let propertyLabel: UILabel = {
         let label = UILabel()

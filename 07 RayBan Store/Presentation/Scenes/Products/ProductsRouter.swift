@@ -12,12 +12,21 @@ class ProductsRouterImpl: ProductsRouter {
         self.productsViewController = productsViewController
     }
     
-    func presentProductDetailsScene(product: ProductDTO) {
+    func presentProductDetails(product: ProductDTO) {
         let navigationController = productsViewController.navigationController
         let productDetailsViewController = ProductDetailsViewController()
         let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
         
         productDetailsViewController.configurator = productDetailsConfigurator
         navigationController?.pushViewController(productDetailsViewController, animated: true)
+    }
+    
+    func presentMenuList() {
+        let navigationController = productsViewController.navigationController
+        let menuListViewController = MenuListViewController()
+        let menuListConfigurator = MenuListConfiguratorImpl()
+        
+        menuListViewController.configurator = menuListConfigurator
+        navigationController?.pushViewController(menuListViewController, animated: true)
     }
 }

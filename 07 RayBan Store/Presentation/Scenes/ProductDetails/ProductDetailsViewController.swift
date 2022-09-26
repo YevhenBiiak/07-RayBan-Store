@@ -40,25 +40,31 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     }
     
     private func setupCollectinView() {
-        rootView.productDetailsCollectionView.register(ProductImagesCollectionViewCell.self,
-                           forCellWithReuseIdentifier: ProductImagesCollectionViewCell.cellIdentifier)
-        rootView.productDetailsCollectionView.register(ProductDescriptionCollectionViewCell.self,
-                           forCellWithReuseIdentifier: ProductDescriptionCollectionViewCell.cellIdentifier)
-        rootView.productDetailsCollectionView.register(ProductPropertyCollectionViewCell.self,
-                           forCellWithReuseIdentifier: ProductPropertyCollectionViewCell.cellIdentifier)
-        rootView.productDetailsCollectionView.register(ProductDetailsCollectionViewCell.self,
-                           forCellWithReuseIdentifier: ProductDetailsCollectionViewCell.cellIdentifier)
-        rootView.productDetailsCollectionView.register(ProductActionsCollectionViewCell.self,
-                           forCellWithReuseIdentifier: ProductActionsCollectionViewCell.cellIdentifier)
+        rootView.productDetailsCollectionView.register(ProductImagesViewCell.self,
+                           forCellWithReuseIdentifier: ProductImagesViewCell.identifier)
+        rootView.productDetailsCollectionView.register(ProductDescriptionViewCell.self,
+                           forCellWithReuseIdentifier: ProductDescriptionViewCell.identifier)
+        rootView.productDetailsCollectionView.register(ProductPropertyViewCell.self,
+                           forCellWithReuseIdentifier: ProductPropertyViewCell.identifier)
+        rootView.productDetailsCollectionView.register(ProductDetailsViewCell.self,
+                           forCellWithReuseIdentifier: ProductDetailsViewCell.identifier)
+        rootView.productDetailsCollectionView.register(ProductActionsViewCell.self,
+                           forCellWithReuseIdentifier: ProductActionsViewCell.identifier)
         
         rootView.productDetailsCollectionView.dataSource = self
         rootView.productDetailsCollectionView.delegate = self
     }
     
     private func setupNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.Oswald.medium.withSize(0.1)]
-        navigationController?.navigationBar.subviews.filter({ $0 is UIImageView }).first?.removeFromSuperview()
+        let cartButton = UIButton.buttonWithSFImage(name: "cart", color: UIColor.appBlack, size: 17, weight: .semibold)
+        
+        cartButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.presenter.cartButtonTapped()
+        }), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(customView: cartButton)
+        ]
     }
 }
 
@@ -70,11 +76,11 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let section = rootView.getSectionKind(forSection: section) else { fatalError() }
         switch section {
-        case .images: return viewModel?.images.count ?? 0
+        case .images:      return viewModel?.images.count ?? 0
         case .description: return 1
-        case .property: return 2
-        case .details: return 1
-        case .actions: return 1
+        case .property:    return 2
+        case .details:     return 1
+        case .actions:     return 1
         }
     }
     
@@ -83,38 +89,48 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
         
         switch section {
         case .images:
-            let cell: ProductImagesCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+            
+            let cell: ProductImagesViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
             if let data = viewModel?.images[indexPath.item], let image = UIImage(data: data) {
-                cell.imageView.image = image
+                cell.setImage(image: image)
             }
+            
             return cell
         case .description:
-            let cell: ProductDescriptionCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            cell.titleLabel.text = viewModel?.title
-            cell.setNumberOfColors(3)
+            
+            let cell: ProductDescriptionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+            cell.setTitle(title: viewModel?.title)
+            cell.setColors(number: 3)
             cell.colorsSegmentedControl.removeAllSegments()
             cell.colorsSegmentedControl.insertSegment(withTitle: "RED", at: 0, animated: false)
             cell.colorsSegmentedControl.insertSegment(withTitle: "GREEN", at: 1, animated: false)
             cell.colorsSegmentedControl.insertSegment(withTitle: "BLUE", at: 2, animated: false)
             cell.colorsSegmentedControl.selectedSegmentIndex = 0
+            
             return cell
         case .property:
-            let cell: ProductPropertyCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+            
+            let cell: ProductPropertyViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
             if indexPath.item == 0 {
                 cell.setText("CATEGORY", value: viewModel?.category ?? "")
             } else {
                 cell.setText("ID", value: "8976234593")
             }
+            
             return cell
         case .details:
-            let cell: ProductDetailsCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            cell.productDetailsLabel.text = (viewModel?.details ?? "") + (viewModel?.details ?? "")
+            
+            let cell: ProductDetailsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+            cell.setDetails(text: viewModel?.details)
+            
             return cell
         case .actions:
-            let cell: ProductActionsCollectionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+            
+            let cell: ProductActionsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
             if let price = viewModel?.price {
                 cell.setPrice(price, withColor: UIColor.appRed)
             }
+            
             return cell
         }
     }
@@ -122,7 +138,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     // MARK: - Private methods
     
     private func getReusableCell<T: UICollectionViewCell>(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> T {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.cellIdentifier, for: indexPath) as? T
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as? T
         else { fatalError() }
         return cell
     }
@@ -130,13 +146,13 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
 
 extension ProductDetailsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if cell is ProductActionsCollectionViewCell {
+        if cell is ProductActionsViewCell {
             rootView.trailingBuyButton.isHidden = true
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if cell is ProductActionsCollectionViewCell {
+        if cell is ProductActionsViewCell {
             rootView.trailingBuyButton.isHidden = false
         }
     }

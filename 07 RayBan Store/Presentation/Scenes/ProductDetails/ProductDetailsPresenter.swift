@@ -17,6 +17,7 @@ protocol ProductDetailsView: AnyObject {
 
 protocol ProductDetailsPresenter {
     func viewDidLoad()
+    func cartButtonTapped()
 }
 
 class ProductDetailsPresenterImpl: ProductDetailsPresenter {
@@ -50,5 +51,9 @@ class ProductDetailsPresenterImpl: ProductDetailsPresenter {
                 self?.view?.displayError(title: error.localizedDescription, message: nil)
             }
         }
+    }
+    
+    func cartButtonTapped() {
+        print("cartButtonTapped")
     }
 }

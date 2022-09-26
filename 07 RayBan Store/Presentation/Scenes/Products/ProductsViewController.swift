@@ -22,24 +22,19 @@ class ProductsViewController: UIViewController, ProductsView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupCollectinView()
         setupNavigationBar()
         presenter.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // add logo image to navigationBar
-        let logo = UIImage(named: "logo")!
-        navigationController?.navigationBar.addLogoImage(logo)
     }
     
     // MARK: - ProductsView
     
     func display(title: String) {
         self.title = title
+        // bug: title alpha is zero in iOS 16
+        if #available(iOS 16.0, *) {
+            navigationController?.navigationBar.setNeedsLayout()
+        }
     }
     
     func display(viewModels: [ProductViewModel]) {
@@ -48,51 +43,48 @@ class ProductsViewController: UIViewController, ProductsView {
     }
     
     func displayError(title: String, message: String?) {
-        self.title = title
-        print(title)
+        print("ERROR: ", title)
     }
     
     // MARK: - Private methods
     
     private func setupCollectinView() {
-        rootView.productsCollectionView.register(ProductsCollectionViewCell.self, forCellWithReuseIdentifier: ProductsCollectionViewCell.cellIdentifier)
+        rootView.productsCollectionView.register(ProductsViewCell.self,
+            forCellWithReuseIdentifier: ProductsViewCell.identifier)
+        
+        rootView.productsCollectionView.register(HeaderReusableView.self,
+            forSupplementaryViewOfKind: HeaderReusableView.elementKind,
+            withReuseIdentifier: HeaderReusableView.identifier)
         
         rootView.productsCollectionView.dataSource = self
         rootView.productsCollectionView.delegate = self
     }
     
     private func setupNavigationBar() {
-        // set largeTitle style, set custom font
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.titleTextAttributes = [.font: UIFont.Oswald.medium.withSize(0.1)]
-        navigationController?.navigationBar.largeTitleTextAttributes = [.font: UIFont.Oswald.medium.withSize(30)]
+        // set custom font for title
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: UIFont.Oswald.medium.withSize(22)]
         
-        // add BarButtonItems to rightBarButtonItems
-        let searchButton = UIButton.buttonWithSFImage(name: "magnifyingglass", color: UIColor.appBlack, size: 15, weight: .semibold)
-        let cartButton = UIButton.buttonWithSFImage(name: "cart", color: UIColor.appBlack, size: 17, weight: .semibold)
-        let menuButton = UIButton.buttonWithSFImage(name: "line.3.horizontal", color: UIColor.appBlack, size: 19, weight: .semibold)
+        // add BarButtonItem to rightBarButtonItems
+        let menuButton = UIButton.buttonWithSFImage(
+            name: "line.3.horizontal",
+            color: UIColor.appBlack,
+            size: 19, weight: .semibold)
         
         // add actions
-        searchButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.presenter.searchButtonTapped()
-        }), for: .touchUpInside)
-        
-        cartButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.presenter.cartButtonTapped()
-        }), for: .touchUpInside)
-        
         menuButton.addAction(UIAction(handler: { [weak self] _ in
             self?.presenter.menuButtonTapped()
         }), for: .touchUpInside)
         
         // set button items
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: menuButton),
-            UIBarButtonItem(customView: cartButton),
-            UIBarButtonItem(customView: searchButton)
-        ]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: menuButton)
         
         navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = UIColor.appDarkGray
+        
+        // add logo image to navigationItems
+        let logo = UIImage(named: "logo")!
+        navigationItem.addLogoImage(logo)
     }
 }
 
@@ -104,9 +96,9 @@ extension ProductsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.cellIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.identifier, for: indexPath)
         
-        if let cell = cell as? ProductsCollectionViewCell {
+        if let cell = cell as? ProductsViewCell {
             let product = viewModels[indexPath.item]
             
             cell.setIsNew(flag: true)
@@ -117,6 +109,18 @@ extension ProductsViewController: UICollectionViewDataSource {
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let reusableView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: HeaderReusableView.elementKind,
+            withReuseIdentifier: HeaderReusableView.identifier, for: indexPath)
+        
+        if let headerView = reusableView as? HeaderReusableView {
+            headerView.setProducts(count: viewModels.count)
+        }
+        
+        return reusableView
     }
 }
 

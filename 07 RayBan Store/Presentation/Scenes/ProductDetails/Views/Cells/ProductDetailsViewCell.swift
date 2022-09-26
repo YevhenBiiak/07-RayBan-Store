@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class ProductDetailsCollectionViewCell: UICollectionViewCell {
+class ProductDetailsViewCell: UICollectionViewCell {
     
     private let productDetailsTitleLabel: UILabel = {
         let label = UILabel()
@@ -19,7 +19,7 @@ class ProductDetailsCollectionViewCell: UICollectionViewCell {
         return label
     }()
      
-    let productDetailsLabel: UILabel = {
+    private let productDetailsLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -39,6 +39,10 @@ class ProductDetailsCollectionViewCell: UICollectionViewCell {
     
     override func draw(_ rect: CGRect) {
         addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
+    }
+    
+    func setDetails(text: String?) {
+        productDetailsLabel.text = text
     }
     
     private func setupView() {

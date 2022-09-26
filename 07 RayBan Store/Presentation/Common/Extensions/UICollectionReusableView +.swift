@@ -1,5 +1,5 @@
 //
-//  UICollectionViewCell +.swift
+//  UICollectionReusableView +.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 21.09.2022.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-extension UICollectionViewCell {
-    static var cellIdentifier: String {
+extension UICollectionReusableView {
+    static var identifier: String {
         String(describing: self)
     }
 }
