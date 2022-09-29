@@ -9,7 +9,7 @@ import Foundation
 
 protocol ProductsRouter {
     func presentProductDetails(product: ProductDTO)
-    func presentMenuList()
+    func presentAppMenu()
 }
 
 protocol ProductsView: AnyObject {
@@ -63,7 +63,7 @@ class ProductsPresenterImpl: ProductsPresenter {
         print("searchButtonTapped")
     }
     func menuButtonTapped() {
-        router.presentMenuList()
+        router.presentAppMenu()
     }
     
     func didSelectItems(atIndexPath indexPath: IndexPath) {

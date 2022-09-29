@@ -1,5 +1,5 @@
 //
-//  MenuListRootView.swift
+//  ListRootView.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 25.09.2022.
@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class MenuListRootView: UIView {
+class ListRootView: UIView {
     
     var menuCollectionView: UICollectionView!
 

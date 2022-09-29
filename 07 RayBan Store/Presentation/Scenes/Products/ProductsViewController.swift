@@ -61,7 +61,8 @@ class ProductsViewController: UIViewController, ProductsView {
     }
     
     private func setupNavigationBar() {
-        // set custom font for title
+        // set custom font and color for title 
+        navigationController?.navigationBar.tintColor = UIColor.appDarkGray
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.Oswald.medium.withSize(22)]
         
@@ -78,9 +79,6 @@ class ProductsViewController: UIViewController, ProductsView {
         
         // set button items
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: menuButton)
-        
-        navigationItem.backButtonTitle = ""
-        navigationController?.navigationBar.tintColor = UIColor.appDarkGray
         
         // add logo image to navigationItems
         let logo = UIImage(named: "logo")!

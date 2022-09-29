@@ -1,5 +1,5 @@
 //
-//  MenuListViewCell.swift
+//  ListViewCell.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 26.09.2022.
@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class MenuListViewCell: UICollectionViewCell {
+class ListViewCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let image = UIImage(systemName: "chevron.right")
         let imageView = UIImageView(image: image)
@@ -41,8 +41,8 @@ class MenuListViewCell: UICollectionViewCell {
     
     // MARK: - Update methods
     
-    func setText(text: String?) {
-        label.text = text?.uppercased()
+    func setTitle(title: String?) {
+        label.text = title?.uppercased()
     }
     
     // MARK: - Private methods

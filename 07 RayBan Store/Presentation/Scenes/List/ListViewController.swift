@@ -7,14 +7,30 @@
 
 import UIKit
 
-class MenuListViewController: UIViewController, MenuListView {
+protocol ListView: AnyObject {
+    func display(title: String)
+}
+
+protocol ListConfigurator {
+    func configure(listViewController: ListViewController)
+}
+
+protocol ListPresenter {
+    func viewDidLoad()
+    var rowCount: Int { get }
+    func getTitle(forRow row: Int) -> String
+    func didSelect(row: Int)
+    func cartButtonTapped()
+}
+
+class ListViewController: UIViewController, ListView {
     
-    var configurator: MenuListConfigurator!
-    var presenter: MenuListPresenter!
-    var rootView: MenuListRootView!
+    var configurator: ListConfigurator!
+    var presenter: ListPresenter!
+    var rootView: ListRootView!
     
     override func loadView() {
-        configurator.configure(menuListViewController: self)
+        configurator.configure(listViewController: self)
         view = rootView
     }
 
@@ -22,12 +38,17 @@ class MenuListViewController: UIViewController, MenuListView {
         super.viewDidLoad()
         setupNavigationBar()
         setupCollectinView()
+        presenter.viewDidLoad()
+    }
+    
+    func display(title: String) {
+        self.title = title.uppercased()
     }
     
     // MARK: - Private methods
     
     private func setupCollectinView() {
-        rootView.menuCollectionView.register(MenuListViewCell.self, forCellWithReuseIdentifier: MenuListViewCell.identifier)
+        rootView.menuCollectionView.register(ListViewCell.self, forCellWithReuseIdentifier: ListViewCell.identifier)
         rootView.menuCollectionView.bounces = false
         rootView.menuCollectionView.delegate = self
         rootView.menuCollectionView.dataSource = self
@@ -46,26 +67,27 @@ class MenuListViewController: UIViewController, MenuListView {
     }
 }
 
-extension MenuListViewController: UICollectionViewDataSource {
+extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.rowCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuListViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListViewCell.identifier, for: indexPath)
         
-        if let cell = cell as? MenuListViewCell {
-            let text = presenter.getTitle(forRow: indexPath.row)
-            cell.setText(text: text)
+        if let cell = cell as? ListViewCell {
+            let title = presenter.getTitle(forRow: indexPath.row)
+            cell.setTitle(title: title)
         }
         
         return cell
     }
 }
 
-extension MenuListViewController: UICollectionViewDelegate {
+extension ListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter.didSelect(row: indexPath.row)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 }

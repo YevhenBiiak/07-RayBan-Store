@@ -5,12 +5,12 @@
 //  Created by Евгений Бияк on 18.09.2022.
 //
 
-import Foundation
+import UIKit
 
 class ProductDetailsRouterImpl: ProductDetailsRouter {
-    private weak var productDetailsViewController: ProductDetailsViewController?
+    private weak var productDetailsViewController: ProductDetailsViewController!
     
-    init(productDetailsViewController: ProductDetailsViewController?) {
+    init(productDetailsViewController: ProductDetailsViewController) {
         self.productDetailsViewController = productDetailsViewController
     }
 }
