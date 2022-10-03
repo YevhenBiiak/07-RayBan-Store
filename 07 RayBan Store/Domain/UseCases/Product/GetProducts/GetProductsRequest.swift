@@ -5,14 +5,12 @@
 //  Created by Евгений Бияк on 03.09.2022.
 //
 
-import Foundation
-
 struct GetProductsRequest {
-    enum QueryType {
+    enum Query {
         case identifier(id: Int)
-        case all(first: Int, skip: Int)
-        case category(name: String, first: Int, skip: Int)
         case identifiers(ids: [Int], first: Int, skip: Int)
+        case products(withType: ProductType, category: ProductCategory, family: ProductFamily, first: Int, skip: Int)
+        case productFamiliesDescription(ofType: ProductType)
     }
-    let query: QueryType
+    let query: Query
 }

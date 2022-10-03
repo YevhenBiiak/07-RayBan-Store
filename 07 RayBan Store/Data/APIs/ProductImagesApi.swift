@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ProductImagesApiImpl: ProductImagesApi {
     private enum Image: String {
@@ -21,14 +22,16 @@ class ProductImagesApiImpl: ProductImagesApi {
     private let session: URLSession = {
         let MB = 1024 * 1024
         let config = URLSessionConfiguration.default
-        config.urlCache = URLCache(memoryCapacity: 50 * MB, diskCapacity: 100 * MB, diskPath: "images")
+        config.urlCache = URLCache(memoryCapacity: 100 * MB, diskCapacity: 300 * MB, diskPath: "images")
         config.httpMaximumConnectionsPerHost = 5
         return URLSession(configuration: config)
     }()
     
-    func getMainImage(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void) {
+    // MARK: - ProductImagesApi
+    
+    func getMainImage(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void) {
         let width = 500
-        let hexColor = "f2f2f2"
+        let hexColor = bgColor.hexString
         let images = ProductImages()
         
         loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
@@ -38,9 +41,9 @@ class ProductImagesApiImpl: ProductImagesApi {
         }
     }
     
-    func getAllImages(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void) {
+    func getAllImages(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void) {
         let width = 800
-        let hexColor = "f2f2f2"
+        let hexColor = bgColor.hexString
         let images = ProductImages()
         
         loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
@@ -83,8 +86,8 @@ class ProductImagesApiImpl: ProductImagesApi {
         urlComponent.host = "images.ray-ban.com"
         urlComponent.path = "/is/image/RayBan/\(productId)\(type.rawValue)"
         urlComponent.queryItems = [URLQueryItem(name: "impolicy", value: "RB_Product"),
-                                    URLQueryItem(name: "width", value: "\(width)"),
-                                    URLQueryItem(name: "bgc", value: "#\(hexColor)")]
+                                   URLQueryItem(name: "width", value: "\(width)"),
+                                   URLQueryItem(name: "bgc", value: hexColor)]
         guard let url = urlComponent.url else { return }
         
         let task = session.dataTask(with: url) { data, _, error in

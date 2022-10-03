@@ -9,55 +9,47 @@ import Foundation
 
 enum FetchRequest {
     case profile(id: String)
-    case products(limit: UInt)
     case productById(id: Int)
-    case productsByCategory(category: String, limit: UInt)
+    case productsByType(type: String)
+    case productsByFamily(name: String)
+    case productsByCategory(name: String)
     case cartItems(userId: String)
-    case orders(userId: String, limit: UInt)
+    case orders(userId: String)
 
     var path: String {
         switch self {
         case .profile:
             return "users"
-        case .products, .productById, .productsByCategory:
+        case .productById, .productsByType, .productsByFamily, .productsByCategory:
             return "products"
-        case .cartItems(userId: let id):
+        case let .cartItems(id):
             return "users/\(id)/cart"
-        case .orders(userId: let id, _):
-            return "users/\(id)/orders"
+        case let .orders(userId):
+            return "users/\(userId)/orders"
         }
     }
 
     var queryKey: String? {
         switch self {
-        case .profile: return nil
-        case .products: return nil
-        case .productById: return "id"
+        case .profile:            return nil
+        case .productById:        return "id"
+        case .productsByType:     return "type"
+        case .productsByFamily:   return "productFamily"
         case .productsByCategory: return "category"
-        case .cartItems: return nil
-        case .orders: return nil
+        case .cartItems:          return nil
+        case .orders:             return nil
         }
     }
 
     var queryValue: Any? {
         switch self {
         case .profile: return nil
-        case .products: return nil
-        case .productById(id: let id): return id
-        case .productsByCategory(category: let category, _): return category
+        case let .productById(id): return id
+        case let .productsByType(type): return type
+        case let .productsByFamily(name): return name
+        case let .productsByCategory(name): return name
         case .cartItems: return nil
         case .orders: return nil
-        }
-    }
-
-    var limit: UInt? {
-        switch self {
-        case .profile: return nil
-        case .products(limit: let limit): return limit
-        case .productById: return nil
-        case .productsByCategory(_, limit: let limit): return limit
-        case .cartItems: return nil
-        case .orders(_, limit: let limit): return limit
         }
     }
 }

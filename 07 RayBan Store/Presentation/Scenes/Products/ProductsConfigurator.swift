@@ -12,6 +12,7 @@ protocol ProductsConfigurator {
 }
 
 class ProductsConfiguratorImpl: ProductsConfigurator {
+    
     func configure(productsViewController: ProductsViewController) {
         
         let router = ProductsRouterImpl(productsViewController: productsViewController)

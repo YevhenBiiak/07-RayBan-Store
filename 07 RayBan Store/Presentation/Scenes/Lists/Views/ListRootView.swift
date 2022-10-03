@@ -10,7 +10,7 @@ import Stevia
 
 class ListRootView: UIView {
     
-    var menuCollectionView: UICollectionView!
+    var сollectionView: UICollectionView!
 
     // MARK: - Initializers and overridden methods
 
@@ -26,10 +26,10 @@ class ListRootView: UIView {
     // MARK: - Private methods
     
     private func configureLayout() {
-        menuCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         
-        subviews( menuCollectionView )
-        menuCollectionView.fillContainer()
+        subviews( сollectionView )
+        сollectionView.fillContainer()
     }
     
     private func createLayout() -> UICollectionViewLayout {

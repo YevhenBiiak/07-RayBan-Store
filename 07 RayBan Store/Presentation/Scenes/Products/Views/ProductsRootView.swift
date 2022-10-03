@@ -10,7 +10,7 @@ import Stevia
 
 class ProductsRootView: UIView {
     
-    var productsCollectionView: UICollectionView!
+    var collectionView: UICollectionView!
     
     // MARK: - Initializers and overridden methods
 
@@ -26,10 +26,10 @@ class ProductsRootView: UIView {
     // MARK: - Private methods
     
     private func configureCollectinView() {
-        productsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
         
-        subviews( productsCollectionView )
-        productsCollectionView.width(100%).height(100%)
+        subviews( collectionView )
+        collectionView.width(100%).height(100%)
     }
     
     private func creatrLayout() -> UICollectionViewLayout {

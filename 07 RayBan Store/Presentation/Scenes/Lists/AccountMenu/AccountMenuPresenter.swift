@@ -41,7 +41,7 @@ class AccountMenuPresenterImpl: ListPresenter {
         view?.display(title: "my account")
     }
     
-    var rowCount: Int {
+    var numberOfItems: Int {
         Row.allCases.count
     }
     

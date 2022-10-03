@@ -38,7 +38,7 @@ class AppMenuPresenterImpl: ListPresenter {
     
     func viewDidLoad() {}
     
-    var rowCount: Int {
+    var numberOfItems: Int {
         Row.allCases.count
     }
     

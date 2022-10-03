@@ -17,7 +17,7 @@ protocol ListConfigurator {
 
 protocol ListPresenter {
     func viewDidLoad()
-    var rowCount: Int { get }
+    var numberOfItems: Int { get }
     func getTitle(forRow row: Int) -> String
     func didSelect(row: Int)
     func cartButtonTapped()
@@ -48,10 +48,10 @@ class ListViewController: UIViewController, ListView {
     // MARK: - Private methods
     
     private func setupCollectinView() {
-        rootView.menuCollectionView.register(ListViewCell.self, forCellWithReuseIdentifier: ListViewCell.identifier)
-        rootView.menuCollectionView.bounces = false
-        rootView.menuCollectionView.delegate = self
-        rootView.menuCollectionView.dataSource = self
+        rootView.сollectionView.register(ListViewCell.self, forCellWithReuseIdentifier: ListViewCell.reuseId)
+        rootView.сollectionView.bounces = false
+        rootView.сollectionView.delegate = self
+        rootView.сollectionView.dataSource = self
     }
     
     private func setupNavigationBar() {
@@ -69,11 +69,11 @@ class ListViewController: UIViewController, ListView {
 
 extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.rowCount
+        return presenter.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListViewCell.reuseId, for: indexPath)
         
         if let cell = cell as? ListViewCell {
             let title = presenter.getTitle(forRow: indexPath.row)

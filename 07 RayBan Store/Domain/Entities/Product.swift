@@ -12,7 +12,9 @@ typealias Cent = Int
 struct Product {
     let id: Int
     let title: String
+    let type: String
     let category: String
+    let productFamily: String
     let details: String
     let price: Cent
 }

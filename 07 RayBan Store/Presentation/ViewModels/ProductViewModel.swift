@@ -10,7 +10,9 @@ import Foundation
 struct ProductViewModel {
     let id: Int
     let title: String
+    let type: String
     let category: String
+    let productFamily: String
     let details: String
     let price: Int
     var images: [Data]

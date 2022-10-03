@@ -21,37 +21,33 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
     
     func execute(_ request: GetProductsRequest, completionHandler: @escaping (Result<GetProductsResponse>) -> Void) {
         switch request.query {
-        case .all(first: let first, skip: let skip):
-            productGateway.fetchProducts(first: first, skip: skip) { [weak self] result in
-                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
-            }
-        case .identifier(id: let id):
+        case let .identifier(id):
             productGateway.fetchProduct(byIdentifier: id) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
-        case .category(name: let name, first: let first, skip: let skip):
-            productGateway.fetchProducts(byCategoryName: name, first: first, skip: skip) { [weak self] result in
+        case let .identifiers(ids, first, skip):
+            productGateway.fetchProducts(byIdentifiers: ids, first: first, skip: skip) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
-        case .identifiers(ids: let ids, first: let first, skip: let skip):
-            productGateway.fetchProducts(byIdentifiers: ids, first: first, skip: skip) { [weak self] result in
+        case let .products(type, category, family, first, skip):
+            productGateway.fetchProducts(type: type, category: category, family: family, first: first, skip: skip) { [weak self] result in
+                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+            }
+        case let .productFamiliesDescription(type):
+            productGateway.fetchProducts(asDescriptionOfProductFamiliesOfType: type) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
         }
     }
     
-    private func handleFetchProductsResult<T>(_ result: Result<T>, completionHandler: (Result<GetProductsResponse>) -> Void) {
+    private func handleFetchProductsResult(_ result: Result<FetchProductsResult>, completionHandler: (Result<GetProductsResponse>) -> Void) {
         switch result {
-        case .success(let productsDTO):
-            if let products = productsDTO as? ProductDTO {
-                
-                completionHandler(.success(GetProductsResponse(products: [products])))
-                
-            } else if let products = productsDTO as? [ProductDTO] {
-                
-                completionHandler(.success(GetProductsResponse(products: products)))
-            }
+        case .success(let (productsDTO, totalCount)):
+            
+            completionHandler(.success(GetProductsResponse(products: productsDTO, totalNumberOfProducts: totalCount)))
+            
         case .failure(let error):
+            
             completionHandler(.failure(error))
         }
     }

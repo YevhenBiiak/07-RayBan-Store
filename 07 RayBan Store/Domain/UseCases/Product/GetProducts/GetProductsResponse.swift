@@ -9,4 +9,5 @@ import Foundation
 
 struct GetProductsResponse {
     let products: [ProductDTO]
+    let totalNumberOfProducts: Int
 }

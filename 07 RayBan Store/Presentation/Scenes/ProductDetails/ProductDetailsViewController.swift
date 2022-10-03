@@ -41,15 +41,15 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     
     private func setupCollectinView() {
         rootView.productDetailsCollectionView.register(ProductImagesViewCell.self,
-                           forCellWithReuseIdentifier: ProductImagesViewCell.identifier)
+                           forCellWithReuseIdentifier: ProductImagesViewCell.reuseId)
         rootView.productDetailsCollectionView.register(ProductDescriptionViewCell.self,
-                           forCellWithReuseIdentifier: ProductDescriptionViewCell.identifier)
+                           forCellWithReuseIdentifier: ProductDescriptionViewCell.reuseId)
         rootView.productDetailsCollectionView.register(ProductPropertyViewCell.self,
-                           forCellWithReuseIdentifier: ProductPropertyViewCell.identifier)
+                           forCellWithReuseIdentifier: ProductPropertyViewCell.reuseId)
         rootView.productDetailsCollectionView.register(ProductDetailsViewCell.self,
-                           forCellWithReuseIdentifier: ProductDetailsViewCell.identifier)
+                           forCellWithReuseIdentifier: ProductDetailsViewCell.reuseId)
         rootView.productDetailsCollectionView.register(ProductActionsViewCell.self,
-                           forCellWithReuseIdentifier: ProductActionsViewCell.identifier)
+                           forCellWithReuseIdentifier: ProductActionsViewCell.reuseId)
         
         rootView.productDetailsCollectionView.dataSource = self
         rootView.productDetailsCollectionView.delegate = self
@@ -138,7 +138,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     // MARK: - Private methods
     
     private func getReusableCell<T: UICollectionViewCell>(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> T {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as? T
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.reuseId, for: indexPath) as? T
         else { fatalError() }
         return cell
     }

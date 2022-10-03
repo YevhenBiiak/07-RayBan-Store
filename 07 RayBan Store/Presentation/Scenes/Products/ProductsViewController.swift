@@ -14,6 +14,7 @@ class ProductsViewController: UIViewController, ProductsView {
     var rootView: ProductsRootView!
     
     private var viewModels: [ProductViewModel] = []
+    private var totalNumberOfProducts = 0
     
     override func loadView() {
         configurator.configure(productsViewController: self)
@@ -30,38 +31,45 @@ class ProductsViewController: UIViewController, ProductsView {
     // MARK: - ProductsView
     
     func display(title: String) {
-        self.title = title
-        // bug: title alpha is zero in iOS 16
-        if #available(iOS 16.0, *) {
-            navigationController?.navigationBar.setNeedsLayout()
+        DispatchQueue.main.async { [weak self] in
+            self?.title = title.uppercased()
+            // bug: title alpha is zero in iOS 16
+            if #available(iOS 16.0, *) {
+                self?.navigationController?.navigationBar.setNeedsLayout()
+            }
         }
     }
     
-    func display(viewModels: [ProductViewModel]) {
+    func display(viewModels: [ProductViewModel], totalNumberOfProducts: Int) {
         self.viewModels = viewModels
-        rootView.productsCollectionView.reloadData()
+        self.totalNumberOfProducts = totalNumberOfProducts
+        DispatchQueue.main.async { [weak self] in
+            self?.rootView.collectionView.reloadData()
+        }
     }
     
     func displayError(title: String, message: String?) {
-        print("ERROR: ", title)
+        DispatchQueue.main.async {
+            print("ERROR: ", title)
+        }
     }
     
     // MARK: - Private methods
     
     private func setupCollectinView() {
-        rootView.productsCollectionView.register(ProductsViewCell.self,
-            forCellWithReuseIdentifier: ProductsViewCell.identifier)
+        rootView.collectionView.register(ProductsViewCell.self,
+            forCellWithReuseIdentifier: ProductsViewCell.reuseId)
         
-        rootView.productsCollectionView.register(HeaderReusableView.self,
+        rootView.collectionView.register(HeaderReusableView.self,
             forSupplementaryViewOfKind: HeaderReusableView.elementKind,
-            withReuseIdentifier: HeaderReusableView.identifier)
+            withReuseIdentifier: HeaderReusableView.reuseId)
         
-        rootView.productsCollectionView.dataSource = self
-        rootView.productsCollectionView.delegate = self
+        rootView.collectionView.dataSource = self
+        rootView.collectionView.delegate = self
     }
     
     private func setupNavigationBar() {
-        // set custom font and color for title 
+        // set custom font and color for title
         navigationController?.navigationBar.tintColor = UIColor.appDarkGray
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.Oswald.medium.withSize(22)]
@@ -89,12 +97,13 @@ class ProductsViewController: UIViewController, ProductsView {
 // MARK: - UICollectionViewDataSource
 
 extension ProductsViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
         
         if let cell = cell as? ProductsViewCell {
             let product = viewModels[indexPath.item]
@@ -112,10 +121,10 @@ extension ProductsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let reusableView = collectionView.dequeueReusableSupplementaryView(
             ofKind: HeaderReusableView.elementKind,
-            withReuseIdentifier: HeaderReusableView.identifier, for: indexPath)
+            withReuseIdentifier: HeaderReusableView.reuseId, for: indexPath)
         
         if let headerView = reusableView as? HeaderReusableView {
-            headerView.setProducts(count: viewModels.count)
+            headerView.setProducts(count: totalNumberOfProducts)
         }
         
         return reusableView
@@ -125,7 +134,8 @@ extension ProductsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension ProductsViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter.didSelectItems(atIndexPath: indexPath)
+        presenter.didSelectItem(atIndexPath: indexPath)
     }
 }

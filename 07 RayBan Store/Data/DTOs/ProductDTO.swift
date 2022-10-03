@@ -11,7 +11,9 @@ import UIKit
 struct ProductDTO: Codable {
     let id: Int
     let title: String
+    let type: String
     let category: String
+    let productFamily: String
     let details: String
     let price: Int
     var images: ProductImages?
@@ -22,7 +24,9 @@ extension ProductDTO {
     var asProduct: Product {
         Product(id: self.id,
                 title: self.title,
+                type: self.type,
                 category: self.category,
+                productFamily: self.productFamily,
                 details: self.details,
                 price: self.price)
     }
@@ -30,7 +34,9 @@ extension ProductDTO {
     var asProductViewModel: ProductViewModel {
         ProductViewModel(id: self.id,
                          title: self.title,
+                         type: self.type,
                          category: self.category,
+                         productFamily: self.productFamily,
                          details: self.details,
                          price: self.price,
                          images: [self.images?.main,
@@ -56,7 +62,9 @@ extension Product {
     var asProductDTO: ProductDTO {
         ProductDTO(id: self.id,
                    title: self.title,
+                   type: self.type,
                    category: self.category,
+                   productFamily: self.productFamily,
                    details: self.details,
                    price: self.price,
                    images: nil)

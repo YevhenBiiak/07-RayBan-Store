@@ -5,13 +5,20 @@
 //  Created by Евгений Бияк on 30.08.2022.
 //
 
-import Foundation
+import UIKit
 
 protocol ProductImagesApi {
-    func getMainImage(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void)
-    func getAllImages(forProductId productId: Int, completion: @escaping (ProductImages?, Error?) -> Void)
+    func getMainImage(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void)
+    func getAllImages(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void)
 }
 
+protocol RemoteRepository {
+    func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void)
+    func executeSaveRequest(ofType request: SaveRequest, completionHandler: @escaping (Result<Bool>) -> Void)
+}
+
+// swiftlint:disable opening_brace
+// swiftlint:disable closure_parameter_position
 class ProductGatewayImpl: ProductGateway {
     
     private let productImagesApi: ProductImagesApi
@@ -22,12 +29,18 @@ class ProductGatewayImpl: ProductGateway {
         self.productImagesApi = productImagesApi
     }
     
-    // One product
-    func fetchProduct(byIdentifier productId: Int, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .productById(id: productId)) { [weak self] (result: Result<ProductDTO>) in
+    // One product by id
+    func fetchProduct(
+        byIdentifier productId: Int,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
+        remoteRepository.executeFetchRequest(ofType: .productById(id: productId)) {
+            [weak self] (result: Result<ProductDTO>) in
+            
             switch result {
             case .success(let product):
-                completionHandler(.success(product))
+                let result = ([product], 1)
+                completionHandler(.success(result))
                 
                 self?.loadAllImagesForProduct(product, completionHandler: completionHandler)
             case .failure(let error):
@@ -36,41 +49,14 @@ class ProductGatewayImpl: ProductGateway {
         }
     }
     
-    // All products
-    func fetchProducts(first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .products(limit: UInt(first) + UInt(skip))) { [weak self] (result: Result<[ProductDTO]>) in
-            switch result {
-            case .success(var products):
-                products = Array(products.dropFirst(skip).prefix(first))
-                completionHandler(.success(products))
-                
-                self?.loadMainImageForProducts(products, completionHandler: completionHandler)
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
-    
-    // Products by category
-    func fetchProducts(byCategoryName category: String, first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .productsByCategory(category: category, limit: UInt(first) + UInt(skip))) { [weak self] (result: Result<[ProductDTO]>) in
-            switch result {
-            case .success(var products):
-                products = Array(products.dropFirst(skip).prefix(first))
-                completionHandler(.success(products))
-                
-                self?.loadMainImageForProducts(products, completionHandler: completionHandler)
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
-    
-    // Array of products id
-    func fetchProducts(byIdentifiers identifiers: [Int], first: Int, skip: Int, completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+    // Products by byIdentifiers
+    func fetchProducts(
+        byIdentifiers identifiers: [Int], first: Int, skip: Int,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
         var products: [ProductDTO] = []
         
-        for id in identifiers {
+        for id in identifiers.dropFirst(skip).prefix(first) {
             remoteRepository.executeFetchRequest(ofType: .productById(id: id)) { (result: Result<ProductDTO>) in
                 switch result {
                 case .success(let product):
@@ -81,44 +67,108 @@ class ProductGatewayImpl: ProductGateway {
             }
         }
         
-        products = Array(products.dropFirst(skip).prefix(first))
-        completionHandler(.success(products))
+        let result = (products, identifiers.count)
+        completionHandler(.success(result))
         
-        loadMainImageForProducts(products, completionHandler: completionHandler)
+        loadMainImageForProducts(products, totalCount: identifiers.count, bgColor: UIColor.appGray, completionHandler: completionHandler)
+    }
+    
+    // Products by type, category, family
+    func fetchProducts(
+        type: ProductType, category: ProductCategory, family: ProductFamily, first: Int, skip: Int,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
+        let typeString = type.rawValue
+        remoteRepository.executeFetchRequest(ofType: .productsByType(type: typeString)) {
+            [weak self] (result: Result<[ProductDTO]>) in
+            
+            switch result {
+            case .success(var products):
+                
+                if category != .all { products = products.filter { $0.category.lowercased() == category.rawValue } }
+                if family != .all { products = products.filter { $0.productFamily.lowercased() == family.rawValue } }
+                
+                let totalCount = products.count
+                let result = (products, totalCount)
+                completionHandler(.success(result))
+                
+                products = Array(products.dropFirst(skip).prefix(first))
+                self?.loadMainImageForProducts(products, totalCount: totalCount, bgColor: UIColor.appGray, completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    // Description Of Product Families Of Type
+    func fetchProducts(
+        asDescriptionOfProductFamiliesOfType type: ProductType,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
+        let typeString = type.rawValue
+        remoteRepository.executeFetchRequest(ofType: .productsByType(type: typeString)) {
+            [weak self] (result: (Result<[ProductDTO]>)) in
+            
+            switch result {
+            case .success(var products):
+
+                products = products.reduce(into: []) { result, product in
+                    let currentFamily = product.productFamily
+                    let selectedFamilies = result.map { $0.productFamily }
+                    
+                    if !selectedFamilies.contains(where: { $0 == currentFamily }) {
+                        result.append(product)
+                    }
+                }
+                
+                let result = (products, products.count)
+                completionHandler(.success(result))
+                
+                self?.loadMainImageForProducts(products, totalCount: products.count, bgColor: UIColor.appWhite, completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
     }
     
     // MARK: - Private methods
     
-    private func loadMainImageForProducts(_ products: [ProductDTO], completionHandler: @escaping (Result<[ProductDTO]>) -> Void) {
+    private func loadMainImageForProducts(
+        _ products: [ProductDTO], totalCount: Int, bgColor: UIColor,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
         var products = products
-        
         for (index, product) in products.enumerated() {
             products[index].images = ProductImages()
             
-            productImagesApi.getMainImage(forProductId: product.id) { productImages, error in
+            productImagesApi.getMainImage(forProductId: product.id, bgColor: bgColor) { productImages, error in
                 if let error = error {
                     return completionHandler(.failure(error))
                 }
                 
                 if let images = productImages {
                     products[index].images = images
-                    completionHandler(.success(products))
+                    let result = (products, totalCount)
+                    completionHandler(.success(result))
                 }
             }
         }
     }
     
-    private func loadAllImagesForProduct(_ product: ProductDTO, completionHandler: @escaping (Result<ProductDTO>) -> Void) {
+    private func loadAllImagesForProduct(
+        _ product: ProductDTO,
+        completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    {
         var product = product
-        
-        productImagesApi.getAllImages(forProductId: product.id) { productImages, error in
+        productImagesApi.getAllImages(forProductId: product.id, bgColor: UIColor.appGray) { productImages, error in
             if let error = error {
                 return completionHandler(.failure(error))
             }
             
             if let images = productImages {
                 product.images = images
-                completionHandler(.success(product))
+                let result = ([product], 1)
+                completionHandler(.success(result))
             }
         }
     }

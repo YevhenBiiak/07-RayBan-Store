@@ -5,15 +5,21 @@
 //  Created by Евгений Бияк on 17.09.2022.
 //
 
+import UIKit
+
 class ProductsRouterImpl: ProductsRouter {
+    
     private weak var productsViewController: ProductsViewController!
+    
+    private var navigationController: UINavigationController? {
+        productsViewController.navigationController
+    }
     
     init(productsViewController: ProductsViewController) {
         self.productsViewController = productsViewController
     }
     
     func presentProductDetails(product: ProductDTO) {
-        let navigationController = productsViewController.navigationController
         let productDetailsViewController = ProductDetailsViewController()
         let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
         
@@ -21,10 +27,9 @@ class ProductsRouterImpl: ProductsRouter {
         navigationController?.pushViewController(productDetailsViewController, animated: true)
     }
     
-    func presentAppMenu() {
-        let navigationController = productsViewController.navigationController
+    func presentAppMenu(productsPresentationDelegate: ProductsPresentationDelegate?) {
         let appMenuViewController = ListViewController()
-        let appMenuConfigurator = AppMenuConfiguratorImpl()
+        let appMenuConfigurator = AppMenuConfiguratorImpl(productsPresentationDelegate: productsPresentationDelegate)
         
         appMenuViewController.configurator = appMenuConfigurator
         navigationController?.pushViewController(appMenuViewController, animated: true)

@@ -16,7 +16,7 @@ class OrderGatewayImpl: OrderGateway {
     }
     
     func fetchOrders(byUserId userId: String, first: Int, skip: Int, completionHandler: @escaping (Result<[OrderDTO]>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .orders(userId: userId, limit: UInt(first) + UInt(skip))) { (result: Result<[OrderDTO]>) in
+        remoteRepository.executeFetchRequest(ofType: .orders(userId: userId)) { (result: Result<[OrderDTO]>) in
             switch result {
             case .success(var orders):
                 orders = Array(orders.dropFirst(skip).prefix(first))
