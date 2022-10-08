@@ -35,13 +35,13 @@ class ProductDetailsRootView: UIView {
         return button
     }()
     
-    var productDetailsCollectionView: UICollectionView!
+    var collectionView: UICollectionView!
 
     // MARK: - Initializers and overridden methods
 
     init() {
         super.init(frame: .zero)
-        setupCollectinView()
+        configureCollectinView()
     }
     
     required init?(coder: NSCoder) {
@@ -63,17 +63,18 @@ class ProductDetailsRootView: UIView {
     
     // MARK: - Private methods
     
-    private func setupCollectinView() {
-        productDetailsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
+    private func configureCollectinView() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
+        collectionView.backgroundColor = .appLightGray
         
         subviews(
-            productDetailsCollectionView,
+            collectionView,
             promoLabel,
             trailingBuyButton
         )
         
         promoLabel.width(100%).height(35).top(92)
-        productDetailsCollectionView.width(100%).height(100%)
+        collectionView.width(100%).height(100%)
         trailingBuyButton.centerHorizontally().width(90%).height(44).bottom(20)
     }
     
@@ -82,12 +83,11 @@ class ProductDetailsRootView: UIView {
             guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
             
             switch sectionKind {
-            case .images: return self?.imagesSectionLayout()
-            case .description: return self?.descriptionSectionLayout()
-            case .property: return self?.propertySectionLayout()
-            case .details: return self?.detailsSectionLayout()
-            case .actions: return self?.actionsSectionLayout()
-            }
+            case .images:      return self?.imagesSectionLayout()
+            case .description: return self?.estimatedSectionLayout()
+            case .property:    return self?.propertySectionLayout()
+            case .details:     return self?.estimatedSectionLayout()
+            case .actions:     return self?.estimatedSectionLayout() }
         })
     }
     
@@ -102,12 +102,7 @@ class ProductDetailsRootView: UIView {
         section.orthogonalScrollingBehavior = .groupPagingCentered
         return section
     }
-    private func descriptionSectionLayout() -> NSCollectionLayoutSection {
-        let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(130))
-        let item = NSCollectionLayoutItem(layoutSize: size)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
-        return NSCollectionLayoutSection(group: group)
-    }
+    
     private func propertySectionLayout() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(1),
@@ -117,13 +112,8 @@ class ProductDetailsRootView: UIView {
             heightDimension: .absolute(60)), subitems: [item])
         return NSCollectionLayoutSection(group: group)
     }
-    private func detailsSectionLayout() -> NSCollectionLayoutSection {
-        let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300))
-        let item = NSCollectionLayoutItem(layoutSize: size)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
-        return NSCollectionLayoutSection(group: group)
-    }
-    private func actionsSectionLayout() -> NSCollectionLayoutSection {
+
+    private func estimatedSectionLayout() -> NSCollectionLayoutSection {
         let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300))
         let item = NSCollectionLayoutItem(layoutSize: size)
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)

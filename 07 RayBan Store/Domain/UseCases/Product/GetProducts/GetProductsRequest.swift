@@ -7,10 +7,22 @@
 
 struct GetProductsRequest {
     enum Query {
-        case identifier(id: Int)
-        case identifiers(ids: [Int], first: Int, skip: Int)
-        case products(withType: ProductType, category: ProductCategory, family: ProductFamily, first: Int, skip: Int)
-        case productFamiliesDescription(ofType: ProductType)
+        case id(String)
+        case color(String)
+        case type(ProductType)
+        case family(ProductFamily)
+        case category(ProductCategory)
+        case limit(first: Int, skip: Int)
+        case representationOfProductFamilies(ofType: ProductType)
     }
-    let query: Query
+    
+    var queries: [Query]
+    
+    init(queries: Query...) {
+        self.queries = queries
+    }
+    
+    mutating func addQuery(query: Query) {
+        self.queries.append(query)
+    }
 }

@@ -30,7 +30,8 @@ class ProductDetailsViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        backgroundColor = .appWhite
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -45,7 +46,7 @@ class ProductDetailsViewCell: UICollectionViewCell {
         productDetailsLabel.text = text
     }
     
-    private func setupView() {
+    private func configureLayout() {
         subviews(
             productDetailsTitleLabel,
             productDetailsLabel

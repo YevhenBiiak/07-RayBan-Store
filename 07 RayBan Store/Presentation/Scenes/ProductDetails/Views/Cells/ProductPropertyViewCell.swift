@@ -19,7 +19,8 @@ class ProductPropertyViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        backgroundColor = .appWhite
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -30,17 +31,22 @@ class ProductPropertyViewCell: UICollectionViewCell {
         addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
     }
     
-    func setText(_ title: String, value: String) {
+    func configure(title: String, value: String?) {
         let text = NSMutableAttributedString(string: "\(title.uppercased())")
         let attrs: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.appDarkGray
         ]
-        let attrString = NSAttributedString(string: "  \(value.uppercased())", attributes: attrs)
+        
+        let attrString = NSAttributedString(
+            string: "  \(value?.uppercased() ?? "")",
+            attributes: attrs)
+        
         text.append(attrString)
+        
         propertyLabel.attributedText = text
     }
     
-    private func setupView() {
+    private func configureLayout() {
         subviews(propertyLabel)
         propertyLabel.width(90%).centerHorizontally().height(100%)
     }

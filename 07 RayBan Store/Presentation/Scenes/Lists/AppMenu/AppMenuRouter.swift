@@ -41,7 +41,12 @@ class AppMenuRouterImpl: AppMenuRouter {
     }
     
     func presentEyeglassesCategories() {
+        let eyeglassesCategoriesViewController = CategoriesViewController()
+        let eyeglassesCategoriesConfigurator = EyeglassesCategoriesConfiguratorImpl(
+            productsPresentationDelegate: productsPresentationDelegate)
         
+        eyeglassesCategoriesViewController.configurator = eyeglassesCategoriesConfigurator
+        navigationController?.pushViewController(eyeglassesCategoriesViewController, animated: true)
     }
     
     func presentShoppingCart() {

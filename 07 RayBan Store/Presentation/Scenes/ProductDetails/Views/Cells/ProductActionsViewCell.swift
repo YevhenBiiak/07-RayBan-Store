@@ -38,7 +38,8 @@ class ProductActionsViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        backgroundColor = .appWhite
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -54,13 +55,13 @@ class ProductActionsViewCell: UICollectionViewCell {
         let attrs: [NSAttributedString.Key: Any] = [
             .foregroundColor: color
         ]
-        let formattedPrice = String(format: "%.2f", Double(price))
+        let formattedPrice = String(format: "%.2f", Double(price) / 100.0)
         let attrString = NSAttributedString(string: "  $ \(formattedPrice)", attributes: attrs)
         text.append(attrString)
         priceLabel.attributedText = text
     }
     
-    private func setupView() {
+    private func configureLayout() {
         subviews(
             priceLabel,
             applePayButton,

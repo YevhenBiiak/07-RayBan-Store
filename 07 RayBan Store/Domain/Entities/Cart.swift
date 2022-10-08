@@ -20,13 +20,13 @@ struct Cart {
         items.append(item)
     }
     
-    mutating func update(productId: Int, amount: Int) {
+    mutating func update(productId: String, amount: Int) {
         for (i, item) in items.enumerated() where item.product.id == productId {
             items[i].amount = amount
         }
     }
     
-    mutating func delete(productId: Int) {
+    mutating func delete(productId: String) {
         items = items.filter { $0.product.id != productId }
     }
     
@@ -54,6 +54,6 @@ struct CartItem {
     var amount: Int
     
     func price() -> Cent {
-        product.price * amount
+        (product.variations.first?.price ?? 0) * amount
     }
 }

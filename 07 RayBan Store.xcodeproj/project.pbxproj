@@ -73,10 +73,15 @@
 		5752CE3628DB73E2001BAE4A /* ProductPropertyViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5752CE3528DB73E2001BAE4A /* ProductPropertyViewCell.swift */; };
 		5752CE3828DB7410001BAE4A /* ProductDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5752CE3728DB7410001BAE4A /* ProductDetailsViewCell.swift */; };
 		5752CE3A28DB743F001BAE4A /* ProductActionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5752CE3928DB743F001BAE4A /* ProductActionsViewCell.swift */; };
-		5752CE3E28DC575D001BAE4A /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5752CE3D28DC575D001BAE4A /* ProductViewModel.swift */; };
+		5752CE3E28DC575D001BAE4A /* ProductVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5752CE3D28DC575D001BAE4A /* ProductVM.swift */; };
 		575F562028EB3A2F00A44E6D /* ProductType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F561F28EB3A2F00A44E6D /* ProductType.swift */; };
 		575F562228EB3A4C00A44E6D /* ProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562128EB3A4C00A44E6D /* ProductCategory.swift */; };
 		575F562428EB3A5400A44E6D /* ProductFamily.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562328EB3A5400A44E6D /* ProductFamily.swift */; };
+		575F562628EC885200A44E6D /* ProductFamilyVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562528EC885200A44E6D /* ProductFamilyVM.swift */; };
+		575F562828EC8DDD00A44E6D /* UIImage +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562728EC8DDD00A44E6D /* UIImage +.swift */; };
+		575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */; };
+		575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */; };
+		575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */; };
 		5763FFAC28CD09B400E48713 /* FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFAB28CD09B400E48713 /* FetchRequest.swift */; };
 		5763FFAE28CD09D800E48713 /* SaveRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFAD28CD09D800E48713 /* SaveRequest.swift */; };
 		5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFB528CF903B00E48713 /* DictionaryConvertible.swift */; };
@@ -202,10 +207,15 @@
 		5752CE3528DB73E2001BAE4A /* ProductPropertyViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductPropertyViewCell.swift; sourceTree = "<group>"; };
 		5752CE3728DB7410001BAE4A /* ProductDetailsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewCell.swift; sourceTree = "<group>"; };
 		5752CE3928DB743F001BAE4A /* ProductActionsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductActionsViewCell.swift; sourceTree = "<group>"; };
-		5752CE3D28DC575D001BAE4A /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
+		5752CE3D28DC575D001BAE4A /* ProductVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductVM.swift; sourceTree = "<group>"; };
 		575F561F28EB3A2F00A44E6D /* ProductType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductType.swift; sourceTree = "<group>"; };
 		575F562128EB3A4C00A44E6D /* ProductCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCategory.swift; sourceTree = "<group>"; };
 		575F562328EB3A5400A44E6D /* ProductFamily.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFamily.swift; sourceTree = "<group>"; };
+		575F562528EC885200A44E6D /* ProductFamilyVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFamilyVM.swift; sourceTree = "<group>"; };
+		575F562728EC8DDD00A44E6D /* UIImage +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage +.swift"; sourceTree = "<group>"; };
+		575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesConfigurator.swift; sourceTree = "<group>"; };
+		575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesPresenter.swift; sourceTree = "<group>"; };
+		575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesRouter.swift; sourceTree = "<group>"; };
 		5763FFAB28CD09B400E48713 /* FetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequest.swift; sourceTree = "<group>"; };
 		5763FFAD28CD09D800E48713 /* SaveRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRequest.swift; sourceTree = "<group>"; };
 		5763FFB528CF903B00E48713 /* DictionaryConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryConvertible.swift; sourceTree = "<group>"; };
@@ -332,6 +342,9 @@
 		573A25C128E83565000B1548 /* Eyeglasses */ = {
 			isa = PBXGroup;
 			children = (
+				575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */,
+				575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */,
+				575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */,
 			);
 			path = Eyeglasses;
 			sourceTree = "<group>";
@@ -525,7 +538,8 @@
 		5752CE3C28DC574D001BAE4A /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				5752CE3D28DC575D001BAE4A /* ProductViewModel.swift */,
+				5752CE3D28DC575D001BAE4A /* ProductVM.swift */,
+				575F562528EC885200A44E6D /* ProductFamilyVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -541,6 +555,7 @@
 		577301F828BBFA50007FB72F /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				57FF081628A503B600FE5FC9 /* ViewController.swift */,
 				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
 				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
 				57FF081B28A503B700FE5FC9 /* Assets.xcassets */,
@@ -611,7 +626,6 @@
 		5773020228BBFE51007FB72F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				57FF081628A503B600FE5FC9 /* ViewController.swift */,
 				5752CE3C28DC574D001BAE4A /* ViewModels */,
 				574F27A228C68D1D0092D293 /* Scenes */,
 				5784000428D5FCE0003766F0 /* Common */,
@@ -754,6 +768,7 @@
 			isa = PBXGroup;
 			children = (
 				5784000628D5FCFC003766F0 /* UIColor +.swift */,
+				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
 				571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */,
 				571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */,
 				571EDB9F28D61D2200C8EBAA /* UIFont +.swift */,
@@ -1075,6 +1090,7 @@
 				574F277028C38C990092D293 /* UpdateProfileRequest.swift in Sources */,
 				574F277A28C38F7B0092D293 /* IsCartEmptyUseCase.swift in Sources */,
 				574F279728C533F30092D293 /* AddCartItemResponse.swift in Sources */,
+				575F562628EC885200A44E6D /* ProductFamilyVM.swift in Sources */,
 				574F27A128C676970092D293 /* CreateOrderResponse.swift in Sources */,
 				5773020828BC010F007FB72F /* ProductGateway.swift in Sources */,
 				57508A4A28BE4BBF000328AC /* Cart.swift in Sources */,
@@ -1087,6 +1103,7 @@
 				5752CE3228DB721E001BAE4A /* UICollectionReusableView +.swift in Sources */,
 				571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */,
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
+				575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */,
 				5752CE3828DB7410001BAE4A /* ProductDetailsViewCell.swift in Sources */,
 				574F278D28C4BC530092D293 /* OrderDTO.swift in Sources */,
 				575F562228EB3A4C00A44E6D /* ProductCategory.swift in Sources */,
@@ -1106,6 +1123,7 @@
 				57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */,
 				574F277228C38D430092D293 /* ProfileDTO.swift in Sources */,
 				575F562028EB3A2F00A44E6D /* ProductType.swift in Sources */,
+				575F562828EC8DDD00A44E6D /* UIImage +.swift in Sources */,
 				57BDD19028D786FC00A9007B /* ProductDetailsViewController.swift in Sources */,
 				57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */,
 				573A25C728E8399E000B1548 /* SunglassesCategoriesPresenter.swift in Sources */,
@@ -1130,12 +1148,13 @@
 				574F276E28C38BDB0092D293 /* UpdateProfileUseCase.swift in Sources */,
 				57508A5828BF45E5000328AC /* AuthProvider.swift in Sources */,
 				574F275E28C368B10092D293 /* ProductDTO.swift in Sources */,
-				5752CE3E28DC575D001BAE4A /* ProductViewModel.swift in Sources */,
+				5752CE3E28DC575D001BAE4A /* ProductVM.swift in Sources */,
 				574F279B28C538BC0092D293 /* UpdateCartItemAmountResponse.swift in Sources */,
 				573A25C528E83934000B1548 /* SunglassesCategoriesRouter.swift in Sources */,
 				574F275928C360550092D293 /* GetProductsRequest.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
 				5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */,
+				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
 				574F279128C531BF0092D293 /* DeleteCartItemRequest.swift in Sources */,
 				574F277C28C38F860092D293 /* AddCartItemUseCase.swift in Sources */,
@@ -1158,6 +1177,7 @@
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,
 				571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */,
 				577B93CA28C1F8B400E31B88 /* LoginUseCase.swift in Sources */,
+				575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
 			);

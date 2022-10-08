@@ -13,5 +13,5 @@ enum ProductFamily: String {
     case wayfarer
     case ferrari
     case erika
-    case all
+    case justin
 }

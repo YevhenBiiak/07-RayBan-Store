@@ -7,12 +7,12 @@
 
 import Foundation
 
-class ProductImages: Codable {
-    var main: Data?
-    var main2: Data?
-    var perspective: Data?
-    var front: Data?
-    var frontClosed: Data?
-    var back: Data?
-    var left: Data?
-}
+//class ProductImages: Codable {
+//    var main: Data?
+//    var main2: Data?
+//    var perspective: Data?
+//    var front: Data?
+//    var front2: Data?
+//    var back: Data?
+//    var left: Data?
+//}

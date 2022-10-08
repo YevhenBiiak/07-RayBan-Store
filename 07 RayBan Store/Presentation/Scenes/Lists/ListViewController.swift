@@ -55,15 +55,16 @@ class ListViewController: UIViewController, ListView {
     }
     
     private func setupNavigationBar() {
-        let cartButton = UIButton.buttonWithSFImage(name: "cart", color: UIColor.appBlack, size: 17, weight: .semibold)
-        
-        cartButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.presenter.cartButtonTapped()
-        }), for: .touchUpInside)
-        
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: cartButton)
-        ]
+        // add BarButtonItem to rightBarButtonItems
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "cart", tintColor: .appBlack, pointSize: 19, weight: .semibold),
+            style: .plain,
+            target: self,
+            action: #selector(cartButtonTapped))
+    }
+    
+    @objc private func cartButtonTapped() {
+        presenter.cartButtonTapped()
     }
 }
 

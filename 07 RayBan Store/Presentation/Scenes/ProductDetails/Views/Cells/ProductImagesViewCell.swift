@@ -12,7 +12,7 @@ class ProductImagesViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.appGray
+        imageView.backgroundColor = UIColor.appLightGray
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -26,7 +26,7 @@ class ProductImagesViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setImage(image: UIImage) {
+    func setImage(image: UIImage?) {
         imageView.image = image
     }
     

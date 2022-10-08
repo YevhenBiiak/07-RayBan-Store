@@ -9,5 +9,4 @@ enum ProductCategory: String {
     case men
     case women
     case kids
-    case all
 }

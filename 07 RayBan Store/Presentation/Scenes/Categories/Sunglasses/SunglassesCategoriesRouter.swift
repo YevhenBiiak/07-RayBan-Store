@@ -24,13 +24,18 @@ class SunglassesCategoriesRouterImpl: CategoriesRouter {
         sunglassesCategoriesViewController.navigationController?.popToRootViewController(animated: true)
     }
     
+    func presentAllProducts() {
+        productsPresentationDelegate?.presentProducts(type: .sunglasses)
+        returnToProducts()
+    }
+    
     func presentProducts(category: ProductCategory) {
-        productsPresentationDelegate?.presentProducts(type: .sunglasses, category: category, family: .all)
+        productsPresentationDelegate?.presentProducts(type: .sunglasses, category: category)
         returnToProducts()
     }
     
     func presentProducts(family: ProductFamily) {
-        productsPresentationDelegate?.presentProducts(type: .sunglasses, category: .all, family: family)
+        productsPresentationDelegate?.presentProducts(type: .sunglasses, family: family)
         returnToProducts()
     }
 }

@@ -13,7 +13,8 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     var presenter: ProductDetailsPresenter!
     var rootView: ProductDetailsRootView!
     
-    private var viewModel: ProductViewModel?
+    private var product: ProductVM?
+    private var currentProductVariant: ProductVariantVM?
         
     override func loadView() {
         configurator.configure(productDetailsViewController: self)
@@ -28,11 +29,16 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
         presenter.viewDidLoad()
     }
     
-    func display(viewModel: ProductViewModel) {
-        self.viewModel = viewModel
-//        print(viewModel.images) 
-        rootView.setPriceForTrailingButton(price: viewModel.price)
-        rootView.productDetailsCollectionView.reloadData()
+    func display(product: ProductVM) {
+        // print(product.images)
+        DispatchQueue.main.async { [weak self] in
+        self?.product = product
+            if self?.currentProductVariant == nil {
+                self?.currentProductVariant = product.variations.first
+        }
+        
+            self?.updateView()
+        }
     }
     
     func displayError(title: String, message: String?) {
@@ -40,19 +46,19 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     }
     
     private func setupCollectinView() {
-        rootView.productDetailsCollectionView.register(ProductImagesViewCell.self,
+        rootView.collectionView.register(ProductImagesViewCell.self,
                            forCellWithReuseIdentifier: ProductImagesViewCell.reuseId)
-        rootView.productDetailsCollectionView.register(ProductDescriptionViewCell.self,
+        rootView.collectionView.register(ProductDescriptionViewCell.self,
                            forCellWithReuseIdentifier: ProductDescriptionViewCell.reuseId)
-        rootView.productDetailsCollectionView.register(ProductPropertyViewCell.self,
+        rootView.collectionView.register(ProductPropertyViewCell.self,
                            forCellWithReuseIdentifier: ProductPropertyViewCell.reuseId)
-        rootView.productDetailsCollectionView.register(ProductDetailsViewCell.self,
+        rootView.collectionView.register(ProductDetailsViewCell.self,
                            forCellWithReuseIdentifier: ProductDetailsViewCell.reuseId)
-        rootView.productDetailsCollectionView.register(ProductActionsViewCell.self,
+        rootView.collectionView.register(ProductActionsViewCell.self,
                            forCellWithReuseIdentifier: ProductActionsViewCell.reuseId)
         
-        rootView.productDetailsCollectionView.dataSource = self
-        rootView.productDetailsCollectionView.delegate = self
+        rootView.collectionView.dataSource = self
+        rootView.collectionView.delegate = self
     }
     
     private func setupNavigationBar() {
@@ -66,6 +72,13 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
             UIBarButtonItem(customView: cartButton)
         ]
     }
+    
+    private func updateView() {
+        if let price = currentProductVariant?.price {
+            rootView.setPriceForTrailingButton(price: price)
+        }
+        rootView.collectionView.reloadData()
+    }
 }
 
 extension ProductDetailsViewController: UICollectionViewDataSource {
@@ -74,65 +87,26 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let section = rootView.getSectionKind(forSection: section) else { fatalError() }
+        guard let section = rootView.getSectionKind(forSection: section), let product
+        else { return 0 }
+
         switch section {
-        case .images:      return viewModel?.images.count ?? 0
+        case .images:      print("numberOfItemsInSection", product.images.count); return product.images.count
         case .description: return 1
-        case .property:    return 2
+        case .property:    return 2 // size and geofit
         case .details:     return 1
-        case .actions:     return 1
-        }
+        case .actions:     return 1 }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let section = rootView.getSectionKind(forSection: indexPath.section) else { fatalError() }
         
         switch section {
-        case .images:
-            
-            let cell: ProductImagesViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            if let data = viewModel?.images[indexPath.item], let image = UIImage(data: data) {
-                cell.setImage(image: image)
-            }
-            
-            return cell
-        case .description:
-            
-            let cell: ProductDescriptionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            cell.setTitle(title: viewModel?.title)
-            cell.setColors(number: 3)
-            cell.colorsSegmentedControl.removeAllSegments()
-            cell.colorsSegmentedControl.insertSegment(withTitle: "RED", at: 0, animated: false)
-            cell.colorsSegmentedControl.insertSegment(withTitle: "GREEN", at: 1, animated: false)
-            cell.colorsSegmentedControl.insertSegment(withTitle: "BLUE", at: 2, animated: false)
-            cell.colorsSegmentedControl.selectedSegmentIndex = 0
-            
-            return cell
-        case .property:
-            
-            let cell: ProductPropertyViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            if indexPath.item == 0 {
-                cell.setText("CATEGORY", value: viewModel?.category ?? "")
-            } else {
-                cell.setText("ID", value: "8976234593")
-            }
-            
-            return cell
-        case .details:
-            
-            let cell: ProductDetailsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            cell.setDetails(text: viewModel?.details)
-            
-            return cell
-        case .actions:
-            
-            let cell: ProductActionsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-            if let price = viewModel?.price {
-                cell.setPrice(price, withColor: UIColor.appRed)
-            }
-            
-            return cell
-        }
+        case .images:      return configuredImagesCell(from: collectionView, forIndexPath: indexPath)
+        case .description: return configuredDescriptionCell(from: collectionView, forIndexPath: indexPath)
+        case .property:    return configuredPropertyCell(from: collectionView, forIndexPath: indexPath)
+        case .details:     return configuredDetailsCell(from: collectionView, forIndexPath: indexPath)
+        case .actions:     return configuredActionsCell(from: collectionView, forIndexPath: indexPath) }
     }
     
     // MARK: - Private methods
@@ -140,6 +114,62 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     private func getReusableCell<T: UICollectionViewCell>(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> T {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.reuseId, for: indexPath) as? T
         else { fatalError() }
+        return cell
+    }
+    
+    private func configuredImagesCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ProductImagesViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        
+        print(indexPath.item)
+        
+        if let data = product?.images[indexPath.item], let image = UIImage(data: data) {
+            cell.setImage(image: image)
+        }
+        return cell
+    }
+    
+    private func configuredDescriptionCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ProductDescriptionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        cell.setTitle(title: product?.name)
+        cell.setColors(number: product?.variations.count)
+        
+        cell.removeAllColorSegments()
+        for (i, variant) in (product?.variations ?? []).enumerated() {
+            cell.insertColorSegment(at: i, title: variant.color, animated: false)
+        }
+        
+        cell.setSelectedSegmentIndex(0)
+
+        for (i, variant) in (product?.variations ?? []).enumerated() where variant.color == currentProductVariant?.color {
+            cell.setSelectedSegmentIndex(i)
+        }
+        return cell
+    }
+    
+    private func configuredPropertyCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ProductPropertyViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        
+        switch indexPath.item {
+        case 0: cell.configure(title: "size", value: product?.size)
+        case 1: cell.configure(title: "geofit", value: product?.geofit)
+        default: fatalError("Wrong number of properties") }
+        
+        return cell
+    }
+    
+    private func configuredDetailsCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ProductDetailsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        cell.setDetails(text: product?.details)
+        
+        return cell
+    }
+    
+    private func configuredActionsCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: ProductActionsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        if let price = currentProductVariant?.price {
+            cell.setPrice(price, withColor: UIColor.appRed)
+        }
+        
         return cell
     }
 }

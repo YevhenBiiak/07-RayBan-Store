@@ -20,21 +20,40 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
     }
     
     func execute(_ request: GetProductsRequest, completionHandler: @escaping (Result<GetProductsResponse>) -> Void) {
-        switch request.query {
-        case let .identifier(id):
-            productGateway.fetchProduct(byIdentifier: id) { [weak self] result in
+        var id: String?
+        var color: String?
+        var type: ProductType?
+        var family: ProductFamily?
+        var category: ProductCategory?
+        var first: Int?
+        var skip: Int?
+        var typeForFamiliesRepresentation: ProductType?
+        
+        request.queries.forEach { query in
+            switch query {
+            case let .id(queryId): id = queryId
+            case let .color(queryColor): color = queryColor
+            case let .type(queryType): type = queryType
+            case let .family(queryFamily): family = queryFamily
+            case let .category(queryCategory): category = queryCategory
+            case let .limit(queryFirst, querySkip): first = queryFirst; skip = querySkip
+            case let .representationOfProductFamilies(queryType): typeForFamiliesRepresentation = queryType }
+        }
+        
+        if let id {
+            productGateway.fetchProduct(byId: id, productColor: color) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
-        case let .identifiers(ids, first, skip):
-            productGateway.fetchProducts(byIdentifiers: ids, first: first, skip: skip) { [weak self] result in
-                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
-            }
-        case let .products(type, category, family, first, skip):
+        }
+        
+        if let type, let first, let skip {
             productGateway.fetchProducts(type: type, category: category, family: family, first: first, skip: skip) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
-        case let .productFamiliesDescription(type):
-            productGateway.fetchProducts(asDescriptionOfProductFamiliesOfType: type) { [weak self] result in
+        }
+        
+        if let type = typeForFamiliesRepresentation {
+            productGateway.fetchProducts(asRepresentationOfProductFamiliesOfType: type) { [weak self] result in
                 self?.handleFetchProductsResult(result, completionHandler: completionHandler)
             }
         }

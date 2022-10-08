@@ -11,7 +11,7 @@ protocol ProductDetailsRouter {
 }
 
 protocol ProductDetailsView: AnyObject {
-    func display(viewModel: ProductViewModel)
+    func display(product: ProductVM)
     func displayError(title: String, message: String?)
 }
 
@@ -35,17 +35,15 @@ class ProductDetailsPresenterImpl: ProductDetailsPresenter {
     }
     
     func viewDidLoad() {
-        view?.display(viewModel: product.asProductViewModel)
+        view?.display(product: product.asProductVM)
         
-        let request = GetProductsRequest(query: .identifier(id: product.id))
+        let request = GetProductsRequest(queries: .id(product.id))
         
         getProductsUseCase.execute(request) { [weak self] (result: Result<GetProductsResponse>) in
             switch result {
             case .success(let response):
                 if let product = response.products.first {
-                    DispatchQueue.main.async {
-                        self?.view?.display(viewModel: product.asProductViewModel)
-                    }
+                    self?.view?.display(product: product.asProductVM)
                 }
             case .failure(let error):
                 self?.view?.displayError(title: error.localizedDescription, message: nil)

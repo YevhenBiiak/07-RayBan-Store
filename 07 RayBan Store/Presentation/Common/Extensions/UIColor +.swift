@@ -11,8 +11,11 @@ extension UIColor {
     static var appWhite: UIColor {
        UIColor(red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
     }
-    static var appGray: UIColor {
+    static var appLightGray: UIColor {
         UIColor(red: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 1)
+    }
+    static var appGray: UIColor {
+        UIColor(red: 226 / 255, green: 226 / 255, blue: 226 / 255, alpha: 1)
     }
     static var appDarkGray: UIColor {
         UIColor(red: 99 / 255, green: 99 / 255, blue: 99 / 255, alpha: 1)
@@ -27,7 +30,8 @@ extension UIColor {
 
 extension UIColor {
     var hexString: String {
-        cgColor.components!.prefix(3)
+        cgColor.components!
+            .prefix(3)
             .map { String(format: "%02lX", Int($0 * 255)) }
             .reduce("#", +)
     }

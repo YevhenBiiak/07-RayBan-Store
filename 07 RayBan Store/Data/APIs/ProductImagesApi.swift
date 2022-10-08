@@ -5,19 +5,9 @@
 //  Created by Евгений Бияк on 31.08.2022.
 //
 
-import Foundation
 import UIKit
 
 class ProductImagesApiImpl: ProductImagesApi {
-    private enum Image: String {
-        case main = "__001.png"
-        case main2 = "__002.png"
-        case perspective = "__STD__shad__al2.png"
-        case front = "__STD__shad__fr.png"
-        case frontClosed = "__STD__shad__cfr.png"
-        case back = "__STD__shad__bk.png"
-        case `left` = "__STD__shad__lt.png"
-    }
     
     private let session: URLSession = {
         let MB = 1024 * 1024
@@ -29,69 +19,63 @@ class ProductImagesApiImpl: ProductImagesApi {
     
     // MARK: - ProductImagesApi
     
-    func getMainImage(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void) {
-        let width = 500
-        let hexColor = bgColor.hexString
-        let images = ProductImages()
-        
-        loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.main = data
-            completion(images, nil)
-        }
-    }
-    
-    func getAllImages(forProductId productId: Int, bgColor: UIColor, completion: @escaping (ProductImages?, Error?) -> Void) {
-        let width = 800
-        let hexColor = bgColor.hexString
-        let images = ProductImages()
-        
-        loadImage(.main, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.main = data
-            completion(images, nil)
-        }
-        loadImage(.back, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.back = data
-            completion(images, nil)
-        }
-        loadImage(.front, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.front = data
-            completion(images, nil)
-        }
-        loadImage(.perspective, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.perspective = data
-            completion(images, nil)
-        }
-        loadImage(.left, forProductId: productId, width: width, hexColor: hexColor) { data, error in
-            if let error = error { return completion(images, error) }
-            images.left = data
-            completion(images, nil)
+    func loadImages(
+        _ types: [ImageType],
+        imageId: Int,
+        bgColor: UIColor,
+        failureCompletion: @escaping (Error) -> Void,
+        successCompletion: @escaping ([Data]) -> Void
+    ) {
+        var images: [Data] = []
+        for type in types {
+            var imgName = "\(imageId)"
+            var imgWidth = 800
+            
+            switch type {
+            case .main:   imgName += "__001.png"; imgWidth = 500
+            case .main2:  imgName += "__002.png"; imgWidth = 500
+            case .back:   imgName += "__STD__shad__bk.png"
+            case .left:   imgName += "__STD__shad__lt.png"
+            case .front:  imgName += "__STD__shad__fr.png"
+            case .front2: imgName += "__STD__shad__cfr.png"
+            case .perspective: imgName += "__STD__shad__al2.png"}
+            
+            loadImage(imgName: imgName, imgWidth: imgWidth, hexColor: bgColor.hexString,
+            failureCompletion: { error in
+                failureCompletion(error)
+            }, successCompletion: { data in
+                images.append(data)
+                successCompletion(images)
+            })
         }
     }
     
     // MARK: - Private methods
     
-    private func loadImage(_ type: ProductImagesApiImpl.Image,
-                           forProductId productId: Int,
-                           width: Int,
-                           hexColor: String,
-                           completion: @escaping (Data?, Error?) -> Void) {
-        
+    private func loadImage(
+        imgName: String,
+        imgWidth: Int,
+        hexColor: String,
+        failureCompletion: @escaping (Error) -> Void,
+        successCompletion: @escaping (Data) -> Void
+    ) {
         var urlComponent = URLComponents()
         urlComponent.scheme = "https"
         urlComponent.host = "images.ray-ban.com"
-        urlComponent.path = "/is/image/RayBan/\(productId)\(type.rawValue)"
-        urlComponent.queryItems = [URLQueryItem(name: "impolicy", value: "RB_Product"),
-                                   URLQueryItem(name: "width", value: "\(width)"),
-                                   URLQueryItem(name: "bgc", value: hexColor)]
+        urlComponent.path = "/is/image/RayBan/\(imgName)"
+        urlComponent.queryItems = [
+            URLQueryItem(name: "impolicy", value: "RB_Product"),
+            URLQueryItem(name: "width", value: "\(imgWidth)"),
+            URLQueryItem(name: "bgc", value: hexColor)]
+        
         guard let url = urlComponent.url else { return }
         
         let task = session.dataTask(with: url) { data, _, error in
-            completion(data, error)
+            if let error {
+                failureCompletion(error)
+            } else if let data {
+                successCompletion(data)
+            }
         }
         task.resume()
     }

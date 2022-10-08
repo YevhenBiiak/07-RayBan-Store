@@ -8,5 +8,5 @@
 import Foundation
 
 struct DeleteCartItemRequest {
-    let productId: Int
+    let productId: String
 }

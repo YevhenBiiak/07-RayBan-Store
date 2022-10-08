@@ -9,6 +9,7 @@ import UIKit
 
 protocol CategoriesRouter {
     func returnToProducts()
+    func presentAllProducts()
     func presentProducts(category: ProductCategory)
     func presentProducts(family: ProductFamily)
 }
@@ -24,13 +25,13 @@ protocol CategoriesPresenter {
     func didTapWomensProducts()
     func didTapKidsProducts()
     func didTapAllProducts()
-    func didSelectItem(atIndex index: Int)
+    func didSelect(productFamily: String)
 }
 
 protocol CategoriesView: AnyObject {
     func display(title: String)
     func displayError(title: String, message: String?)
-    func display(viewModels: [ProductViewModel])
+    func display(viewModels: [ProductFamilyVM])
 }
 
 class CategoriesViewController: UIViewController, CategoriesView {
@@ -39,7 +40,7 @@ class CategoriesViewController: UIViewController, CategoriesView {
     var presenter: CategoriesPresenter!
     var rootView: CategoriesRootView!
     
-    private var viewModels: [ProductViewModel] = []
+    private var viewModels: [ProductFamilyVM] = []
         
     // MARK: - Overridden methods
     
@@ -69,7 +70,7 @@ class CategoriesViewController: UIViewController, CategoriesView {
         }
     }
     
-    func display(viewModels: [ProductViewModel]) {
+    func display(viewModels: [ProductFamilyVM]) {
         self.viewModels = viewModels
         DispatchQueue.main.async { [weak self] in
             self?.rootView.сollectionView.reloadData()
@@ -85,13 +86,8 @@ class CategoriesViewController: UIViewController, CategoriesView {
     }
     
     private func setupNavigationBar() {
-
-        let sizeConfig = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
-        let colorConfig = UIImage.SymbolConfiguration(hierarchicalColor: UIColor.appDarkGray)
-        let config = sizeConfig.applying(colorConfig)
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark", withConfiguration: config),
+            image: UIImage(systemName: "xmark", tintColor: .appDarkGray, pointSize: 22, weight: .regular),
             style: .plain,
             target: self,
             action: #selector(closeButtonTapped))
@@ -138,7 +134,7 @@ extension CategoriesViewController: UICollectionViewDataSource {
                 
                 let model = viewModels[indexPath.item]
                 let title = model.productFamily
-                let image = UIImage(data: model.images.first ?? Data())
+                let image = UIImage(data: model.imageData ?? Data())
                 cell.setTitle(title: title)
                 cell.setImage(image: image)
             }
@@ -154,16 +150,20 @@ extension CategoriesViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let section = rootView.getSectionKind(forSection: indexPath.section) else { fatalError() }
+        
         switch section {
         case .category:
+            
             switch indexPath.item {
             case 0: presenter.didTapMensProducts()
             case 1: presenter.didTapWomensProducts()
             case 2: presenter.didTapKidsProducts()
             case 3: presenter.didTapAllProducts()
             default: fatalError() }
+            
         case .family:
-            presenter.didSelectItem(atIndex: indexPath.item)
+            let family = viewModels[indexPath.item].productFamily
+            presenter.didSelect(productFamily: family)
         }
     }
 }

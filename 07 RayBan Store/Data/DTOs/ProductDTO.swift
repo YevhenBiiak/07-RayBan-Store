@@ -6,67 +6,149 @@
 //
 
 import Foundation
-import UIKit
 
-struct ProductDTO: Codable {
-    let id: Int
-    let title: String
-    let type: String
-    let category: String
-    let productFamily: String
-    let details: String
+struct ProductVariantDTO: Codable {
+    let frameColor: String
+    let lenseColor: String
+    var color: String { "\(frameColor)/\(lenseColor)" }
     let price: Int
-    var images: ProductImages?
+    let imgId: Int
 }
 
-// Data mapping
+struct ProductDTO: Codable {
+    let id: String
+    let name: String
+    let type: String
+    let family: String
+    let gender: String
+    let size: String
+    let geofit: String
+    let variations: [ProductVariantDTO]
+    let details: String
+    var images: [Data]?
+}
+
+// MARK: - Data mapping from ProductDTO and [ProductDTO]
+
 extension ProductDTO {
     var asProduct: Product {
-        Product(id: self.id,
-                title: self.title,
-                type: self.type,
-                category: self.category,
-                productFamily: self.productFamily,
-                details: self.details,
-                price: self.price)
+        Product(
+            id: self.id,
+            name: self.name,
+            type: self.type,
+            family: self.family,
+            gender: self.gender,
+            size: self.size,
+            geofit: self.geofit,
+            variations: self.variations.asProductVariants,
+            details: self.details)
     }
-    
-    var asProductViewModel: ProductViewModel {
-        ProductViewModel(id: self.id,
-                         title: self.title,
-                         type: self.type,
-                         category: self.category,
-                         productFamily: self.productFamily,
-                         details: self.details,
-                         price: self.price,
-                         images: [self.images?.main,
-                                  self.images?.main2,
-                                  self.images?.perspective,
-                                  self.images?.front,
-                                  self.images?.frontClosed,
-                                  self.images?.back,
-                                  self.images?.left
-                                 ].compactMap { $0 })
+}
+
+extension ProductDTO {
+    var asProductVM: ProductVM {
+        ProductVM(
+            id: self.id,
+            name: self.name,
+            type: self.type,
+            family: self.family,
+            gender: self.gender,
+            size: self.size,
+            geofit: self.geofit,
+            variations: self.variations.asProductVariantsVM,
+            details: self.details,
+            images: self.images ?? [])
     }
 }
 
 extension Array where Element == ProductDTO {
-    var asProductsViewModel: [ProductViewModel] {
+    var asProductsVM: [ProductVM] {
         self.map { item in
-            item.asProductViewModel
+            item.asProductVM
         }
     }
 }
 
+extension Array where Element == ProductDTO {
+    var asProductFamilyVM: [ProductFamilyVM] {
+        self.map { item in
+            ProductFamilyVM(
+                productFamily: item.family,
+                imageData: item.images?.first)
+        }
+    }
+}
+
+// MARK: - Data mapping from ProductVariantDTO and [ProductVariantDTO]
+
+extension Array where Element == ProductVariantDTO {
+    var asProductVariants: [ProductVariant] {
+        self.map { item in
+            item.asProductVariant
+        }
+    }
+}
+
+extension Array where Element == ProductVariantDTO {
+    var asProductVariantsVM: [ProductVariantVM] {
+        self.map { item in
+            item.asProductVariantVM
+        }
+    }
+}
+
+extension ProductVariantDTO {
+    var asProductVariant: ProductVariant {
+        ProductVariant(
+            frameColor: self.frameColor,
+            lenseColor: self.lenseColor,
+            price: self.price,
+            imgId: self.imgId)
+    }
+}
+
+extension ProductVariantDTO {
+    var asProductVariantVM: ProductVariantVM {
+        ProductVariantVM(
+            frameColor: self.frameColor,
+            lenseColor: self.lenseColor,
+            price: self.price,
+            imgId: self.imgId)
+    }
+}
+
+// MARK: - Data mapping from Product, ProductVariant and [ProductVariant]
+
 extension Product {
     var asProductDTO: ProductDTO {
-        ProductDTO(id: self.id,
-                   title: self.title,
-                   type: self.type,
-                   category: self.category,
-                   productFamily: self.productFamily,
-                   details: self.details,
-                   price: self.price,
-                   images: nil)
+        ProductDTO(
+            id: self.id,
+            name: self.name,
+            type: self.type,
+            family: self.family,
+            gender: self.gender,
+            size: self.size,
+            geofit: self.geofit,
+            variations: self.variations.asProductVariantsDTO,
+            details: self.details,
+            images: nil)
+    }
+}
+
+extension Array where Element == ProductVariant {
+    var asProductVariantsDTO: [ProductVariantDTO] {
+        self.map { item in
+            item.asProductVariantDTO
+        }
+    }
+}
+
+extension ProductVariant {
+    var asProductVariantDTO: ProductVariantDTO {
+        ProductVariantDTO(
+            frameColor: self.frameColor,
+            lenseColor: self.lenseColor,
+            price: self.price,
+            imgId: self.imgId)
     }
 }

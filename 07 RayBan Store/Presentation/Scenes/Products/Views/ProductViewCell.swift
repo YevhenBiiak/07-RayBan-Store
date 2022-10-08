@@ -12,7 +12,7 @@ class ProductsViewCell: UICollectionViewCell {
     
     let productImageView: UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = UIColor.appGray
+        image.backgroundColor = UIColor.appLightGray
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -28,7 +28,6 @@ class ProductsViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.appBlack
         label.font = UIFont.Oswald.regular.withSize(14)
-        label.text = "11 COLORS"
         return label
     }()
     
@@ -79,7 +78,7 @@ class ProductsViewCell: UICollectionViewCell {
     }
     
     func setColors(number: Int) {
-        colorsLabel.text = "\(number) COLORS".uppercased()
+        colorsLabel.text = "\(number) COLORS"
     }
     
     func setTitle(_ title: String) {
@@ -87,7 +86,7 @@ class ProductsViewCell: UICollectionViewCell {
     }
     
     func setPrice(_ price: Int) {
-        priceLabel.text = "$ " + String(format: "%.2f", Double(price))
+        priceLabel.text = "$ " + String(format: "%.2f", Double(price) / 100.0)
     }
     
     // MARK: - Private methods

@@ -13,7 +13,7 @@ class ProductsViewController: UIViewController, ProductsView {
     var presenter: ProductsPresenter!
     var rootView: ProductsRootView!
     
-    private var viewModels: [ProductViewModel] = []
+    private var viewModels: [ProductVM] = []
     private var totalNumberOfProducts = 0
     
     override func loadView() {
@@ -40,7 +40,7 @@ class ProductsViewController: UIViewController, ProductsView {
         }
     }
     
-    func display(viewModels: [ProductViewModel], totalNumberOfProducts: Int) {
+    func display(viewModels: [ProductVM], totalNumberOfProducts: Int) {
         self.viewModels = viewModels
         self.totalNumberOfProducts = totalNumberOfProducts
         DispatchQueue.main.async { [weak self] in
@@ -75,22 +75,19 @@ class ProductsViewController: UIViewController, ProductsView {
             .font: UIFont.Oswald.medium.withSize(22)]
         
         // add BarButtonItem to rightBarButtonItems
-        let menuButton = UIButton.buttonWithSFImage(
-            name: "line.3.horizontal",
-            color: UIColor.appBlack,
-            size: 19, weight: .semibold)
-        
-        // add actions
-        menuButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.presenter.menuButtonTapped()
-        }), for: .touchUpInside)
-        
-        // set button items
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: menuButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "line.3.horizontal", tintColor: .appBlack, pointSize: 20, weight: .semibold),
+            style: .plain,
+            target: self,
+            action: #selector(menuButtonTapped))
         
         // add logo image to navigationItems
         let logo = UIImage(named: "logo")!
         navigationItem.addLogoImage(logo)
+    }
+    
+    @objc private func menuButtonTapped() {
+        presenter.menuButtonTapped()
     }
 }
 
@@ -109,10 +106,10 @@ extension ProductsViewController: UICollectionViewDataSource {
             let product = viewModels[indexPath.item]
             
             cell.setIsNew(flag: true)
-            cell.setTitle(product.title)
-            
+            cell.setTitle(product.name)
             cell.setImage(product.images.first)
-            cell.setPrice(product.price)
+            cell.setPrice(product.variations.first?.price ?? 0)
+            cell.setColors(number: product.variations.count)
         }
         
         return cell

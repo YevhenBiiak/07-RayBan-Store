@@ -8,7 +8,9 @@
 import Foundation
 
 protocol ProductsPresentationDelegate: AnyObject {
-    func presentProducts(type: ProductType, category: ProductCategory, family: ProductFamily)
+    func presentProducts(type: ProductType)
+    func presentProducts(type: ProductType, family: ProductFamily)
+    func presentProducts(type: ProductType, category: ProductCategory)
 }
 
 protocol ProductsRouter {
@@ -19,7 +21,7 @@ protocol ProductsRouter {
 protocol ProductsView: AnyObject {
     func display(title: String)
     func displayError(title: String, message: String?)
-    func display(viewModels: [ProductViewModel], totalNumberOfProducts: Int)
+    func display(viewModels: [ProductVM], totalNumberOfProducts: Int)
 }
 
 protocol ProductsPresenter {
@@ -44,7 +46,7 @@ class ProductsPresenterImpl: ProductsPresenter {
     }
     
     func viewDidLoad() {
-        presentProducts(type: .sunglasses, category: .all, family: .all)
+        presentProducts(type: .sunglasses)
     }
     
     func searchButtonTapped() {
@@ -63,26 +65,49 @@ class ProductsPresenterImpl: ProductsPresenter {
 // MARK: - ProductsPresentationDelegate
 
 extension ProductsPresenterImpl: ProductsPresentationDelegate {
-    func presentProducts(type: ProductType, category: ProductCategory, family: ProductFamily) {
+    func presentProducts(type: ProductType) {
         switch type {
-        case .sunglasses: handelSunglassesTypePresentation(category: category, family: family)
-        case .eyeglasses: handelEyeglassesTypePresentation(category: category, family: family)
-        }
+        case .sunglasses: handelSunglassesPresentation(category: nil, family: nil)
+        case .eyeglasses: handelEyeglassesPresentation(category: nil, family: nil) }
+    }
+    
+    func presentProducts(type: ProductType, family: ProductFamily) {
+        switch type {
+        case .sunglasses: handelSunglassesPresentation(category: nil, family: family)
+        case .eyeglasses: handelEyeglassesPresentation(category: nil, family: family) }
+    }
+    
+    func presentProducts(type: ProductType, category: ProductCategory) {
+        switch type {
+        case .sunglasses: handelSunglassesPresentation(category: category, family: nil)
+        case .eyeglasses: handelEyeglassesPresentation(category: category, family: nil) }
     }
     
     // MARK: - Private methods
     
-    private func handelSunglassesTypePresentation(category: ProductCategory, family: ProductFamily) {
-        view?.display(title: "\(ProductType.sunglasses.rawValue) - \(family.rawValue) - \(category.rawValue)")
+    private func handelSunglassesPresentation(category: ProductCategory?, family: ProductFamily?) {
+        let title = ProductType.sunglasses.rawValue + " " + (category?.rawValue ?? family?.rawValue ?? "")
         
-        let request = GetProductsRequest(query: .products(withType: .sunglasses, category: category, family: family, first: 20, skip: 0))
+        view?.display(title: title)
+        
+        var request = GetProductsRequest(queries: .type(.sunglasses), .limit(first: 20, skip: 0))
+        
+        if let category { request.addQuery(query: .category(category)) }
+        if let family { request.addQuery(query: .family(family)) }
+        
         getProductsUseCase.execute(request, completionHandler: responseCompletionHandler)
     }
     
-    private func handelEyeglassesTypePresentation(category: ProductCategory, family: ProductFamily) {
-        view?.display(title: "\(ProductType.eyeglasses.rawValue) - \(family.rawValue) - \(category.rawValue)")
+    private func handelEyeglassesPresentation(category: ProductCategory?, family: ProductFamily?) {
+        let title = ProductType.eyeglasses.rawValue + " " + (category?.rawValue ?? family?.rawValue ?? "")
         
-        let request = GetProductsRequest(query: .products(withType: .eyeglasses, category: category, family: family, first: 20, skip: 0))
+        view?.display(title: title)
+        
+        var request = GetProductsRequest(queries: .type(.eyeglasses), .limit(first: 20, skip: 0))
+        
+        if let category { request.addQuery(query: .category(category)) }
+        if let family { request.addQuery(query: .family(family)) }
+        
         getProductsUseCase.execute(request, completionHandler: responseCompletionHandler)
     }
     
@@ -90,7 +115,7 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
         switch result {
         case .success(let response):
             products = response.products
-            self.view?.display(viewModels: self.products.asProductsViewModel,
+            self.view?.display(viewModels: self.products.asProductsVM,
                                totalNumberOfProducts: response.totalNumberOfProducts)
         case .failure(let error):
             self.view?.displayError(title: error.localizedDescription, message: nil)

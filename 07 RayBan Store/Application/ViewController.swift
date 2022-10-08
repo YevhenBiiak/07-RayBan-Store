@@ -14,17 +14,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let db = Database.database().reference()
-        let path = "products"
-        let queryKey: String? = "id"
-        let queryValue: Any? = 8053672844986
-        let limit: UInt? = nil
+        let path = "prod"
+        let queryKey: String? = nil// "RB3698M SCUDERIA FERRARI COLLECTION"
+        let queryValue: Any? = nil
         
         var dbQuery = db.child(path).queryEqual(toValue: queryValue)
         if let queryKey {
             dbQuery = dbQuery.queryOrdered(byChild: queryKey)
-        }
-        if let limit {
-            dbQuery = dbQuery.queryLimited(toFirst: limit)
         }
         dbQuery.observeSingleEvent(of: .value) { snapshot in
             

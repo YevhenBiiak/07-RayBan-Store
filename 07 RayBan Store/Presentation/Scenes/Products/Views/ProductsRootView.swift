@@ -5,7 +5,7 @@
 //  Created by Евгений Бияк on 17.09.2022.
 //
 
-import Foundation
+import UIKit
 import Stevia
 
 class ProductsRootView: UIView {
@@ -26,13 +26,13 @@ class ProductsRootView: UIView {
     // MARK: - Private methods
     
     private func configureCollectinView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         
         subviews( collectionView )
         collectionView.width(100%).height(100%)
     }
     
-    private func creatrLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(0.4875),
             heightDimension: .estimated(130)))

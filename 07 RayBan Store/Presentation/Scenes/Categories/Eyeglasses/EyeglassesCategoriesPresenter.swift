@@ -1,13 +1,13 @@
 //
-//  SunglassesCategoriesPresenter.swift
+//  EyeglassesCategoriesPresenter.swift
 //  07 RayBan Store
 //
-//  Created by Евгений Бияк on 01.10.2022.
+//  Created by Евгений Бияк on 04.10.2022.
 //
 
 import Foundation
 
-class SunglassesCategoriesPresenterImpl: CategoriesPresenter {
+class EyeglassesCategoriesPresenterImpl: CategoriesPresenter {
 
     private weak var view: CategoriesView?
     private let router: CategoriesRouter
@@ -26,8 +26,8 @@ class SunglassesCategoriesPresenterImpl: CategoriesPresenter {
     // MARK: - CategoriesPresenter
     
     func viewDidLoad() {
-        view?.display(title: ProductType.sunglasses.rawValue)
-        let request = GetProductsRequest(queries: .representationOfProductFamilies(ofType: .sunglasses))
+        view?.display(title: ProductType.eyeglasses.rawValue)
+        let request = GetProductsRequest(queries: .representationOfProductFamilies(ofType: .eyeglasses))
         getProductsUseCase.execute(request) { [weak self]  (result: Result<GetProductsResponse>) in
             switch result {
             case .success(let response):

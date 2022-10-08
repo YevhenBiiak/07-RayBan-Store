@@ -14,22 +14,29 @@ class RemoteRepositoryImpl: RemoteRepository {
     
     func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
-        
+        // print(request.path, request.queryKey, request.queryValue)
         if let queryKey = request.queryKey { dbQuery = dbQuery.queryOrdered(byChild: queryKey) }
-        
+    
         dbQuery.observeSingleEvent(of: .value) { snapshot in
-            guard var someType = snapshot.value else { return }
+            guard let snapshots = snapshot.children.allObjects as? [DataSnapshot],
+                  var someType = snapshots.map({ $0.value }) as? Any
+            else { return }
             
-            // if "someType" is still Dictionary -> get values
+            // print(snapshots)
+            // print(someType)
+            
+            // if "someType" is Dictionary -> get values
             if let dict = someType as? NSDictionary {
                 someType = dict.allValues
             }
-            // if result type is Array -> do nothing
+            
+            // if generic type "T" is an Array -> do nothing
             if T.self is any Collection.Type {}
-            // else if result isn't array and "someType" is an Array -> get last element
+            // else if "T" isn't array and "someType" is an Array -> get first
             else if let array = someType as? NSArray {
-                someType = array.lastObject ?? []
+                someType = array.firstObject ?? []
             }
+            // print(someType)
             
             do {
                 let data = try JSONSerialization.data(withJSONObject: someType)

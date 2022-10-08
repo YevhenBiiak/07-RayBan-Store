@@ -1,15 +1,13 @@
 //
-//  Product.swift
+//  ProductVM.swift
 //  07 RayBan Store
 //
-//  Created by Евгений Бияк on 28.08.2022.
+//  Created by Евгений Бияк on 22.09.2022.
 //
 
 import Foundation
 
-typealias Cent = Int
-
-struct Product {
+struct ProductVM {
     let id: String
     let name: String
     let type: String
@@ -17,13 +15,15 @@ struct Product {
     let gender: String
     let size: String
     let geofit: String
-    let variations: [ProductVariant]
+    let variations: [ProductVariantVM]
     let details: String
+    var images: [Data]
 }
 
-struct ProductVariant {
+struct ProductVariantVM {
     let frameColor: String
     let lenseColor: String
-    let price: Cent
+    var color: String { "\(frameColor)/\(lenseColor)" }
+    let price: Int
     let imgId: Int
 }
