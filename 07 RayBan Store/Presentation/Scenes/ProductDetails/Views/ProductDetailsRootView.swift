@@ -11,21 +11,13 @@ import Stevia
 class ProductDetailsRootView: UIView {
     
     enum Section: Int, Hashable, CaseIterable {
+        case promo
         case images
         case description
         case property
         case details
         case actions
     }
-    
-    let promoLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = UIColor.appBlack
-        label.textColor = UIColor.appWhite
-        label.textAlignment = .center
-        label.text = "Enjoy Free Shipping on all orders."
-        return label
-    }()
     
     let trailingBuyButton: UIButton = {
         let button = UIButton(type: .system)
@@ -49,7 +41,7 @@ class ProductDetailsRootView: UIView {
     }
     
     func setPriceForTrailingButton(price: Int) {
-        let formattedPrice = String(format: "%.2f", Double(price))
+        let formattedPrice = String(format: "%.2f", Double(price) / 100.0)
         trailingBuyButton.setTitle("SHOP - $ \(formattedPrice)", for: .normal)
     }
     
@@ -69,12 +61,10 @@ class ProductDetailsRootView: UIView {
         
         subviews(
             collectionView,
-            promoLabel,
             trailingBuyButton
         )
         
-        promoLabel.width(100%).height(35).top(92)
-        collectionView.width(100%).height(100%)
+        collectionView.width(100%).height(100%).top(0)
         trailingBuyButton.centerHorizontally().width(90%).height(44).bottom(20)
     }
     
@@ -83,6 +73,7 @@ class ProductDetailsRootView: UIView {
             guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
             
             switch sectionKind {
+            case .promo:       return self?.estimatedSectionLayout()
             case .images:      return self?.imagesSectionLayout()
             case .description: return self?.estimatedSectionLayout()
             case .property:    return self?.propertySectionLayout()

@@ -5,17 +5,14 @@
 //  Created by Евгений Бияк on 01.10.2022.
 //
 
-import UIKit
-
-// swiftlint:disable opening_brace
 class SunglassesCategoriesRouterImpl: CategoriesRouter {
     
     private unowned var sunglassesCategoriesViewController: CategoriesViewController
     private weak var productsPresentationDelegate: ProductsPresentationDelegate?
     
     init(sunglassesCategoriesViewController: CategoriesViewController,
-         productsPresentationDelegate: ProductsPresentationDelegate?)
-    {
+         productsPresentationDelegate: ProductsPresentationDelegate?
+    ) {
         self.sunglassesCategoriesViewController = sunglassesCategoriesViewController
         self.productsPresentationDelegate = productsPresentationDelegate
     }

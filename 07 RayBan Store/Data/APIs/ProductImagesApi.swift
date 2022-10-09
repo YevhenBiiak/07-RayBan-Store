@@ -1,5 +1,5 @@
 //
-//  ApiNetwork.swift
+//  ProductImagesApiImpl.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 31.08.2022.
@@ -29,11 +29,11 @@ class ProductImagesApiImpl: ProductImagesApi {
         var images: [Data] = []
         for type in types {
             var imgName = "\(imageId)"
-            var imgWidth = 800
+            var imgWidth = 2048
             
             switch type {
-            case .main:   imgName += "__001.png"; imgWidth = 500
-            case .main2:  imgName += "__002.png"; imgWidth = 500
+            case .main:   imgName += "__001.png"; imgWidth = 300
+            case .main2:  imgName += "__002.png"; imgWidth = 300
             case .back:   imgName += "__STD__shad__bk.png"
             case .left:   imgName += "__STD__shad__lt.png"
             case .front:  imgName += "__STD__shad__fr.png"

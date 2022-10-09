@@ -17,6 +17,7 @@ protocol ProductDetailsView: AnyObject {
 
 protocol ProductDetailsPresenter {
     func viewDidLoad()
+    func didSelectColor(_ color: String?)
     func cartButtonTapped()
 }
 
@@ -38,6 +39,22 @@ class ProductDetailsPresenterImpl: ProductDetailsPresenter {
         view?.display(product: product.asProductVM)
         
         let request = GetProductsRequest(queries: .id(product.id))
+        
+        getProductsUseCase.execute(request) { [weak self] (result: Result<GetProductsResponse>) in
+            switch result {
+            case .success(let response):
+                if let product = response.products.first {
+                    self?.view?.display(product: product.asProductVM)
+                }
+            case .failure(let error):
+                self?.view?.displayError(title: error.localizedDescription, message: nil)
+            }
+        }
+    }
+    
+    func didSelectColor(_ color: String?) {
+        guard let color else { return }
+        let request = GetProductsRequest(queries: .id(product.id), .color(color))
         
         getProductsUseCase.execute(request) { [weak self] (result: Result<GetProductsResponse>) in
             switch result {

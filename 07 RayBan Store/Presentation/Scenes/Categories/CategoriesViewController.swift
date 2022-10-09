@@ -61,6 +61,10 @@ class CategoriesViewController: UIViewController, CategoriesView {
     func display(title: String) {
         DispatchQueue.main.async { [weak self] in
             self?.title = title.uppercased()
+            // bug: title alpha is zero in iOS 16
+            if #available(iOS 16.0, *) {
+                self?.navigationController?.navigationBar.setNeedsLayout()
+            }
         }
     }
     

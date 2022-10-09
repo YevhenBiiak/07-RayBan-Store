@@ -32,11 +32,12 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     func display(product: ProductVM) {
         // print(product.images)
         DispatchQueue.main.async { [weak self] in
-        self?.product = product
+            self?.product = product
+            
             if self?.currentProductVariant == nil {
                 self?.currentProductVariant = product.variations.first
-        }
-        
+            }
+            
             self?.updateView()
         }
     }
@@ -46,6 +47,8 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     }
     
     private func setupCollectinView() {
+        rootView.collectionView.register(PromoViewCell.self,
+                           forCellWithReuseIdentifier: PromoViewCell.reuseId)
         rootView.collectionView.register(ProductImagesViewCell.self,
                            forCellWithReuseIdentifier: ProductImagesViewCell.reuseId)
         rootView.collectionView.register(ProductDescriptionViewCell.self,
@@ -62,15 +65,16 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     }
     
     private func setupNavigationBar() {
-        let cartButton = UIButton.buttonWithSFImage(name: "cart", color: UIColor.appBlack, size: 17, weight: .semibold)
-        
-        cartButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.presenter.cartButtonTapped()
-        }), for: .touchUpInside)
-        
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(customView: cartButton)
-        ]
+        // add BarButtonItem to rightBarButtonItems
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "cart", tintColor: .appBlack, pointSize: 19, weight: .semibold),
+            style: .plain,
+            target: self,
+            action: #selector(cartButtonTapped))
+    }
+    
+    @objc private func cartButtonTapped() {
+        presenter.cartButtonTapped()
     }
     
     private func updateView() {
@@ -91,7 +95,8 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
         else { return 0 }
 
         switch section {
-        case .images:      print("numberOfItemsInSection", product.images.count); return product.images.count
+        case .promo:       return 1
+        case .images:      return product.images.count
         case .description: return 1
         case .property:    return 2 // size and geofit
         case .details:     return 1
@@ -102,6 +107,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
         guard let section = rootView.getSectionKind(forSection: indexPath.section) else { fatalError() }
         
         switch section {
+        case .promo:       return configuredPromoCell(from: collectionView, forIndexPath: indexPath)
         case .images:      return configuredImagesCell(from: collectionView, forIndexPath: indexPath)
         case .description: return configuredDescriptionCell(from: collectionView, forIndexPath: indexPath)
         case .property:    return configuredPropertyCell(from: collectionView, forIndexPath: indexPath)
@@ -110,20 +116,19 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     }
     
     // MARK: - Private methods
-    
-    private func getReusableCell<T: UICollectionViewCell>(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> T {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.reuseId, for: indexPath) as? T
-        else { fatalError() }
+    private func configuredPromoCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: PromoViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
+        cell.configure(text: "Enjoy Free Shipping on all orders.")
+        
         return cell
     }
     
     private func configuredImagesCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ProductImagesViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-        
-        print(indexPath.item)
-        
+                
         if let data = product?.images[indexPath.item], let image = UIImage(data: data) {
             cell.setImage(image: image)
+            cell.delegate = self
         }
         return cell
     }
@@ -134,6 +139,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
         cell.setColors(number: product?.variations.count)
         
         cell.removeAllColorSegments()
+        cell.delegate = self
         for (i, variant) in (product?.variations ?? []).enumerated() {
             cell.insertColorSegment(at: i, title: variant.color, animated: false)
         }
@@ -171,6 +177,30 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
         }
         
         return cell
+    }
+    
+    private func getReusableCell<T: UICollectionViewCell>(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> T {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: T.reuseId, for: indexPath) as? T
+        else { fatalError() }
+        return cell
+    }
+}
+
+extension ProductDetailsViewController: ColorSegmentsDelegate {
+    func didSelectSegment(atIndex index: Int) {
+        currentProductVariant = product?.variations[index]
+        let selectedColor = product?.variations[index].color
+        presenter.didSelectColor(selectedColor)
+    }
+}
+
+extension ProductDetailsViewController: ProductImagesViewCellDelegate {
+    func imageViewCellDidZoom(cell: ProductImagesViewCell) {
+        rootView.collectionView.isScrollEnabled = false
+    }
+    
+    func imageViewCellEndZoom(cell: ProductImagesViewCell) {
+        rootView.collectionView.isScrollEnabled = true
     }
 }
 

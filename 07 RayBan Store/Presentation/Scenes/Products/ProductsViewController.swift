@@ -13,7 +13,7 @@ class ProductsViewController: UIViewController, ProductsView {
     var presenter: ProductsPresenter!
     var rootView: ProductsRootView!
     
-    private var viewModels: [ProductVM] = []
+    private var products: [ProductVM] = []
     private var totalNumberOfProducts = 0
     
     override func loadView() {
@@ -37,11 +37,12 @@ class ProductsViewController: UIViewController, ProductsView {
             if #available(iOS 16.0, *) {
                 self?.navigationController?.navigationBar.setNeedsLayout()
             }
+            self?.rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -200), animated: false)
         }
     }
     
-    func display(viewModels: [ProductVM], totalNumberOfProducts: Int) {
-        self.viewModels = viewModels
+    func display(products: [ProductVM], totalNumberOfProducts: Int) {
+        self.products = products
         self.totalNumberOfProducts = totalNumberOfProducts
         DispatchQueue.main.async { [weak self] in
             self?.rootView.collectionView.reloadData()
@@ -96,14 +97,14 @@ class ProductsViewController: UIViewController, ProductsView {
 extension ProductsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModels.count
+        return products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
         
         if let cell = cell as? ProductsViewCell {
-            let product = viewModels[indexPath.item]
+            let product = products[indexPath.item]
             
             cell.setIsNew(flag: true)
             cell.setTitle(product.name)
@@ -120,7 +121,7 @@ extension ProductsViewController: UICollectionViewDataSource {
             ofKind: HeaderReusableView.elementKind,
             withReuseIdentifier: HeaderReusableView.reuseId, for: indexPath)
         
-        if let headerView = reusableView as? HeaderReusableView {
+        if let headerView = reusableView as? HeaderReusableView, !products.isEmpty {
             headerView.setProducts(count: totalNumberOfProducts)
         }
         
@@ -134,5 +135,11 @@ extension ProductsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.didSelectItem(atIndexPath: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == products.count - 4 {
+            presenter.willDisplayedLastItem()
+        }
     }
 }

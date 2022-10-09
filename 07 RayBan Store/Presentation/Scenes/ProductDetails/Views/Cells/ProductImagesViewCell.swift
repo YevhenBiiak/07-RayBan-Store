@@ -8,18 +8,31 @@
 import UIKit
 import Stevia
 
+protocol ProductImagesViewCellDelegate: AnyObject {
+    func imageViewCellDidZoom(cell: ProductImagesViewCell)
+    func imageViewCellEndZoom(cell: ProductImagesViewCell)
+}
+
 class ProductImagesViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor.appLightGray
         imageView.contentMode = .scaleAspectFit
+        imageView.isPinchable = true
         return imageView
     }()
     
+    private var zoomableView = ZoomableView()
+    weak var delegate: ProductImagesViewCellDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        configureLayout()
+        
+        zoomableView.sourceView = imageView
+        zoomableView.delegate = self
+        zoomableView.isZoomable = true
     }
     
     required init?(coder: NSCoder) {
@@ -30,8 +43,22 @@ class ProductImagesViewCell: UICollectionViewCell {
         imageView.image = image
     }
     
-    private func setupView() {
-        subviews( imageView )
-        imageView.width(100%).height(100%)
+    private func configureLayout() {
+        subviews( zoomableView )
+        zoomableView.fillContainer()    
+    }
+}
+
+extension ProductImagesViewCell: ZoomableViewDelegate {
+    func zoomableViewShouldZoom(_ view: ZoomableView) -> Bool {
+        return true
+    }
+    
+    func zoomableViewDidZoom(_ view: ZoomableView) {
+        delegate?.imageViewCellDidZoom(cell: self)
+    }
+    
+    func zoomableViewEndZoom(_ view: ZoomableView) {
+        delegate?.imageViewCellEndZoom(cell: self)
     }
 }

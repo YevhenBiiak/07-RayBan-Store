@@ -96,10 +96,10 @@ class ProductGatewayImpl: ProductGateway {
                     case .none: break }
                 
                 let totalCount = products.count
+                products = Array(products.dropFirst(skip).prefix(first))
+                
                 let result = (products, totalCount)
                 completionHandler(.success(result))
-                
-                products = Array(products.dropFirst(skip).prefix(first))
                 
                 for (i, product) in products.enumerated() {
                     guard let imageId = product.variations.first?.imgId else { continue }
@@ -132,10 +132,7 @@ class ProductGatewayImpl: ProductGateway {
             case .success(var products):
                 
                 products = products.reduce(into: []) { result, product in
-                    let currentFamily = product.family
-                    let selectedFamilies = result.map { $0.family }
-                    
-                    if !selectedFamilies.contains(where: { $0 == currentFamily }) {
+                    if !result.contains(where: { $0.family == product.family }) {
                         result.append(product)
                     }
                 }

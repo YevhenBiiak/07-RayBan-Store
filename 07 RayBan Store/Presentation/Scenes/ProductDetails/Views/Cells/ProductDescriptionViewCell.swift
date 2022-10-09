@@ -8,6 +8,10 @@
 import UIKit
 import Stevia
 
+protocol ColorSegmentsDelegate: AnyObject {
+    func didSelectSegment(atIndex index: Int)
+}
+
 class ProductDescriptionViewCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
@@ -39,10 +43,13 @@ class ProductDescriptionViewCell: UICollectionViewCell {
         return segmentedControl
     }()
     
+    weak var delegate: ColorSegmentsDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .appWhite
         configureLayout()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -70,7 +77,7 @@ class ProductDescriptionViewCell: UICollectionViewCell {
     }
 
     func insertColorSegment(at index: Int, title: String, animated: Bool) {
-        segmentedControl.insertSegment(withTitle: title, at: index, animated: animated)
+        segmentedControl.insertSegment(withTitle: title.uppercased(), at: index, animated: animated)
     }
 
     func setSelectedSegmentIndex(_ index: Int) {
@@ -82,6 +89,14 @@ class ProductDescriptionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Private methods
+    
+    private func setupViews() {
+        segmentedControl.addTarget(self, action: #selector(didSelectSegment), for: .valueChanged)
+    }
+    
+    @objc private func didSelectSegment() {
+        delegate?.didSelectSegment(atIndex: segmentedControl.selectedSegmentIndex)
+    }
     
     private func configureLayout() {
         subviews(
