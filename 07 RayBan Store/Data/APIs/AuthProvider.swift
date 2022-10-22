@@ -99,7 +99,7 @@ class AuthProviderImpl: AuthProvider {
                 return completion(.failure(error))
             }
             
-            print(result)
+//            print(result)
             
             let credential: AuthCredential = FacebookAuthProvider.credential(withAccessToken: token!)
             Auth.auth().signIn(with: credential) { result, error in

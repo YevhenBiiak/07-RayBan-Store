@@ -37,15 +37,17 @@ class ProductsViewController: UIViewController, ProductsView {
             if #available(iOS 16.0, *) {
                 self?.navigationController?.navigationBar.setNeedsLayout()
             }
-            self?.rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -200), animated: false)
+            let topBarHeight = (self?.statusBarHeight ?? 0) + (self?.navigationBarHeight ?? 0) + 44
+            self?.rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -topBarHeight), animated: false)
         }
     }
     
     func display(products: [ProductVM], totalNumberOfProducts: Int) {
         self.products = products
         self.totalNumberOfProducts = totalNumberOfProducts
-        DispatchQueue.main.async { [weak self] in
-            self?.rootView.collectionView.reloadData()
+        DispatchQueue.main.async {
+            print("collectionView.reloadData(): ", products.count)
+            self.rootView.collectionView.reloadData()
         }
     }
     
@@ -105,12 +107,7 @@ extension ProductsViewController: UICollectionViewDataSource {
         
         if let cell = cell as? ProductsViewCell {
             let product = products[indexPath.item]
-            
-            cell.setIsNew(flag: true)
-            cell.setTitle(product.name)
-            cell.setImage(product.images.first)
-            cell.setPrice(product.variations.first?.price ?? 0)
-            cell.setColors(number: product.variations.count)
+            cell.configure(with: product)
         }
         
         return cell
@@ -138,8 +135,6 @@ extension ProductsViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == products.count - 4 {
-            presenter.willDisplayedLastItem()
-        }
+        presenter.willDisplayItem(forIndex: indexPath.item)
     }
 }

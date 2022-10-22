@@ -59,11 +59,11 @@ class CategoriesViewController: UIViewController, CategoriesView {
     // MARK: - CategoriesView
     
     func display(title: String) {
-        DispatchQueue.main.async { [weak self] in
-            self?.title = title.uppercased()
+        DispatchQueue.main.async {
+            self.title = title.uppercased()
             // bug: title alpha is zero in iOS 16
             if #available(iOS 16.0, *) {
-                self?.navigationController?.navigationBar.setNeedsLayout()
+                self.navigationController?.navigationBar.setNeedsLayout()
             }
         }
     }
@@ -76,8 +76,8 @@ class CategoriesViewController: UIViewController, CategoriesView {
     
     func display(viewModels: [ProductFamilyVM]) {
         self.viewModels = viewModels
-        DispatchQueue.main.async { [weak self] in
-            self?.rootView.сollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.rootView.сollectionView.reloadData()
         }
     }
      

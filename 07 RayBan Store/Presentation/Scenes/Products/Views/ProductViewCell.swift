@@ -10,7 +10,7 @@ import Stevia
 
 class ProductsViewCell: UICollectionViewCell {
     
-    let productImageView: UIImageView = {
+    let imageView: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = UIColor.appLightGray
         image.contentMode = .scaleAspectFit
@@ -21,6 +21,8 @@ class ProductsViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.Oswald.regular
         label.textColor = .red
+        label.isHidden = true
+        label.text = "NEW"
         return label
     }()
     
@@ -31,7 +33,7 @@ class ProductsViewCell: UICollectionViewCell {
         return label
     }()
     
-    let titleLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Oswald.medium
         label.textColor = UIColor.appBlack
@@ -69,45 +71,43 @@ class ProductsViewCell: UICollectionViewCell {
     
     // MARK: - Configuration methods
     
-    func setIsNew(flag: Bool) {
-        newLabel.text = flag ? "NEW" : ""
+    func configure(with product: ProductVM) {        
+        setImage(product.images.first)
+        newLabel.isHidden = false
+        nameLabel.text = product.nameLabel
+        colorsLabel.text = product.colorsLabel
+        priceLabel.text = product.variations.first?.priceLabel
     }
     
-    func setImage(_ data: Data?) {
-        productImageView.image = UIImage(data: data ?? Data())
-    }
-    
-    func setColors(number: Int) {
-        colorsLabel.text = "\(number) COLORS"
-    }
-    
-    func setTitle(_ title: String) {
-        titleLabel.text = title.uppercased()
-    }
-    
-    func setPrice(_ price: Int) {
-        priceLabel.text = "$ " + String(format: "%.2f", Double(price) / 100.0)
+    private func setImage(_ image: UIImage?) {
+        self.imageView.image = nil
+        DispatchQueue.global().async {
+            guard let image = image?.preparingForDisplay() else { return }
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }
     }
     
     // MARK: - Private methods
     
     private func configureLayout() {
         subviews(
-            productImageView.subviews(
+            imageView.subviews(
                 newLabel,
                 colorsLabel),
-            titleLabel,
+            nameLabel,
             buyButton,
             priceLabel
         )
         
         let padding = 0.05 * frame.width
         
-        productImageView.width(100%).top(0).heightEqualsWidth()
+        imageView.width(100%).top(0).heightEqualsWidth()
         newLabel.right(padding).top(padding)
         colorsLabel.left(padding).bottom(padding)
-        titleLabel.width(90%).centerHorizontally().Top == productImageView.Bottom + padding
-        priceLabel.width(90%).centerHorizontally().Top == titleLabel.Bottom + padding
+        nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding
+        priceLabel.width(90%).centerHorizontally().Top == nameLabel.Bottom + padding
         buyButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
     }
 }

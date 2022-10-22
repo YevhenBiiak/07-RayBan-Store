@@ -5,7 +5,7 @@
 //  Created by Евгений Бияк on 03.09.2022.
 //
 
-import Foundation
+import UIKit
 
 struct ProductVariantDTO: Codable {
     let frameColor: String
@@ -49,15 +49,18 @@ extension ProductDTO {
     var asProductVM: ProductVM {
         ProductVM(
             id: self.id,
-            name: self.name,
+            nameLabel: self.name.uppercased(),
             type: self.type,
             family: self.family,
             gender: self.gender,
             size: self.size,
             geofit: self.geofit,
+            colorsLabel: "\(self.variations.count) COLORS",
             variations: self.variations.asProductVariantsVM,
             details: self.details,
-            images: self.images ?? [])
+            images: (self.images ?? [])
+                        .map({UIImage(data: $0)})
+                        .compactMap({$0}) )
     }
 }
 
@@ -110,10 +113,12 @@ extension ProductVariantDTO {
 extension ProductVariantDTO {
     var asProductVariantVM: ProductVariantVM {
         ProductVariantVM(
+            priceLabel: "$ " + String(format: "%.2f", Double(self.price) / 100.0),
             frameColor: self.frameColor,
             lenseColor: self.lenseColor,
-            price: self.price,
-            imgId: self.imgId)
+            priceInCents: self.price,
+            color: self.color,
+            imageId: self.imgId)
     }
 }
 

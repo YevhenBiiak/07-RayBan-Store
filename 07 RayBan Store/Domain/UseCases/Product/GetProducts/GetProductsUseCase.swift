@@ -13,6 +13,8 @@ protocol GetProductsUseCase {
 
 class GetProductsUseCaseImpl: GetProductsUseCase {
     
+    private let semaphore = DispatchSemaphore(value: 2)
+    private let operationQueue = OperationQueue()
     private let productGateway: ProductGateway
     
     init(productGateway: ProductGateway) {
@@ -20,41 +22,45 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
     }
     
     func execute(_ request: GetProductsRequest, completionHandler: @escaping (Result<GetProductsResponse>) -> Void) {
-        var id: String?
-        var color: String?
-        var type: ProductType?
-        var family: ProductFamily?
-        var category: ProductCategory?
-        var first: Int?
-        var skip: Int?
-        var typeForFamiliesRepresentation: ProductType?
-        
-        request.queries.forEach { query in
-            switch query {
-            case let .id(queryId): id = queryId
-            case let .color(queryColor): color = queryColor
-            case let .type(queryType): type = queryType
-            case let .family(queryFamily): family = queryFamily
-            case let .category(queryCategory): category = queryCategory
-            case let .limit(queryFirst, querySkip): first = queryFirst; skip = querySkip
-            case let .representationOfProductFamilies(queryType): typeForFamiliesRepresentation = queryType }
-        }
-        
-        if let id {
-            productGateway.fetchProduct(byId: id, productColor: color) { [weak self] result in
-                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+        operationQueue.addOperation {
+            self.semaphore.wait()
+            print("add next operation", Thread.current)
+            var id: String?
+            var color: String?
+            var type: ProductType?
+            var family: ProductFamily?
+            var category: ProductCategory?
+            var first: Int?
+            var skip: Int?
+            var typeForFamiliesRepresentation: ProductType?
+            
+            request.queries.forEach { query in
+                switch query {
+                case let .id(queryId): id = queryId
+                case let .color(queryColor): color = queryColor
+                case let .type(queryType): type = queryType
+                case let .family(queryFamily): family = queryFamily
+                case let .category(queryCategory): category = queryCategory
+                case let .limit(queryFirst, querySkip): first = queryFirst; skip = querySkip
+                case let .representationOfProductFamilies(queryType): typeForFamiliesRepresentation = queryType }
             }
-        }
-        
-        if let type, let first, let skip {
-            productGateway.fetchProducts(type: type, category: category, family: family, first: first, skip: skip) { [weak self] result in
-                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+            
+            if let id {
+                self.productGateway.fetchProduct(byId: id, productColor: color) { [weak self] result in
+                    self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+                }
             }
-        }
-        
-        if let type = typeForFamiliesRepresentation {
-            productGateway.fetchProducts(asRepresentationOfProductFamiliesOfType: type) { [weak self] result in
-                self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+            
+            if let type, let first, let skip {
+                self.productGateway.fetchProducts(type: type, category: category, family: family, first: first, skip: skip) { [weak self] result in
+                    self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+                }
+            }
+            
+            if let type = typeForFamiliesRepresentation {
+                self.productGateway.fetchProducts(asRepresentationOfProductFamiliesOfType: type) { [weak self] result in
+                    self?.handleFetchProductsResult(result, completionHandler: completionHandler)
+                }
             }
         }
     }
@@ -69,5 +75,7 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
             
             completionHandler(.failure(error))
         }
+        semaphore.signal()
+        print("signal")
     }
 }

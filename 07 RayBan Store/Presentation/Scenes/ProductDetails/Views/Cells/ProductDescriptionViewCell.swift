@@ -14,7 +14,7 @@ protocol ColorSegmentsDelegate: AnyObject {
 
 class ProductDescriptionViewCell: UICollectionViewCell {
     
-    private let titleLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.Oswald.bold.withSize(18)
@@ -62,8 +62,8 @@ class ProductDescriptionViewCell: UICollectionViewCell {
     
     // MARK: - Update methods
     
-    func setTitle(title: String?) {
-        titleLabel.text = title?.uppercased()
+    func setNameLabel(_ text: String?) {
+        nameLabel.text = text
     }
     
     func setColors(number: Int?) {
@@ -100,16 +100,16 @@ class ProductDescriptionViewCell: UICollectionViewCell {
     
     private func configureLayout() {
         subviews(
-            titleLabel,
+            nameLabel,
             favoriteButton,
             colorsLabel,
             segmentedControl
         )
             
         let padding = 0.05 * frame.width
-        titleLabel.top(16).left(padding).Right == favoriteButton.Left - padding
-        favoriteButton.right(padding).CenterY == titleLabel.CenterY
-        colorsLabel.left(padding).right(padding).centerHorizontally().Top == titleLabel.Bottom + 14
+        nameLabel.top(16).left(padding).Right == favoriteButton.Left - padding
+        favoriteButton.right(padding).CenterY == nameLabel.CenterY
+        colorsLabel.left(padding).right(padding).centerHorizontally().Top == nameLabel.Bottom + 14
         segmentedControl.centerHorizontally().width(90%).bottom(20).Top == colorsLabel.Bottom + 16
     }
 }

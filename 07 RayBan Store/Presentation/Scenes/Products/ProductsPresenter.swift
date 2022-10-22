@@ -28,7 +28,7 @@ protocol ProductsPresenter {
     func viewDidLoad()
     func searchButtonTapped()
     func menuButtonTapped()
-    func willDisplayedLastItem()
+    func willDisplayItem(forIndex index: Int)
     func didSelectItem(atIndexPath indexPath: IndexPath)
 }
 
@@ -46,7 +46,11 @@ class ProductsPresenterImpl: ProductsPresenter {
     private var currentCategory: ProductCategory?
     
     private let first = 10
-    private var skip = 0
+    private var skip = 0 {
+        didSet {
+            print("didSet skip: ", skip)
+        }
+    }
         
     init(view: ProductsView?, router: ProductsRouter, getProductsUseCase: GetProductsUseCase) {
         self.view = view
@@ -54,12 +58,18 @@ class ProductsPresenterImpl: ProductsPresenter {
         self.getProductsUseCase = getProductsUseCase
     }
     
+    // MARK: - ProductsPresenter
+    
     func viewDidLoad() {
-        presentProducts(type: currentType)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.presentProducts(type: self.currentType)
+        }
     }
     
     func searchButtonTapped() {
-        print("searchButtonTapped")
+        DispatchQueue.global().async {
+            print("searchButtonTapped")
+        }
     }
     func menuButtonTapped() {
         router.presentAppMenu(productsPresentationDelegate: self)
@@ -70,8 +80,13 @@ class ProductsPresenterImpl: ProductsPresenter {
         router.presentProductDetails(product: product)
     }
     
-    func willDisplayedLastItem() {
-        presentNextPartOfProducts()
+    func willDisplayItem(forIndex index: Int) {
+        guard index == products.count - 1, // 1 / 6
+              skip < totalNumberOfProducts,
+              skip < products.count
+        else { return }
+        print("load next part now")
+        presentNextProducts()
     }
 }
 
@@ -98,9 +113,13 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
     
     // MARK: - Private methods
     
-    private func presentNextPartOfProducts() {
-        guard skip < totalNumberOfProducts else { return }
-        handleProductPresentation(type: currentType, category: currentCategory, family: currentFamily, first: first, skip: skip + first)
+    private func presentNextProducts() {
+        handleProductPresentation(
+            type: currentType,
+            category: currentCategory,
+            family: currentFamily,
+            first: first,
+            skip: skip + first)
     }
     
     private func handleProductPresentation(
@@ -119,26 +138,18 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
         if let category { request.addQuery(query: .category(category)) }
         if let family { request.addQuery(query: .family(family)) }
 
-        getProductsUseCase.execute(request, completionHandler: responseCompletionHandler)
-    }
-    
-    private func responseCompletionHandler(result: Result<GetProductsResponse>) {
-        switch result {
-        case .success(let response):
-            totalNumberOfProducts = response.totalNumberOfProducts
-            
-            for newProduct in response.products {
-                if let index = products.firstIndex(where: { $0.id == newProduct.id }) {
-                    products[index] = newProduct
-                } else {
-                    products.append(newProduct)
-                }
+        getProductsUseCase.execute(request) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let response):
+                self.totalNumberOfProducts = response.totalNumberOfProducts
+                self.products += response.products
+                
+                self.view?.display(products: self.products.asProductsVM,
+                                   totalNumberOfProducts: response.totalNumberOfProducts)
+            case .failure(let error):
+                self.view?.displayError(title: error.localizedDescription, message: nil)
             }
-            
-            self.view?.display(products: self.products.asProductsVM,
-                               totalNumberOfProducts: response.totalNumberOfProducts)
-        case .failure(let error):
-            self.view?.displayError(title: error.localizedDescription, message: nil)
         }
     }
 }

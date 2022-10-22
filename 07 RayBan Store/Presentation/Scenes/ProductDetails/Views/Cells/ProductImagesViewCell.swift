@@ -19,7 +19,6 @@ class ProductImagesViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor.appLightGray
         imageView.contentMode = .scaleAspectFit
-        imageView.isPinchable = true
         return imageView
     }()
     

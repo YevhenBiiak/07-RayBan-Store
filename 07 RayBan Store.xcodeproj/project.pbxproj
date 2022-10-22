@@ -124,9 +124,10 @@
 		57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDD19228D7886400A9007B /* ProductDetailsRootView.swift */; };
 		57BDD19528D789A800A9007B /* ProductDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDD19428D789A800A9007B /* ProductDetailsRouter.swift */; };
 		57BDD19728D892E900A9007B /* ProductImagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BDD19628D892E900A9007B /* ProductImagesViewCell.swift */; };
-		57D0828A28F30D88005FF050 /* UIImageView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828928F30D88005FF050 /* UIImageView +.swift */; };
+		57CFFA2C28F6BB120031519F /* ImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CFFA2B28F6BB120031519F /* ImageType.swift */; };
 		57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828B28F317C5005FF050 /* ZoomableView.swift */; };
 		57D0828E28F326B9005FF050 /* PromoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828D28F326B9005FF050 /* PromoViewCell.swift */; };
+		57D0829028F44398005FF050 /* UIViewController +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828F28F44398005FF050 /* UIViewController +.swift */; };
 		57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DB728E5E9A30015CFDE /* AccountMenuConfigurator.swift */; };
 		57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DB928E5E9CC0015CFDE /* AccountMenuRouter.swift */; };
 		57ED3DBC28E5EA3E0015CFDE /* AccountMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DBB28E5EA3E0015CFDE /* AccountMenuPresenter.swift */; };
@@ -263,9 +264,10 @@
 		57BDD19228D7886400A9007B /* ProductDetailsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRootView.swift; sourceTree = "<group>"; };
 		57BDD19428D789A800A9007B /* ProductDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRouter.swift; sourceTree = "<group>"; };
 		57BDD19628D892E900A9007B /* ProductImagesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImagesViewCell.swift; sourceTree = "<group>"; };
-		57D0828928F30D88005FF050 /* UIImageView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView +.swift"; sourceTree = "<group>"; };
+		57CFFA2B28F6BB120031519F /* ImageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageType.swift; sourceTree = "<group>"; };
 		57D0828B28F317C5005FF050 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		57D0828D28F326B9005FF050 /* PromoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoViewCell.swift; sourceTree = "<group>"; };
+		57D0828F28F44398005FF050 /* UIViewController +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController +.swift"; sourceTree = "<group>"; };
 		57ED3DB728E5E9A30015CFDE /* AccountMenuConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuConfigurator.swift; sourceTree = "<group>"; };
 		57ED3DB928E5E9CC0015CFDE /* AccountMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuRouter.swift; sourceTree = "<group>"; };
 		57ED3DBB28E5EA3E0015CFDE /* AccountMenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuPresenter.swift; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 				574F27AC28CB5A510092D293 /* Session.swift */,
 				574F27A628C7922A0092D293 /* Validator.swift */,
 				575F561F28EB3A2F00A44E6D /* ProductType.swift */,
+				57CFFA2B28F6BB120031519F /* ImageType.swift */,
 				575F562128EB3A4C00A44E6D /* ProductCategory.swift */,
 				575F562328EB3A5400A44E6D /* ProductFamily.swift */,
 			);
@@ -775,7 +778,7 @@
 			isa = PBXGroup;
 			children = (
 				5784000628D5FCFC003766F0 /* UIColor +.swift */,
-				57D0828928F30D88005FF050 /* UIImageView +.swift */,
+				57D0828F28F44398005FF050 /* UIViewController +.swift */,
 				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
 				571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */,
 				571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */,
@@ -1092,6 +1095,7 @@
 				57BDD19728D892E900A9007B /* ProductImagesViewCell.swift in Sources */,
 				577B93D028C2059E00E31B88 /* RegisterUseCase.swift in Sources */,
 				575F562428EB3A5400A44E6D /* ProductFamily.swift in Sources */,
+				57CFFA2C28F6BB120031519F /* ImageType.swift in Sources */,
 				5773020A28BC0226007FB72F /* GetProductsUseCase.swift in Sources */,
 				57508A5A28BF54E5000328AC /* RemoteRepositoryImpl.swift in Sources */,
 				577B93C428C1E12100E31B88 /* LoginRequest.swift in Sources */,
@@ -1103,7 +1107,6 @@
 				574F27A128C676970092D293 /* CreateOrderResponse.swift in Sources */,
 				5773020828BC010F007FB72F /* ProductGateway.swift in Sources */,
 				57508A4A28BE4BBF000328AC /* Cart.swift in Sources */,
-				57D0828A28F30D88005FF050 /* UIImageView +.swift in Sources */,
 				57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */,
 				574F278B28C4B6720092D293 /* CartItemDTO.swift in Sources */,
 				571AA4A028E0D2EF0078F6A9 /* AppMenuPresenter.swift in Sources */,
@@ -1140,6 +1143,7 @@
 				57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */,
 				573A25C728E8399E000B1548 /* SunglassesCategoriesPresenter.swift in Sources */,
 				574F278228C38F9F0092D293 /* FetchCartItemsUseCase.swift in Sources */,
+				57D0829028F44398005FF050 /* UIViewController +.swift in Sources */,
 				574F275B28C364920092D293 /* GetProductsResponse.swift in Sources */,
 				573A25C328E83714000B1548 /* SunglassesCategoriesConfigurator.swift in Sources */,
 				574F278028C38F970092D293 /* UpdateCartItemAmountUseCase.swift in Sources */,

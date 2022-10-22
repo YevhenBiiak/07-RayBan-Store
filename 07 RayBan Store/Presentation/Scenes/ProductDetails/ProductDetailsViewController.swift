@@ -31,14 +31,14 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     
     func display(product: ProductVM) {
         // print(product.images)
-        DispatchQueue.main.async { [weak self] in
-            self?.product = product
+        DispatchQueue.main.async {
+            self.product = product
             
-            if self?.currentProductVariant == nil {
-                self?.currentProductVariant = product.variations.first
+            if self.currentProductVariant == nil {
+                self.currentProductVariant = product.variations.first
             }
             
-            self?.updateView()
+            self.updateView()
         }
     }
     
@@ -78,7 +78,7 @@ class ProductDetailsViewController: UIViewController, ProductDetailsView {
     }
     
     private func updateView() {
-        if let price = currentProductVariant?.price {
+        if let price = currentProductVariant?.priceInCents {
             rootView.setPriceForTrailingButton(price: price)
         }
         rootView.collectionView.reloadData()
@@ -126,7 +126,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     private func configuredImagesCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ProductImagesViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
                 
-        if let data = product?.images[indexPath.item], let image = UIImage(data: data) {
+        if let image = product?.images[indexPath.item] {
             cell.setImage(image: image)
             cell.delegate = self
         }
@@ -135,7 +135,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     
     private func configuredDescriptionCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ProductDescriptionViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-        cell.setTitle(title: product?.name)
+        cell.setNameLabel(product?.nameLabel)
         cell.setColors(number: product?.variations.count)
         
         cell.removeAllColorSegments()
@@ -172,7 +172,7 @@ extension ProductDetailsViewController: UICollectionViewDataSource {
     
     private func configuredActionsCell(from collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ProductActionsViewCell = getReusableCell(from: collectionView, forIndexPath: indexPath)
-        if let price = currentProductVariant?.price {
+        if let price = currentProductVariant?.priceInCents {
             cell.setPrice(price, withColor: UIColor.appRed)
         }
         

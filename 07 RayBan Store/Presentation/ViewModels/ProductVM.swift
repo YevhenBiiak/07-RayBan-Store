@@ -5,25 +5,27 @@
 //  Created by Евгений Бияк on 22.09.2022.
 //
 
-import Foundation
+import UIKit
 
 struct ProductVM {
     let id: String
-    let name: String
+    let nameLabel: String
     let type: String
     let family: String
     let gender: String
     let size: String
     let geofit: String
+    let colorsLabel: String
     let variations: [ProductVariantVM]
     let details: String
-    var images: [Data]
+    var images: [UIImage]
 }
 
 struct ProductVariantVM {
+    let priceLabel: String
     let frameColor: String
     let lenseColor: String
-    var color: String { "\(frameColor)/\(lenseColor)" }
-    let price: Int
-    let imgId: Int
+    let priceInCents: Int
+    var color: String
+    let imageId: Int
 }

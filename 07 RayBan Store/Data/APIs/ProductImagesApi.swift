@@ -26,39 +26,46 @@ class ProductImagesApiImpl: ProductImagesApi {
         failureCompletion: @escaping (Error) -> Void,
         successCompletion: @escaping ([Data]) -> Void
     ) {
-        var images: [Data] = []
-        for type in types {
-            var imgName = "\(imageId)"
-            var imgWidth = 2048
+        var images: [Data?] = Array(repeating: nil, count: types.count)
+        for (i, type) in types.enumerated() {
             
-            switch type {
-            case .main:   imgName += "__001.png"; imgWidth = 300
-            case .main2:  imgName += "__002.png"; imgWidth = 300
-            case .back:   imgName += "__STD__shad__bk.png"
-            case .left:   imgName += "__STD__shad__lt.png"
-            case .front:  imgName += "__STD__shad__fr.png"
-            case .front2: imgName += "__STD__shad__cfr.png"
-            case .perspective: imgName += "__STD__shad__al2.png"}
+            let url = configureURL(type: type, imageId: imageId, bgColor: bgColor)
             
-            loadImage(imgName: imgName, imgWidth: imgWidth, hexColor: bgColor.hexString,
-            failureCompletion: { error in
-                failureCompletion(error)
-            }, successCompletion: { data in
-                images.append(data)
-                successCompletion(images)
-            })
+            let task = session.dataTask(with: url) { data, response, error in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
+                else { return }
+                if let error {
+                    failureCompletion(error)
+                } else if let data {
+                    print(i, data, Thread.current)
+                    images[i] = data
+                    successCompletion(images.compactMap({$0}))
+                }
+            }
+            task.resume()
         }
     }
     
     // MARK: - Private methods
     
-    private func loadImage(
-        imgName: String,
-        imgWidth: Int,
-        hexColor: String,
-        failureCompletion: @escaping (Error) -> Void,
-        successCompletion: @escaping (Data) -> Void
-    ) {
+    private func configureURL(
+        type: ImageType,
+        imageId: Int,
+        bgColor: UIColor
+    ) -> URL {
+        var imgName = "\(imageId)"
+        var imgWidth = 2048
+        
+        switch type {
+        case .main:   imgName += "__001.png"; imgWidth = 2024
+        case .main2:  imgName += "__002.png"; imgWidth = 2024
+        case .back:   imgName += "__STD__shad__bk.png"
+        case .left:   imgName += "__STD__shad__lt.png"
+        case .front:  imgName += "__STD__shad__fr.png"
+        case .front2: imgName += "__STD__shad__cfr.png"
+        case .perspective: imgName += "__STD__shad__al2.png"
+        default: fatalError("unspecified case") }
+        
         var urlComponent = URLComponents()
         urlComponent.scheme = "https"
         urlComponent.host = "images.ray-ban.com"
@@ -66,17 +73,8 @@ class ProductImagesApiImpl: ProductImagesApi {
         urlComponent.queryItems = [
             URLQueryItem(name: "impolicy", value: "RB_Product"),
             URLQueryItem(name: "width", value: "\(imgWidth)"),
-            URLQueryItem(name: "bgc", value: hexColor)]
+            URLQueryItem(name: "bgc", value: bgColor.hexString)]
         
-        guard let url = urlComponent.url else { return }
-        
-        let task = session.dataTask(with: url) { data, _, error in
-            if let error {
-                failureCompletion(error)
-            } else if let data {
-                successCompletion(data)
-            }
-        }
-        task.resume()
+        return urlComponent.url!
     }
 }

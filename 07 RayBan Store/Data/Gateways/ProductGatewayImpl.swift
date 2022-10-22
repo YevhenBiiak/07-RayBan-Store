@@ -7,16 +7,6 @@
 
 import UIKit
 
-enum ImageType {
-    case main
-    case main2
-    case back
-    case front
-    case `left`
-    case front2
-    case perspective
-}
-
 protocol ProductImagesApi {
     func loadImages(_ types: [ImageType], imageId: Int, bgColor: UIColor,
                     failureCompletion: @escaping (Error) -> Void,
@@ -31,6 +21,7 @@ protocol RemoteRepository {
 // swiftlint:disable closure_parameter_position
 class ProductGatewayImpl: ProductGateway {
     
+    private let operationQueue = OperationQueue()
     private let productImagesApi: ProductImagesApi
     private let remoteRepository: RemoteRepository
     
@@ -93,26 +84,33 @@ class ProductGatewayImpl: ProductGateway {
                 case .men:   products = products.filter { $0.gender.lowercased() == "male" || $0.gender.lowercased() == "unisex" }
                 case .women: products = products.filter { $0.gender.lowercased() == "female" || $0.gender.lowercased() == "unisex" }
                 case .kids:  products = products.filter { $0.gender.lowercased() == "child" }
-                    case .none: break }
+                case .none: break }
                 
                 let totalCount = products.count
+                //filter products with required quantity
                 products = Array(products.dropFirst(skip).prefix(first))
                 
+                for (i, product) in products.enumerated() {
+                    let semaphor = DispatchSemaphore(value: 0)
+                    let operation = BlockOperation {
+                        guard let imageId = product.variations.first?.imgId else { return print("imageId is nil") }
+                        print(Thread.current)
+                        self?.productImagesApi.loadImages([.main], imageId: imageId, bgColor: .appLightGray, failureCompletion: { error in
+                            semaphor.signal()
+                            return completionHandler(.failure(error))
+                        }, successCompletion: { data in
+                            semaphor.signal()
+                            products[i].images = data
+                        })
+                        _ = semaphor.wait(timeout: .distantFuture)
+                    }
+                    self?.operationQueue.addOperation(operation)
+                }
+                
+                self?.operationQueue.waitUntilAllOperationsAreFinished()
+                print("exit")
                 let result = (products, totalCount)
                 completionHandler(.success(result))
-                
-                for (i, product) in products.enumerated() {
-                    guard let imageId = product.variations.first?.imgId else { continue }
-                    
-                    self?.productImagesApi.loadImages([.main], imageId: imageId, bgColor: .appLightGray,
-                    failureCompletion: { error in
-                        completionHandler(.failure(error))
-                    }, successCompletion: { images in
-                        products[i].images = images
-                        let result = (products, totalCount)
-                        completionHandler(.success(result))
-                    })
-                }
                 
             case .failure(let error):
                 completionHandler(.failure(error))
