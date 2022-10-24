@@ -24,7 +24,7 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
     func execute(_ request: GetProductsRequest, completionHandler: @escaping (Result<GetProductsResponse>) -> Void) {
         operationQueue.addOperation {
             self.semaphore.wait()
-            print("add next operation", Thread.current)
+            //print("add next operation", Thread.current)
             var id: String?
             var color: String?
             var type: ProductType?

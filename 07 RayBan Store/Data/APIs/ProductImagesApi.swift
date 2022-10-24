@@ -37,7 +37,7 @@ class ProductImagesApiImpl: ProductImagesApi {
                 if let error {
                     failureCompletion(error)
                 } else if let data {
-                    print(i, data, Thread.current)
+                    //print(i, data, Thread.current)
                     images[i] = data
                     successCompletion(images.compactMap({$0}))
                 }
@@ -57,8 +57,8 @@ class ProductImagesApiImpl: ProductImagesApi {
         var imgWidth = 2048
         
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 2024
-        case .main2:  imgName += "__002.png"; imgWidth = 2024
+        case .main:   imgName += "__001.png"; imgWidth = 2017
+        case .main2:  imgName += "__002.png"; imgWidth = 2017
         case .back:   imgName += "__STD__shad__bk.png"
         case .left:   imgName += "__STD__shad__lt.png"
         case .front:  imgName += "__STD__shad__fr.png"

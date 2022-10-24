@@ -8,16 +8,20 @@
 import UIKit
 
 extension UIView {
+    
     enum BorderPosition { case top, left, right, bottom }
+    
     func addBorders(color: UIColor, width: CGFloat) {
         self.layer.borderColor = color.cgColor
         self.layer.borderWidth = width
     }
+    
     func addBorder(atPosition position: [BorderPosition], color: UIColor, width: CGFloat) {
         position.forEach { position in
             addBorder(atPosition: position, color: color, width: width)
         }
     }
+    
     func addBorder(atPosition position: BorderPosition, color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor

@@ -20,7 +20,7 @@ class HeaderReusableView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -31,7 +31,7 @@ class HeaderReusableView: UICollectionReusableView {
         headerLabel.text = "\(String(count)) PRODUCTS"
     }
     
-    private func setupView() {
+    private func configureLayout() {
         subviews( headerLabel )
         let padding = 0.025 * frame.width
         headerLabel.fillHorizontally(padding: padding).fillVertically()

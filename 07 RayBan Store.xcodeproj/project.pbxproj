@@ -105,6 +105,8 @@
 		5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */; };
 		5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000E28D5FE68003766F0 /* ProductsViewController.swift */; };
 		5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784001028D5FEBC003766F0 /* ProductsPresenter.swift */; };
+		578DB1AF2906D039009C1FD2 /* Array +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DB1AE2906D039009C1FD2 /* Array +.swift */; };
+		578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DB1B02906D50D009C1FD2 /* ShimmerView.swift */; };
 		57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4628DCB62000819E88 /* CheckboxButton.swift */; };
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
 		57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17328D77E4500A9007B /* Lato-Thin.ttf */; };
@@ -245,6 +247,8 @@
 		5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsConfigurator.swift; sourceTree = "<group>"; };
 		5784000E28D5FE68003766F0 /* ProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewController.swift; sourceTree = "<group>"; };
 		5784001028D5FEBC003766F0 /* ProductsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsPresenter.swift; sourceTree = "<group>"; };
+		578DB1AE2906D039009C1FD2 /* Array +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array +.swift"; sourceTree = "<group>"; };
+		578DB1B02906D50D009C1FD2 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		57A1BF4628DCB62000819E88 /* CheckboxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxButton.swift; sourceTree = "<group>"; };
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
 		57BDD17328D77E4500A9007B /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
@@ -778,6 +782,7 @@
 			isa = PBXGroup;
 			children = (
 				5784000628D5FCFC003766F0 /* UIColor +.swift */,
+				578DB1AE2906D039009C1FD2 /* Array +.swift */,
 				57D0828F28F44398005FF050 /* UIViewController +.swift */,
 				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
 				571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */,
@@ -802,6 +807,7 @@
 			isa = PBXGroup;
 			children = (
 				57A1BF4628DCB62000819E88 /* CheckboxButton.swift */,
+				578DB1B02906D50D009C1FD2 /* ShimmerView.swift */,
 				57D0828B28F317C5005FF050 /* ZoomableView.swift */,
 			);
 			path = CustomViews;
@@ -1086,6 +1092,7 @@
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
 				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
 				5763FFAC28CD09B400E48713 /* FetchRequest.swift in Sources */,
+				578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
 				5752CE3A28DB743F001BAE4A /* ProductActionsViewCell.swift in Sources */,
 				57508A6928BFDC71000328AC /* CartGateway.swift in Sources */,
@@ -1189,6 +1196,7 @@
 				574F279F28C66EC90092D293 /* CreateOrderRequest.swift in Sources */,
 				574F277E28C38F8E0092D293 /* DeleteCartItemUseCase.swift in Sources */,
 				5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */,
+				578DB1AF2906D039009C1FD2 /* Array +.swift in Sources */,
 				57BDD18E28D786B100A9007B /* ProductDetailsPresenter.swift in Sources */,
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,
 				571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */,

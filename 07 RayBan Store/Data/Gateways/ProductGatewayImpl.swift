@@ -94,7 +94,8 @@ class ProductGatewayImpl: ProductGateway {
                     let semaphor = DispatchSemaphore(value: 0)
                     let operation = BlockOperation {
                         guard let imageId = product.variations.first?.imgId else { return print("imageId is nil") }
-                        print(Thread.current)
+                        //print(Thread.current)
+                        print(i)
                         self?.productImagesApi.loadImages([.main], imageId: imageId, bgColor: .appLightGray, failureCompletion: { error in
                             semaphor.signal()
                             return completionHandler(.failure(error))

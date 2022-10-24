@@ -42,11 +42,11 @@ class ProductsRootView: UIView {
         group.interItemSpacing = .flexible(1)
         let section = NSCollectionLayoutSection(group: group)
         
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .absolute(44)),
-                elementKind: "header", alignment: .top)
-        section.boundarySupplementaryItems = [sectionHeader]
+//        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(
+//                widthDimension: .fractionalWidth(1),
+//                heightDimension: .absolute(44)),
+//                elementKind: "header", alignment: .top)
+//        section.boundarySupplementaryItems = [sectionHeader]
         
         return UICollectionViewCompositionalLayout(section: section)
     }

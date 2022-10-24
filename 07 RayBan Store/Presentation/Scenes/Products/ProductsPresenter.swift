@@ -20,6 +20,7 @@ protocol ProductsRouter {
 
 protocol ProductsView: AnyObject {
     func display(title: String)
+    func display(numberOfLoadingProducts: Int)
     func displayError(title: String, message: String?)
     func display(products: [ProductVM], totalNumberOfProducts: Int)
 }
@@ -45,7 +46,7 @@ class ProductsPresenterImpl: ProductsPresenter {
     private var currentFamily: ProductFamily?
     private var currentCategory: ProductCategory?
     
-    private let first = 10
+    private let first = 2
     private var skip = 0 {
         didSet {
             print("didSet skip: ", skip)
@@ -96,25 +97,28 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
     func presentProducts(type: ProductType) {
         products = []
         view?.display(title: type.rawValue)
-        handleProductPresentation(type: type, category: nil, family: nil, first: first, skip: 0)
+        view?.display(products: [], totalNumberOfProducts: 0)
+        presentProducts(type: type, category: nil, family: nil, first: first, skip: 0)
     }
     
     func presentProducts(type: ProductType, family: ProductFamily) {
         products = []
         view?.display(title: type.rawValue + " " + family.rawValue)
-        handleProductPresentation(type: type, category: nil, family: family, first: first, skip: 0)
+        view?.display(products: [], totalNumberOfProducts: 0)
+        presentProducts(type: type, category: nil, family: family, first: first, skip: 0)
     }
     
     func presentProducts(type: ProductType, category: ProductCategory) {
         products = []
         view?.display(title: type.rawValue + " " + category.rawValue)
-        handleProductPresentation(type: type, category: category, family: nil, first: first, skip: 0)
+        view?.display(products: [], totalNumberOfProducts: 0)
+        presentProducts(type: type, category: category, family: nil, first: first, skip: 0)
     }
     
     // MARK: - Private methods
     
     private func presentNextProducts() {
-        handleProductPresentation(
+        presentProducts(
             type: currentType,
             category: currentCategory,
             family: currentFamily,
@@ -122,12 +126,14 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
             skip: skip + first)
     }
     
-    private func handleProductPresentation(
+    private func presentProducts(
         type: ProductType,
         category: ProductCategory?,
         family: ProductFamily?,
         first: Int, skip: Int
     ) {
+        view?.display(numberOfLoadingProducts: first)
+        
         self.skip = skip
         currentType = type
         currentFamily = family
@@ -144,7 +150,6 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
             case .success(let response):
                 self.totalNumberOfProducts = response.totalNumberOfProducts
                 self.products += response.products
-                
                 self.view?.display(products: self.products.asProductsVM,
                                    totalNumberOfProducts: response.totalNumberOfProducts)
             case .failure(let error):

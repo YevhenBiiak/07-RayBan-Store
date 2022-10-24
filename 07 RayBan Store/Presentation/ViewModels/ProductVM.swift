@@ -29,3 +29,23 @@ struct ProductVariantVM {
     var color: String
     let imageId: Int
 }
+
+extension ProductVM: Hashable {
+    static func == (lhs: ProductVM, rhs: ProductVM) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+extension ProductVariantVM: Hashable {
+    static func == (lhs: ProductVariantVM, rhs: ProductVariantVM) -> Bool {
+        lhs.imageId == rhs.imageId
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(imageId)
+    }
+}
