@@ -10,12 +10,9 @@ import Foundation
 typealias FetchProductsResult = (products: [ProductDTO], totalCount: Int)
 
 protocol ProductGateway {
-    func fetchProduct(byId productId: String, productColor: String?,
-                      completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    func fetchProduct(byId productId: String, productColor: String?) async throws -> FetchProductsResult
     
-    func fetchProducts(type: ProductType, category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int,
-                       completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    func fetchProducts(type: ProductType, category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int) async throws -> FetchProductsResult
     
-    func fetchProducts(asRepresentationOfProductFamiliesOfType type: ProductType,
-                       completionHandler: @escaping (Result<FetchProductsResult>) -> Void)
+    func fetchProducts(asRepresentationOfProductFamiliesOfType type: ProductType) async throws -> FetchProductsResult
 }

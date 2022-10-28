@@ -9,15 +9,20 @@ import UIKit
 
 class ProductsViewController: UIViewController, ProductsView {
     
+    private enum Section {
+        case main
+    }
+    
     var configurator: ProductsConfigurator!
     var presenter: ProductsPresenter!
     var rootView: ProductsRootView!
     
-    private var dataSource: UICollectionViewDiffableDataSource<Int, ProductVM>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, ProductVM>!
     
-    private var isProductsLoading = false
     private var products: [ProductVM] = []
     private var totalNumberOfProducts = 0
+    
+   // MARK: - Life Cycle and overridden methods
     
     override func loadView() {
         configurator.configure(productsViewController: self)
@@ -26,7 +31,7 @@ class ProductsViewController: UIViewController, ProductsView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectinView()
+        configureDataSource()
         setupNavigationBar()
         presenter.viewDidLoad()
     }
@@ -48,71 +53,77 @@ class ProductsViewController: UIViewController, ProductsView {
     
     func display(products: [ProductVM], totalNumberOfProducts: Int) {
         DispatchQueue.main.async {
-            var snapshot = NSDiffableDataSourceSnapshot<Int, ProductVM>()
-            snapshot.appendSections([0])
-            snapshot.appendItems(products)
-            self.dataSource.apply(snapshot, animatingDifferences: false)
-            
-//            guard !products.isEmpty
-//            else { return self.setInitialStateForDataSource() }
-//
-//            let newProducts = products.insertedDifference(from: self.products)
-//            var snapshot = self.dataSource.snapshot()
-//            snapshot.appendItems(newProducts)
-//            self.dataSource.apply(snapshot)
             self.products = products
-            print("sections:", self.dataSource.numberOfSections(in: self.rootView.collectionView))
-//            self.isProductsLoading = false
-//            self.totalNumberOfProducts = totalNumberOfProducts
-//            if totalNumberOfProducts != 0, products.count != self.products.count {
-//                let range = self.products.count...products.count - 1
-//                self.products = products
-//                print(range)
-//                let paths = range.map { IndexPath(item: $0, section: 0) }
-//                self.rootView.collectionView.reloadItems(at: paths)
-//            } else {
-//                self.products = products
-//                self.rootView.collectionView.reloadData()
-//            }
-            print("collectionView.reloadData(): ", products.count)
+
+            var snapshot = NSDiffableDataSourceSnapshot<Section, ProductVM>()
+            snapshot.appendSections([.main])
+            snapshot.appendItems(products)
+
+            if totalNumberOfProducts != self.totalNumberOfProducts {
+                self.totalNumberOfProducts = totalNumberOfProducts
+                self.dataSource.applySnapshotUsingReloadData(snapshot)
+            } else {
+                self.dataSource.apply(snapshot, animatingDifferences: true)
+            }
+            print("dataSource.apply(): ", products.count)
         }
     }
     
     func display(numberOfLoadingProducts: Int) {
+        guard numberOfLoadingProducts > 0 else { return }
         DispatchQueue.main.async {
-//            self.isProductsLoading = true
-//            let range = self.products.count...self.products.count + numberOfLoadingProducts - 1
-//            let paths = range.map { IndexPath(item: $0, section: 0) }
-//            self.rootView.collectionView.reloadItems(at: paths)
+            let emptyProducts = (1...numberOfLoadingProducts).map { _ in ProductVM.emptyModel }
+            
+            var snapshot = self.dataSource.snapshot()
+            snapshot.appendItems(emptyProducts)
+            self.dataSource.apply(snapshot)
         }
     }
     
     func displayError(title: String, message: String?) {
         DispatchQueue.main.async {
-            print("ERROR: ", title)
+            print("ERROR:", title)
         }
     }
     
     // MARK: - Private methods
     
-    private func setupCollectinView() {
+    private func configureDataSource() {
         rootView.collectionView.delegate = self
         
-        let cellRegistration = UICollectionView.CellRegistration<ProductsViewCell, ProductVM> { (cell, _, product) in
-            cell.configure(with: product)
+        let headerRegistration = UICollectionView.SupplementaryRegistration
+        <HeaderReusableView>(elementKind: HeaderReusableView.elementKind) {
+            [weak self] (headerView, _, _) in
+            guard let self else { return }
+            headerView.setProducts(count: self.totalNumberOfProducts)
         }
         
-        dataSource = UICollectionViewDiffableDataSource<Int, ProductVM>(collectionView: rootView.collectionView, cellProvider: { collectionView, indexPath, product in
-            return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: product)
+        let cellRegistration = UICollectionView.CellRegistration<ProductsViewCell, ProductVM> {
+            [weak self] (cell, indexPath, product) in
+            guard let self else { return }
+            if indexPath.item < self.products.count {
+                cell.configure(with: product)
+            } else {
+                cell.startLoadingAnimation()
+            }
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource
+        <Section, ProductVM>(collectionView: rootView.collectionView, cellProvider: {
+            collectionView, indexPath, product in
+            return collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration, for: indexPath, item: product)
         })
         
-        setInitialStateForDataSource()
-    }
-    
-    private func setInitialStateForDataSource() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, ProductVM>()
-        snapshot.appendSections([0])
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+            return collectionView.dequeueConfiguredReusableSupplementary(
+                using: headerRegistration, for: indexPath)
+        }
+        
+        // initial state
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductVM>()
+        snapshot.appendSections([.main])
+        dataSource.apply(snapshot)
     }
     
     private func setupNavigationBar() {
@@ -137,42 +148,6 @@ class ProductsViewController: UIViewController, ProductsView {
         presenter.menuButtonTapped()
     }
 }
-
-// MARK: - UICollectionViewDataSource
-
-//extension ProductsViewController: UICollectionViewDataSource {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return isProductsLoading ? products.count + 10 : products.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
-//        guard let cell = cell as? ProductsViewCell else { return cell }
-//        print(indexPath)
-//        if indexPath.item < products.count {
-//            let product = products[indexPath.item]
-//            cell.configure(with: product)
-//        } else {
-//            cell.startLoadingAnimation()
-//        }
-//
-//        return cell
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let reusableView = collectionView.dequeueReusableSupplementaryView(
-//            ofKind: HeaderReusableView.elementKind,
-//            withReuseIdentifier: HeaderReusableView.reuseId, for: indexPath)
-//
-//        guard let headerView = reusableView as? HeaderReusableView
-//        else { return reusableView }
-//
-//        headerView.setProducts(count: totalNumberOfProducts)
-//
-//        return reusableView
-//    }
-//}
 
 // MARK: - UICollectionViewDelegate
 

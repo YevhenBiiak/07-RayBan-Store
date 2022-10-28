@@ -35,18 +35,21 @@ class ProductsRootView: UIView {
     private func createLayout() -> UICollectionViewLayout {
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(0.4875),
-            heightDimension: .estimated(130)))
+            heightDimension: .fractionalHeight(1)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(130)), subitems: [item])
+            heightDimension: .fractionalWidth(0.78)),
+            subitems: [item])
         group.interItemSpacing = .flexible(1)
         let section = NSCollectionLayoutSection(group: group)
         
-//        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(
-//                widthDimension: .fractionalWidth(1),
-//                heightDimension: .absolute(44)),
-//                elementKind: "header", alignment: .top)
-//        section.boundarySupplementaryItems = [sectionHeader]
+        let headerSection = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(44)),
+            elementKind: HeaderReusableView.elementKind,
+            alignment: .top)
+        
+        section.boundarySupplementaryItems = [headerSection]
         
         return UICollectionViewCompositionalLayout(section: section)
     }

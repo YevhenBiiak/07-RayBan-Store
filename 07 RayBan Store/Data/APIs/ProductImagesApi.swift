@@ -9,6 +9,8 @@ import UIKit
 
 class ProductImagesApiImpl: ProductImagesApi {
     
+    private let operationQueue = OperationQueue()
+    
     private let session: URLSession = {
         let MB = 1024 * 1024
         let config = URLSessionConfiguration.default
@@ -22,27 +24,27 @@ class ProductImagesApiImpl: ProductImagesApi {
     func loadImages(
         _ types: [ImageType],
         imageId: Int,
-        bgColor: UIColor,
-        failureCompletion: @escaping (Error) -> Void,
-        successCompletion: @escaping ([Data]) -> Void
-    ) {
-        var images: [Data?] = Array(repeating: nil, count: types.count)
-        for (i, type) in types.enumerated() {
-            
-            let url = configureURL(type: type, imageId: imageId, bgColor: bgColor)
-            
-            let task = session.dataTask(with: url) { data, response, error in
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200
-                else { return }
-                if let error {
-                    failureCompletion(error)
-                } else if let data {
-                    //print(i, data, Thread.current)
-                    images[i] = data
-                    successCompletion(images.compactMap({$0}))
+        bgColor: UIColor
+    ) async throws -> [Data] {
+        return try await withThrowingTaskGroup(of: (index: Int, data: Data?).self) { taskGroup in
+            var images: [Data?] = Array(repeating: nil, count: types.count)
+            for (i, type) in types.enumerated() {
+                taskGroup.addTask {
+                    let url = self.configureURL(type: type, imageId: imageId, bgColor: bgColor)
+                    let (data, response) = try await self.session.data(from: url)
+                    
+                    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                        return (index: i, data: nil)
+                    }
+                    
+                    return (index: i, data: data)
                 }
             }
-            task.resume()
+            
+            for try await (i, data) in taskGroup {
+                images[i] = data
+            }
+            return images.compactMap({$0})
         }
     }
     
@@ -57,14 +59,13 @@ class ProductImagesApiImpl: ProductImagesApi {
         var imgWidth = 2048
         
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 2017
-        case .main2:  imgName += "__002.png"; imgWidth = 2017
+        case .main:   imgName += "__001.png"; imgWidth = 1997
+        case .main2:  imgName += "__002.png"
         case .back:   imgName += "__STD__shad__bk.png"
         case .left:   imgName += "__STD__shad__lt.png"
         case .front:  imgName += "__STD__shad__fr.png"
         case .front2: imgName += "__STD__shad__cfr.png"
-        case .perspective: imgName += "__STD__shad__al2.png"
-        default: fatalError("unspecified case") }
+        case .perspective: imgName += "__STD__shad__al2.png" }
         
         var urlComponent = URLComponents()
         urlComponent.scheme = "https"

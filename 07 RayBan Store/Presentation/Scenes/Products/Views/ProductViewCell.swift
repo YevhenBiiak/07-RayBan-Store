@@ -39,7 +39,7 @@ class ProductsViewCell: UICollectionViewCell {
         label.textColor = UIColor.appBlack
         label.textAlignment = .left
         label.numberOfLines = 1
-        label.text = " "
+        label.text = "unknown"
         return label
     }()
     
@@ -47,7 +47,7 @@ class ProductsViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.Lato.bold
         label.textColor = UIColor.appBlack
-        label.text = " "
+        label.text = "unknown"
         return label
     }()
     
@@ -75,14 +75,6 @@ class ProductsViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func layoutSubviews() {
-//        imageShimmerView.gradientLayer.frame = imageView.bounds
-//        nameShimmerView.gradientLayer.frame = nameLabel.bounds
-//        priceShimmerView.gradientLayer.frame = priceLabel.bounds
-//        buttonShimmerView.gradientLayer.frame = buyButton.bounds
-//        super.layoutSubviews()
-//    }
     
     // MARK: - Configuration methods
     
@@ -137,7 +129,7 @@ class ProductsViewCell: UICollectionViewCell {
         
         let padding = 0.05 * frame.width
         
-        imageView.width(100%).top(0).heightEqualsWidth()
+        imageView.width(100%).top(0)//.heightEqualsWidth()
         newLabel.right(padding).top(padding)
         colorsLabel.left(padding).bottom(padding)
         nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding

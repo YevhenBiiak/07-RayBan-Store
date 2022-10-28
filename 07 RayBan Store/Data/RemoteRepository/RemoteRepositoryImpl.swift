@@ -12,6 +12,14 @@ class RemoteRepositoryImpl: RemoteRepository {
     
     private let database: DatabaseReference = Database.database().reference()
     
+    func executeFetchRequest<T>(ofType request: FetchRequest) async throws -> T where T: Decodable {
+        try await withCheckedThrowingContinuation { continuation in
+            executeFetchRequest(ofType: request) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+    
     func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
         // print(request.path, request.queryKey, request.queryValue)

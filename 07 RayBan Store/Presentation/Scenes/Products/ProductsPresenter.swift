@@ -41,18 +41,14 @@ class ProductsPresenterImpl: ProductsPresenter {
     
     private var products: [ProductDTO] = []
     private var totalNumberOfProducts = 0
+    private var isProductsLoadingNow = false
     
     private var currentType: ProductType = .sunglasses
     private var currentFamily: ProductFamily?
     private var currentCategory: ProductCategory?
+    private let first = 6
+    private var skip = 0
     
-    private let first = 2
-    private var skip = 0 {
-        didSet {
-            print("didSet skip: ", skip)
-        }
-    }
-        
     init(view: ProductsView?, router: ProductsRouter, getProductsUseCase: GetProductsUseCase) {
         self.view = view
         self.router = router
@@ -62,15 +58,11 @@ class ProductsPresenterImpl: ProductsPresenter {
     // MARK: - ProductsPresenter
     
     func viewDidLoad() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.presentProducts(type: self.currentType)
-        }
+        self.presentProducts(type: self.currentType)
     }
     
     func searchButtonTapped() {
-        DispatchQueue.global().async {
-            print("searchButtonTapped")
-        }
+        print("searchButtonTapped")
     }
     func menuButtonTapped() {
         router.presentAppMenu(productsPresentationDelegate: self)
@@ -83,8 +75,8 @@ class ProductsPresenterImpl: ProductsPresenter {
     
     func willDisplayItem(forIndex index: Int) {
         guard index == products.count - 1, // 1 / 6
-              skip < totalNumberOfProducts,
-              skip < products.count
+              isProductsLoadingNow == false,
+              skip < totalNumberOfProducts
         else { return }
         print("load next part now")
         presentNextProducts()
@@ -94,28 +86,34 @@ class ProductsPresenterImpl: ProductsPresenter {
 // MARK: - ProductsPresentationDelegate
 
 extension ProductsPresenterImpl: ProductsPresentationDelegate {
+    
     func presentProducts(type: ProductType) {
-        products = []
+        resetState()
         view?.display(title: type.rawValue)
-        view?.display(products: [], totalNumberOfProducts: 0)
         presentProducts(type: type, category: nil, family: nil, first: first, skip: 0)
     }
     
     func presentProducts(type: ProductType, family: ProductFamily) {
-        products = []
+        resetState()
         view?.display(title: type.rawValue + " " + family.rawValue)
-        view?.display(products: [], totalNumberOfProducts: 0)
         presentProducts(type: type, category: nil, family: family, first: first, skip: 0)
     }
     
     func presentProducts(type: ProductType, category: ProductCategory) {
-        products = []
+        resetState()
         view?.display(title: type.rawValue + " " + category.rawValue)
-        view?.display(products: [], totalNumberOfProducts: 0)
         presentProducts(type: type, category: category, family: nil, first: first, skip: 0)
     }
-    
+}
     // MARK: - Private methods
+
+extension ProductsPresenterImpl {
+    
+    private func resetState() {
+        products = []
+        totalNumberOfProducts = 0
+        view?.display(products: [], totalNumberOfProducts: 0)
+    }
     
     private func presentNextProducts() {
         presentProducts(
@@ -132,27 +130,36 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
         family: ProductFamily?,
         first: Int, skip: Int
     ) {
-        view?.display(numberOfLoadingProducts: first)
-        
-        self.skip = skip
-        currentType = type
-        currentFamily = family
-        currentCategory = category
-        
-        var request = GetProductsRequest(queries: .type(type), .limit(first: first, skip: skip))
-
-        if let category { request.addQuery(query: .category(category)) }
-        if let family { request.addQuery(query: .family(family)) }
-
-        getProductsUseCase.execute(request) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let response):
+        Task {
+            // update state
+            self.skip = skip
+            currentType = type
+            currentFamily = family
+            currentCategory = category
+            isProductsLoadingNow = true
+            defer { isProductsLoadingNow = false }
+            
+            // display loading animation
+            let left = self.totalNumberOfProducts - self.products.count // products left in DB
+            let number = left > 0 && left < first ? left : first
+            view?.display(numberOfLoadingProducts: number)
+            
+            // create request
+            var request = GetProductsRequest(queries: .type(type), .limit(first: first, skip: skip))
+            // add query if exist
+            if let category { request.addQuery(query: .category(category)) }
+            if let family { request.addQuery(query: .family(family)) }
+            
+            do {/* execute request */
+                let response = try await getProductsUseCase.execute(request)
+                // add products
                 self.totalNumberOfProducts = response.totalNumberOfProducts
                 self.products += response.products
+                
                 self.view?.display(products: self.products.asProductsVM,
                                    totalNumberOfProducts: response.totalNumberOfProducts)
-            case .failure(let error):
+            } catch {
+                print(error)
                 self.view?.displayError(title: error.localizedDescription, message: nil)
             }
         }

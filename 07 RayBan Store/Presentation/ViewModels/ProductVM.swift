@@ -49,3 +49,20 @@ extension ProductVariantVM: Hashable {
         hasher.combine(imageId)
     }
 }
+
+extension ProductVM {
+    static var emptyModel: ProductVM {
+        return ProductVM(
+            id: UUID().uuidString,
+            nameLabel: "",
+            type: "",
+            family: "",
+            gender: "",
+            size: "",
+            geofit: "",
+            colorsLabel: "",
+            variations: [],
+            details: "",
+            images: [])
+    }
+}

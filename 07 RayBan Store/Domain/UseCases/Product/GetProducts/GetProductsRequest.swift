@@ -5,7 +5,8 @@
 //  Created by Евгений Бияк on 03.09.2022.
 //
 
-struct GetProductsRequest {
+struct GetProductsRequest: Sendable {
+    
     enum Query {
         case id(String)
         case color(String)

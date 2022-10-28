@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct ProductVariantDTO: Codable {
+struct ProductVariantDTO: Codable, Sendable {
     let frameColor: String
     let lenseColor: String
     var color: String { "\(frameColor)/\(lenseColor)" }
@@ -15,7 +15,7 @@ struct ProductVariantDTO: Codable {
     let imgId: Int
 }
 
-struct ProductDTO: Codable {
+struct ProductDTO: Codable, Sendable {
     let id: String
     let name: String
     let type: String
