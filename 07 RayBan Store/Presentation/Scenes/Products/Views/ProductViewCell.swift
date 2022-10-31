@@ -117,14 +117,10 @@ class ProductsViewCell: UICollectionViewCell {
         subviews(
             imageView.subviews(
                 newLabel,
-                colorsLabel,
-                imageShimmerView),
-            nameLabel.subviews(
-                nameShimmerView),
-            priceLabel.subviews(
-                priceShimmerView),
-            buyButton.subviews(
-                buttonShimmerView)
+                colorsLabel),
+            nameLabel,
+            priceLabel,
+            buyButton
         )
         
         let padding = 0.05 * frame.width
@@ -135,6 +131,12 @@ class ProductsViewCell: UICollectionViewCell {
         nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding
         priceLabel.width(90%).centerHorizontally().Top == nameLabel.Bottom + padding
         buyButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
+        
+        // configure shummer views
+        imageView.subviews(imageShimmerView)
+        nameLabel.subviews(nameShimmerView)
+        priceLabel.subviews(priceShimmerView)
+        buyButton.subviews(buttonShimmerView)
         
         imageShimmerView.fillContainer()
         nameShimmerView.fillContainer()

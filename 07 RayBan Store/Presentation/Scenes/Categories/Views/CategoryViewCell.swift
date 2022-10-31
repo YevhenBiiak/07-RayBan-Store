@@ -33,6 +33,9 @@ class CategoryViewCell: UICollectionViewCell {
         return stack
     }()
     
+    private var imageShimmerView = ShimmerView()
+    private var titleShimmerView = ShimmerView()
+    
     // MARK: - Initializers and overridden methods
     
     override init(frame: CGRect) {
@@ -50,25 +53,43 @@ class CategoryViewCell: UICollectionViewCell {
     
     // MARK: - Update methods
     
-    func setTitle(title: String?) {
-        imageView.isHidden = true
-        label.text = title?.uppercased()
-        label.font = label.font.withSize(18)
-    }
-    
-    func setImage(image: UIImage?) {
-        imageView.isHidden = false
-        imageView.image = image
-        label.font = label.font.withSize(16)
+    func configure(with model: CategoryVM) {
+        stopAnimating()
+        if let image = model.image {
+            imageView.isHidden = false
+            imageView.image = image
+            label.font = label.font.withSize(16)
+        } else {
+            imageView.isHidden = true
+            label.font = label.font.withSize(18)
+        }
+        label.text = model.name.uppercased()
     }
     
     // MARK: - Private methods
     
+    func startLoadingAnimation() {
+        imageShimmerView.startShimmerAnimating()
+        titleShimmerView.startShimmerAnimating()
+    }
+    
+    private func stopAnimating() {
+        imageShimmerView.stopShimmerAnimating()
+        titleShimmerView.stopShimmerAnimating()
+    }
+    
     private func configureLayout() {
-        subviews( stackView )
+        subviews(stackView)
         
         label.height(80)
         imageView.width(85%)
         stackView.fillContainer()
+        
+        // configure shummer views
+        subviews(imageShimmerView)
+        subviews(titleShimmerView)
+        
+        imageShimmerView.fillHorizontally().top(0)
+        titleShimmerView.height(35).width(80%).centerHorizontally().bottom(16).Top == imageShimmerView.Bottom + 16
     }
 }

@@ -45,43 +45,6 @@ extension ProductDTO {
     }
 }
 
-extension ProductDTO {
-    var asProductVM: ProductVM {
-        ProductVM(
-            id: self.id,
-            nameLabel: self.name.uppercased(),
-            type: self.type,
-            family: self.family,
-            gender: self.gender,
-            size: self.size,
-            geofit: self.geofit,
-            colorsLabel: "\(self.variations.count) COLORS",
-            variations: self.variations.asProductVariantsVM,
-            details: self.details,
-            images: (self.images ?? [])
-                        .map({UIImage(data: $0)})
-                        .compactMap({$0}) )
-    }
-}
-
-extension Array where Element == ProductDTO {
-    var asProductsVM: [ProductVM] {
-        self.map { item in
-            item.asProductVM
-        }
-    }
-}
-
-extension Array where Element == ProductDTO {
-    var asProductFamilyVM: [ProductFamilyVM] {
-        self.map { item in
-            ProductFamilyVM(
-                productFamily: item.family,
-                imageData: item.images?.first)
-        }
-    }
-}
-
 // MARK: - Data mapping from ProductVariantDTO and [ProductVariantDTO]
 
 extension Array where Element == ProductVariantDTO {

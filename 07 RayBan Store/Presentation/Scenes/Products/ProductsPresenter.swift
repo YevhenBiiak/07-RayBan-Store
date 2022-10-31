@@ -20,7 +20,7 @@ protocol ProductsRouter {
 
 protocol ProductsView: AnyObject {
     func display(title: String)
-    func display(numberOfLoadingProducts: Int)
+    func displayLoading(productsCount: Int)
     func displayError(title: String, message: String?)
     func display(products: [ProductVM], totalNumberOfProducts: Int)
 }
@@ -142,7 +142,7 @@ extension ProductsPresenterImpl {
             // display loading animation
             let left = self.totalNumberOfProducts - self.products.count // products left in DB
             let number = left > 0 && left < first ? left : first
-            view?.display(numberOfLoadingProducts: number)
+            view?.displayLoading(productsCount: number)
             
             // create request
             var request = GetProductsRequest(queries: .type(type), .limit(first: first, skip: skip))

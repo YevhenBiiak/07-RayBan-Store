@@ -15,6 +15,8 @@ class CategoriesRootView: UIView {
         case family
     }
     
+    var section = Section.self
+    
     var сollectionView: UICollectionView!
 
     // MARK: - Initializers and overridden methods
@@ -46,7 +48,9 @@ class CategoriesRootView: UIView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) in
+        return UICollectionViewCompositionalLayout(sectionProvider: {
+            [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) in
+            
             guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
             
             switch sectionKind {

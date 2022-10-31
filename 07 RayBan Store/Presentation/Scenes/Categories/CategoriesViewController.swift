@@ -30,17 +30,34 @@ protocol CategoriesPresenter {
 
 protocol CategoriesView: AnyObject {
     func display(title: String)
+    func display(categories: [CategoryVM])
+    func displayLoading(categoriesCount: Int)
     func displayError(title: String, message: String?)
-    func display(viewModels: [ProductFamilyVM])
 }
 
 class CategoriesViewController: UIViewController, CategoriesView {
+    
+    enum Section: CaseIterable {
+        case category
+        case family
+    }
     
     var configurator: CategoriesConfigurator!
     var presenter: CategoriesPresenter!
     var rootView: CategoriesRootView!
     
-    private var viewModels: [ProductFamilyVM] = []
+    private var categories: [CategoryVM] = []
+    private var dataSource: UICollectionViewDiffableDataSource<Section, CategoryVM>!
+    private var defaultSnapshot: NSDiffableDataSourceSnapshot<Section, CategoryVM> {
+        let title = (self.title ?? "").uppercased()
+        var categories = CategoryVM.defaultCategories
+        categories.append(CategoryVM(name: "ALL \(title)"))
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, CategoryVM>()
+        snapshot.appendSections(Section.allCases)
+        snapshot.appendItems(categories, toSection: .category)
+        return snapshot
+    }
         
     // MARK: - Overridden methods
     
@@ -51,8 +68,8 @@ class CategoriesViewController: UIViewController, CategoriesView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureDataSource()
         setupNavigationBar()
-        setupCollectinView()
         presenter.viewDidLoad()
     }
     
@@ -65,6 +82,27 @@ class CategoriesViewController: UIViewController, CategoriesView {
             if #available(iOS 16.0, *) {
                 self.navigationController?.navigationBar.setNeedsLayout()
             }
+            // apply default snapshot with updated title
+            self.dataSource.apply(self.defaultSnapshot)
+        }
+    }
+    
+    func displayLoading(categoriesCount: Int) {
+        guard categoriesCount > 0 else { return }
+        DispatchQueue.main.async {
+            let emptyCategories = (1...categoriesCount).map { CategoryVM(name: String($0)) }
+            var snapshot = self.dataSource.snapshot()
+            snapshot.appendItems(emptyCategories, toSection: .family)
+            self.dataSource.apply(snapshot)
+        }
+    }
+    
+    func display(categories: [CategoryVM]) {
+        DispatchQueue.main.async {
+            self.categories = categories
+            var snapshot = self.defaultSnapshot
+            snapshot.appendItems(categories, toSection: .family)
+            self.dataSource.apply(snapshot)
         }
     }
     
@@ -74,19 +112,34 @@ class CategoriesViewController: UIViewController, CategoriesView {
         }
     }
     
-    func display(viewModels: [ProductFamilyVM]) {
-        self.viewModels = viewModels
-        DispatchQueue.main.async {
-            self.rootView.сollectionView.reloadData()
-        }
-    }
-     
     // MARK: - Private methods
     
-    private func setupCollectinView() {
-        rootView.сollectionView.register(CategoryViewCell.self, forCellWithReuseIdentifier: CategoryViewCell.reuseId)
+    private func configureDataSource() {
         rootView.сollectionView.delegate = self
-        rootView.сollectionView.dataSource = self
+        let cellRegistration = UICollectionView.CellRegistration<CategoryViewCell, CategoryVM> {
+            [weak self] (cell, indexPath, model) in
+            guard let section = self?.rootView.getSectionKind(forSection: indexPath.section),
+                  let self else { return }
+            
+            switch section {
+            case .category:
+                cell.configure(with: model)
+            case .family:
+                if indexPath.item < self.categories.count {
+                    cell.configure(with: model)
+                } else {
+                    cell.startLoadingAnimation()
+                }
+            }
+        }
+        
+        dataSource = UICollectionViewDiffableDataSource<Section, CategoryVM>(collectionView: rootView.сollectionView, cellProvider: { сollectionView, indexPath, model in
+            return сollectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration, for: indexPath, item: model)
+        })
+        
+        // apply default snapshot
+        dataSource.apply(defaultSnapshot)
     }
     
     private func setupNavigationBar() {
@@ -99,52 +152,6 @@ class CategoriesViewController: UIViewController, CategoriesView {
     
     @objc private func closeButtonTapped() {
         presenter.closeButtonTapped()
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension CategoriesViewController: UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        rootView.getNumberOfSections()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let section = rootView.getSectionKind(forSection: section) else { fatalError() }
-        switch section {
-        case .category: return 4
-        case .family:   return viewModels.count
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryViewCell.reuseId, for: indexPath)
-        
-        if let cell = cell as? CategoryViewCell {
-            guard let section = rootView.getSectionKind(forSection: indexPath.section) else { fatalError() }
-            
-            switch section {
-            case .category:
-                
-                switch indexPath.item {
-                case 0: cell.setTitle(title: "men")
-                case 1: cell.setTitle(title: "women")
-                case 2: cell.setTitle(title: "kids")
-                case 3: cell.setTitle(title: "all " + (title ?? ""))
-                default: fatalError() }
-                
-            case .family:
-                
-                let model = viewModels[indexPath.item]
-                let title = model.productFamily
-                let image = UIImage(data: model.imageData ?? Data())
-                cell.setTitle(title: title)
-                cell.setImage(image: image)
-            }
-        }
-        
-        return cell
     }
 }
 
@@ -166,7 +173,7 @@ extension CategoriesViewController: UICollectionViewDelegate {
             default: fatalError() }
             
         case .family:
-            let family = viewModels[indexPath.item].productFamily
+            let family = categories[indexPath.item].name
             presenter.didSelect(productFamily: family)
         }
     }

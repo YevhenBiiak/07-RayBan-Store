@@ -69,10 +69,10 @@ class ProductsViewController: UIViewController, ProductsView {
         }
     }
     
-    func display(numberOfLoadingProducts: Int) {
-        guard numberOfLoadingProducts > 0 else { return }
+    func displayLoading(productsCount: Int) {
+        guard productsCount > 0 else { return }
         DispatchQueue.main.async {
-            let emptyProducts = (1...numberOfLoadingProducts).map { _ in ProductVM.emptyModel }
+            let emptyProducts = (1...productsCount).map { _ in ProductVM.emptyModel }
             
             var snapshot = self.dataSource.snapshot()
             snapshot.appendItems(emptyProducts)

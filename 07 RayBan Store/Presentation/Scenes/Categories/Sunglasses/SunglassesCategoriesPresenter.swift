@@ -26,27 +26,27 @@ class SunglassesCategoriesPresenterImpl: CategoriesPresenter {
     // MARK: - CategoriesPresenter
     
     func viewDidLoad() {
-        view?.display(title: ProductType.sunglasses.rawValue)
-        let request = GetProductsRequest(queries: .representationOfProductFamilies(ofType: .sunglasses))
-        getProductsUseCase.execute(request) { [weak self]  (result: Result<GetProductsResponse>) in
-            switch result {
-            case .success(let response):
-                self?.products = response.products
-                self?.view?.display(viewModels: response.products.asProductFamilyVM)
-            case .failure(let error):
-                self?.view?.displayError(title: error.localizedDescription, message: nil)
-            }
+        Task {
+            view?.display(title: ProductType.sunglasses.rawValue)
+            view?.displayLoading(categoriesCount: 7)
             
+            let request = GetProductsRequest(queries: .representationOfProductFamilies(ofType: .sunglasses))
+            do {/* execute request */
+                let response = try await getProductsUseCase.execute(request)
+                products = response.products
+                view?.display(categories: response.products.asCategoriesVM)
+            } catch {
+                print(error)
+                view?.displayError(title: error.localizedDescription, message: nil)
+            }
         }
     }
     
-    // swiftlint:disable opening_brace
-    func closeButtonTapped()    { router.returnToProducts() }
-    func didTapMensProducts()   { router.presentProducts(category: .men) }
+    func closeButtonTapped() {    router.returnToProducts() }
+    func didTapMensProducts() {   router.presentProducts(category: .men) }
     func didTapWomensProducts() { router.presentProducts(category: .women) }
-    func didTapKidsProducts()   { router.presentProducts(category: .kids) }
-    func didTapAllProducts()    { router.presentAllProducts() }
-    // swiftlint:enable opening_brace
+    func didTapKidsProducts() {   router.presentProducts(category: .kids) }
+    func didTapAllProducts() {    router.presentAllProducts() }
     
     func didSelect(productFamily: String) {
         guard let family = ProductFamily(rawValue: productFamily.lowercased())

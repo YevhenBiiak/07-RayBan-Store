@@ -72,7 +72,7 @@ class GetProductsUseCaseImpl: GetProductsUseCase {
             return GetProductsResponse(products: result.products, totalNumberOfProducts: result.totalCount)
         }
         
-        fatalError("add query to GetProductsRequest")
+        fatalError("add queries to GetProductsRequest")
     }
     
     func execute(_ request: GetProductsRequest, completionHandler: @escaping (Result<GetProductsResponse>) -> Void) {
