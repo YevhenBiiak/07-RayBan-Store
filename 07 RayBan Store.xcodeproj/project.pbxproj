@@ -25,7 +25,10 @@
 		573A25C328E83714000B1548 /* SunglassesCategoriesConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573A25C228E83714000B1548 /* SunglassesCategoriesConfigurator.swift */; };
 		573A25C528E83934000B1548 /* SunglassesCategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573A25C428E83934000B1548 /* SunglassesCategoriesRouter.swift */; };
 		573A25C728E8399E000B1548 /* SunglassesCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573A25C628E8399E000B1548 /* SunglassesCategoriesPresenter.swift */; };
-		574F275728C349AB0092D293 /* IsUserAuthenticatedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F275628C349AB0092D293 /* IsUserAuthenticatedUseCase.swift */; };
+		5740C5A3298A87D5006B432E /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5740C5A2298A87D4006B432E /* SplashScreen.swift */; };
+		57433E0D298AF46A00E723CB /* String + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 57433E0C298AF46A00E723CB /* String + .swift */; };
+		57433E0F298AF50900E723CB /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57433E0E298AF50900E723CB /* TextField.swift */; };
+		57433E13298B036400E723CB /* ForgotPasswordRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57433E12298B036400E723CB /* ForgotPasswordRequest.swift */; };
 		574F275928C360550092D293 /* GetProductsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F275828C360550092D293 /* GetProductsRequest.swift */; };
 		574F275B28C364920092D293 /* GetProductsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F275A28C364920092D293 /* GetProductsResponse.swift */; };
 		574F275E28C368B10092D293 /* ProductDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F275D28C368B00092D293 /* ProductDTO.swift */; };
@@ -94,11 +97,8 @@
 		5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020D28BC040E007FB72F /* AuthGateway.swift */; };
 		5773021028BCE474007FB72F /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020F28BCE474007FB72F /* Result.swift */; };
 		577B93C428C1E12100E31B88 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C328C1E12100E31B88 /* LoginRequest.swift */; };
-		577B93CA28C1F8B400E31B88 /* LoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C928C1F8B400E31B88 /* LoginUseCase.swift */; };
-		577B93D028C2059E00E31B88 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93CF28C2059E00E31B88 /* RegisterUseCase.swift */; };
-		577B93D328C2064600E31B88 /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D228C2064600E31B88 /* RegisterRequest.swift */; };
-		577B93D728C20FE300E31B88 /* LoginWithFacebookUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D628C20FE300E31B88 /* LoginWithFacebookUseCase.swift */; };
-		577B93DD28C21A8900E31B88 /* LogoutUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93DC28C21A8900E31B88 /* LogoutUseCase.swift */; };
+		577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C928C1F8B400E31B88 /* AuthUseCase.swift */; };
+		577B93D328C2064600E31B88 /* RegistrationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D228C2064600E31B88 /* RegistrationRequest.swift */; };
 		5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000228D5FC7D003766F0 /* ProductsRootView.swift */; };
 		5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000628D5FCFC003766F0 /* UIColor +.swift */; };
 		5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000828D5FD94003766F0 /* ProductViewCell.swift */; };
@@ -107,6 +107,12 @@
 		5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784001028D5FEBC003766F0 /* ProductsPresenter.swift */; };
 		578DB1AF2906D039009C1FD2 /* Array +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DB1AE2906D039009C1FD2 /* Array +.swift */; };
 		578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578DB1B02906D50D009C1FD2 /* ShimmerView.swift */; };
+		579404DA298D1C970048FD33 /* RegistrationConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404D9298D1C970048FD33 /* RegistrationConfigurator.swift */; };
+		579404DC298D1CB40048FD33 /* RegistrationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404DB298D1CB40048FD33 /* RegistrationPresenter.swift */; };
+		579404DE298D1CC90048FD33 /* RegistrationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404DD298D1CC90048FD33 /* RegistrationRouter.swift */; };
+		579404E0298D1CE00048FD33 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404DF298D1CE00048FD33 /* RegistrationViewController.swift */; };
+		579404E3298D1D010048FD33 /* RegistrationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E2298D1D010048FD33 /* RegistrationRootView.swift */; };
+		579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E5298D604B0048FD33 /* AlertViewController.swift */; };
 		57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4628DCB62000819E88 /* CheckboxButton.swift */; };
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
 		57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17328D77E4500A9007B /* Lato-Thin.ttf */; };
@@ -165,7 +171,10 @@
 		573A25C228E83714000B1548 /* SunglassesCategoriesConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunglassesCategoriesConfigurator.swift; sourceTree = "<group>"; };
 		573A25C428E83934000B1548 /* SunglassesCategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunglassesCategoriesRouter.swift; sourceTree = "<group>"; };
 		573A25C628E8399E000B1548 /* SunglassesCategoriesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunglassesCategoriesPresenter.swift; sourceTree = "<group>"; };
-		574F275628C349AB0092D293 /* IsUserAuthenticatedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsUserAuthenticatedUseCase.swift; sourceTree = "<group>"; };
+		5740C5A2298A87D4006B432E /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		57433E0C298AF46A00E723CB /* String + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + .swift"; sourceTree = "<group>"; };
+		57433E0E298AF50900E723CB /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		57433E12298B036400E723CB /* ForgotPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequest.swift; sourceTree = "<group>"; };
 		574F275828C360550092D293 /* GetProductsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProductsRequest.swift; sourceTree = "<group>"; };
 		574F275A28C364920092D293 /* GetProductsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProductsResponse.swift; sourceTree = "<group>"; };
 		574F275D28C368B00092D293 /* ProductDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDTO.swift; sourceTree = "<group>"; };
@@ -234,13 +243,8 @@
 		5773020D28BC040E007FB72F /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
 		5773020F28BCE474007FB72F /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		577B93C328C1E12100E31B88 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
-		577B93C928C1F8B400E31B88 /* LoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUseCase.swift; sourceTree = "<group>"; };
-		577B93CF28C2059E00E31B88 /* RegisterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUseCase.swift; sourceTree = "<group>"; };
-		577B93D228C2064600E31B88 /* RegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequest.swift; sourceTree = "<group>"; };
-		577B93D628C20FE300E31B88 /* LoginWithFacebookUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithFacebookUseCase.swift; sourceTree = "<group>"; };
-		577B93D928C2199900E31B88 /* ForgotPasswordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordUseCase.swift; sourceTree = "<group>"; };
-		577B93DA28C2199900E31B88 /* ForgotPasswordRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequest.swift; sourceTree = "<group>"; };
-		577B93DC28C21A8900E31B88 /* LogoutUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutUseCase.swift; sourceTree = "<group>"; };
+		577B93C928C1F8B400E31B88 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
+		577B93D228C2064600E31B88 /* RegistrationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequest.swift; sourceTree = "<group>"; };
 		5784000228D5FC7D003766F0 /* ProductsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRootView.swift; sourceTree = "<group>"; };
 		5784000628D5FCFC003766F0 /* UIColor +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor +.swift"; sourceTree = "<group>"; };
 		5784000828D5FD94003766F0 /* ProductViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewCell.swift; sourceTree = "<group>"; };
@@ -249,6 +253,12 @@
 		5784001028D5FEBC003766F0 /* ProductsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsPresenter.swift; sourceTree = "<group>"; };
 		578DB1AE2906D039009C1FD2 /* Array +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array +.swift"; sourceTree = "<group>"; };
 		578DB1B02906D50D009C1FD2 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
+		579404D9298D1C970048FD33 /* RegistrationConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationConfigurator.swift; sourceTree = "<group>"; };
+		579404DB298D1CB40048FD33 /* RegistrationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPresenter.swift; sourceTree = "<group>"; };
+		579404DD298D1CC90048FD33 /* RegistrationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRouter.swift; sourceTree = "<group>"; };
+		579404DF298D1CE00048FD33 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		579404E2298D1D010048FD33 /* RegistrationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRootView.swift; sourceTree = "<group>"; };
+		579404E5298D604B0048FD33 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		57A1BF4628DCB62000819E88 /* CheckboxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxButton.swift; sourceTree = "<group>"; };
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
 		57BDD17328D77E4500A9007B /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
@@ -369,14 +379,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		574F275528C349810092D293 /* IsUserAuthenticated */ = {
-			isa = PBXGroup;
-			children = (
-				574F275628C349AB0092D293 /* IsUserAuthenticatedUseCase.swift */,
-			);
-			path = IsUserAuthenticated;
-			sourceTree = "<group>";
-		};
 		574F275C28C368A40092D293 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,10 +479,12 @@
 			isa = PBXGroup;
 			children = (
 				574F27A528C68D900092D293 /* Login */,
+				579404D8298D1C5C0048FD33 /* Registration */,
 				5784000128D5FC67003766F0 /* Products */,
 				57BDD18A28D785F500A9007B /* ProductDetails */,
 				571AA49B28E0CEF60078F6A9 /* Lists */,
 				57ED3DBD28E5F7200015CFDE /* Categories */,
+				579404E4298D60270048FD33 /* Alert */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -571,6 +575,7 @@
 				57FF081628A503B600FE5FC9 /* ViewController.swift */,
 				57FF081228A503B600FE5FC9 /* AppDelegate.swift */,
 				57FF081428A503B600FE5FC9 /* SceneDelegate.swift */,
+				5740C5A2298A87D4006B432E /* SplashScreen.swift */,
 				57FF081B28A503B700FE5FC9 /* Assets.xcassets */,
 				57FF081D28A503B700FE5FC9 /* LaunchScreen.storyboard */,
 				57FF082028A503B700FE5FC9 /* Info.plist */,
@@ -658,12 +663,8 @@
 		577B93BD28C1DBC300E31B88 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				574F275528C349810092D293 /* IsUserAuthenticated */,
-				577B93CC28C1FB4000E31B88 /* Login */,
-				577B93CE28C2058A00E31B88 /* Register */,
-				577B93D528C20FB100E31B88 /* LoginWithFacebook */,
-				577B93D828C2198600E31B88 /* ForgotPassword */,
-				577B93DB28C21A7200E31B88 /* Logout */,
+				577B93C928C1F8B400E31B88 /* AuthUseCase.swift */,
+				577B93CC28C1FB4000E31B88 /* Requests */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -698,13 +699,14 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
-		577B93CC28C1FB4000E31B88 /* Login */ = {
+		577B93CC28C1FB4000E31B88 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
-				577B93C928C1F8B400E31B88 /* LoginUseCase.swift */,
 				577B93C328C1E12100E31B88 /* LoginRequest.swift */,
+				577B93D228C2064600E31B88 /* RegistrationRequest.swift */,
+				57433E12298B036400E723CB /* ForgotPasswordRequest.swift */,
 			);
-			path = Login;
+			path = Requests;
 			sourceTree = "<group>";
 		};
 		577B93CD28C1FB9B00E31B88 /* Common */ = {
@@ -719,40 +721,6 @@
 				575F562328EB3A5400A44E6D /* ProductFamily.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		577B93CE28C2058A00E31B88 /* Register */ = {
-			isa = PBXGroup;
-			children = (
-				577B93CF28C2059E00E31B88 /* RegisterUseCase.swift */,
-				577B93D228C2064600E31B88 /* RegisterRequest.swift */,
-			);
-			path = Register;
-			sourceTree = "<group>";
-		};
-		577B93D528C20FB100E31B88 /* LoginWithFacebook */ = {
-			isa = PBXGroup;
-			children = (
-				577B93D628C20FE300E31B88 /* LoginWithFacebookUseCase.swift */,
-			);
-			path = LoginWithFacebook;
-			sourceTree = "<group>";
-		};
-		577B93D828C2198600E31B88 /* ForgotPassword */ = {
-			isa = PBXGroup;
-			children = (
-				577B93D928C2199900E31B88 /* ForgotPasswordUseCase.swift */,
-				577B93DA28C2199900E31B88 /* ForgotPasswordRequest.swift */,
-			);
-			path = ForgotPassword;
-			sourceTree = "<group>";
-		};
-		577B93DB28C21A7200E31B88 /* Logout */ = {
-			isa = PBXGroup;
-			children = (
-				577B93DC28C21A8900E31B88 /* LogoutUseCase.swift */,
-			);
-			path = Logout;
 			sourceTree = "<group>";
 		};
 		5784000128D5FC67003766F0 /* Products */ = {
@@ -782,6 +750,7 @@
 			isa = PBXGroup;
 			children = (
 				5784000628D5FCFC003766F0 /* UIColor +.swift */,
+				57433E0C298AF46A00E723CB /* String + .swift */,
 				578DB1AE2906D039009C1FD2 /* Array +.swift */,
 				57D0828F28F44398005FF050 /* UIViewController +.swift */,
 				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
@@ -803,9 +772,38 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		579404D8298D1C5C0048FD33 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				579404E1298D1CF70048FD33 /* Views */,
+				579404D9298D1C970048FD33 /* RegistrationConfigurator.swift */,
+				579404DB298D1CB40048FD33 /* RegistrationPresenter.swift */,
+				579404DF298D1CE00048FD33 /* RegistrationViewController.swift */,
+				579404DD298D1CC90048FD33 /* RegistrationRouter.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		579404E1298D1CF70048FD33 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				579404E2298D1D010048FD33 /* RegistrationRootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		579404E4298D60270048FD33 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				579404E5298D604B0048FD33 /* AlertViewController.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		57A1BF4428DCB44700819E88 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				57433E0E298AF50900E723CB /* TextField.swift */,
 				57A1BF4628DCB62000819E88 /* CheckboxButton.swift */,
 				578DB1B02906D50D009C1FD2 /* ShimmerView.swift */,
 				57D0828B28F317C5005FF050 /* ZoomableView.swift */,
@@ -1087,6 +1085,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				571AA4AA28E1C15F0078F6A9 /* HeaderReusableView.swift in Sources */,
+				57433E0F298AF50900E723CB /* TextField.swift in Sources */,
 				5720BF6528D4DF84003EBAA6 /* OrderGatewayImpl.swift in Sources */,
 				571AA4A428E0D31C0078F6A9 /* AppMenuConfigurator.swift in Sources */,
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
@@ -1095,12 +1094,12 @@
 				578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
 				5752CE3A28DB743F001BAE4A /* ProductActionsViewCell.swift in Sources */,
+				5740C5A3298A87D5006B432E /* SplashScreen.swift in Sources */,
 				57508A6928BFDC71000328AC /* CartGateway.swift in Sources */,
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
 				5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */,
 				57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */,
 				57BDD19728D892E900A9007B /* ProductImagesViewCell.swift in Sources */,
-				577B93D028C2059E00E31B88 /* RegisterUseCase.swift in Sources */,
 				575F562428EB3A5400A44E6D /* ProductFamily.swift in Sources */,
 				57CFFA2C28F6BB120031519F /* ImageType.swift in Sources */,
 				5773020A28BC0226007FB72F /* GetProductsUseCase.swift in Sources */,
@@ -1114,6 +1113,7 @@
 				574F27A128C676970092D293 /* CreateOrderResponse.swift in Sources */,
 				5773020828BC010F007FB72F /* ProductGateway.swift in Sources */,
 				57508A4A28BE4BBF000328AC /* Cart.swift in Sources */,
+				579404DE298D1CC90048FD33 /* RegistrationRouter.swift in Sources */,
 				57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */,
 				574F278B28C4B6720092D293 /* CartItemDTO.swift in Sources */,
 				571AA4A028E0D2EF0078F6A9 /* AppMenuPresenter.swift in Sources */,
@@ -1121,6 +1121,7 @@
 				57D0828E28F326B9005FF050 /* PromoViewCell.swift in Sources */,
 				57508A4C28BE4DF7000328AC /* Order.swift in Sources */,
 				571AA49E28E0D2D60078F6A9 /* ListViewController.swift in Sources */,
+				57433E0D298AF46A00E723CB /* String + .swift in Sources */,
 				5752CE3228DB721E001BAE4A /* UICollectionReusableView +.swift in Sources */,
 				571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */,
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
@@ -1132,11 +1133,10 @@
 				5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */,
 				571AA4A628E0D36C0078F6A9 /* ListRootView.swift in Sources */,
 				57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */,
-				577B93D328C2064600E31B88 /* RegisterRequest.swift in Sources */,
+				577B93D328C2064600E31B88 /* RegistrationRequest.swift in Sources */,
 				57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */,
 				5763FFAE28CD09D800E48713 /* SaveRequest.swift in Sources */,
 				5773020428BBFE9A007FB72F /* Product.swift in Sources */,
-				577B93D728C20FE300E31B88 /* LoginWithFacebookUseCase.swift in Sources */,
 				57508A5D28BFB34B000328AC /* ProductImagesApi.swift in Sources */,
 				57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */,
 				57ED3DC228E73B5E0015CFDE /* CategoriesRootView.swift in Sources */,
@@ -1156,18 +1156,19 @@
 				574F278028C38F970092D293 /* UpdateCartItemAmountUseCase.swift in Sources */,
 				574F276C28C38AFE0092D293 /* IsProfileFilledUseCase.swift in Sources */,
 				5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */,
+				579404E0298D1CE00048FD33 /* RegistrationViewController.swift in Sources */,
 				57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */,
 				57ED3DC028E6F01D0015CFDE /* CategoriesViewController.swift in Sources */,
 				571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */,
 				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				574F279D28C539D50092D293 /* FetchCartItemsResponse.swift in Sources */,
 				5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */,
-				574F275728C349AB0092D293 /* IsUserAuthenticatedUseCase.swift in Sources */,
 				5720BF6B28D4EA2D003EBAA6 /* LoginRootView.swift in Sources */,
 				57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */,
+				579404DA298D1C970048FD33 /* RegistrationConfigurator.swift in Sources */,
+				579404DC298D1CB40048FD33 /* RegistrationPresenter.swift in Sources */,
 				57ED3DBC28E5EA3E0015CFDE /* AccountMenuPresenter.swift in Sources */,
 				574F279928C535A80092D293 /* DeleteCartItemResponse.swift in Sources */,
-				577B93DD28C21A8900E31B88 /* LogoutUseCase.swift in Sources */,
 				574F276E28C38BDB0092D293 /* UpdateProfileUseCase.swift in Sources */,
 				57508A5828BF45E5000328AC /* AuthProvider.swift in Sources */,
 				574F275E28C368B10092D293 /* ProductDTO.swift in Sources */,
@@ -1175,12 +1176,14 @@
 				574F279B28C538BC0092D293 /* UpdateCartItemAmountResponse.swift in Sources */,
 				573A25C528E83934000B1548 /* SunglassesCategoriesRouter.swift in Sources */,
 				574F275928C360550092D293 /* GetProductsRequest.swift in Sources */,
+				57433E13298B036400E723CB /* ForgotPasswordRequest.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
 				5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */,
 				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
 				574F279128C531BF0092D293 /* DeleteCartItemRequest.swift in Sources */,
 				574F277C28C38F860092D293 /* AddCartItemUseCase.swift in Sources */,
+				579404E3298D1D010048FD33 /* RegistrationRootView.swift in Sources */,
 				574F27AD28CB5A510092D293 /* Session.swift in Sources */,
 				574F278628C390680092D293 /* AddCartItemRequest.swift in Sources */,
 				5720BF6728D4E646003EBAA6 /* LoginConfigurator.swift in Sources */,
@@ -1200,10 +1203,11 @@
 				57BDD18E28D786B100A9007B /* ProductDetailsPresenter.swift in Sources */,
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,
 				571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */,
-				577B93CA28C1F8B400E31B88 /* LoginUseCase.swift in Sources */,
+				577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */,
 				575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
+				579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1380,8 +1384,6 @@
 					"-framework",
 					"\"FirebaseCore\"",
 					"-framework",
-					"\"FirebaseCoreDiagnostics\"",
-					"-framework",
 					"\"FirebaseCoreInternal\"",
 					"-framework",
 					"\"FirebaseDatabase\"",
@@ -1389,8 +1391,6 @@
 					"\"Foundation\"",
 					"-framework",
 					"\"GTMSessionFetcher\"",
-					"-framework",
-					"\"GoogleDataTransport\"",
 					"-framework",
 					"\"GoogleUtilities\"",
 					"-framework",
@@ -1403,8 +1403,6 @@
 					"\"UIKit\"",
 					"-framework",
 					"\"leveldb\"",
-					"-framework",
-					"\"nanopb\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ios.biiak.-7-RayBan-Store";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1459,8 +1457,6 @@
 					"-framework",
 					"\"FirebaseCore\"",
 					"-framework",
-					"\"FirebaseCoreDiagnostics\"",
-					"-framework",
 					"\"FirebaseCoreInternal\"",
 					"-framework",
 					"\"FirebaseDatabase\"",
@@ -1468,8 +1464,6 @@
 					"\"Foundation\"",
 					"-framework",
 					"\"GTMSessionFetcher\"",
-					"-framework",
-					"\"GoogleDataTransport\"",
 					"-framework",
 					"\"GoogleUtilities\"",
 					"-framework",
@@ -1482,8 +1476,6 @@
 					"\"UIKit\"",
 					"-framework",
 					"\"leveldb\"",
-					"-framework",
-					"\"nanopb\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ios.biiak.-7-RayBan-Store";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -28,7 +28,7 @@ class ProductPropertyViewCell: UICollectionViewCell {
     }
     
     override func draw(_ rect: CGRect) {
-        addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
+        addBorder(at: .top, color: UIColor.appDarkGray, width: 0.5)
     }
     
     func configure(title: String, value: String?) {

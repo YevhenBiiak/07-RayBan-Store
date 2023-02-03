@@ -5,17 +5,33 @@
 //  Created by Евгений Бияк on 16.09.2022.
 //
 
-import Foundation
+import UIKit
 
 class LoginRouterImpl: LoginRouter {
     
-    private weak var loginViewController: LoginViewController?
+    private weak var viewController: LoginViewController!
     
-    init(loginViewController: LoginViewController) {
-        self.loginViewController = loginViewController
+    private var navigationController: UINavigationController? {
+        viewController.navigationController
+    }
+    
+    init(viewController: LoginViewController) {
+        self.viewController = viewController
     }
     
     func dismiss(animated flag: Bool, completion: (() -> Void)?) {
-        loginViewController?.dismiss(animated: flag, completion: completion)
+        viewController?.dismiss(animated: flag, completion: completion)
+    }
+
+    func presentProducts(user: User) {
+        // create Products viewcontroller
+    }
+    
+    func presentRegistrationScene() {
+        let registrationViewController = RegistrationViewController()
+        let registrationConfigurator = RegistrationConfiguratorImpl()
+        
+        registrationViewController.configurator = registrationConfigurator
+        navigationController?.pushViewController(registrationViewController, animated: true)
     }
 }

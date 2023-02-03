@@ -16,21 +16,17 @@ extension UIView {
         self.layer.borderWidth = width
     }
     
-    func addBorder(atPosition position: [BorderPosition], color: UIColor, width: CGFloat) {
-        position.forEach { position in
-            addBorder(atPosition: position, color: color, width: width)
-        }
-    }
-    
-    func addBorder(atPosition position: BorderPosition, color: UIColor, width: CGFloat) {
+    @discardableResult
+    func addBorder(at position: BorderPosition, color: UIColor, width: CGFloat) -> CALayer {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         switch position {
-        case .top: border.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: width)
-        case .left: border.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.size.height)
-        case .right: border.frame = CGRect(x: self.frame.size.width - width, y: 0, width: width, height: self.frame.size.height)
-        case .bottom: border.frame = CGRect(x: 0, y: self.frame.size.height - width, width: self.frame.size.width, height: width)
+        case .top:    border.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: width)
+        case .left:   border.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.height)
+        case .right:  border.frame = CGRect(x: self.frame.width - width, y: 0, width: width, height: self.frame.height)
+        case .bottom: border.frame = CGRect(x: 0, y: self.frame.height - width, width: self.frame.width, height: width)
         }
         self.layer.addSublayer(border)
+        return border
     }
 }

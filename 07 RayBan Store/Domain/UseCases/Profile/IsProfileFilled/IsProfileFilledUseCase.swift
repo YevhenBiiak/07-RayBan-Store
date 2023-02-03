@@ -20,14 +20,14 @@ class IsProfileFilledUseCaseImpl: IsProfileFilledUseCase {
     }
     
     func execute(completionHandler: @escaping (Result<Bool>) -> Void) {
-        let userId = Session.shared.userId
-        profileGateway.fetchProfile(byUserId: userId) { result in
-            switch result {
-            case .success(let profileDTO):
-                completionHandler(.success(profileDTO.asProfile.isProfileFilled))
-            case .failure(let error):
-                completionHandler(.failure(error))
-            }
-        }
+//        let userId = Session.shared.userId
+//        profileGateway.fetchProfile(byUserId: userId) { result in
+//            switch result {
+//            case .success(let profileDTO):
+//                completionHandler(.success(profileDTO.asProfile.isProfileFilled))
+//            case .failure(let error):
+//                completionHandler(.failure(error))
+//            }
+//        }
     }
 }

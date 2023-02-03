@@ -18,6 +18,7 @@
     <string>269785df5cb66ad2a433c35e104900e4</string>
     <key>FacebookDisplayName</key>
     <string>07-RayBan-Store</string>
+    
     <key>LSApplicationQueriesSchemes</key>
     <array>
         <string>fbapi</string>

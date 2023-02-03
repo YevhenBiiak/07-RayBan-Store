@@ -11,15 +11,8 @@ protocol ProductImagesApi {
     func loadImages(_ types: [ImageType], imageId: Int, bgColor: UIColor) async throws -> [Data]
 }
 
-protocol RemoteRepository {
-    func executeFetchRequest<T: Decodable>(ofType request: FetchRequest) async throws -> T
-    func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void)
-    func executeSaveRequest(ofType request: SaveRequest, completionHandler: @escaping (Result<Bool>) -> Void)
-}
-
 class ProductGatewayImpl: ProductGateway {
     
-    private let operationQueue = OperationQueue()
     private let productImagesApi: ProductImagesApi
     private let remoteRepository: RemoteRepository
     
@@ -30,8 +23,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // One Product by Id
     func fetchProduct(byId productId: String, productColor: String?) async throws -> FetchProductsResult {
-        var product: ProductDTO = try await remoteRepository.executeFetchRequest(
-            ofType: .productById(id: productId))
+        var product = try await remoteRepository.execute(.fetchProduct(id: productId, type: ProductDTO.self))
         
         let imageId = product.getImageId(forColor: productColor)
         
@@ -44,8 +36,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // Products by Type, Category, Family
     func fetchProducts(type: ProductType, category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int) async throws -> FetchProductsResult {
-        var products: [ProductDTO] = try await remoteRepository.executeFetchRequest(
-            ofType: .productsByType(name: type.rawValue))
+        var products = try await remoteRepository.execute(.fetchProducts(category: type.rawValue, type: [ProductDTO].self))
         
         let totalCount = products.count
         
@@ -58,7 +49,7 @@ class ProductGatewayImpl: ProductGateway {
     
     // Representation Of Product Families Of Type
     func fetchProducts(asRepresentationOfProductFamiliesOfType type: ProductType) async throws -> FetchProductsResult {
-        var products: [ProductDTO] = try await remoteRepository.executeFetchRequest(ofType: .productsByType(name: type.rawValue))
+        var products = try await remoteRepository.execute(.fetchProducts(category: type.rawValue, type: [ProductDTO].self))
         
         products = products.getFirstProductsForProductsFamilies()
         

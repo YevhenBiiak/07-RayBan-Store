@@ -57,7 +57,7 @@ class ProductDescriptionViewCell: UICollectionViewCell {
     }
     
     override func draw(_ rect: CGRect) {
-        addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
+        addBorder(at: .top, color: .appDarkGray, width: 0.5)
     }
     
     // MARK: - Update methods

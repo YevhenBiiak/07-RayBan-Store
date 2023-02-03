@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol LoginConfigurator {
     func configure(loginViewController: LoginViewController)
 }
@@ -15,14 +16,13 @@ class LoginConfiguratorImpl: LoginConfigurator {
     
     func configure(loginViewController: LoginViewController) {
         
-        let authProvider = AuthProviderImpl()
         let remoteRepository = RemoteRepositoryImpl()
         let profileGateway = ProfileGatewayImpl(remoteRepository: remoteRepository)
-        let authGateway = AuthGatewayImpl(authProvider: authProvider, profileGateway: profileGateway)
-        let loginUseCase = LoginUseCaseImpl(authGateway: authGateway)
+        let authGateway = AuthGatewayImpl(profileGateway: profileGateway)
+        let authUseCase = AuthUseCaseImpl(authGateway: authGateway)
         
-        let loginRouter = LoginRouterImpl(loginViewController: loginViewController)
-        let loginPresenter = LoginPresenterImpl(loginView: loginViewController, loginUseCase: loginUseCase, loginRouter: loginRouter)
+        let loginRouter = LoginRouterImpl(viewController: loginViewController)
+        let loginPresenter = LoginPresenterImpl(view: loginViewController, authUseCase: authUseCase, router: loginRouter)
         let loginRootView = LoginRootView()
         
         loginViewController.presenter = loginPresenter

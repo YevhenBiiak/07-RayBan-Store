@@ -8,19 +8,26 @@
 import Foundation
 import FirebaseDatabase
 
+protocol RemoteRepository {
+    func execute(_ request: SaveRequest) async throws
+    func execute<T>(_ request: FetchRequest<T>) async throws -> T where T: Decodable
+}
+
 class RemoteRepositoryImpl: RemoteRepository {
-    
+ 
     private let database: DatabaseReference = Database.database().reference()
     
-    func executeFetchRequest<T>(ofType request: FetchRequest) async throws -> T where T: Decodable {
+    func execute(_ request: SaveRequest) async throws {
+        try await database.child(request.path).child(request.key).updateChildValues(request.value.asDictionary)
+    }
+    
+    func execute<T>(_ request: FetchRequest<T>) async throws -> T where T: Decodable {
         try await withCheckedThrowingContinuation { continuation in
-            executeFetchRequest(ofType: request) { result in
-                continuation.resume(with: result)
-            }
+            execute(request, completionHandler: continuation.resume)
         }
     }
     
-    func executeFetchRequest<T: Decodable>(ofType request: FetchRequest, completionHandler: @escaping (Result<T>) -> Void) {
+    func execute<T: Decodable>(_ request: FetchRequest<T>, completionHandler: @escaping (Result<T>) -> Void) {
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
         // print(request.path, request.queryKey, request.queryValue)
         if let queryKey = request.queryKey { dbQuery = dbQuery.queryOrdered(byChild: queryKey) }
@@ -57,16 +64,6 @@ class RemoteRepositoryImpl: RemoteRepository {
             }
         } withCancel: { error in
             completionHandler(.failure(error))
-        }
-    }
-    
-    func executeSaveRequest(ofType request: SaveRequest, completionHandler: @escaping (Result<Bool>) -> Void) {
-        database.child(request.path).child(request.key).setValue(request.value.asDictionary) { error, _ in
-            if let error = error {
-                return completionHandler(.failure(error))
-            }
-            
-            completionHandler(.success(true))
         }
     }
 }

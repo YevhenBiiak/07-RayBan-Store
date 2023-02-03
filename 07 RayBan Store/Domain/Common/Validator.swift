@@ -43,14 +43,14 @@ struct Validator {
 
 extension Validator {
     /// Represents error type with detailed description.
-    enum ValidationError: Error, Equatable {
+    enum ValidationError: Error, LocalizedError {
         case emailFormatIsWrong
         case emailFormatIsDublicated
         case passwordLengthIsWrong
         case valueIsEmpty(String)
         case unknown
         
-        var localizedDescription: String {
+        var errorDescription: String? {
             switch self {
             case .emailFormatIsWrong:
                 return "Email has wrong format. Please edit it."

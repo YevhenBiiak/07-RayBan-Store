@@ -7,39 +7,64 @@
 
 import Foundation
 
+@MainActor
 protocol LoginRouter {
+    func presentProducts(user: User)
+    func presentRegistrationScene()
     func dismiss(animated flag: Bool, completion: (() -> Void)?)
 }
 
+@MainActor
 protocol LoginView: AnyObject {
-    func displayError(_ error: Error)
+    func displayError(title: String, message: String, completion: (() -> Void)?)
 }
 
 protocol LoginPresenter {
-    func loginButtonTapped(email: String, password: String)
+    func loginButtonTapped(email: String, password: String) async
+    func loginWithFacebookButtonTapped() async
+    func createAccountButtonTapped() async
+    func forgotPasswordButtonTapped() async
 }
 
-class LoginPresenterImpl: LoginPresenter {
+class LoginPresenterImpl {
     
-    private weak var loginView: LoginView?
-    private var loginRouter: LoginRouter
-    private let loginUseCase: LoginUseCase
+    private weak var view: LoginView?
+    private let router: LoginRouter
+    private let authUseCase: AuthUseCase
     
-    init(loginView: LoginView?, loginUseCase: LoginUseCase, loginRouter: LoginRouter) {
-        self.loginView = loginView
-        self.loginUseCase = loginUseCase
-        self.loginRouter = loginRouter
+    init(view: LoginView?, authUseCase: AuthUseCase, router: LoginRouter) {
+        self.view = view
+        self.authUseCase = authUseCase
+        self.router = router
+    }
+}
+
+extension LoginPresenterImpl: LoginPresenter {
+    
+    func loginButtonTapped(email: String, password: String) async {
+        let loginRequest = LoginRequest(email: email, password: password)
+        do {
+            let user = try await authUseCase.execute(loginRequest)
+            await router.presentProducts(user: user)
+        } catch {
+            await view?.displayError(title: "Error", message: error.localizedDescription, completion: nil)
+        }
     }
     
-    func loginButtonTapped(email: String, password: String) {
-        let loginRequest = LoginRequest(email: email, password: password)
-        loginUseCase.execute(loginRequest) { [weak self] result in
-            switch result {
-            case .success:
-                self?.loginRouter.dismiss(animated: true, completion: nil)
-            case .failure(let error):
-                self?.loginView?.displayError(error)
-            }
+    func loginWithFacebookButtonTapped() async {
+        do {
+            let user = try await authUseCase.executeLoginWithFacebookRequest()
+            await router.presentProducts(user: user)
+        } catch {
+            await view?.displayError(title: "Error", message: error.localizedDescription, completion: nil)
         }
+    }
+    
+    func createAccountButtonTapped() async {
+        await router.presentRegistrationScene()
+    }
+    
+    func forgotPasswordButtonTapped() async {
+        // router.presentForgotPasswordScene()
     }
 }

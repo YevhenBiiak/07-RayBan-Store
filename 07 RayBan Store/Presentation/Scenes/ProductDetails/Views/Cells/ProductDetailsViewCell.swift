@@ -39,7 +39,7 @@ class ProductDetailsViewCell: UICollectionViewCell {
     }
     
     override func draw(_ rect: CGRect) {
-        addBorder(atPosition: .top, color: UIColor.appDarkGray, width: 0.5)
+        addBorder(at: .top, color: .appDarkGray, width: 0.5)
     }
     
     func setDetails(text: String?) {

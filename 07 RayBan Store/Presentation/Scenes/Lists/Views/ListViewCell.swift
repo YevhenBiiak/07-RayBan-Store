@@ -36,7 +36,8 @@ class ListViewCell: UICollectionViewCell {
     }
     
     override func draw(_ rect: CGRect) {
-        addBorder(atPosition: [.top, .bottom], color: UIColor.appGray, width: 1)
+        addBorder(at: .top, color: .appGray, width: 1)
+        addBorder(at: .bottom, color: .appGray, width: 1)
     }
     
     // MARK: - Update methods

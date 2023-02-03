@@ -13,6 +13,10 @@ protocol ProductsConfigurator {
 
 class ProductsConfiguratorImpl: ProductsConfigurator {
     
+    private let user: User
+    
+    init(user: User) { self.user = user }
+    
     func configure(productsViewController: ProductsViewController) {
         
         let router = ProductsRouterImpl(productsViewController: productsViewController)

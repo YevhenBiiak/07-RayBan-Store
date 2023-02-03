@@ -7,40 +7,41 @@
 
 import Foundation
 
-enum FetchRequest {
-    case profile(id: String)
-    case productById(id: String)
-    case productsByType(name: String)
-    case cartItems(userId: String)
-    case orders(userId: String)
-
+enum FetchRequest<T> {
+    
+    case fetchProfile(id: String, type: T.Type)
+    case fetchProduct(id: String, type: T.Type)
+    case fetchProducts(category: String, type: T.Type)
+    case fetchCartItems(userId: String, type: T.Type)
+    case fetchOrders(userId: String, type: T.Type)
+    
     var path: String {
         switch self {
-        case .profile:            return "users"
-        case .productById:        return "products"
-        case .productsByType:     return "products"
-        case let .cartItems(id):  return "users/\(id)/cart"
-        case let .orders(userId): return "users/\(userId)/orders"
+        case .fetchProfile:               return "users"
+        case .fetchProduct:               return "products"
+        case .fetchProducts:              return "products"
+        case .fetchCartItems(let id, _):  return "users/\(id)/cart"
+        case .fetchOrders(let id, _):     return "users/\(id)/orders"
         }
     }
 
     var queryKey: String? {
         switch self {
-        case .profile:            return nil
-        case .productById:        return "id"
-        case .productsByType:     return "type"
-        case .cartItems:          return nil
-        case .orders:             return nil
+        case .fetchProfile:   return nil
+        case .fetchProduct:   return "id"
+        case .fetchProducts:  return "type"
+        case .fetchCartItems: return nil
+        case .fetchOrders:    return nil
         }
     }
 
     var queryValue: Any? {
         switch self {
-        case .profile: return nil
-        case let .productById(id): return id
-        case let .productsByType(name): return name
-        case .cartItems: return nil
-        case .orders: return nil
+        case .fetchProfile: return nil
+        case .fetchProduct(let id, _): return id
+        case .fetchProducts(let category, _): return category
+        case .fetchCartItems: return nil
+        case .fetchOrders: return nil
         }
     }
 }

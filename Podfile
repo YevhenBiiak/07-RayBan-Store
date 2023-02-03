@@ -11,6 +11,7 @@ target '07 RayBan Store' do
   pod 'SwiftLint'
   pod 'FirebaseAuth'
   pod 'FirebaseDatabase'
+  pod 'FBAudienceNetwork'
   pod 'FBSDKLoginKit'
 
 end

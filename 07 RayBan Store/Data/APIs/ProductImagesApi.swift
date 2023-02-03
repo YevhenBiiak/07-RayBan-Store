@@ -9,8 +9,6 @@ import UIKit
 
 class ProductImagesApiImpl: ProductImagesApi {
     
-    private let operationQueue = OperationQueue()
-    
     private let session: URLSession = {
         let MB = 1024 * 1024
         let config = URLSessionConfiguration.default
@@ -30,6 +28,7 @@ class ProductImagesApiImpl: ProductImagesApi {
             var images: [Data?] = Array(repeating: nil, count: types.count)
             for (i, type) in types.enumerated() {
                 taskGroup.addTask {
+                    
                     let url = self.configureURL(type: type, imageId: imageId, bgColor: bgColor)
                     let (data, response) = try await self.session.data(from: url)
                     
@@ -57,9 +56,9 @@ class ProductImagesApiImpl: ProductImagesApi {
     ) -> URL {
         var imgName = "\(imageId)"
         var imgWidth = 2048
-        
+        // https://images.ray-ban.com/is/image/RayBan/8056597786683__001.png
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 1997
+        case .main:   imgName += "__001.png"; imgWidth = 1998
         case .main2:  imgName += "__002.png"
         case .back:   imgName += "__STD__shad__bk.png"
         case .left:   imgName += "__STD__shad__lt.png"
@@ -74,7 +73,8 @@ class ProductImagesApiImpl: ProductImagesApi {
         urlComponent.queryItems = [
             URLQueryItem(name: "impolicy", value: "RB_Product"),
             URLQueryItem(name: "width", value: "\(imgWidth)"),
-            URLQueryItem(name: "bgc", value: bgColor.hexString)]
+            URLQueryItem(name: "bgc", value: bgColor.hexString)
+        ]
         
         return urlComponent.url!
     }

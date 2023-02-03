@@ -10,10 +10,9 @@ import Foundation
 typealias UserId = String
 
 protocol AuthGateway {
-    func getUserId() -> String?
-    func login(email: String, password: String, completionHandler: @escaping (Result<UserId>) -> Void)
-    func register(email: String, password: String, completionHandler: @escaping (Result<UserId>) -> Void)
-    func loginWithFacebook(completionHandler: @escaping (Result<UserId>) -> Void)
-    func forgotPassword(email: String, completionHandler: @escaping (Result<Bool>) -> Void)
+    func login(email: String, password: String) async throws -> User
+    func register(firstName: String, lastName: String, email: String, password: String) async throws -> User
+    func loginWithFacebook() async throws -> User
+    func forgotPassword(email: String) async throws
     func logout() throws
 }

@@ -15,15 +15,11 @@ class ProfileGatewayImpl: ProfileGateway {
         self.remoteRepository = remoteRepository
     }
     
-    func fetchProfile(byUserId userId: UserId, completionHandler: @escaping (Result<ProfileDTO>) -> Void) {
-        remoteRepository.executeFetchRequest(ofType: .profile(id: userId)) { (result: Result<ProfileDTO>) in
-            completionHandler(result)
-        }
+    func fetchProfile(byUserId userId: UserId) async throws -> ProfileDTO {
+        try await remoteRepository.execute(.fetchProfile(id: userId, type: ProfileDTO.self))
     }
     
-    func saveProfile(_ profile: ProfileDTO, forUserId userId: UserId, completionHandler: @escaping (Result<Bool>) -> Void) {
-        remoteRepository.executeSaveRequest(ofType: .profile(profile, userId: userId)) { result in
-            completionHandler(result)
-        }
+    func saveProfile(_ profile: ProfileDTO) async throws {
+        try await remoteRepository.execute(.saveProfile(profile))
     }
 }
