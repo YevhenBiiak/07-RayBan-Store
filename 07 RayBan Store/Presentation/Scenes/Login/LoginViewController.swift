@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, LoginView {
+class LoginViewController: UIViewController {
     
     var configurator: LoginConfigurator!
     var presenter: LoginPresenter!
@@ -40,19 +40,6 @@ class LoginViewController: UIViewController, LoginView {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    func display(error: LoginError) {
-        switch error {
-        case .emailError:
-            rootView.emailTextField.triggerRequirements(with: error.message)
-        case .passwordError:
-            rootView.passwordTextField.triggerRequirements(with: error.message)
-        case .userNotFound:
-            showWarning(with: error.message)
-        case .facebookError:
-            showAlert(title: error.title, message: error.message)
-        }
-    }
-    
     @objc private func loginButtonTapped() {
         guard let email = rootView.emailTextField.text,
               let password = rootView.passwordTextField.text else { return }
@@ -69,5 +56,21 @@ class LoginViewController: UIViewController, LoginView {
     
     @objc private func createAccountButtonTapped() {
         Task { await presenter.createAccountButtonTapped() }
+    }
+}
+
+extension LoginViewController: LoginView {
+    
+    func display(error: LoginError) {
+        switch error {
+        case .emailError:
+            rootView.emailTextField.triggerRequirements(with: error.message)
+        case .passwordError:
+            rootView.passwordTextField.triggerRequirements(with: error.message)
+        case .userNotFound:
+            showWarning(with: error.message)
+        case .facebookError:
+            showAlert(title: error.title, message: error.message)
+        }
     }
 }

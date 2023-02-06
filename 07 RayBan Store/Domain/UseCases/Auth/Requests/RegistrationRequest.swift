@@ -7,9 +7,15 @@
 
 import Foundation
 
-struct RegistrationRequest {
+struct RegistrationParameters {
     let firstName: String
     let lastName: String
     let email: String
     let password: String
+}
+
+struct RegistrationRequest {
+    let registrationParameters: RegistrationParameters
+    let conformPassword: String
+    let acceptedPolicy: Bool
 }

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-//        gG8RTBGOk2Qp6xGIVDjLuRIt9Ij1
+        
         try? AuthProvider.logout()
         if let user = AuthProvider.currentUser {
             // show main screen

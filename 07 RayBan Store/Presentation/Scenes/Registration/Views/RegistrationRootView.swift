@@ -55,46 +55,47 @@ class RegistrationRootView: UIView {
     let firstNameTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
-        textField.textColor = UIColor.appDarkGray
+        textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "First name", attributes: [.foregroundColor: UIColor.appBlack])
+        textField.attributedPlaceholder = NSAttributedString(string: "First name", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
     let lastNameTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
-        textField.textColor = UIColor.appDarkGray
+        textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "Last name", attributes: [.foregroundColor: UIColor.appBlack])
+        textField.attributedPlaceholder = NSAttributedString(string: "Last name", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
     let emailTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
-        textField.textColor = UIColor.appDarkGray
+        textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "E-mail adress", attributes: [.foregroundColor: UIColor.appBlack])
+        textField.attributedPlaceholder = NSAttributedString(string: "E-mail adress", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
     let passwordTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
-        textField.textColor = UIColor.appDarkGray
+        textField.textColor = UIColor.appBlack
         textField.isSecureTextEntry = true
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: UIColor.appBlack])
+        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
     let conformPasswordTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
-        textField.textColor = UIColor.appDarkGray
+        textField.textColor = UIColor.appBlack
+        textField.isSecureTextEntry = true
         textField.returnKeyType = .continue
-        textField.attributedPlaceholder = NSAttributedString(string: "Conform password", attributes: [.foregroundColor: UIColor.appBlack])
+        textField.attributedPlaceholder = NSAttributedString(string: "Conform password", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     

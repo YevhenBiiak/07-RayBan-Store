@@ -494,10 +494,10 @@
 			isa = PBXGroup;
 			children = (
 				573A25C828EB218F000B1548 /* Views */,
-				5720BF6628D4E646003EBAA6 /* LoginConfigurator.swift */,
-				574F27A328C68D870092D293 /* LoginPresenter.swift */,
 				574F27A828C7A6C70092D293 /* LoginViewController.swift */,
+				574F27A328C68D870092D293 /* LoginPresenter.swift */,
 				5720BF6828D4E69A003EBAA6 /* LoginRouter.swift */,
+				5720BF6628D4E646003EBAA6 /* LoginConfigurator.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -771,10 +771,10 @@
 			isa = PBXGroup;
 			children = (
 				579404E1298D1CF70048FD33 /* Views */,
-				579404D9298D1C970048FD33 /* RegistrationConfigurator.swift */,
-				579404DB298D1CB40048FD33 /* RegistrationPresenter.swift */,
 				579404DF298D1CE00048FD33 /* RegistrationViewController.swift */,
+				579404DB298D1CB40048FD33 /* RegistrationPresenter.swift */,
 				579404DD298D1CC90048FD33 /* RegistrationRouter.swift */,
+				579404D9298D1C970048FD33 /* RegistrationConfigurator.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";

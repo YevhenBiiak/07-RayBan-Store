@@ -39,15 +39,20 @@ extension AuthUseCaseImpl: AuthUseCase {
     
     func execute(_ request: RegistrationRequest) async throws -> User {
         try await withHandler {
-            let email = request.email
-            let password = request.password
-            let firstName = request.firstName
-            let lastName = request.lastName
+            let email = request.registrationParameters.email
+            let password = request.registrationParameters.password
+            let firstName = request.registrationParameters.firstName
+            let lastName = request.registrationParameters.lastName
+            let conformPassrowd = request.conformPassword
+            let acceptedPolicy = request.acceptedPolicy
 
-            try Validator.validateEmail(email)
-            try Validator.validatePassword(password)
             try Validator.validateFirstName(firstName)
             try Validator.validateLastName(lastName)
+            try Validator.validateEmail(email)
+            try Validator.validatePassword(password)
+            
+            guard password == conformPassrowd else { throw AuthUseCaseError.passwordsDoNotMatch }
+            guard acceptedPolicy else { throw AuthUseCaseError.notAcceptedPolicy }
 
             return try await authGateway.register(firstName: firstName, lastName: lastName, email: email, password: password)
         }
@@ -108,6 +113,8 @@ private extension AuthUseCaseImpl {
             case .facebookError:     return AuthUseCaseError.facebookError(error)
             case .fbLoginWasCancelled: return AuthUseCaseError.fbLoginWasCancelled
             }
+        } else if let error = error as? AuthUseCaseError {
+            return error
         }
         fatalError("Unhandled error type: \(String(describing: error)) \(error.localizedDescription)")
     }
@@ -121,6 +128,9 @@ enum AuthUseCaseError: LocalizedError {
     case lastNameValueIsEmpty(Error)
     case emailFormatIsWrong(Error)
     case passwordLengthIsWrong(Error)
+    // additionally
+    case passwordsDoNotMatch
+    case notAcceptedPolicy
     // AuthGatewayError
     case weakPassword(Error)
     case wrongPassword(Error)
@@ -145,6 +155,8 @@ enum AuthUseCaseError: LocalizedError {
         case .emailAlreadyInUse    (let error): return error.localizedDescription
         case .facebookError        (let error): return error.localizedDescription
         case .fbLoginWasCancelled: return "The facebook login was cancelled"
+        case .passwordsDoNotMatch: return "You entered two different passwords. Please try again."
+        case .notAcceptedPolicy:   return "Please read and accept the privacy policy"
         }
     }
 }

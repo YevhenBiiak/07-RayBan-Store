@@ -19,7 +19,7 @@ class RegistrationViewController: UIViewController {
         configurator.configure(registrationViewController: self)
         view = rootView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
@@ -42,8 +42,16 @@ class RegistrationViewController: UIViewController {
         guard let firstName = rootView.firstNameTextField.text,
               let lastName = rootView.lastNameTextField.text,
               let email = rootView.emailTextField.text,
-              let password = rootView.passwordTextField.text else { return }
-        Task { await presenter.createAccountButtonTapped(firstName: firstName, lastName: lastName, email: email, password: password) }
+              let password = rootView.passwordTextField.text,
+              let conformPassword = rootView.conformPasswordTextField.text else { return }
+        let acceptedPolicy = rootView.policyCheckmarkButton.isChecked
+        let params = RegistrationParameters(firstName: firstName, lastName: lastName, email: email, password: password)
+        
+        Task { await presenter.createAccountButtonTapped(
+            registreationParameters: params,
+            conformPassword: conformPassword,
+            acceptedPolicy: acceptedPolicy)
+        }
     }
     
     @objc private func loginButtonTapped() {
@@ -53,7 +61,23 @@ class RegistrationViewController: UIViewController {
 
 extension RegistrationViewController: RegistrationView {
     
-    func displayError(_ error: Error) {
-        
+    func display(error: RegistrationError) {
+        switch error {
+        case .firstNameError:
+            rootView.firstNameTextField.triggerRequirements(with: error.message)
+        case .lastNameError:
+            rootView.lastNameTextField.triggerRequirements(with: error.message)
+        case .emailError:
+            rootView.emailTextField.triggerRequirements(with: error.message)
+        case .passwordError:
+            rootView.passwordTextField.triggerRequirements(with: error.message)
+        case .passwordsDoNotMatch:
+            rootView.passwordTextField.triggerRequirements(with: "")
+            showWarning(with: error.message)
+        case .emailAlreadyInUse, .notAcceptedPolicy:
+            showWarning(with: error.message)
+        case .facebookError:
+            showAlert(title: error.title, message: error.message)
+        }
     }
 }

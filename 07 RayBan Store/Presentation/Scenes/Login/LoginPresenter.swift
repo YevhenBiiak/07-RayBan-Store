@@ -78,7 +78,7 @@ private extension LoginPresenterImpl {
         if let error = error as? AuthUseCaseError {
             switch error {
             // email errors
-            case .emailValueIsEmpty, .emailFormatIsWrong, .invalidEmail, .emailAlreadyInUse:
+            case .emailValueIsEmpty, .emailFormatIsWrong, .invalidEmail:
                 await view?.display(error: .emailError(error.localizedDescription))
             // password errors
             case .passwordValueIsEmpty, .passwordLengthIsWrong, .weakPassword, .wrongPassword:
@@ -91,7 +91,7 @@ private extension LoginPresenterImpl {
             case .facebookError(let error):
                 await view?.display(error: .facebookError(error.localizedDescription))
             // irrelevant errors in this case
-            case .fbLoginWasCancelled, .firstNameValueIsEmpty, .lastNameValueIsEmpty:
+            case .fbLoginWasCancelled, .firstNameValueIsEmpty, .lastNameValueIsEmpty, .emailAlreadyInUse, .notAcceptedPolicy, .passwordsDoNotMatch:
                 break
             }
             return
