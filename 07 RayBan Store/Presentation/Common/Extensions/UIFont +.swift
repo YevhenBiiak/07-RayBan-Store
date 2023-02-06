@@ -22,5 +22,4 @@ extension UIFont {
         static var regular: UIFont { UIFont(name: "Lato-Regular", size: 16)! }
         static var light: UIFont { UIFont(name: "Lato-Light", size: 16)! }
     }
-    
 }

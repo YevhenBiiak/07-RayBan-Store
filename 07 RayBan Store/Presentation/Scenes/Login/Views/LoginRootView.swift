@@ -42,8 +42,8 @@ class LoginRootView: UIView {
         return label
     }()
     
-    let emailTextField: TextField = {
-        let textField = TextField()
+    let emailTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
@@ -51,8 +51,8 @@ class LoginRootView: UIView {
         return textField
     }()
     
-    let passwordTextField: TextField = {
-        let textField = TextField()
+    let passwordTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.isSecureTextEntry = true
@@ -158,7 +158,11 @@ class LoginRootView: UIView {
         )
         
         // set constraints
-        scrollView.fillHorizontally().fillVertically()
+        scrollView.Left   == safeAreaLayoutGuide.Left
+        scrollView.Right  == safeAreaLayoutGuide.Right
+        scrollView.Top    == safeAreaLayoutGuide.Top
+        scrollView.Bottom == safeAreaLayoutGuide.Bottom
+        
         contentView.fillHorizontally().fillVertically().width(100%)
         
         logoImageView.Top == contentView.Top + 30

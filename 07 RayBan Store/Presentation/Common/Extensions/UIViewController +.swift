@@ -8,14 +8,6 @@
 import UIKit
 
 extension UIViewController {
-    // iOS 13 +
-    var statusBarHeight: CGFloat? {
-        view.window?.windowScene?.statusBarManager?.statusBarFrame.height
-    }
-    
-    var navigationBarHeight: CGFloat? {
-        navigationController?.navigationBar.frame.height
-    }
     
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
@@ -25,5 +17,12 @@ extension UIViewController {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+}
+
+extension UINavigationController {
+    
+    var navigationBarHeight: CGFloat? {
+        navigationController?.navigationBar.frame.height
     }
 }

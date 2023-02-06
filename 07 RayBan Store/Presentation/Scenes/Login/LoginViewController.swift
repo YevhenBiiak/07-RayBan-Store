@@ -30,8 +30,27 @@ class LoginViewController: UIViewController, LoginView {
         rootView.createAccountButton.addTarget(self, action: #selector(createAccountButtonTapped), for: .touchUpInside)
     }
     
-    func displayError(title: String, message: String, completion: (() -> Void)?) {
-        showAlert(title: title, message: message, completion: completion)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    func display(error: LoginError) {
+        switch error {
+        case .emailError:
+            rootView.emailTextField.triggerRequirements(with: error.message)
+        case .passwordError:
+            rootView.passwordTextField.triggerRequirements(with: error.message)
+        case .userNotFound:
+            showWarning(with: error.message)
+        case .facebookError:
+            showAlert(title: error.title, message: error.message)
+        }
     }
     
     @objc private func loginButtonTapped() {

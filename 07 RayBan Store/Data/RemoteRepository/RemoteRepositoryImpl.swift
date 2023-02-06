@@ -14,18 +14,25 @@ protocol RemoteRepository {
 }
 
 class RemoteRepositoryImpl: RemoteRepository {
- 
+    
     private let database: DatabaseReference = Database.database().reference()
     
     func execute(_ request: SaveRequest) async throws {
-        try await database.child(request.path).child(request.key).updateChildValues(request.value.asDictionary)
+        return try await perform {
+            try await database.child(request.path).child(request.key).updateChildValues(request.value.asDictionary)
+        }
     }
     
     func execute<T>(_ request: FetchRequest<T>) async throws -> T where T: Decodable {
-        try await withCheckedThrowingContinuation { continuation in
-            execute(request, completionHandler: continuation.resume)
+        try await perform {
+            try await withCheckedThrowingContinuation { execute(request, completionHandler: $0.resume) }
         }
     }
+}
+    
+// MARK: - Private extension for helper methods
+
+private extension RemoteRepositoryImpl {
     
     func execute<T: Decodable>(_ request: FetchRequest<T>, completionHandler: @escaping (Result<T>) -> Void) {
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
@@ -64,6 +71,27 @@ class RemoteRepositoryImpl: RemoteRepository {
             }
         } withCancel: { error in
             completionHandler(.failure(error))
+        }
+    }
+    
+    // Helper methods for rethrowing errors
+    func perform<T>(_ code: () async throws -> T) async throws -> T {
+        do    { return try await code() }
+        catch { throw handledError(error) }
+    }
+    
+    func handledError(_ error: Error) -> Error {
+        return RemoteRepositoryError.unknown(error)
+    }
+}
+
+enum RemoteRepositoryError: LocalizedError {
+    case unknown(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unknown(let error):
+            return "\(String(describing: error)), \(error.localizedDescription)"
         }
     }
 }

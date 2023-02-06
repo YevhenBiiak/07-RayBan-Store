@@ -46,7 +46,7 @@ class ProductsViewController: UIViewController, ProductsView {
                 self?.navigationController?.navigationBar.setNeedsLayout()
             }
             // scroll to top
-            let topBarHeight = (self?.statusBarHeight ?? 0) + (self?.navigationBarHeight ?? 0) + 44
+            let topBarHeight = (UIApplication.shared.statusBarHeight ?? 0) + (self?.navigationController?.navigationBarHeight ?? 0) + 44
             self?.rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -topBarHeight), animated: false)
         }
     }

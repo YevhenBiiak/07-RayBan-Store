@@ -16,7 +16,7 @@ struct Validator {
     
     static func validateEmail(_ value: String?) throws {
         guard let email = value, !email.isEmpty else {
-            throw ValidationError.valueIsEmpty("Email")
+            throw ValidationError.emailValueIsEmpty
         }
         if !isValidEmail(email) {
             throw ValidationError.emailFormatIsWrong
@@ -25,10 +25,22 @@ struct Validator {
     
     static func validatePassword(_ value: String?) throws {
         guard let password = value, !password.isEmpty else {
-            throw ValidationError.valueIsEmpty("Password")
+            throw ValidationError.passwordValueIsEmpty
         }
         if password.count < passwordRequiredLength {
-            throw ValidationError.passwordLengthIsWrong
+            throw ValidationError.passwordLengthIsWrong(passwordRequiredLength)
+        }
+    }
+    
+    static func validateFirstName(_ value: String?) throws {
+        guard let firstName = value, !firstName.isEmpty else {
+            throw ValidationError.firstNameValueIsEmpty
+        }
+    }
+    
+    static func validateLastName(_ value: String?) throws {
+        guard let lastName = value, !lastName.isEmpty else {
+            throw ValidationError.lastNameValueIsEmpty
         }
     }
     
@@ -41,39 +53,28 @@ struct Validator {
     }
 }
 
-extension Validator {
-    /// Represents error type with detailed description.
-    enum ValidationError: Error, LocalizedError {
-        case emailFormatIsWrong
-        case emailFormatIsDublicated
-        case passwordLengthIsWrong
-        case valueIsEmpty(String)
-        case unknown
-        
-        var errorDescription: String? {
-            switch self {
-            case .emailFormatIsWrong:
-                return "Email has wrong format. Please edit it."
-            case .emailFormatIsDublicated:
-                return "This email is already used by other user. Please try another one."
-            case .passwordLengthIsWrong:
-                return "Password must have minimum \(passwordRequiredLength) symbols."
-            case .valueIsEmpty(let value):
-                return "\(value) is empty. Please fill it."
-            default:
-                return "Unknown error occured."
-            }
-        }
-        
-        static func == (lhs: ValidationError, rhs: ValidationError) -> Bool {
-            switch (lhs, rhs) {
-                case (.emailFormatIsWrong, .emailFormatIsWrong): return true
-                case (.emailFormatIsDublicated, emailFormatIsDublicated): return true
-                case (.passwordLengthIsWrong, .passwordLengthIsWrong): return true
-                case let (.valueIsEmpty(l), .valueIsEmpty(r)): return l == r
-                case (.unknown, .unknown) : return true
-                default: return false
-            }
+enum ValidationError: LocalizedError {
+    case emailValueIsEmpty
+    case passwordValueIsEmpty
+    case firstNameValueIsEmpty
+    case lastNameValueIsEmpty
+    case emailFormatIsWrong
+    case passwordLengthIsWrong(Int)
+    
+    var errorDescription: String? {
+        switch self {
+        case .emailValueIsEmpty:
+            return "Email is empty. Please fill it."
+        case .passwordValueIsEmpty:
+            return "Password is empty. Please fill it."
+        case .firstNameValueIsEmpty:
+            return "First name is empty. Please fill it."
+        case .lastNameValueIsEmpty:
+            return "Last name is empty. Please fill it."
+        case .emailFormatIsWrong:
+            return "Email has wrong format. Please edit it."
+        case .passwordLengthIsWrong(let length):
+            return "Password must have minimum \(length) symbols."
         }
     }
 }

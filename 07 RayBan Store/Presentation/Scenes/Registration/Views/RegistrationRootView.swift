@@ -52,8 +52,8 @@ class RegistrationRootView: UIView {
         return label
     }()
     
-    let firstNameTextField: TextField = {
-        let textField = TextField()
+    let firstNameTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appDarkGray
         textField.returnKeyType = .next
@@ -61,8 +61,8 @@ class RegistrationRootView: UIView {
         return textField
     }()
     
-    let lastNameTextField: TextField = {
-        let textField = TextField()
+    let lastNameTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appDarkGray
         textField.returnKeyType = .next
@@ -70,8 +70,8 @@ class RegistrationRootView: UIView {
         return textField
     }()
     
-    let emailTextField: TextField = {
-        let textField = TextField()
+    let emailTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appDarkGray
         textField.returnKeyType = .next
@@ -79,8 +79,8 @@ class RegistrationRootView: UIView {
         return textField
     }()
     
-    let passwordTextField: TextField = {
-        let textField = TextField()
+    let passwordTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appDarkGray
         textField.isSecureTextEntry = true
@@ -89,8 +89,8 @@ class RegistrationRootView: UIView {
         return textField
     }()
     
-    let conformPasswordTextField: TextField = {
-        let textField = TextField()
+    let conformPasswordTextField: RequiredTextField = {
+        let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appDarkGray
         textField.returnKeyType = .continue
