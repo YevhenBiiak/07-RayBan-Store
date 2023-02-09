@@ -1,96 +1,82 @@
 //
-//  LoginPresenter.swift
+//  ForgotPasswordPresenter.swift
 //  07 RayBan Store
 //
-//  Created by Евгений Бияк on 05.09.2022.
+//  Created by Yevhen Biiak on 07.02.2023.
 //
 
 @MainActor
-protocol LoginRouter {
-    func presentProducts(user: User)
-    func presentRegistrationScene()
-    func presentForgotPasswordScene()
+protocol ForgotPasswordRouter {
     func dismiss(animated: Bool)
+    func presentRegistrationScene()
 }
 
 @MainActor
-protocol LoginView: AnyObject {
+protocol ForgotPasswordView: AnyObject {
     func display(emailFiledError: String)
-    func display(passwordFiledError: String)
     func displayWarning(message: String)
     func displayAlert(title: String, message: String)
 }
 
-protocol LoginPresenter {
-    func loginButtonTapped(email: String, password: String) async
-    func loginWithFacebookButtonTapped() async
+protocol ForgotPasswordPresenter {
+    func submitButtonTapped(email: String) async throws
     func createAccountButtonTapped() async
-    func forgotPasswordButtonTapped() async
 }
 
-class LoginPresenterImpl {
+class ForgotPasswordPresenterImpl {
     
-    private weak var view: LoginView?
-    private let router: LoginRouter
+    private weak var view: ForgotPasswordView?
+    private let router: ForgotPasswordRouter
     private let authUseCase: AuthUseCase
     
-    init(view: LoginView?, authUseCase: AuthUseCase, router: LoginRouter) {
+    init(view: ForgotPasswordView?, authUseCase: AuthUseCase, router: ForgotPasswordRouter) {
         self.view = view
         self.authUseCase = authUseCase
         self.router = router
     }
 }
 
-extension LoginPresenterImpl: LoginPresenter {
+extension ForgotPasswordPresenterImpl: ForgotPasswordPresenter {
     
-    func loginButtonTapped(email: String, password: String) async {
+    func submitButtonTapped(email: String) async {
         await with(errorHandler) {
-            let loginRequest = LoginRequest(email: email, password: password)
-            let user = try await authUseCase.execute(loginRequest)
-            await router.presentProducts(user: user)
-        }
-    }
-    
-    func loginWithFacebookButtonTapped() async {
-        await with(errorHandler) {
-            let user = try await authUseCase.executeLoginWithFacebookRequest()
-            await router.presentProducts(user: user)
+            let forgotPasswordRequest = ForgotPasswordRequest(email: email)
+            try await authUseCase.execute(forgotPasswordRequest)
+            await view?.displayAlert(title: "Success", message: "Password reset request was sent successfully. Please check your email to reset your password")
+            await router.dismiss(animated: true)
         }
     }
     
     func createAccountButtonTapped() async {
         await router.presentRegistrationScene()
     }
-    
-    func forgotPasswordButtonTapped() async {
-        await router.presentForgotPasswordScene()
-    }
 }
 
 // MARK: - Private extension for helper methods
 
-private extension LoginPresenterImpl {
+private extension ForgotPasswordPresenterImpl {
     
     func errorHandler(_ error: Error) async {
         if let error = error as? AppError {
             switch error {
             case .networkError:          await view?.displayAlert(title: "Error", message: error.localizedDescription)
                 
+            // email errors
             case .emailValueIsEmpty,
                  .emailFormatIsWrong,
                  .invalidEmail:          await view?.display(emailFiledError: error.localizedDescription)
 
-            case .passwordValueIsEmpty,
-                 .passwordLengthIsWrong,
-                 .weakPassword:         await view?.display(passwordFiledError: error.localizedDescription)
-
+            // auth errors
             case .userNotFound,
-                 .wrongPassword,
                  .invalidRecipientEmail,
                  .facebookError:         await view?.displayWarning(message: error.localizedDescription)
 
             // irrelevant errors in this case
-            case .fbLoginWasCancelled,
+            case .passwordValueIsEmpty,
+                 .passwordLengthIsWrong,
+                 .weakPassword,
+                 .wrongPassword,
+                 .fbLoginWasCancelled,
                  .firstNameValueIsEmpty,
                  .lastNameValueIsEmpty,
                  .emailAlreadyInUse,
@@ -98,7 +84,7 @@ private extension LoginPresenterImpl {
                  .passwordsDoNotMatch,
                  .operationNotAllowed,
                  .invalidSender:
-                print("Irrelevant error for Login:", error.localizedDescription)
+                print("Irrelevant error for Forgot Password:", error.localizedDescription)
             
             case .unknown:
                 fatalError(error.localizedDescription)

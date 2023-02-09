@@ -12,10 +12,10 @@ struct RegistrationParameters {
     let lastName: String
     let email: String
     let password: String
+    let conformPassword: String
+    let acceptedPolicy: Bool
 }
 
 struct RegistrationRequest {
     let registrationParameters: RegistrationParameters
-    let conformPassword: String
-    let acceptedPolicy: Bool
 }

@@ -137,6 +137,14 @@
 		57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828B28F317C5005FF050 /* ZoomableView.swift */; };
 		57D0828E28F326B9005FF050 /* PromoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828D28F326B9005FF050 /* PromoViewCell.swift */; };
 		57D0829028F44398005FF050 /* UIViewController +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828F28F44398005FF050 /* UIViewController +.swift */; };
+		57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2C29924FD900EDE67E /* Routable.swift */; };
+		57E9DB302992540000EDE67E /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */; };
+		57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */; };
+		57E9DB34299254DE00EDE67E /* ForgotPasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB33299254DE00EDE67E /* ForgotPasswordPresenter.swift */; };
+		57E9DB372992554100EDE67E /* ForgotPasswordRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB362992554100EDE67E /* ForgotPasswordRootView.swift */; };
+		57E9DB3B299259C100EDE67E /* ForgotPasswordRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB3A299259C100EDE67E /* ForgotPasswordRouter.swift */; };
+		57E9DB3E299292B600EDE67E /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB3D299292B600EDE67E /* AppError.swift */; };
+		57E9DB412993AE5000EDE67E /* ErrorHandlableFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB402993AE5000EDE67E /* ErrorHandlableFunction.swift */; };
 		57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DB728E5E9A30015CFDE /* AccountMenuConfigurator.swift */; };
 		57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DB928E5E9CC0015CFDE /* AccountMenuRouter.swift */; };
 		57ED3DBC28E5EA3E0015CFDE /* AccountMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DBB28E5EA3E0015CFDE /* AccountMenuPresenter.swift */; };
@@ -284,6 +292,14 @@
 		57D0828B28F317C5005FF050 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		57D0828D28F326B9005FF050 /* PromoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoViewCell.swift; sourceTree = "<group>"; };
 		57D0828F28F44398005FF050 /* UIViewController +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController +.swift"; sourceTree = "<group>"; };
+		57E9DB2C29924FD900EDE67E /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
+		57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordConfigurator.swift; sourceTree = "<group>"; };
+		57E9DB33299254DE00EDE67E /* ForgotPasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordPresenter.swift; sourceTree = "<group>"; };
+		57E9DB362992554100EDE67E /* ForgotPasswordRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRootView.swift; sourceTree = "<group>"; };
+		57E9DB3A299259C100EDE67E /* ForgotPasswordRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRouter.swift; sourceTree = "<group>"; };
+		57E9DB3D299292B600EDE67E /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		57E9DB402993AE5000EDE67E /* ErrorHandlableFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlableFunction.swift; sourceTree = "<group>"; };
 		57ED3DB728E5E9A30015CFDE /* AccountMenuConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuConfigurator.swift; sourceTree = "<group>"; };
 		57ED3DB928E5E9CC0015CFDE /* AccountMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuRouter.swift; sourceTree = "<group>"; };
 		57ED3DBB28E5EA3E0015CFDE /* AccountMenuPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMenuPresenter.swift; sourceTree = "<group>"; };
@@ -482,6 +498,7 @@
 			children = (
 				574F27A528C68D900092D293 /* Login */,
 				579404D8298D1C5C0048FD33 /* Registration */,
+				57E9DB2E2992538700EDE67E /* ForgotPassword */,
 				5784000128D5FC67003766F0 /* Products */,
 				57BDD18A28D785F500A9007B /* ProductDetails */,
 				571AA49B28E0CEF60078F6A9 /* Lists */,
@@ -584,6 +601,7 @@
 				577301FE28BBFDFD007FB72F /* Entities */,
 				5773020028BBFE17007FB72F /* UseCases */,
 				577301FF28BBFE05007FB72F /* Gateways */,
+				57E9DB3C2992929300EDE67E /* Errors */,
 				577B93CD28C1FB9B00E31B88 /* Common */,
 			);
 			path = Domain;
@@ -630,6 +648,7 @@
 				57508A4F28BE9ECC000328AC /* Gateways */,
 				57508A5B28BFB315000328AC /* APIs */,
 				57508A5028BE9ED8000328AC /* RemoteRepository */,
+				57E9DB3F2993AE1900EDE67E /* Helpers */,
 				5763FFB428CF901A00E48713 /* Common */,
 			);
 			path = Data;
@@ -638,6 +657,7 @@
 		5773020228BBFE51007FB72F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				57E9DB2B29924FCC00EDE67E /* Protocols */,
 				5752CE3C28DC574D001BAE4A /* ViewModels */,
 				574F27A228C68D1D0092D293 /* Scenes */,
 				5784000428D5FCE0003766F0 /* Common */,
@@ -721,10 +741,10 @@
 			isa = PBXGroup;
 			children = (
 				571EDB9E28D61B3600C8EBAA /* Views */,
-				5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */,
-				5784001028D5FEBC003766F0 /* ProductsPresenter.swift */,
 				5784000E28D5FE68003766F0 /* ProductsViewController.swift */,
+				5784001028D5FEBC003766F0 /* ProductsPresenter.swift */,
 				571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */,
+				5784000C28D5FE0F003766F0 /* ProductsConfigurator.swift */,
 			);
 			path = Products;
 			sourceTree = "<group>";
@@ -870,6 +890,50 @@
 				57ED3DB928E5E9CC0015CFDE /* AccountMenuRouter.swift */,
 			);
 			path = AccountMenu;
+			sourceTree = "<group>";
+		};
+		57E9DB2B29924FCC00EDE67E /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				57E9DB2C29924FD900EDE67E /* Routable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		57E9DB2E2992538700EDE67E /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				57E9DB352992553300EDE67E /* Views */,
+				57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */,
+				57E9DB33299254DE00EDE67E /* ForgotPasswordPresenter.swift */,
+				57E9DB3A299259C100EDE67E /* ForgotPasswordRouter.swift */,
+				57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */,
+			);
+			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
+		57E9DB352992553300EDE67E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57E9DB362992554100EDE67E /* ForgotPasswordRootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		57E9DB3C2992929300EDE67E /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				57E9DB3D299292B600EDE67E /* AppError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		57E9DB3F2993AE1900EDE67E /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				57E9DB402993AE5000EDE67E /* ErrorHandlableFunction.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		57ED3DBD28E5F7200015CFDE /* Categories */ = {
@@ -1095,6 +1159,7 @@
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
 				5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */,
 				57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */,
+				57E9DB372992554100EDE67E /* ForgotPasswordRootView.swift in Sources */,
 				57BDD19728D892E900A9007B /* ProductImagesViewCell.swift in Sources */,
 				575F562428EB3A5400A44E6D /* ProductFamily.swift in Sources */,
 				57CFFA2C28F6BB120031519F /* ImageType.swift in Sources */,
@@ -1122,6 +1187,7 @@
 				571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */,
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
 				575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */,
+				57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */,
 				5752CE3828DB7410001BAE4A /* ProductDetailsViewCell.swift in Sources */,
 				574F278D28C4BC530092D293 /* OrderDTO.swift in Sources */,
 				575F562228EB3A4C00A44E6D /* ProductCategory.swift in Sources */,
@@ -1139,12 +1205,14 @@
 				571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */,
 				5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */,
 				57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */,
+				57E9DB3B299259C100EDE67E /* ForgotPasswordRouter.swift in Sources */,
 				574F277228C38D430092D293 /* ProfileDTO.swift in Sources */,
 				575F562028EB3A2F00A44E6D /* ProductType.swift in Sources */,
 				575F562828EC8DDD00A44E6D /* UIImage +.swift in Sources */,
 				57BDD19028D786FC00A9007B /* ProductDetailsViewController.swift in Sources */,
 				57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */,
 				573A25C728E8399E000B1548 /* SunglassesCategoriesPresenter.swift in Sources */,
+				57E9DB34299254DE00EDE67E /* ForgotPasswordPresenter.swift in Sources */,
 				574F278228C38F9F0092D293 /* FetchCartItemsUseCase.swift in Sources */,
 				57D0829028F44398005FF050 /* UIViewController +.swift in Sources */,
 				574F275B28C364920092D293 /* GetProductsResponse.swift in Sources */,
@@ -1154,7 +1222,9 @@
 				5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */,
 				579404E0298D1CE00048FD33 /* RegistrationViewController.swift in Sources */,
 				57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */,
+				57E9DB302992540000EDE67E /* ForgotPasswordViewController.swift in Sources */,
 				57ED3DC028E6F01D0015CFDE /* CategoriesViewController.swift in Sources */,
+				57E9DB412993AE5000EDE67E /* ErrorHandlableFunction.swift in Sources */,
 				571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */,
 				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				574F279D28C539D50092D293 /* FetchCartItemsResponse.swift in Sources */,
@@ -1177,6 +1247,7 @@
 				5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */,
 				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
+				57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */,
 				574F279128C531BF0092D293 /* DeleteCartItemRequest.swift in Sources */,
 				574F277C28C38F860092D293 /* AddCartItemUseCase.swift in Sources */,
 				579404E3298D1D010048FD33 /* RegistrationRootView.swift in Sources */,
@@ -1199,6 +1270,7 @@
 				57BDD18E28D786B100A9007B /* ProductDetailsPresenter.swift in Sources */,
 				574F279328C531C70092D293 /* UpdateCartItemAmountRequest.swift in Sources */,
 				571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */,
+				57E9DB3E299292B600EDE67E /* AppError.swift in Sources */,
 				577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */,
 				575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,

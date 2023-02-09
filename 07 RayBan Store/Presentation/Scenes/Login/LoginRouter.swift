@@ -7,24 +7,20 @@
 
 import UIKit
 
-class LoginRouterImpl: LoginRouter {
+class LoginRouterImpl: Routable, LoginRouter {
     
-    private weak var viewController: LoginViewController!
+    weak var viewController: LoginViewController!
     
-    private var navigationController: UINavigationController? {
-        viewController.navigationController
-    }
-    
-    init(viewController: LoginViewController) {
+    required init(viewController: LoginViewController) {
         self.viewController = viewController
     }
     
-    func dismiss(animated flag: Bool, completion: (() -> Void)?) {
-        viewController?.dismiss(animated: flag, completion: completion)
-    }
-
     func presentProducts(user: User) {
-        // create Products viewcontroller
+        let productsViewController = ProductsViewController()
+        let productsConfigurator = ProductsConfiguratorImpl(user: user)
+        productsViewController.configurator = productsConfigurator
+        
+        navigationController?.setViewControllers([productsViewController], animated: true)
     }
     
     func presentRegistrationScene() {
@@ -33,5 +29,13 @@ class LoginRouterImpl: LoginRouter {
         
         registrationViewController.configurator = registrationConfigurator
         navigationController?.pushViewController(registrationViewController, animated: true)
+    }
+    
+    func presentForgotPasswordScene() {
+        let forgotPasswordViewController = ForgotPasswordViewController()
+        let forgotPasswordConfigurator = ForgotPasswordConfiguratorImpl()
+        
+        forgotPasswordViewController.configurator = forgotPasswordConfigurator
+        navigationController?.pushViewController(forgotPasswordViewController, animated: true)
     }
 }

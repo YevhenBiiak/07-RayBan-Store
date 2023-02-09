@@ -18,18 +18,18 @@ class RemoteRepositoryImpl: RemoteRepository {
     private let database: DatabaseReference = Database.database().reference()
     
     func execute(_ request: SaveRequest) async throws {
-        return try await perform {
+        return try await with(errorHandler) {
             try await database.child(request.path).child(request.key).updateChildValues(request.value.asDictionary)
         }
     }
     
     func execute<T>(_ request: FetchRequest<T>) async throws -> T where T: Decodable {
-        try await perform {
+        try await with(errorHandler) {
             try await withCheckedThrowingContinuation { execute(request, completionHandler: $0.resume) }
         }
     }
 }
-    
+
 // MARK: - Private extension for helper methods
 
 private extension RemoteRepositoryImpl {
@@ -37,8 +37,9 @@ private extension RemoteRepositoryImpl {
     func execute<T: Decodable>(_ request: FetchRequest<T>, completionHandler: @escaping (Result<T>) -> Void) {
         var dbQuery = database.child(request.path).queryEqual(toValue: request.queryValue)
         // print(request.path, request.queryKey, request.queryValue)
+        // add query key if it exists
         if let queryKey = request.queryKey { dbQuery = dbQuery.queryOrdered(byChild: queryKey) }
-    
+        
         dbQuery.observeSingleEvent(of: .value) { snapshot in
             DispatchQueue.global().async {
                 guard let snapshots = snapshot.children.allObjects as? [DataSnapshot],
@@ -74,24 +75,7 @@ private extension RemoteRepositoryImpl {
         }
     }
     
-    // Helper methods for rethrowing errors
-    func perform<T>(_ code: () async throws -> T) async throws -> T {
-        do    { return try await code() }
-        catch { throw handledError(error) }
-    }
-    
-    func handledError(_ error: Error) -> Error {
-        return RemoteRepositoryError.unknown(error)
-    }
-}
-
-enum RemoteRepositoryError: LocalizedError {
-    case unknown(Error)
-    
-    var errorDescription: String? {
-        switch self {
-        case .unknown(let error):
-            return "\(String(describing: error)), \(error.localizedDescription)"
-        }
+    func errorHandler(_ error: Error) -> Error {
+        return AppError.unknown(error)
     }
 }

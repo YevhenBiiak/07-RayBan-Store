@@ -47,7 +47,7 @@ class LoginRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "E-mail address", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "E-mail address*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -57,7 +57,7 @@ class LoginRootView: UIView {
         textField.textColor = UIColor.appBlack
         textField.isSecureTextEntry = true
         textField.returnKeyType = .continue
-        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "Password*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -74,6 +74,7 @@ class LoginRootView: UIView {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.tintColor = UIColor.appWhite
         button.backgroundColor = UIColor.appBlack
+        button.titleLabel?.font = UIFont.Oswald.medium
         button.setTitle("LOG IN", for: .normal)
         return button
     }()
@@ -90,6 +91,7 @@ class LoginRootView: UIView {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.tintColor = UIColor.appWhite
         button.backgroundColor = .systemBlue
+        button.titleLabel?.font = UIFont.Oswald.medium
         button.setTitle("LOGIN WITH FACEBOOK", for: .normal)
         return button
     }()
@@ -108,6 +110,7 @@ class LoginRootView: UIView {
     let createAccountButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = UIColor.appDarkGray
+        button.titleLabel?.font = UIFont.Lato.regular.withSize(16)
         let title = "CREATE AN ACCOUNT"
         button.setAttributedTitle(title.underlined, for: .normal)
         button.contentHorizontalAlignment = .right
@@ -126,13 +129,6 @@ class LoginRootView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        loginButton.titleLabel?.font = UIFont.Oswald.medium
-        loginWithFacebookButton.titleLabel?.font = UIFont.Oswald.medium
-        createAccountButton.titleLabel?.font = UIFont.Lato.regular.withSize(16)
     }
     
     // MARK: - Private methods

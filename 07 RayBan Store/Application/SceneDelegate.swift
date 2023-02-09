@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
-        try? AuthProvider.logout()
         if let user = AuthProvider.currentUser {
             // show main screen
             let productsViewController = ProductsViewController()

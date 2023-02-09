@@ -57,7 +57,7 @@ class RegistrationRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "First name", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "First name*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -66,7 +66,7 @@ class RegistrationRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "Last name", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "Last name*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -75,7 +75,7 @@ class RegistrationRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "E-mail adress", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "E-mail adress*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -85,7 +85,7 @@ class RegistrationRootView: UIView {
         textField.textColor = UIColor.appBlack
         textField.isSecureTextEntry = true
         textField.returnKeyType = .next
-        textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "Password*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -95,7 +95,7 @@ class RegistrationRootView: UIView {
         textField.textColor = UIColor.appBlack
         textField.isSecureTextEntry = true
         textField.returnKeyType = .continue
-        textField.attributedPlaceholder = NSAttributedString(string: "Conform password", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.attributedPlaceholder = NSAttributedString(string: "Conform password*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     

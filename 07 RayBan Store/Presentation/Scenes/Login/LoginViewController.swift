@@ -61,16 +61,19 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: LoginView {
     
-    func display(error: LoginError) {
-        switch error {
-        case .emailError:
-            rootView.emailTextField.triggerRequirements(with: error.message)
-        case .passwordError:
-            rootView.passwordTextField.triggerRequirements(with: error.message)
-        case .userNotFound:
-            showWarning(with: error.message)
-        case .facebookError:
-            showAlert(title: error.title, message: error.message)
-        }
+    func display(emailFiledError: String) {
+        rootView.emailTextField.triggerRequirements(with: emailFiledError)
+    }
+    
+    func display(passwordFiledError: String) {
+        rootView.passwordTextField.triggerRequirements(with: passwordFiledError)
+    }
+    
+    func displayWarning(message: String) {
+        showWarning(with: message)
+    }
+    
+    func displayAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
     }
 }

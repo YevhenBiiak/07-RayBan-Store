@@ -7,23 +7,19 @@
 
 import UIKit
 
-class RegistrationRouterImpl: RegistrationRouter {
+final class RegistrationRouterImpl: Routable, RegistrationRouter {
     
-    private weak var viewController: RegistrationViewController!
+    weak var viewController: RegistrationViewController!
     
-    private var navigationController: UINavigationController? {
-        viewController.navigationController
-    }
-    
-    init(viewController: RegistrationViewController) {
+    required init(viewController: RegistrationViewController) {
         self.viewController = viewController
-    }
-    
-    func dismiss(animated: Bool, completion: (() -> Void)?) {
-        navigationController?.popViewController(animated: animated)
     }
 
     func presentProducts(user: User) {
-        // create Products viewcontroller
+        let productsViewController = ProductsViewController()
+        let productsConfigurator = ProductsConfiguratorImpl(user: user)
+        productsViewController.configurator = productsConfigurator
+        
+        navigationController?.setViewControllers([productsViewController], animated: true)
     }
 }

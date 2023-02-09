@@ -19,19 +19,19 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
     
     func configure(productsViewController: ProductsViewController) {
         
-        let router = ProductsRouterImpl(productsViewController: productsViewController)
-        
         let productImagesApi = ProductImagesApiImpl()
         let remoteRepository = RemoteRepositoryImpl()
         
         let productGateway = ProductGatewayImpl(productImagesApi: productImagesApi, remoteRepository: remoteRepository)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
         
+        let rootView = ProductsRootView()
+        let router = ProductsRouterImpl(productsViewController: productsViewController)
         let presenter = ProductsPresenterImpl(view: productsViewController,
                                               router: router,
                                               getProductsUseCase: getProductsUseCase)
         
         productsViewController.presenter = presenter
-        productsViewController.rootView = ProductsRootView()
+        productsViewController.rootView = rootView
     }
 }

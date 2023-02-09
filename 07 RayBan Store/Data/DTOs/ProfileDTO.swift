@@ -9,10 +9,10 @@ import Foundation
 
 struct ProfileDTO: Codable {
     let id: String
-    var firstName: String? // nil when just registered
-    var lastName: String?  // nil when just registered
+    var firstName: String?
+    var lastName: String?
     let email: String
-    var address: String?   // nil when just registered
+    var address: String?
 }
 
 // Data mapping

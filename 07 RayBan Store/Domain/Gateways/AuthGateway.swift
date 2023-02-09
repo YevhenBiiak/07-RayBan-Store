@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias UserId = String
-
 protocol AuthGateway {
     func login(email: String, password: String) async throws -> User
     func register(firstName: String, lastName: String, email: String, password: String) async throws -> User

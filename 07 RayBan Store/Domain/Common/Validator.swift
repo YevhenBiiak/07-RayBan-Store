@@ -10,37 +10,48 @@ import Foundation
 /// Responsible to validate different data.
 struct Validator {
     
-    private static let passwordRequiredLength = 8
+    private static let passwordRequiredLength = 6
     
     // MARK: Public methods
     
     static func validateEmail(_ value: String?) throws {
         guard let email = value, !email.isEmpty else {
-            throw ValidationError.emailValueIsEmpty
+            throw AppError.emailValueIsEmpty
         }
         if !isValidEmail(email) {
-            throw ValidationError.emailFormatIsWrong
+            throw AppError.emailFormatIsWrong
         }
     }
     
     static func validatePassword(_ value: String?) throws {
         guard let password = value, !password.isEmpty else {
-            throw ValidationError.passwordValueIsEmpty
+            throw AppError.passwordValueIsEmpty
         }
         if password.count < passwordRequiredLength {
-            throw ValidationError.passwordLengthIsWrong(passwordRequiredLength)
+            throw AppError.passwordLengthIsWrong
         }
     }
     
     static func validateFirstName(_ value: String?) throws {
         guard let firstName = value, !firstName.isEmpty else {
-            throw ValidationError.firstNameValueIsEmpty
+            throw AppError.firstNameValueIsEmpty
         }
     }
     
     static func validateLastName(_ value: String?) throws {
         guard let lastName = value, !lastName.isEmpty else {
-            throw ValidationError.lastNameValueIsEmpty
+            throw AppError.lastNameValueIsEmpty
+        }
+    }
+    
+    static func validatePasswordsMatch(_ password: String, and conformPassrowd: String) throws {
+        guard password == conformPassrowd else {
+            throw AppError.passwordsDoNotMatch
+        }
+    }
+    static func validatePolicyAcceptance(_ acceptedPolicy: Bool) throws {
+        guard acceptedPolicy else {
+            throw AppError.notAcceptedPolicy
         }
     }
     
@@ -50,31 +61,5 @@ struct Validator {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         return emailTest.evaluate(with: email)
-    }
-}
-
-enum ValidationError: LocalizedError {
-    case emailValueIsEmpty
-    case passwordValueIsEmpty
-    case firstNameValueIsEmpty
-    case lastNameValueIsEmpty
-    case emailFormatIsWrong
-    case passwordLengthIsWrong(Int)
-    
-    var errorDescription: String? {
-        switch self {
-        case .emailValueIsEmpty:
-            return "Email is empty. Please fill it."
-        case .passwordValueIsEmpty:
-            return "Password is empty. Please fill it."
-        case .firstNameValueIsEmpty:
-            return "First name is empty. Please fill it."
-        case .lastNameValueIsEmpty:
-            return "Last name is empty. Please fill it."
-        case .emailFormatIsWrong:
-            return "Email has wrong format. Please edit it."
-        case .passwordLengthIsWrong(let length):
-            return "Password must have minimum \(length) symbols."
-        }
     }
 }

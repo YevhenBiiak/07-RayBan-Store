@@ -13,6 +13,6 @@ class Session {
     
     private init() {}
     
-    var userId: UserId = ""
+    var userId: String = ""
     
 }

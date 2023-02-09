@@ -21,36 +21,37 @@ struct AuthProvider {
     }
     
     static func login(email: String, password: String) async throws -> User {
-        try await perform {
+        try await with(errorHandler) {
             let userId = try await Auth.auth().signIn(withEmail: email, password: password).user.uid
             return User(id: userId)
         }
     }
     
     static func register(email: String, password: String) async throws -> User {
-        try await perform {
+        try await with(errorHandler) {
             let userId = try await Auth.auth().createUser(withEmail: email, password: password).user.uid
             return User(id: userId)
         }
     }
     
     static func forgotPassword(email: String) async throws {
-        try await perform {
+        try await with(errorHandler) {
             try await Auth.auth().sendPasswordReset(withEmail: email)
         }
     }
     
     static func logout() throws {
-        try perform {
+        try with(errorHandler) {
             try Auth.auth().signOut()
         }
     }
     
     static func loginWithFacebook() async throws -> ProfileDTO {
-        let (credential, firstName, lastName) = try await performFacebookRequest()
-        return try await perform {
-            let result = try await Auth.auth().signIn(with: credential)
-            return ProfileDTO(id: result.user.uid, firstName: firstName, lastName: lastName, email: result.user.email!)
+        return try await with(errorHandler) {
+            let (credential, firstName, lastName) = try await performFacebookRequest()
+            let authResult = try await Auth.auth().signIn(with: credential)
+            let (uid, email) = try parse(authResult)
+            return ProfileDTO(id: uid, firstName: firstName, lastName: lastName, email: email)
         }
     }
 }
@@ -63,9 +64,9 @@ private extension AuthProvider {
     static func performFacebookRequest() async throws -> (credential: AuthCredential, firstName: String?, lastName: String?) {
         try await withCheckedThrowingContinuation { continuation in
             LoginManager().logIn(permissions: [], from: nil) { result, error in
-                guard result?.isCancelled == false else { return continuation.resume(throwing: AuthProviderError.facebookLoginWasCancelled) }
+                guard result?.isCancelled == false else { return continuation.resume(throwing: AppError.fbLoginWasCancelled) }
 
-                if let error = error { return continuation.resume(throwing: AuthProviderError.facebookError(error)) }
+                if let error = error { return continuation.resume(throwing: AppError.facebookError(error.localizedDescription)) }
 
                 let token = result?.token?.tokenString
                 let request = GraphRequest(
@@ -76,74 +77,69 @@ private extension AuthProvider {
                     httpMethod: .get)
 
                 request.start { _, response, error in
-                    if let error { return continuation.resume(throwing: AuthProviderError.facebookError(error)) }
+                    if let error { return continuation.resume(throwing: AppError.facebookError(error.localizedDescription)) }
 
                     let userInfo = response as? [String: String]
                     let firstName = userInfo?["first_name"]
                     let lastName = userInfo?["last_name"]
 
-                    let credential: AuthCredential = FacebookAuthProvider.credential(withAccessToken: token!)
+                    let credential = FacebookAuthProvider.credential(withAccessToken: token!)
                     continuation.resume(returning: (credential, firstName, lastName))
                 }
             }
         }
     }
     
-    static func perform<T>(_ code: () async throws -> T) async throws -> T {
-        do    { return try await code() }
-        catch { throw handledError(error) }
+    static func parse(_ result: AuthDataResult) throws -> (uid: String, email: String) {
+        guard let email = result.user.providerData.first(where: { $0.email?.isEmpty == false })?.email else {
+            throw AppError.facebookError("Your facebook account does not have associated email addresses or you denied access to your email address. You can create account using email and password")
+        }
+        return (result.user.uid, email)
     }
     
-    static func perform<T>(_ code: () throws -> T) throws -> T {
-        do    { return try code() }
-        catch { throw handledError(error) }
-    }
-    
-    /// handle FIRAuthErros only and throws AuthProviderError
-    static func handledError(_ error: Error) -> Error {
-        if let errorCode = AuthErrorCode.Code(rawValue: error._code) {
+    /// handles FIRAuthErros and returns an AppError
+    static func errorHandler(_ error: Error) -> Error {
+        if error is AppError {
+            return error
+        } else if let errorCode = AuthErrorCode.Code(rawValue: error._code) {
+            print(error.localizedDescription)
             switch errorCode {
-            // case .operationNotAllowed:
+            // case .invalidMessagePayload - Indicates an invalid email template for sending update email.
                 
             // signIn with Email and Password
-            case .wrongPassword: return AuthProviderError.wrongPassword(error)
-            case .invalidEmail:  return AuthProviderError.invalidEmail(error)
-            case .userNotFound:  return AuthProviderError.userNotFound(error)
+            case .operationNotAllowed:   return AppError.operationNotAllowed
+            case .wrongPassword:         return AppError.wrongPassword
+            case .invalidEmail:          return AppError.invalidEmail
+            case .userNotFound:          return AppError.userNotFound
                 
             // createUser with Email and Password
-            case .emailAlreadyInUse: return AuthProviderError.emailAlreadyInUse(error)
-            case .weakPassword:      return AuthProviderError.weakPassword(error)
+            case .emailAlreadyInUse:     return AppError.emailAlreadyInUse
+            case .weakPassword:          return AppError.weakPassword
                 
             // sendPassword reset
-            case .invalidSender:         return AuthProviderError.invalidEmail(error)
-            case .invalidRecipientEmail: return AuthProviderError.invalidEmail(error)
-            default: return AuthProviderError.unknown(error)
-            }
+            case .invalidSender:         return AppError.invalidSender
+            case .invalidRecipientEmail: return AppError.invalidRecipientEmail
+                
+            case .networkError:          return AppError.networkError
+                
+            default:                     return AppError.unknown(error) }
+            
         }
+        
         fatalError("Unhandled error type: \(String(describing: error)) \(error.localizedDescription)")
     }
 }
 
-enum AuthProviderError: LocalizedError {
-    case wrongPassword(Error)
-    case invalidEmail(Error)
-    case userNotFound(Error)
-    case emailAlreadyInUse(Error)
-    case weakPassword(Error)
-    case facebookError(Error)
-    case unknown(Error)
-    case facebookLoginWasCancelled
-    
-    var errorDescription: String? {
-        switch self {
-        case .wrongPassword    (let error): return error.localizedDescription
-        case .invalidEmail     (let error): return error.localizedDescription
-        case .userNotFound     (let error): return error.localizedDescription
-        case .emailAlreadyInUse(let error): return error.localizedDescription
-        case .weakPassword     (let error): return error.localizedDescription
-        case .facebookError    (let error): return error.localizedDescription
-        case .unknown          (let error): return error.localizedDescription
-        case .facebookLoginWasCancelled: return "The login with Facebook was cancelled by the user"
-        }
-    }
+/* MARK: - Firebase
+ 
+Auth.auth().currentUser?.updateEmail(to: email) { error in }
+ 
+Auth.auth().currentUser?.updatePassword(to: password) { error in }
+ 
+MARK: Facebook
+ 
+if let token = AccessToken.current, !token.isExpired {
+    // some
 }
+ 
+*/

@@ -45,12 +45,11 @@ class RegistrationViewController: UIViewController {
               let password = rootView.passwordTextField.text,
               let conformPassword = rootView.conformPasswordTextField.text else { return }
         let acceptedPolicy = rootView.policyCheckmarkButton.isChecked
-        let params = RegistrationParameters(firstName: firstName, lastName: lastName, email: email, password: password)
+        
+        let params = RegistrationParameters(firstName: firstName, lastName: lastName, email: email, password: password, conformPassword: conformPassword, acceptedPolicy: acceptedPolicy)
         
         Task { await presenter.createAccountButtonTapped(
-            registreationParameters: params,
-            conformPassword: conformPassword,
-            acceptedPolicy: acceptedPolicy)
+            registreationParameters: params)
         }
     }
     
@@ -61,23 +60,31 @@ class RegistrationViewController: UIViewController {
 
 extension RegistrationViewController: RegistrationView {
     
-    func display(error: RegistrationError) {
-        switch error {
-        case .firstNameError:
-            rootView.firstNameTextField.triggerRequirements(with: error.message)
-        case .lastNameError:
-            rootView.lastNameTextField.triggerRequirements(with: error.message)
-        case .emailError:
-            rootView.emailTextField.triggerRequirements(with: error.message)
-        case .passwordError:
-            rootView.passwordTextField.triggerRequirements(with: error.message)
-        case .passwordsDoNotMatch:
-            rootView.passwordTextField.triggerRequirements(with: "")
-            showWarning(with: error.message)
-        case .emailAlreadyInUse, .notAcceptedPolicy:
-            showWarning(with: error.message)
-        case .facebookError:
-            showAlert(title: error.title, message: error.message)
-        }
+    func display(firstNameFiledError: String) {
+        rootView.firstNameTextField.triggerRequirements(with: firstNameFiledError)
+    }
+    
+    func display(lastNameFiledError: String) {
+        rootView.lastNameTextField.triggerRequirements(with: lastNameFiledError)
+    }
+    
+    func display(emailFiledError: String) {
+        rootView.emailTextField.triggerRequirements(with: emailFiledError)
+    }
+    
+    func display(passwordFiledError: String) {
+        rootView.passwordTextField.triggerRequirements(with: passwordFiledError)
+    }
+    
+    func display(conformPasswordFiledError: String) {
+        rootView.conformPasswordTextField.triggerRequirements(with: conformPasswordFiledError)
+    }
+    
+    func displayWarning(message: String) {
+        showWarning(with: message)
+    }
+    
+    func displayAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
     }
 }

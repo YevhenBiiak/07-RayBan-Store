@@ -8,17 +8,23 @@
 @MainActor
 protocol RegistrationRouter {
     func presentProducts(user: User)
-    func dismiss(animated: Bool, completion: (() -> Void)?)
+    func dismiss(animated: Bool)
 }
 
 @MainActor
 protocol RegistrationView: AnyObject {
-    func display(error: RegistrationError)
+    func display(firstNameFiledError: String)
+    func display(lastNameFiledError: String)
+    func display(emailFiledError: String)
+    func display(passwordFiledError: String)
+    func display(conformPasswordFiledError: String)
+    func displayWarning(message: String)
+    func displayAlert(title: String, message: String)
 }
 
 protocol RegistrationPresenter {
     func loginWithFacebookButtonTapped() async
-    func createAccountButtonTapped(registreationParameters: RegistrationParameters, conformPassword: String, acceptedPolicy: Bool) async
+    func createAccountButtonTapped(registreationParameters: RegistrationParameters) async
     func loginButtonTapped() async
 }
 
@@ -38,29 +44,22 @@ class RegistrationPresenterImpl {
 extension RegistrationPresenterImpl: RegistrationPresenter {
     
     func loginWithFacebookButtonTapped() async {
-        await withHandler {
+        await with(errorHandler) {
             let user = try await authUseCase.executeLoginWithFacebookRequest()
             await router.presentProducts(user: user)
         }
     }
     
-    func createAccountButtonTapped(
-        registreationParameters: RegistrationParameters,
-        conformPassword: String,
-        acceptedPolicy: Bool
-    ) async {
-        await withHandler {
-            let registrationRequest = RegistrationRequest(
-                registrationParameters: registreationParameters,
-                conformPassword: conformPassword,
-                acceptedPolicy: acceptedPolicy)
+    func createAccountButtonTapped(registreationParameters: RegistrationParameters) async {
+        await with(errorHandler) {
+            let registrationRequest = RegistrationRequest(registrationParameters: registreationParameters)
             let user = try await authUseCase.execute(registrationRequest)
             await router.presentProducts(user: user)
         }
     }
     
     func loginButtonTapped() async {
-        await router.dismiss(animated: true, completion: nil)
+        await router.dismiss(animated: true)
     }
 }
 
@@ -68,69 +67,43 @@ extension RegistrationPresenterImpl: RegistrationPresenter {
 
 private extension RegistrationPresenterImpl {
     
-    func withHandler(_ code: () async throws -> Void) async {
-        do    { return try await code() }
-        catch { await handle(error) }
-    }
-    
-    func handle(_ error: Error) async {
-        if let error = error as? AuthUseCaseError {
+    func errorHandler(_ error: Error) async {
+        if let error = error as? AppError {
             switch error {
-            // first name
-            case .firstNameValueIsEmpty:
-                await view?.display(error: .firstNameError(error.localizedDescription))
-            // last name
-            case .lastNameValueIsEmpty:
-                await view?.display(error: .lastNameError(error.localizedDescription))
-            // email errors
-            case .emailValueIsEmpty, .emailFormatIsWrong, .invalidEmail:
-                await view?.display(error: .emailError(error.localizedDescription))
-            // password errors
-            case .passwordValueIsEmpty, .passwordLengthIsWrong, .weakPassword:
-                await view?.display(error: .passwordError(error.localizedDescription))
-            // login errors
-            case .emailAlreadyInUse:
-                await view?.display(error: .emailAlreadyInUse(error.localizedDescription))
-            // facebook errors
-            case .facebookError(let error):
-                await view?.display(error: .facebookError(error.localizedDescription))
-            // additionally
-            case .passwordsDoNotMatch:
-                await view?.display(error: .passwordsDoNotMatch(error.localizedDescription))
-            case .notAcceptedPolicy:
-                await view?.display(error: .notAcceptedPolicy(error.localizedDescription))
+            case .networkError:          await view?.displayAlert(title: "Error", message: error.localizedDescription)
+                
+            case .firstNameValueIsEmpty: await view?.display(firstNameFiledError: error.localizedDescription)
+                
+            case .lastNameValueIsEmpty:  await view?.display(lastNameFiledError: error.localizedDescription)
+                
+            case .emailValueIsEmpty,
+                 .emailFormatIsWrong,
+                 .invalidEmail:          await view?.display(emailFiledError: error.localizedDescription)
+                
+            case .passwordValueIsEmpty,
+                 .passwordLengthIsWrong,
+                 .weakPassword:          await view?.display(passwordFiledError: error.localizedDescription)
+                
+            case .passwordsDoNotMatch:   await view?.display(conformPasswordFiledError: error.localizedDescription)
+                
+            case .emailAlreadyInUse,
+                 .wrongPassword,
+                 .facebookError,
+                 .notAcceptedPolicy:     await view?.displayWarning(message: error.localizedDescription)
+                
             // irrelevant errors in this case
-            case .fbLoginWasCancelled, .wrongPassword, .userNotFound:
-                break
+            case .fbLoginWasCancelled,
+                 .userNotFound,
+                 .operationNotAllowed,
+                 .invalidSender,
+                 .invalidRecipientEmail:
+                print("irrelevant error for Registration:", error.localizedDescription)
+                
+            case .unknown:
+                fatalError(error.localizedDescription)
             }
             return
         }
         fatalError("Unhandled error type: \(String(describing: error)) \(error.localizedDescription)")
-    }
-}
-
-enum RegistrationError {
-    case firstNameError(String)
-    case lastNameError(String)
-    case emailError(String)
-    case passwordError(String)
-    case emailAlreadyInUse(String)
-    case passwordsDoNotMatch(String)
-    case notAcceptedPolicy(String)
-    case facebookError(String)
-    
-    var title: String { "Error" }
-    
-    var message: String {
-        switch self {
-        case .firstNameError(let message):      return message
-        case .lastNameError(let message):       return message
-        case .emailError(let message):          return message
-        case .passwordError(let message):       return message
-        case .emailAlreadyInUse(let message):   return message
-        case .passwordsDoNotMatch(let message): return message
-        case .notAcceptedPolicy(let message):   return message
-        case .facebookError(let message):       return message
-        }
     }
 }

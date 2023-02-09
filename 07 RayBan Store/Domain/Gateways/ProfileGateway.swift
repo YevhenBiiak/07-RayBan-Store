@@ -8,6 +8,6 @@
 import Foundation
 
 protocol ProfileGateway {
-    func fetchProfile(byUserId userId: UserId) async throws -> ProfileDTO
+    func fetchProfile(byUserId userId: String) async throws -> ProfileDTO
     func saveProfile(_ profile: ProfileDTO) async throws
 }
