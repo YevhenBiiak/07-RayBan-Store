@@ -30,4 +30,8 @@ class ProductsRouterImpl: Routable, ProductsRouter {
         appMenuViewController.configurator = appMenuConfigurator
         navigationController?.pushViewController(appMenuViewController, animated: true)
     }
+    
+    func presentShoppingCart() {
+        
+    }
 }

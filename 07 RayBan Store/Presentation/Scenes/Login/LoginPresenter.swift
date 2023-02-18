@@ -46,14 +46,16 @@ extension LoginPresenterImpl: LoginPresenter {
     func loginButtonTapped(email: String, password: String) async {
         await with(errorHandler) {
             let loginRequest = LoginRequest(email: email, password: password)
-            try await authUseCase.execute(loginRequest)
+            let profile = try await authUseCase.execute(loginRequest)
+            Session.shared.user = User(id: profile.id)
             await router.presentProducts()
         }
     }
     
     func loginWithFacebookButtonTapped() async {
         await with(errorHandler) {
-            try await authUseCase.executeLoginWithFacebookRequest()
+            let profile = try await authUseCase.executeLoginWithFacebookRequest()
+            Session.shared.user = User(id: profile.id)
             await router.presentProducts()
         }
     }

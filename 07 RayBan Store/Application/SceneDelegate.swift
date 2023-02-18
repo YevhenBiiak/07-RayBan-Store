@@ -22,6 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         if let user = AuthProvider.currentUser {
+            Session.shared.user = user
             // show main screen
             let productsViewController = ProductsViewController()
             productsViewController.configurator = ProductsConfiguratorImpl()

@@ -69,11 +69,6 @@ extension ProductsViewController: ProductsView {
     
     func display(title: String) {
         self.title = title
-        // bug: title alpha is zero in iOS 16
-        // if #available(iOS 16.0, *) { navigationController?.navigationBar.setNeedsLayout() }
-        // scroll to top
-        // let topBarHeight = (UIApplication.shared.statusBarHeight ?? 0) + (navigationController?.navigationBarHeight ?? 0)
-        // rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -topBarHeight), animated: false)
     }
     
     func display(productsSection: any Sectionable) {
@@ -83,7 +78,9 @@ extension ProductsViewController: ProductsView {
     
     func display(productItem: any Itemable, at indexPath: IndexPath) {
         section.items[indexPath] = productItem
-        rootView.collectionView.reloadItems(at: [indexPath])
+        productItem.viewModel == nil
+            ? rootView.collectionView.insertItems(at: [indexPath])
+            : rootView.collectionView.reloadItems(at: [indexPath])
     }
     
     func displayError(title: String, message: String?) {

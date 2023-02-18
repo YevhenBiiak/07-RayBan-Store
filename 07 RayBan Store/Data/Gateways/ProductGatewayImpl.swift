@@ -44,7 +44,7 @@ extension ProductGatewayImpl: ProductGateway {
         guard includeImages else { return product }
         
         // load images for product variant with productID
-        try await loadImages(for: &product, withID: productID, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], bgColor: .appLightGray)
+        try await loadImages(for: &product, withID: productID, imgTypes: [.main], bgColor: .appLightGray)
         return product
     }
     

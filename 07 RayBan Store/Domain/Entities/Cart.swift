@@ -30,6 +30,14 @@ struct Cart {
     mutating func delete(productID: Int) {
         items = items.filter { $0.product.variations.first!.productID != productID }
     }
+
+    func contains(_ product: Product) -> Bool {
+        items.contains {
+            $0.product.variations.contains {
+                $0.productID == product.variations.first?.productID
+            }
+        }
+    }
     
     func createOrder(shippindAddress: String, shippingMethods: String) -> Order {
         Order(items: items,

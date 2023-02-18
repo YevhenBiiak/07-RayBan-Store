@@ -1,11 +1,14 @@
 //
-//  RegistrationRequest.swift
+//  AuthRequests.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 02.09.2022.
 //
 
-import Foundation
+struct LoginRequest {
+    let email: String
+    let password: String
+}
 
 struct RegistrationParameters {
     let firstName: String
@@ -18,4 +21,8 @@ struct RegistrationParameters {
 
 struct RegistrationRequest {
     let registrationParameters: RegistrationParameters
+}
+
+struct ForgotPasswordRequest {
+    let email: String
 }

@@ -18,16 +18,18 @@ class CartGatewayImpl {
     init(remoteRepository: RemoteRepositoryAPI) {
         self.remoteRepository = remoteRepository
     }
-}
     
+    private var tempStorage: [CartItem] = []
+}
+
 extension CartGatewayImpl: CartGateway {
     
     func fetchCartItems(for user: User, includeImages: Bool) async throws -> [CartItem] {
-        []
+        tempStorage
     }
     
     func saveCartItems(_ items: [CartItem], for user: User) async throws {
-        
+        tempStorage.append(contentsOf: items)
     }
     
     func saveOrder(_ order: Order, for user: User) async throws {

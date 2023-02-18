@@ -16,12 +16,16 @@ struct ProductItem: Itemable {
 }
 
 struct ProductCellViewModel {
-    let id: Int
+    let productID: Int
     let isNew: Bool
+    let isInCart: Bool
     let name: String
     let price: String
     let colors: String
-    let imgData: Data
+    let imageData: Data
+    let indexPath: IndexPath
+    let addButtonTapped: (ProductCellViewModel) async -> Void
+    let cartButtonTapped: () async -> Void
 }
 
 struct ProductVM {

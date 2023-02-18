@@ -19,6 +19,9 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
         let productImagesApi = ProductImagesApiImpl()
         let remoteRepository = RemoteRepositoryImpl()
         
+        let cartGateway = CartGatewayImpl(remoteRepository: remoteRepository)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
+        
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
         
@@ -26,6 +29,7 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
         let router = ProductsRouterImpl(viewController: productsViewController)
         let presenter = ProductsPresenterImpl(view: productsViewController,
                                               router: router,
+                                              cartUseCase: cartUseCase,
                                               getProductsUseCase: getProductsUseCase)
         
         productsViewController.presenter = presenter

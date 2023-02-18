@@ -9,10 +9,15 @@ import Foundation
 
 protocol CartUseCase {
     func execute(_ request: IsCartEmptyRequest) async throws -> Bool
+    func execute(_ request: IsProductInCartRequset) async throws -> Bool
     func execute(_ request: GetCartItemsRequest) async throws -> [CartItem]
+    @discardableResult
     func execute(_ request: AddCartItemRequest) async throws -> [CartItem]
+    @discardableResult
     func execute(_ request: DeleteCartItemRequest) async throws -> [CartItem]
+    @discardableResult
     func execute(_ request: UpdateCartItemRequest) async throws -> [CartItem]
+    @discardableResult
     func execute(_ request: CreateOrderRequest) async throws -> Order
 }
 
@@ -33,6 +38,12 @@ extension CartUseCaseImpl: CartUseCase {
         return cart.isCartEmpty
     }
     
+    func execute(_ request: IsProductInCartRequset) async throws -> Bool {
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
+        let cart = Cart(items: cartItems)
+        return cart.contains(request.product)
+    }
+    
     func execute(_ request: GetCartItemsRequest) async throws -> [CartItem] {
         let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
         let cart = Cart(items: cartItems)
@@ -40,12 +51,11 @@ extension CartUseCaseImpl: CartUseCase {
     }
     
     func execute(_ request: AddCartItemRequest) async throws -> [CartItem] {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
         var cart = Cart(items: cartItems)
         
         cart.add(product: request.product, amount: request.amount)
         try await cartGateway.saveCartItems(cart.items, for: request.user)
-        
         return cart.items
     }
     
@@ -55,7 +65,6 @@ extension CartUseCaseImpl: CartUseCase {
         
         cart.delete(productID: request.productID)
         try await cartGateway.saveCartItems(cart.items, for: request.user)
-        
         return cart.items
     }
     
@@ -65,7 +74,6 @@ extension CartUseCaseImpl: CartUseCase {
         
         cart.update(productID: request.productID, amount: request.amount)
         try await cartGateway.saveCartItems(cart.items, for: request.user)
-        
         return cart.items
     }
     
@@ -75,7 +83,6 @@ extension CartUseCaseImpl: CartUseCase {
         let order = cart.createOrder(shippindAddress: request.shippingAddress, shippingMethods: request.shippingMethods)
         
         try await cartGateway.saveOrder(order, for: request.user)
-        
         return order
     }
 }

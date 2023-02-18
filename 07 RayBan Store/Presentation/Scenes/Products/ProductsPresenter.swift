@@ -17,6 +17,7 @@ protocol ProductsPresentationDelegate: AnyObject {
 protocol ProductsRouter {
     func presentProductDetails(product: Product)
     func presentAppMenu(productsPresentationDelegate: ProductsPresentationDelegate?)
+    func presentShoppingCart()
 }
 
 @MainActor
@@ -38,6 +39,7 @@ class ProductsPresenterImpl {
     
     private weak var view: ProductsView?
     private let router: ProductsRouter
+    private let cartUseCase: CartUseCase
     private let getProductsUseCase: GetProductsUseCase
     
     private var currentCategory: Product.Category = .sunglasses
@@ -47,9 +49,10 @@ class ProductsPresenterImpl {
     private let requestStack = RequestStack(capacity: 6)
     private var totalProductsCount: Int = 0
     
-    init(view: ProductsView?, router: ProductsRouter, getProductsUseCase: GetProductsUseCase) {
+    init(view: ProductsView?, router: ProductsRouter, cartUseCase: CartUseCase, getProductsUseCase: GetProductsUseCase) {
         self.view = view
         self.router = router
+        self.cartUseCase = cartUseCase
         self.getProductsUseCase = getProductsUseCase
     }
 }
@@ -82,13 +85,13 @@ extension ProductsPresenterImpl: ProductsPresenter {
         await requestStack.add(nextIndexPath)
         await displayLoadingItem(at: nextIndexPath)
         await with(errorHandler) {
-            let request = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndexPath.item)
-            let product = try await getProductsUseCase.execute(request)
+            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndexPath.item)
+            let product = try await getProductsUseCase.execute(productRequest)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            let viewModel = productCellViewModel(with: product)
+            let viewModel = try await createViewModel(with: product, for: nextIndexPath)
             let productItem = ProductItem(viewModel: viewModel)
             await view?.display(productItem: productItem, at: nextIndexPath)
         }
@@ -142,30 +145,58 @@ extension ProductsPresenterImpl {
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
             totalProductsCount = productsCount
-            if productsCount > 0 { await displayLoadingItem(at: IndexPath(item: 0, section: 0)) }
+            if productsCount > 0 {
+                let header = "\(productsCount) PRODUCTS"
+                let section = ProductsSection(header: header, items: [IndexPath(item: 0, section: 0): ProductItem()])
+                await view?.display(productsSection: section)
+            }
             
             // second phase
             let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: 0)
             let product = try await getProductsUseCase.execute(productRequest)
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            let header = "\(productsCount) PRODUCTS"
-            let viewModel = productCellViewModel(with: product)
+            let viewModel = try await createViewModel(with: product, for: IndexPath(item: 0, section: 0))
             let item = ProductItem(viewModel: viewModel)
-            let section = ProductsSection(header: header, items: [IndexPath(item: 0, section: 0): item])
-            await view?.display(productsSection: section)
+            await view?.display(productItem: item, at: IndexPath(item: 0, section: 0))
         }
     }
     
-    private func productCellViewModel(with product: Product) -> ProductCellViewModel? {
+    private func addProductTapped(in viewModel: ProductCellViewModel) async {
+        await with(errorHandler) {
+            let productRequest = ProductWithIDRequest(productID: viewModel.productID)
+            let product = try await getProductsUseCase.execute(productRequest)
+            
+            let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)
+            try await cartUseCase.execute(addRequest)
+            // update cell
+            let newViewModel = try await createViewModel(with: product, for: viewModel.indexPath)
+            let productItem = ProductItem(viewModel: newViewModel)
+            await view?.display(productItem: productItem, at: viewModel.indexPath)
+        }
+    }
+    
+    private func createViewModel(with product: Product, for indexPath: IndexPath) async throws -> ProductCellViewModel? {
         guard let variation = product.variations.first else { return nil }
+        
+        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
+        let isInCart = try await cartUseCase.execute(inCartRequest)
+        
         return ProductCellViewModel(
-            id: variation.productID,
+            productID: variation.productID,
             isNew: true, // hardcode :(
+            isInCart: isInCart,
             name: product.name.uppercased(),
             price: "$ " + String(format: "%.2f", Double(variation.price) / 100.0),
             colors: "\(product.variations.count) COLORS",
-            imgData: variation.imageData?.first ?? Data()
+            imageData: variation.imageData?.first ?? Data(),
+            indexPath: indexPath,
+            addButtonTapped: { [weak self] viewModel in
+                await self?.addProductTapped(in: viewModel)
+            },
+            cartButtonTapped: { [weak self] in
+                await self?.router.presentShoppingCart()
+            }
         )
     }
     

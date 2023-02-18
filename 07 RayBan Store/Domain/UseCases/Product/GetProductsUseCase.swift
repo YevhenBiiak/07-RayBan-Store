@@ -8,7 +8,7 @@
 import Foundation
 
 protocol GetProductsUseCase {
-//    func execute(_ request: ProductWithIDRequest) async throws -> Product
+    func execute(_ request: ProductWithIDRequest) async throws -> Product
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product
     func execute(_ request: ProductRequest) async throws -> Product
     func execute(_ request: ProductsCountRequest) async throws -> Int
@@ -26,11 +26,11 @@ class GetProductsUseCaseImpl {
 
 extension GetProductsUseCaseImpl: GetProductsUseCase {
     
-    // get the product for cart or order
-    // func execute(_ request: ProductWithIDRequest) async throws -> Product {
-    //     try await productGateway.fetchProduct(productID: request.productID, includeImages: true)
-    //     // here can be some domain logic
-    // }
+     // get the product for cart or order
+     func execute(_ request: ProductWithIDRequest) async throws -> Product {
+         try await productGateway.fetchProduct(productID: request.productID, includeImages: true)
+         // here can be some domain logic
+     }
     
     // get the product for product details
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product {

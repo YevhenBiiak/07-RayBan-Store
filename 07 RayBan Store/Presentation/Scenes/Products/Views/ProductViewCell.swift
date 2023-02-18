@@ -51,12 +51,10 @@ class ProductsViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let addButton: UIButton = {
+    private let cartButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .appBlack
         button.titleLabel?.font = UIFont.Oswald.bold
         button.setTitleColor(.white, for: .normal)
-        button.setTitle("ADD TO BAG", for: .normal)
         return button
     }()
     
@@ -68,11 +66,15 @@ class ProductsViewCell: UICollectionViewCell {
     var viewModel: ProductCellViewModel? {
         didSet {
             guard let viewModel else { return startAnimation() }
-            setImage(with: viewModel.imgData)
+            setImage(with: viewModel.imageData)
             newLabel.isHidden = viewModel.isNew
             nameLabel.text = viewModel.name
             colorsLabel.text = viewModel.colors
             priceLabel.text = viewModel.price
+            let title = viewModel.isInCart ? "SHOPPING BAG" : "ADD TO BAG"
+            let color = viewModel.isInCart ? UIColor.appRed : UIColor.appBlack
+            cartButton.setTitle(title, for: .normal)
+            cartButton.backgroundColor = color
             stopAnimating()
         }
     }
@@ -82,9 +84,21 @@ class ProductsViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
+        cartButton.addTarget(self, action: #selector(cartButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) { fatalError() }
+    
+    // MARK: - Private methods
+    
+    @objc private func cartButtonTapped() {
+        guard let viewModel else { return }
+        if viewModel.isInCart == true {
+            Task {  await viewModel.cartButtonTapped() }
+        } else {
+            Task {  await viewModel.addButtonTapped(viewModel) }
+        }
+    }
     
     private func setImage(with data: Data) {
         DispatchQueue.global().async {
@@ -94,8 +108,6 @@ class ProductsViewCell: UICollectionViewCell {
             }
         }
     }
-    
-    // MARK: - Private methods
     
     private func startAnimation() {
         imageShimmerView.startShimmerAnimating()
@@ -118,7 +130,7 @@ class ProductsViewCell: UICollectionViewCell {
                 colorsLabel),
             nameLabel,
             priceLabel,
-            addButton
+            cartButton
         )
         
         let padding = 0.05 * frame.width
@@ -128,13 +140,13 @@ class ProductsViewCell: UICollectionViewCell {
         colorsLabel.left(padding).bottom(padding)
         nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding
         priceLabel.width(90%).centerHorizontally().Top == nameLabel.Bottom + padding
-        addButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
+        cartButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
         
         // configure shummer views
         imageView.subviews(imageShimmerView)
         nameLabel.subviews(nameShimmerView)
         priceLabel.subviews(priceShimmerView)
-        addButton.subviews(buttonShimmerView)
+        cartButton.subviews(buttonShimmerView)
         
         imageShimmerView.fillContainer()
         nameShimmerView.fillContainer()

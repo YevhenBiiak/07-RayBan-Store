@@ -45,7 +45,8 @@ extension RegistrationPresenterImpl: RegistrationPresenter {
     
     func loginWithFacebookButtonTapped() async {
         await with(errorHandler) {
-            try await authUseCase.executeLoginWithFacebookRequest()
+            let profile = try await authUseCase.executeLoginWithFacebookRequest()
+            Session.shared.user = User(id: profile.id)
             await router.presentProducts()
         }
     }
@@ -53,7 +54,8 @@ extension RegistrationPresenterImpl: RegistrationPresenter {
     func createAccountButtonTapped(registreationParameters: RegistrationParameters) async {
         await with(errorHandler) {
             let registrationRequest = RegistrationRequest(registrationParameters: registreationParameters)
-            try await authUseCase.execute(registrationRequest)
+            let profile = try await authUseCase.execute(registrationRequest)
+            Session.shared.user = User(id: profile.id)
             await router.presentProducts()
         }
     }

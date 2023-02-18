@@ -9,6 +9,11 @@ struct IsCartEmptyRequest {
     let user: User
 }
 
+struct IsProductInCartRequset {
+    let user: User
+    let product: Product
+}
+
 struct GetCartItemsRequest {
     let user: User
 }

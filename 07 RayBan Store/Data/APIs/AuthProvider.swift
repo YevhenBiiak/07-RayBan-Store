@@ -9,10 +9,6 @@ import Foundation
 import FirebaseAuth
 import FBSDKLoginKit
 
-struct User: Identifiable {
-    let id: String
-}
-
 struct AuthProvider {
     
     static var currentUser: User? {
