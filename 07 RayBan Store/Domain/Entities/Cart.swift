@@ -8,6 +8,7 @@
 import Foundation
 
 struct Cart {
+    
     var items: [CartItem]
     
     var isCartEmpty: Bool {
@@ -20,26 +21,21 @@ struct Cart {
         items.append(item)
     }
     
-    mutating func update(productId: String, amount: Int) {
-        for (i, item) in items.enumerated() where item.product.id == productId {
+    mutating func update(productID: Int, amount: Int) {
+        for (i, item) in items.enumerated() where item.product.variations.first!.productID == productID {
             items[i].amount = amount
         }
     }
     
-    mutating func delete(productId: String) {
-        items = items.filter { $0.product.id != productId }
+    mutating func delete(productID: Int) {
+        items = items.filter { $0.product.variations.first!.productID != productID }
     }
     
-    func createOrder(userId: String, shippindAddress: String, shippingMethods: String) -> Order {
-        let orderItems = items.map {
-            OrderItem(product: $0.product, amount: $0.amount, price: $0.price())
-        }
-        
-        return Order(userId: userId,
-                     items: orderItems,
-                     shippingMethods: shippingMethods,
-                     shippindAddress: shippindAddress,
-                     price: totalPrice())
+    func createOrder(shippindAddress: String, shippingMethods: String) -> Order {
+        Order(items: items,
+              shippingMethods: shippingMethods,
+              shippindAddress: shippindAddress,
+              price: totalPrice())
     }
     
     func totalPrice() -> Cent {
@@ -50,10 +46,11 @@ struct Cart {
 // MARK: - Cart Item
 
 struct CartItem {
+    
     let product: Product
     var amount: Int
     
     func price() -> Cent {
-        (product.variations.first?.price ?? 0) * amount
+        product.variations.first!.price * amount
     }
 }

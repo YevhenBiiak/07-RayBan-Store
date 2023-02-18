@@ -8,10 +8,13 @@
 import Foundation
 
 protocol AuthUseCase {
-    func execute(_ request: LoginRequest) async throws -> User
-    func execute(_ request: RegistrationRequest) async throws -> User
+    @discardableResult
+    func execute(_ request: LoginRequest) async throws -> ProfileDTO
+    @discardableResult
+    func execute(_ request: RegistrationRequest) async throws -> ProfileDTO
     func execute(_ request: ForgotPasswordRequest) async throws
-    func executeLoginWithFacebookRequest() async throws -> User
+    @discardableResult
+    func executeLoginWithFacebookRequest() async throws -> ProfileDTO
     func executeLogoutRequest() throws
 }
 
@@ -26,7 +29,7 @@ class AuthUseCaseImpl {
 
 extension AuthUseCaseImpl: AuthUseCase {
     
-    func execute(_ request: LoginRequest) async throws -> User {
+    func execute(_ request: LoginRequest) async throws -> ProfileDTO {
         let email = request.email
         let password = request.password
         
@@ -36,7 +39,7 @@ extension AuthUseCaseImpl: AuthUseCase {
         return try await authGateway.login(email: email, password: password)
     }
     
-    func execute(_ request: RegistrationRequest) async throws -> User {
+    func execute(_ request: RegistrationRequest) async throws -> ProfileDTO {
         let firstName = request.registrationParameters.firstName
         let lastName = request.registrationParameters.lastName
         let email = request.registrationParameters.email
@@ -60,7 +63,7 @@ extension AuthUseCaseImpl: AuthUseCase {
         try await authGateway.forgotPassword(email: email)
     }
     
-    func executeLoginWithFacebookRequest() async throws -> User {
+    func executeLoginWithFacebookRequest() async throws -> ProfileDTO {
         try await authGateway.loginWithFacebook()
     }
     

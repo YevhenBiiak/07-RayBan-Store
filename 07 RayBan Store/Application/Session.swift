@@ -15,4 +15,6 @@ class Session {
     
     var userId: String = ""
     
+    lazy var remoteRepository: RemoteRepository = RemoteRepositoryImpl()
+    
 }

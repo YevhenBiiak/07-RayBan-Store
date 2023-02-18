@@ -7,24 +7,20 @@
 
 import UIKit
 
-class ProductsRouterImpl: ProductsRouter {
+class ProductsRouterImpl: Routable, ProductsRouter {
     
-    private weak var productsViewController: ProductsViewController!
+    weak var viewController: ProductsViewController!
     
-    private var navigationController: UINavigationController? {
-        productsViewController.navigationController
+    required init(viewController: ProductsViewController) {
+        self.viewController = viewController
     }
     
-    init(productsViewController: ProductsViewController) {
-        self.productsViewController = productsViewController
-    }
-    
-    func presentProductDetails(product: ProductDTO) {
-        let productDetailsViewController = ProductDetailsViewController()
-        let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
-        
-        productDetailsViewController.configurator = productDetailsConfigurator
-        navigationController?.pushViewController(productDetailsViewController, animated: true)
+    func presentProductDetails(product: Product) {
+//        let productDetailsViewController = ProductDetailsViewController()
+//        let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
+//
+//        productDetailsViewController.configurator = productDetailsConfigurator
+//        navigationController?.pushViewController(productDetailsViewController, animated: true)
     }
     
     func presentAppMenu(productsPresentationDelegate: ProductsPresentationDelegate?) {

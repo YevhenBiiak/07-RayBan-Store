@@ -15,7 +15,7 @@ class ForgotPasswordConfiguratorImpl: ForgotPasswordConfigurator {
     func configure(forgotPasswordViewController: ForgotPasswordViewController) {
         
         let remoteRepository = RemoteRepositoryImpl()
-        let profileGateway = ProfileGatewayImpl(remoteRepository: remoteRepository)
+        let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
         let authGateway = AuthGatewayImpl(profileGateway: profileGateway)
         let authUseCase = AuthUseCaseImpl(authGateway: authGateway)
         

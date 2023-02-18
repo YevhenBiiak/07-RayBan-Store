@@ -6,6 +6,7 @@
 //
 
 class AccountMenuRouterImpl: AccountMenuRouter {
+    
     private weak var accountMenuViewController: ListViewController!
     
     init(accountMenuViewController: ListViewController) {

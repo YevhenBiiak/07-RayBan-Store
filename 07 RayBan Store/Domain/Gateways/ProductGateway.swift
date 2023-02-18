@@ -7,12 +7,10 @@
 
 import Foundation
 
-typealias FetchProductsResult = (products: [ProductDTO], totalCount: Int)
-
 protocol ProductGateway {
-    func fetchProduct(byId productId: String, productColor: String?) async throws -> FetchProductsResult
-    
-    func fetchProducts(type: ProductType, category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int) async throws -> FetchProductsResult
-    
-    func fetchProducts(asRepresentationOfProductFamiliesOfType type: ProductType) async throws -> FetchProductsResult
+    func fetchProducts(modelID: String) async throws -> Product
+    func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product
+    func fetchProductStyles(category: Product.Category) async throws -> [Product]
+    func fetchProduct(category: Product.Category, gender: Product.Gender?, style: Product.Style?, index: Int) async throws -> Product
+    func productsCount(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async throws -> Int
 }

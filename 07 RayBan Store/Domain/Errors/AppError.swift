@@ -51,6 +51,10 @@ enum AppError: LocalizedError {
     /// Unhandled error type
     case unknown(Error)
     
+    case invalidProductIdentifier
+    case invalidProductModelID
+    case invalidProductIndex
+    
     var errorDescription: String? {
         switch self {
         case .networkError:          return "The Internet connection appears to be offline."
@@ -73,6 +77,10 @@ enum AppError: LocalizedError {
         case .fbLoginWasCancelled:   return "The facebook login was cancelled."
         case .facebookError(let message): return message
         case .unknown(let error):    return "Unhandled error type: \(String(describing: error)) \(error.localizedDescription)"
+            
+        case .invalidProductIdentifier: return "Invalid product identifier"
+        case .invalidProductModelID:    return "Invalid product model identifier"
+        case .invalidProductIndex:      return "Invalid product index"
         }
     }
 }

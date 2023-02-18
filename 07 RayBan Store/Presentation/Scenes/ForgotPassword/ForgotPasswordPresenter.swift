@@ -71,23 +71,10 @@ private extension ForgotPasswordPresenterImpl {
                  .invalidRecipientEmail,
                  .facebookError:         await view?.displayWarning(message: error.localizedDescription)
 
-            // irrelevant errors in this case
-            case .passwordValueIsEmpty,
-                 .passwordLengthIsWrong,
-                 .weakPassword,
-                 .wrongPassword,
-                 .fbLoginWasCancelled,
-                 .firstNameValueIsEmpty,
-                 .lastNameValueIsEmpty,
-                 .emailAlreadyInUse,
-                 .notAcceptedPolicy,
-                 .passwordsDoNotMatch,
-                 .operationNotAllowed,
-                 .invalidSender:
-                print("Irrelevant error for Forgot Password:", error.localizedDescription)
-            
             case .unknown:
                 fatalError(error.localizedDescription)
+            default:
+                print("Irrelevant error for Forgot Password:", error.localizedDescription)
             }
             return
         }

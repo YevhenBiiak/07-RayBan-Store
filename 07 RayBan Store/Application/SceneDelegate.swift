@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let user = AuthProvider.currentUser {
             // show main screen
             let productsViewController = ProductsViewController()
-            productsViewController.configurator = ProductsConfiguratorImpl(user: user)
+            productsViewController.configurator = ProductsConfiguratorImpl()
             navigationController.setViewControllers([productsViewController], animated: true)
         } else {
             // show login screen

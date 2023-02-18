@@ -8,78 +8,92 @@
 import Foundation
 
 protocol ProductsPresentationDelegate: AnyObject {
-    func presentProducts(type: ProductType)
-    func presentProducts(type: ProductType, family: ProductFamily)
-    func presentProducts(type: ProductType, category: ProductCategory)
+    func presentProducts(category: Product.Category) async
+    func presentProducts(category: Product.Category, style: Product.Style) async
+    func presentProducts(category: Product.Category, gender: Product.Gender) async
 }
 
+@MainActor
 protocol ProductsRouter {
-    func presentProductDetails(product: ProductDTO)
+    func presentProductDetails(product: Product)
     func presentAppMenu(productsPresentationDelegate: ProductsPresentationDelegate?)
 }
 
+@MainActor
 protocol ProductsView: AnyObject {
     func display(title: String)
-    func displayLoading(productsCount: Int)
+    func display(productsSection: any Sectionable)
+    func display(productItem: any Itemable, at indexPath: IndexPath)
     func displayError(title: String, message: String?)
-    func display(products: [ProductVM], totalNumberOfProducts: Int)
 }
 
 protocol ProductsPresenter {
-    func viewDidLoad()
-    func searchButtonTapped()
-    func menuButtonTapped()
-    func willDisplayItem(forIndex index: Int)
-    func didSelectItem(atIndexPath indexPath: IndexPath)
+    func viewDidLoad() async
+    func menuButtonTapped() async
+    func willDisplayLastItem(at indexPath: IndexPath) async
+    func didSelectItem(at indexPath: IndexPath) async
 }
 
-class ProductsPresenterImpl: ProductsPresenter {
+class ProductsPresenterImpl {
     
     private weak var view: ProductsView?
     private let router: ProductsRouter
     private let getProductsUseCase: GetProductsUseCase
     
-    private var products: [ProductDTO] = []
-    private var totalNumberOfProducts = 0
-    private var isProductsLoadingNow = false
+    private var currentCategory: Product.Category = .sunglasses
+    private var currentGender: Product.Gender?
+    private var currentStyle: Product.Style?
     
-    private var currentType: ProductType = .sunglasses
-    private var currentFamily: ProductFamily?
-    private var currentCategory: ProductCategory?
-    private let first = 6
-    private var skip = 0
+    private let requestStack = RequestStack(capacity: 6)
+    private var totalProductsCount: Int = 0
     
     init(view: ProductsView?, router: ProductsRouter, getProductsUseCase: GetProductsUseCase) {
         self.view = view
         self.router = router
         self.getProductsUseCase = getProductsUseCase
     }
+}
+
+extension ProductsPresenterImpl: ProductsPresenter {
     
-    // MARK: - ProductsPresenter
-    
-    func viewDidLoad() {
-        self.presentProducts(type: self.currentType)
+    func viewDidLoad() async {
+        await presentProducts(category: currentCategory)
     }
     
-    func searchButtonTapped() {
-        print("searchButtonTapped")
-    }
-    func menuButtonTapped() {
-        router.presentAppMenu(productsPresentationDelegate: self)
+    func menuButtonTapped() async {
+        await router.presentAppMenu(productsPresentationDelegate: self)
     }
     
-    func didSelectItem(atIndexPath indexPath: IndexPath) {
-        let product = products[indexPath.item]
-        router.presentProductDetails(product: product)
+    func didSelectItem(at indexPath: IndexPath) async {
+        await with(errorHandler) {
+            let index = indexPath.item
+            let request = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: index)
+            let product = try await getProductsUseCase.execute(request)
+            await router.presentProductDetails(product: product)
+        }
     }
     
-    func willDisplayItem(forIndex index: Int) {
-        guard index == products.count - 1, // 1 / 6
-              isProductsLoadingNow == false,
-              skip < totalNumberOfProducts
-        else { return }
-        print("load next part now")
-        presentNextProducts()
+    func willDisplayLastItem(at indexPath: IndexPath) async {
+        let (category, gender, style) = (currentCategory, currentGender, currentStyle)
+        let nextIndexPath = indexPath + 1
+        guard nextIndexPath.item < totalProductsCount,
+              requestStack.notContains(nextIndexPath) else { return }
+        
+        await requestStack.add(nextIndexPath)
+        await displayLoadingItem(at: nextIndexPath)
+        await with(errorHandler) {
+            let request = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndexPath.item)
+            let product = try await getProductsUseCase.execute(request)
+            
+            // if it's still available request -> display it
+            guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
+            
+            let viewModel = productCellViewModel(with: product)
+            let productItem = ProductItem(viewModel: viewModel)
+            await view?.display(productItem: productItem, at: nextIndexPath)
+        }
+        
+        requestStack.remove(nextIndexPath)
     }
 }
 
@@ -87,81 +101,75 @@ class ProductsPresenterImpl: ProductsPresenter {
 
 extension ProductsPresenterImpl: ProductsPresentationDelegate {
     
-    func presentProducts(type: ProductType) {
-        resetState()
-        view?.display(title: type.rawValue)
-        presentProducts(type: type, category: nil, family: nil, first: first, skip: 0)
+    func presentProducts(category: Product.Category) async {
+        await displayEmptySection(andTitle: category.rawValue)
+        await presentProducts(category: category, gender: nil, style: nil)
     }
     
-    func presentProducts(type: ProductType, family: ProductFamily) {
-        resetState()
-        view?.display(title: type.rawValue + " " + family.rawValue)
-        presentProducts(type: type, category: nil, family: family, first: first, skip: 0)
+    func presentProducts(category: Product.Category, style: Product.Style) async {
+        await displayEmptySection(andTitle: category.rawValue + " " + style.rawValue)
+        await presentProducts(category: category, gender: nil, style: style)
     }
     
-    func presentProducts(type: ProductType, category: ProductCategory) {
-        resetState()
-        view?.display(title: type.rawValue + " " + category.rawValue)
-        presentProducts(type: type, category: category, family: nil, first: first, skip: 0)
+    func presentProducts(category: Product.Category, gender: Product.Gender) async {
+        await displayEmptySection(andTitle: category.rawValue + " " + gender.rawValue)
+        await presentProducts(category: category, gender: gender, style: nil)
     }
 }
-    // MARK: - Private methods
+
+// MARK: - Private methods
 
 extension ProductsPresenterImpl {
     
-    private func resetState() {
-        products = []
-        totalNumberOfProducts = 0
-        view?.display(products: [], totalNumberOfProducts: 0)
+    private func displayLoadingItem(at indexPath: IndexPath) async {
+        await view?.display(productItem: ProductItem(), at: indexPath)
     }
     
-    private func presentNextProducts() {
-        presentProducts(
-            type: currentType,
-            category: currentCategory,
-            family: currentFamily,
-            first: first,
-            skip: skip + first)
+    private func displayEmptySection(andTitle title: String) async {
+        let section = ProductsSection(header: "0 PRODUCTS", items: [:])
+        await view?.display(productsSection: section)
+        await view?.display(title: title.uppercased())
     }
     
-    private func presentProducts(
-        type: ProductType,
-        category: ProductCategory?,
-        family: ProductFamily?,
-        first: Int, skip: Int
-    ) {
-        Task {
-            // update state
-            self.skip = skip
-            currentType = type
-            currentFamily = family
-            currentCategory = category
-            isProductsLoadingNow = true
-            defer { isProductsLoadingNow = false }
+    private func presentProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async {
+        // update state with new presentation request
+        (currentCategory, currentGender, currentStyle) = (category, gender, style)
+        
+        await with(errorHandler) {
+            // first phase
+            let productsCountRequest = ProductsCountRequest(category: currentCategory, gender: currentGender, style: currentStyle)
+            let productsCount = try await getProductsUseCase.execute(productsCountRequest)
+            guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            // display loading animation
-            let left = self.totalNumberOfProducts - self.products.count // products left in DB
-            let number = left > 0 && left < first ? left : first
-            view?.displayLoading(productsCount: number)
+            totalProductsCount = productsCount
+            if productsCount > 0 { await displayLoadingItem(at: IndexPath(item: 0, section: 0)) }
             
-            // create request
-            var request = GetProductsRequest(queries: .type(type), .limit(first: first, skip: skip))
-            // add query if exist
-            if let category { request.addQuery(query: .category(category)) }
-            if let family { request.addQuery(query: .family(family)) }
+            // second phase
+            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: 0)
+            let product = try await getProductsUseCase.execute(productRequest)
+            guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            do {/* execute request */
-                let response = try await getProductsUseCase.execute(request)
-                // add products
-                self.totalNumberOfProducts = response.totalNumberOfProducts
-                self.products += response.products
-                
-                self.view?.display(products: self.products.asProductsVM,
-                                   totalNumberOfProducts: response.totalNumberOfProducts)
-            } catch {
-                print(error)
-                self.view?.displayError(title: error.localizedDescription, message: nil)
-            }
+            let header = "\(productsCount) PRODUCTS"
+            let viewModel = productCellViewModel(with: product)
+            let item = ProductItem(viewModel: viewModel)
+            let section = ProductsSection(header: header, items: [IndexPath(item: 0, section: 0): item])
+            await view?.display(productsSection: section)
         }
+    }
+    
+    private func productCellViewModel(with product: Product) -> ProductCellViewModel? {
+        guard let variation = product.variations.first else { return nil }
+        return ProductCellViewModel(
+            id: variation.productID,
+            isNew: true, // hardcode :(
+            name: product.name.uppercased(),
+            price: "$ " + String(format: "%.2f", Double(variation.price) / 100.0),
+            colors: "\(product.variations.count) COLORS",
+            imgData: variation.imageData?.first ?? Data()
+        )
+    }
+    
+    private func errorHandler(_ error: Error) async {
+        await view?.displayError(title: error.localizedDescription, message: nil)
     }
 }

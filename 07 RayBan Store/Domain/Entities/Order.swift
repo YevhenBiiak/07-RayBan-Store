@@ -7,18 +7,11 @@
 
 import Foundation
 
+typealias OrderItem = CartItem
+
 struct Order {
-    let userId: String
     let items: [OrderItem]
     let shippingMethods: String
     let shippindAddress: String
-    let price: Cent
-}
-
-// MARK: - Order Item
-
-struct OrderItem {
-    let product: Product
-    let amount: Int
     let price: Cent
 }

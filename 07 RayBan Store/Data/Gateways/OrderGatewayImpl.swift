@@ -15,7 +15,7 @@ class OrderGatewayImpl: OrderGateway {
         self.remoteRepository = remoteRepository
     }
     
-    func fetchOrders(byUserId userId: String, first: Int, skip: Int, completionHandler: @escaping (Result<[OrderDTO]>) -> Void) {
+//    func fetchOrders(byUserId userId: String, first: Int, skip: Int, completionHandler: @escaping (Result<[OrderDTO]>) -> Void) {
 //        remoteRepository.executeFetchRequest(ofType: .orders(userId: userId)) { (result: Result<[OrderDTO]>) in
 //            switch result {
 //            case .success(var orders):
@@ -25,9 +25,9 @@ class OrderGatewayImpl: OrderGateway {
 //                completionHandler(.failure(error))
 //            }
 //        }
-    }
+//    }
     
-    func createOrder(_ order: OrderDTO, forUserId userId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void) {
+//    func createOrder(_ order: OrderDTO, forUserId userId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void) {
 //        remoteRepository.executeSaveRequest(ofType: .order(order, userId: userId)) { result in
 //            switch result {
 //            case .success:
@@ -36,6 +36,6 @@ class OrderGatewayImpl: OrderGateway {
 //                completionHandler(.failure(error))
 //            }
 //        }
-    }
+//    }
     
 }

@@ -25,48 +25,40 @@ class AccountMenuPresenterImpl: ListPresenter {
     
     private weak var view: ListView?
     private let router: AccountMenuRouter
-    private let isCartEmptyUseCase: IsCartEmptyUseCase
+    private let cartUseCase: CartUseCase
     
     // MARK: - Initializers
     
-    init(view: ListView?, router: AccountMenuRouter, isCartEmptyUseCase: IsCartEmptyUseCase) {
+    init(view: ListView?, router: AccountMenuRouter, cartUseCase: CartUseCase) {
         self.view = view
         self.router = router
-        self.isCartEmptyUseCase = isCartEmptyUseCase
+        self.cartUseCase = cartUseCase
     }
     
     // MARK: - ListPresenter
     
-    func viewDidLoad() {
-        view?.display(title: "my account")
+    func viewDidLoad() async {
+        await view?.display(title: "MY ACCOUNT")
     }
     
-    var numberOfItems: Int {
+    var numberOfRows: Int {
         Row.allCases.count
     }
     
-    func getTitle(forRow row: Int) -> String {
-        let row = Row(rawValue: row)
-        
-        switch row {
-        case .profile:   return "personal details"
-        case .cart:      return "shopping bag"
-        case .orders:    return "order history"
-        case .favorites: return "favorite list"
-        default: fatalError()
-            
-        }
+    func text(for row: Int) -> String {
+        switch Row(rawValue: row)! {
+        case .profile:   return "PERSONAL DETAILS"
+        case .cart:      return "SHOPPING BAG"
+        case .orders:    return "ORDER HISTORY"
+        case .favorites: return "FAVORITE LIST" }
     }
     
     func didSelect(row: Int) {
-        let row = Row(rawValue: row)
-        
-        switch row {
+        switch Row(rawValue: row)! {
         case .profile:   return router.presentPersonalDetails()
         case .cart:      return router.presentShoppingCart()
         case .orders:    return router.presentOrderHistory()
-        case .favorites: return router.presentFavoriteList()
-        default: fatalError() }
+        case .favorites: return router.presentFavoriteList() }
     }
     
     func cartButtonTapped() {

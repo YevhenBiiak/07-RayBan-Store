@@ -10,20 +10,31 @@ import Foundation
 typealias Cent = Int
 
 struct Product {
-    let id: String
+    enum Category: String { case sunglasses, eyeglasses }
+    enum Gender: String { case male, female, unisex, child }
+    enum Style: String { case aviator, round, clubmaster, wayfarer, ferrari, erika, justin }
+
+    let modelID: String
     let name: String
-    let type: String
-    let family: String
-    let gender: String
+    let style: Style
+    let gender: Gender
+    let category: Category
     let size: String
     let geofit: String
-    let variations: [ProductVariant]
     let details: String
+    var variations: [ProductVariation]
 }
 
-struct ProductVariant {
+struct ProductVariation {
+    let productID: Int
+    let price: Cent
     let frameColor: String
     let lenseColor: String
-    let price: Cent
-    let imgId: Int
+    var imageData: [Data]?
 }
+
+extension Product: Codable {}
+extension Product.Category: Codable {}
+extension Product.Gender: Codable {}
+extension Product.Style: Codable {}
+extension ProductVariation: Codable {}

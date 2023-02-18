@@ -11,7 +11,7 @@ import Stevia
 class HeaderReusableView: UICollectionReusableView {
     static let elementKind = "header"
     
-    private let headerLabel: UILabel = {
+    let headerLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Oswald.regular.withSize(18)
         label.textColor = UIColor.appBlack
@@ -25,10 +25,6 @@ class HeaderReusableView: UICollectionReusableView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setProducts(count: Int) {
-        headerLabel.text = "\(String(count)) PRODUCTS"
     }
     
     private func configureLayout() {

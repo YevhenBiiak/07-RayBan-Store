@@ -12,3 +12,9 @@ extension UICollectionReusableView {
         String(describing: self)
     }
 }
+
+extension UITableViewCell {
+    static var reuseId: String {
+        String(describing: self)
+    }
+}

@@ -12,7 +12,7 @@ class ProductsViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
         let image = UIImageView()
-        image.backgroundColor = UIColor.appLightGray
+        image.backgroundColor = .appLightGray
         image.contentMode = .scaleAspectFit
         return image
     }()
@@ -28,7 +28,7 @@ class ProductsViewCell: UICollectionViewCell {
     
     private let colorsLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.appBlack
+        label.textColor = .appBlack
         label.font = UIFont.Oswald.regular.withSize(14)
         return label
     }()
@@ -36,7 +36,7 @@ class ProductsViewCell: UICollectionViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Oswald.medium
-        label.textColor = UIColor.appBlack
+        label.textColor = .appBlack
         label.textAlignment = .left
         label.numberOfLines = 1
         label.text = "unknown"
@@ -46,14 +46,14 @@ class ProductsViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Lato.bold
-        label.textColor = UIColor.appBlack
+        label.textColor = .appBlack
         label.text = "unknown"
         return label
     }()
     
-    private let buyButton: UIButton = {
+    private let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor.appBlack
+        button.backgroundColor = .appBlack
         button.titleLabel?.font = UIFont.Oswald.bold
         button.setTitleColor(.white, for: .normal)
         button.setTitle("ADD TO BAG", for: .normal)
@@ -65,6 +65,18 @@ class ProductsViewCell: UICollectionViewCell {
     private var priceShimmerView = ShimmerView()
     private var buttonShimmerView = ShimmerView()
     
+    var viewModel: ProductCellViewModel? {
+        didSet {
+            guard let viewModel else { return startAnimation() }
+            setImage(with: viewModel.imgData)
+            newLabel.isHidden = viewModel.isNew
+            nameLabel.text = viewModel.name
+            colorsLabel.text = viewModel.colors
+            priceLabel.text = viewModel.price
+            stopAnimating()
+        }
+    }
+    
     // MARK: - Initializers and overridden methods
     
     override init(frame: CGRect) {
@@ -72,32 +84,20 @@ class ProductsViewCell: UICollectionViewCell {
         configureLayout()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    // MARK: - Configuration methods
-    
-    func configure(with product: ProductVM) {
-        stopAnimating()
-        setImage(product.images.first)
-        newLabel.isHidden = false
-        nameLabel.text = product.nameLabel
-        colorsLabel.text = product.colorsLabel
-        priceLabel.text = product.variations.first?.priceLabel
-    }
-    
-    private func setImage(_ image: UIImage?) {
-        self.imageView.image = nil
+    private func setImage(with data: Data) {
         DispatchQueue.global().async {
-            guard let image = image?.preparingForDisplay() else { return }
+            guard let image = UIImage(data: data)?.preparingForDisplay() else { return }
             DispatchQueue.main.async {
                 self.imageView.image = image
             }
         }
     }
     
-    func startLoadingAnimation() {
+    // MARK: - Private methods
+    
+    private func startAnimation() {
         imageShimmerView.startShimmerAnimating()
         nameShimmerView.startShimmerAnimating()
         priceShimmerView.startShimmerAnimating()
@@ -111,8 +111,6 @@ class ProductsViewCell: UICollectionViewCell {
         buttonShimmerView.stopShimmerAnimating()
     }
     
-    // MARK: - Private methods
-    
     private func configureLayout() {
         subviews(
             imageView.subviews(
@@ -120,7 +118,7 @@ class ProductsViewCell: UICollectionViewCell {
                 colorsLabel),
             nameLabel,
             priceLabel,
-            buyButton
+            addButton
         )
         
         let padding = 0.05 * frame.width
@@ -130,13 +128,13 @@ class ProductsViewCell: UICollectionViewCell {
         colorsLabel.left(padding).bottom(padding)
         nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding
         priceLabel.width(90%).centerHorizontally().Top == nameLabel.Bottom + padding
-        buyButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
+        addButton.width(100%).height(40).bottom(padding).Top == priceLabel.Bottom + padding
         
         // configure shummer views
         imageView.subviews(imageShimmerView)
         nameLabel.subviews(nameShimmerView)
         priceLabel.subviews(priceShimmerView)
-        buyButton.subviews(buttonShimmerView)
+        addButton.subviews(buttonShimmerView)
         
         imageShimmerView.fillContainer()
         nameShimmerView.fillContainer()

@@ -12,13 +12,12 @@ class AccountMenuConfiguratorImpl: ListConfigurator {
         
         let remoteRepository = RemoteRepositoryImpl()
         let cartGateway = CartGatewayImpl(remoteRepository: remoteRepository)
-        let isCartEmptyUseCase = IsCartEmptyUseCaseImpl(cartItemsGateway: cartGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let presenter = AccountMenuPresenterImpl(view: listViewController,
                                                  router: router,
-                                                 isCartEmptyUseCase: isCartEmptyUseCase)
+                                                 cartUseCase: cartUseCase)
         
         listViewController.presenter = presenter
-        listViewController.rootView = ListRootView()
     }
 }

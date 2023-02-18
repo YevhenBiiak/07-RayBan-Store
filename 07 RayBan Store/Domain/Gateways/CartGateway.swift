@@ -8,6 +8,7 @@
 import Foundation
 
 protocol CartGateway {
-    func fetchCartItems(byUserId userId: String, completionHandler: @escaping (Result<[CartItemDTO]>) -> Void)
-    func saveCartItems(_ items: [CartItemDTO], forUserId userId: String, completionHandler: @escaping (Result<[CartItemDTO]>) -> Void)
+    func fetchCartItems(for user: User, includeImages: Bool) async throws -> [CartItem]
+    func saveCartItems(_ items: [CartItem], for user: User) async throws
+    func saveOrder(_ order: Order, for user: User) async throws
 }

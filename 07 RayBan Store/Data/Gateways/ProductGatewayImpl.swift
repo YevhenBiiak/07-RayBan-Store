@@ -7,120 +7,147 @@
 
 import UIKit
 
-protocol ProductImagesApi {
+protocol ImagesAPI {
     func loadImages(_ types: [ImageType], imageId: Int, bgColor: UIColor) async throws -> [Data]
 }
 
-class ProductGatewayImpl: ProductGateway {
+protocol ProductsAPI {
+    func fetchProducts() async throws -> [Product]
+}
+
+class ProductGatewayImpl {
     
-    private let productImagesApi: ProductImagesApi
-    private let remoteRepository: RemoteRepository
+    private let productsAPI: ProductsAPI
+    private let imagesApi: ImagesAPI
     
-    init(productImagesApi: ProductImagesApi, remoteRepository: RemoteRepository) {
-        self.remoteRepository = remoteRepository
-        self.productImagesApi = productImagesApi
-    }
-    
-    // One Product by Id
-    func fetchProduct(byId productId: String, productColor: String?) async throws -> FetchProductsResult {
-        var product = try await remoteRepository.execute(.fetchProduct(id: productId, type: ProductDTO.self))
-        
-        let imageId = product.getImageId(forColor: productColor)
-        
-        let images = try await productImagesApi.loadImages([.main, .front2, .main2, .perspective, .left, .back], imageId: imageId, bgColor: .appLightGray)
-        
-        product.images = images
-        
-        return ([product], 1)
-    }
-    
-    // Products by Type, Category, Family
-    func fetchProducts(type: ProductType, category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int) async throws -> FetchProductsResult {
-        var products = try await remoteRepository.execute(.fetchProducts(category: type.rawValue, type: [ProductDTO].self))
-        
-        let totalCount = products.count
-        
-        products.filter(withCategory: category, family: family, first: first, skip: skip)
-        
-        try await loadImages(forProducts: &products, imageTypes: [.main], bgColor: .appLightGray)
-        
-        return (products, totalCount)
-    }
-    
-    // Representation Of Product Families Of Type
-    func fetchProducts(asRepresentationOfProductFamiliesOfType type: ProductType) async throws -> FetchProductsResult {
-        var products = try await remoteRepository.execute(.fetchProducts(category: type.rawValue, type: [ProductDTO].self))
-        
-        products = products.getFirstProductsForProductsFamilies()
-        
-        try await loadImages(forProducts: &products, imageTypes: [.main], bgColor: .appWhite)
-        
-        return (products, products.count)
+    init(productsAPI: ProductsAPI, imagesApi: ImagesAPI) {
+        self.productsAPI = productsAPI
+        self.imagesApi = imagesApi
     }
 }
 
-// MARK: - Fileprivate extensions
+extension ProductGatewayImpl: ProductGateway {
+    
+    func fetchProducts(modelID: String) async throws -> Product {
+        let product = try await productsAPI.fetchProducts().first { $0.modelID == modelID }
+        guard var product else { throw AppError.invalidProductModelID }
+        
+        // load images for all product variants
+        try await loadImages(for: &product, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], bgColor: .appLightGray)
+        return product
+    }
+    
+    // Product by Id
+    func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product {
+        let product = try await productsAPI.fetchProducts().first { $0.variations.contains { $0.productID == productID }}
+        guard var product else { throw AppError.invalidProductIdentifier }
+        guard includeImages else { return product }
+        
+        // load images for product variant with productID
+        try await loadImages(for: &product, withID: productID, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], bgColor: .appLightGray)
+        return product
+    }
+    
+    // Product by Category, Style, Gender
+    func fetchProduct(category: Product.Category, gender: Product.Gender?, style: Product.Style?, index: Int) async throws -> Product {
+        let products = try await productsAPI.fetchProducts()
+            .filter(category: category, gender: gender, style: style)
+        
+        guard index < products.count else { throw AppError.invalidProductIndex }
+        var product = products[index]
+        
+        // load images for first product variant
+        try await loadImages(for: &product, withID: product.variations.first?.productID, imgTypes: [.main], bgColor: .appLightGray)
+        return product
+    }
+    
+    // Products count by Category, Style, Gender
+    func productsCount(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async throws -> Int {
+        try await productsAPI.fetchProducts()
+            .filter(category: category, gender: gender, style: style)
+            .count
+    }
+    
+    // Representation Of Product Styles Of Category
+    func fetchProductStyles(category: Product.Category) async throws -> [Product] {
+        var products = try await productsAPI.fetchProducts()
+            .filter(category: category)
+            .parseProductStyles()
+        
+        try await loadImages(for: &products, imgTypes: [.main], bgColor: .appWhite)
+        return products
+    }
+}
 
-fileprivate extension ProductGatewayImpl {
-    private func loadImages(forProducts products: inout [ProductDTO], imageTypes: [ImageType], bgColor: UIColor) async throws {
+// MARK: - Private extensions
+
+private extension ProductGatewayImpl {
+    
+    func loadImages(for product: inout Product, withID productID: Int? = nil, imgTypes: [ImageType], bgColor: UIColor) async throws {
+        if let productID {
+            guard let index = product.variations.firstIndex(where: { $0.productID == productID }) else { return }
+            product.variations[index].imageData = try await imagesApi.loadImages(imgTypes, imageId: productID, bgColor: bgColor)
+            
+        } else {
+            try await withThrowingTaskGroup(of: (index: Int, images: [Data]).self) { taskGroup in
+                
+                for (i, variant) in product.variations.enumerated() {
+                    taskGroup.addTask {
+                        let images = try await self.imagesApi.loadImages(imgTypes, imageId: variant.productID, bgColor: bgColor)
+                        return (index: i, images: images)
+                    }
+                }
+                for try await (i, images) in taskGroup {
+                    product.variations[i].imageData = images
+                }
+            }
+        }
+    }
+    
+    func loadImages(for products: inout [Product], imgTypes: [ImageType], bgColor: UIColor) async throws {
         try await withThrowingTaskGroup(of: (index: Int, images: [Data]).self) { taskGroup in
+
             for (i, product) in products.enumerated() {
                 taskGroup.addTask {
-                    guard let imageId = product.variations.first?.imgId else { fatalError("imageId is nil") }
-                    let images = try await self.productImagesApi.loadImages(imageTypes, imageId: imageId, bgColor: bgColor)
+                    guard let imageId = product.variations.first?.productID else {
+                        return (index: i, images: [])
+                    }
+                    let images = try await self.imagesApi.loadImages(imgTypes, imageId: imageId, bgColor: bgColor)
                     return (index: i, images: images)
                 }
             }
             
             for try await (i, images) in taskGroup {
-                products[i].images = images
+                products[i].variations[0].imageData = images
             }
         }
     }
 }
 
-fileprivate extension ProductDTO {
-    func getImageId(forColor productColor: String?) -> Int {
+private extension Array where Element == Product {
+    
+    func filter(category: Product.Category, gender: Product.Gender? = nil, style: Product.Style? = nil) -> Self {
+        // filter products with product category
+        var products = filter { $0.category == category }
         
-        let imageId: Int?
+        // filter products with gender
+        switch gender {
+        case .male:   products = products.filter { $0.gender == .male || $0.gender == .unisex }
+        case .female: products = products.filter { $0.gender == .female || $0.gender == .unisex }
+        case .child:  products = products.filter { $0.gender == .child }
+        case .unisex: products = products.filter { $0.gender == .unisex }
+        case .none: break }
         
-        switch productColor {
-        case .none:            imageId = self.variations.first?.imgId
-        case .some(let color): imageId = self.variations.first(where: { $0.color == color })?.imgId }
+        // filter products with product style
+        if let style { products = products.filter { $0.style == style } }
         
-        guard let imageId else { fatalError("imageId is nil") }
-        
-        return imageId
-    }
-}
-
-fileprivate extension Array where Element == ProductDTO {
-    mutating func filter(withCategory category: ProductCategory?, family: ProductFamily?, first: Int, skip: Int) {
-        
-        // filter products with product family
-        if let family { self = self.filter { $0.family.lowercased() == family.rawValue.lowercased() }}
-        
-        // filter products with category
-        switch category {
-        case .men:
-            self = self.filter { $0.gender.lowercased() == "male" || $0.gender.lowercased() == "unisex" }
-        case .women:
-            self = self.filter { $0.gender.lowercased() == "female" || $0.gender.lowercased() == "unisex" }
-        case .kids:
-            self = self.filter { $0.gender.lowercased() == "child" }
-        case .none:
-            break
-        }
-        
-        //filter products with required quantity
-        self = Array(self.dropFirst(skip).prefix(first))
+        return products
     }
     
-    func getFirstProductsForProductsFamilies() -> Self {
-        return self.reduce(into: []) { result, product in
-            if !result.contains(where: { $0.family == product.family }) {
-                result.append(product)
-            }
+    func parseProductStyles() -> Self {
+        return reduce(into: []) { result, product in
+            guard !result.contains(where: { $0.style == product.style }) else { return }
+            result.append(product)
         }
     }
 }

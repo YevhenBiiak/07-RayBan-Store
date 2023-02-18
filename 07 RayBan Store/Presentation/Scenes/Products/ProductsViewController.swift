@@ -7,22 +7,15 @@
 
 import UIKit
 
-class ProductsViewController: UIViewController, ProductsView {
-    
-    private enum Section {
-        case main
-    }
+class ProductsViewController: UIViewController {
     
     var configurator: ProductsConfigurator!
     var presenter: ProductsPresenter!
     var rootView: ProductsRootView!
     
-    private var dataSource: UICollectionViewDiffableDataSource<Section, ProductVM>!
+    private var section: Sectionable!
     
-    private var products: [ProductVM] = []
-    private var totalNumberOfProducts = 0
-    
-   // MARK: - Life Cycle and overridden methods
+    // MARK: - Life Cycle and overridden methods
     
     override func loadView() {
         configurator.configure(productsViewController: self)
@@ -31,99 +24,22 @@ class ProductsViewController: UIViewController, ProductsView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDataSource()
+        setupCollectionView()
         setupNavigationBar()
-        presenter.viewDidLoad()
-    }
-    
-    // MARK: - ProductsView
-    
-    func display(title: String) {
-        DispatchQueue.main.async { [weak self] in
-            self?.title = title.uppercased()
-            // bug: title alpha is zero in iOS 16
-            if #available(iOS 16.0, *) {
-                self?.navigationController?.navigationBar.setNeedsLayout()
-            }
-            // scroll to top
-            let topBarHeight = (UIApplication.shared.statusBarHeight ?? 0) + (self?.navigationController?.navigationBarHeight ?? 0) + 44
-            self?.rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -topBarHeight), animated: false)
-        }
-    }
-    
-    func display(products: [ProductVM], totalNumberOfProducts: Int) {
-        DispatchQueue.main.async {
-            self.products = products
-
-            var snapshot = NSDiffableDataSourceSnapshot<Section, ProductVM>()
-            snapshot.appendSections([.main])
-            snapshot.appendItems(products)
-
-            if totalNumberOfProducts != self.totalNumberOfProducts {
-                self.totalNumberOfProducts = totalNumberOfProducts
-                self.dataSource.applySnapshotUsingReloadData(snapshot)
-            } else {
-                self.dataSource.apply(snapshot, animatingDifferences: true)
-            }
-            print("dataSource.apply(): ", products.count)
-        }
-    }
-    
-    func displayLoading(productsCount: Int) {
-        guard productsCount > 0 else { return }
-        DispatchQueue.main.async {
-            let emptyProducts = (1...productsCount).map { _ in ProductVM.emptyModel }
-            
-            var snapshot = self.dataSource.snapshot()
-            snapshot.appendItems(emptyProducts)
-            self.dataSource.apply(snapshot)
-        }
-    }
-    
-    func displayError(title: String, message: String?) {
-        DispatchQueue.main.async {
-            print("ERROR:", title)
-        }
+        Task { await presenter.viewDidLoad() }
     }
     
     // MARK: - Private methods
     
-    private func configureDataSource() {
+    private func setupCollectionView() {
         rootView.collectionView.delegate = self
+        rootView.collectionView.dataSource = self
         
-        let headerRegistration = UICollectionView.SupplementaryRegistration
-        <HeaderReusableView>(elementKind: HeaderReusableView.elementKind) {
-            [weak self] (headerView, _, _) in
-            guard let self else { return }
-            headerView.setProducts(count: self.totalNumberOfProducts)
-        }
-        
-        let cellRegistration = UICollectionView.CellRegistration<ProductsViewCell, ProductVM> {
-            [weak self] (cell, indexPath, product) in
-            guard let self else { return }
-            if indexPath.item < self.products.count {
-                cell.configure(with: product)
-            } else {
-                cell.startLoadingAnimation()
-            }
-        }
-        
-        dataSource = UICollectionViewDiffableDataSource
-        <Section, ProductVM>(collectionView: rootView.collectionView, cellProvider: {
-            collectionView, indexPath, product in
-            return collectionView.dequeueConfiguredReusableCell(
-                using: cellRegistration, for: indexPath, item: product)
-        })
-        
-        dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
-            return collectionView.dequeueConfiguredReusableSupplementary(
-                using: headerRegistration, for: indexPath)
-        }
-        
-        // initial state
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ProductVM>()
-        snapshot.appendSections([.main])
-        dataSource.apply(snapshot)
+        rootView.collectionView.register(ProductsViewCell.self,
+            forCellWithReuseIdentifier: ProductsViewCell.reuseId)
+        rootView.collectionView.register(HeaderReusableView.self,
+            forSupplementaryViewOfKind: HeaderReusableView.elementKind,
+            withReuseIdentifier: HeaderReusableView.reuseId)
     }
     
     private func setupNavigationBar() {
@@ -145,7 +61,54 @@ class ProductsViewController: UIViewController, ProductsView {
     }
     
     @objc private func menuButtonTapped() {
-        presenter.menuButtonTapped()
+        Task { await presenter.menuButtonTapped() }
+    }
+}
+
+extension ProductsViewController: ProductsView {
+    
+    func display(title: String) {
+        self.title = title
+        // bug: title alpha is zero in iOS 16
+        // if #available(iOS 16.0, *) { navigationController?.navigationBar.setNeedsLayout() }
+        // scroll to top
+        // let topBarHeight = (UIApplication.shared.statusBarHeight ?? 0) + (navigationController?.navigationBarHeight ?? 0)
+        // rootView.collectionView.setContentOffset(CGPoint(x: 0, y: -topBarHeight), animated: false)
+    }
+    
+    func display(productsSection: any Sectionable) {
+        section = productsSection
+        rootView.collectionView.reloadData()
+    }
+    
+    func display(productItem: any Itemable, at indexPath: IndexPath) {
+        section.items[indexPath] = productItem
+        rootView.collectionView.reloadItems(at: [indexPath])
+    }
+    
+    func displayError(title: String, message: String?) {
+        print("ERROR:", title)
+    }
+}
+
+extension ProductsViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        self.section?.items.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
+        let viewModel = section.items[indexPath]?.viewModel as? ProductCellViewModel
+        (cell as? ProductsViewCell)?.viewModel = viewModel
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: HeaderReusableView.elementKind,
+            withReuseIdentifier: HeaderReusableView.reuseId, for: indexPath)
+        (view as? HeaderReusableView)?.headerLabel.text = section?.header
+        return view
     }
 }
 
@@ -154,12 +117,11 @@ class ProductsViewController: UIViewController, ProductsView {
 extension ProductsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item < products.count {
-            presenter.didSelectItem(atIndexPath: indexPath)
-        }
+        Task { await presenter.didSelectItem(at: indexPath) }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        presenter.willDisplayItem(forIndex: indexPath.item)
+        guard indexPath.item == section.items.count - 1 else { return }
+        Task { await presenter.willDisplayLastItem(at: indexPath) }
     }
 }

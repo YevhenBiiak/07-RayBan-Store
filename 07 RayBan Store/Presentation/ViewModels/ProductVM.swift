@@ -7,6 +7,23 @@
 
 import UIKit
 
+struct ProductsSection: Sectionable {
+    var header: String
+    var items: [IndexPath: any Itemable]
+}
+struct ProductItem: Itemable {
+    var viewModel: ProductCellViewModel?
+}
+
+struct ProductCellViewModel {
+    let id: Int
+    let isNew: Bool
+    let name: String
+    let price: String
+    let colors: String
+    let imgData: Data
+}
+
 struct ProductVM {
     let id: String
     let nameLabel: String
@@ -50,46 +67,46 @@ extension ProductVariantVM: Hashable {
     }
 }
 
-extension ProductDTO {
-    var asProductVM: ProductVM {
-        ProductVM(
-            id: self.id,
-            nameLabel: self.name.uppercased(),
-            type: self.type,
-            family: self.family,
-            gender: self.gender,
-            size: self.size,
-            geofit: self.geofit,
-            colorsLabel: "\(self.variations.count) COLORS",
-            variations: self.variations.asProductVariantsVM,
-            details: self.details,
-            images: (self.images ?? [])
-                        .map({UIImage(data: $0)})
-                        .compactMap({$0}) )
-    }
-}
-
-extension Array where Element == ProductDTO {
-    var asProductsVM: [ProductVM] {
-        self.map { item in
-            item.asProductVM
-        }
-    }
-}
-
-extension ProductVM {
-    static var emptyModel: ProductVM {
-        return ProductVM(
-            id: UUID().uuidString,
-            nameLabel: "",
-            type: "",
-            family: "",
-            gender: "",
-            size: "",
-            geofit: "",
-            colorsLabel: "",
-            variations: [],
-            details: "",
-            images: [])
-    }
-}
+//extension ProductDTO {
+//    var asProductVM: ProductVM {
+//        ProductVM(
+//            id: self.id,
+//            nameLabel: self.name.uppercased(),
+//            type: self.type,
+//            family: self.family,
+//            gender: self.gender,
+//            size: self.size,
+//            geofit: self.geofit,
+//            colorsLabel: "\(self.variations.count) COLORS",
+//            variations: self.variations.asProductVariantsVM,
+//            details: self.details,
+//            images: (self.images ?? [])
+//                        .map({UIImage(data: $0)})
+//                        .compactMap({$0}) )
+//    }
+//}
+//
+//extension Array where Element == ProductDTO {
+//    var asProductsVM: [ProductVM] {
+//        self.map { item in
+//            item.asProductVM
+//        }
+//    }
+//}
+//
+//extension ProductVM {
+//    static var emptyModel: ProductVM {
+//        return ProductVM(
+//            id: UUID().uuidString,
+//            nameLabel: "",
+//            type: "",
+//            family: "",
+//            gender: "",
+//            size: "",
+//            geofit: "",
+//            colorsLabel: "",
+//            variations: [],
+//            details: "",
+//            images: [])
+//    }
+//}

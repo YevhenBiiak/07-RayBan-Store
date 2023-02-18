@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol AppMenuRouter {
     func presentAccountMenu()
     func presentSunglassesCategories()
@@ -24,45 +25,39 @@ class AppMenuPresenterImpl: ListPresenter {
     
     private weak var view: ListView?
     private let router: AppMenuRouter
-    private let isCartEmptyUseCase: IsCartEmptyUseCase
+    private let cartUseCase: CartUseCase
     
     // MARK: - Initializers
     
-    init(view: ListView?, router: AppMenuRouter, isCartEmptyUseCase: IsCartEmptyUseCase) {
+    init(view: ListView?, router: AppMenuRouter, cartUseCase: CartUseCase) {
         self.view = view
         self.router = router
-        self.isCartEmptyUseCase = isCartEmptyUseCase
+        self.cartUseCase = cartUseCase
     }
     
     // MARK: - ListPresenter
     
-    func viewDidLoad() {}
+    func viewDidLoad() async {}
     
-    var numberOfItems: Int {
+    var numberOfRows: Int {
         Row.allCases.count
     }
     
-    func getTitle(forRow row: Int) -> String {
-        let row = Row(rawValue: row)
-        
-        switch row {
-        case .account:    return "my account"
-        case .sunglasses: return "sunglasses"
-        case .eyeglasses: return "eyeglasses"
-        default: fatalError() }
+    func text(for row: Int) -> String {
+        switch Row(rawValue: row)! {
+        case .account:    return "MY ACCOUNT"
+        case .sunglasses: return "SUNGLASSES"
+        case .eyeglasses: return "EYEGLASSES" }
     }
     
-    func didSelect(row: Int) {
-        let row = Row(rawValue: row)
-        
-        switch row {
-        case .account:    return router.presentAccountMenu()
-        case .sunglasses: return router.presentSunglassesCategories()
-        case .eyeglasses: return router.presentEyeglassesCategories()
-        default: fatalError() }
+    func didSelect(row: Int) async {
+        switch Row(rawValue: row)! {
+        case .account:    return await router.presentAccountMenu()
+        case .sunglasses: return await router.presentSunglassesCategories()
+        case .eyeglasses: return await router.presentEyeglassesCategories() }
     }
     
-    func cartButtonTapped() {
-        router.presentShoppingCart()
+    func cartButtonTapped() async {
+        await router.presentShoppingCart()
     }
 }

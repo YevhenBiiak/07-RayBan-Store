@@ -20,13 +20,12 @@ class AppMenuConfiguratorImpl: ListConfigurator {
         
         let remoteRepository = RemoteRepositoryImpl()
         let cartGateway = CartGatewayImpl(remoteRepository: remoteRepository)
-        let isCartEmptyUseCase = IsCartEmptyUseCaseImpl(cartItemsGateway: cartGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let presenter = AppMenuPresenterImpl(view: listViewController,
-                                              router: router,
-                                              isCartEmptyUseCase: isCartEmptyUseCase)
+                                             router: router,
+                                             cartUseCase: cartUseCase)
         
         listViewController.presenter = presenter
-        listViewController.rootView = ListRootView()
     }
 }

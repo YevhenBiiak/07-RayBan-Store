@@ -7,22 +7,28 @@
 
 import Foundation
 
+protocol ProfilesAPI {
+    func saveProfile(_ profile: ProfileDTO) async throws
+    func fetchProfile(for user: User) async throws -> ProfileDTO
+}
+
 class ProfileGatewayImpl {
     
-    private let remoteRepository: RemoteRepository
+    private let profilesAPI: ProfilesAPI
     
-    init(remoteRepository: RemoteRepository) {
-        self.remoteRepository = remoteRepository
+    init(profilesAPI: ProfilesAPI) {
+        self.profilesAPI = profilesAPI
     }
 }
 
 extension ProfileGatewayImpl: ProfileGateway {
     
-    func fetchProfile(byUserId userId: String) async throws -> ProfileDTO {
-        try await remoteRepository.execute(.fetchProfile(id: userId, type: ProfileDTO.self))
+    func fetchProfile(for user: User) async throws -> ProfileDTO {
+        try await profilesAPI.fetchProfile(for: user)
+        // profile image can be uploaded here if it exists
     }
     
     func saveProfile(_ profile: ProfileDTO) async throws {
-        try await remoteRepository.execute(.saveProfile(profile))
+        try await profilesAPI.saveProfile(profile)
     }
 }

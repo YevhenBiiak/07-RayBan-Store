@@ -15,9 +15,9 @@ class LoginRouterImpl: Routable, LoginRouter {
         self.viewController = viewController
     }
     
-    func presentProducts(user: User) {
+    func presentProducts() {
         let productsViewController = ProductsViewController()
-        let productsConfigurator = ProductsConfiguratorImpl(user: user)
+        let productsConfigurator = ProductsConfiguratorImpl()
         productsViewController.configurator = productsConfigurator
         
         navigationController?.setViewControllers([productsViewController], animated: true)

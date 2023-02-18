@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ProductImagesApiImpl: ProductImagesApi {
+enum ImageType: CaseIterable {
+    case main, main2, back, front, left, front2, perspective
+}
+
+class ProductImagesApiImpl: ImagesAPI {
     
     private let session: URLSession = {
         let MB = 1024 * 1024
@@ -17,7 +21,7 @@ class ProductImagesApiImpl: ProductImagesApi {
         return URLSession(configuration: config)
     }()
     
-    // MARK: - ProductImagesApi
+    // MARK: - ProductImagesAPI
     
     func loadImages(
         _ types: [ImageType],
@@ -58,7 +62,7 @@ class ProductImagesApiImpl: ProductImagesApi {
         var imgWidth = 2048
         // https://images.ray-ban.com/is/image/RayBan/8056597786683__001.png
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 1998
+        case .main:   imgName += "__001.png"; imgWidth = 500
         case .main2:  imgName += "__002.png"
         case .back:   imgName += "__STD__shad__bk.png"
         case .left:   imgName += "__STD__shad__lt.png"

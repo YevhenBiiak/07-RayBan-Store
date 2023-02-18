@@ -7,7 +7,7 @@
 
 @MainActor
 protocol LoginRouter {
-    func presentProducts(user: User)
+    func presentProducts()
     func presentRegistrationScene()
     func presentForgotPasswordScene()
     func dismiss(animated: Bool)
@@ -46,15 +46,15 @@ extension LoginPresenterImpl: LoginPresenter {
     func loginButtonTapped(email: String, password: String) async {
         await with(errorHandler) {
             let loginRequest = LoginRequest(email: email, password: password)
-            let user = try await authUseCase.execute(loginRequest)
-            await router.presentProducts(user: user)
+            try await authUseCase.execute(loginRequest)
+            await router.presentProducts()
         }
     }
     
     func loginWithFacebookButtonTapped() async {
         await with(errorHandler) {
-            let user = try await authUseCase.executeLoginWithFacebookRequest()
-            await router.presentProducts(user: user)
+            try await authUseCase.executeLoginWithFacebookRequest()
+            await router.presentProducts()
         }
     }
     
@@ -88,20 +88,11 @@ private extension LoginPresenterImpl {
                  .wrongPassword,
                  .invalidRecipientEmail,
                  .facebookError:         await view?.displayWarning(message: error.localizedDescription)
-
-            // irrelevant errors in this case
-            case .fbLoginWasCancelled,
-                 .firstNameValueIsEmpty,
-                 .lastNameValueIsEmpty,
-                 .emailAlreadyInUse,
-                 .notAcceptedPolicy,
-                 .passwordsDoNotMatch,
-                 .operationNotAllowed,
-                 .invalidSender:
-                print("Irrelevant error for Login:", error.localizedDescription)
             
             case .unknown:
                 fatalError(error.localizedDescription)
+            default:
+                print("Irrelevant error for Login:", error.localizedDescription)
             }
             return
         }

@@ -7,55 +7,45 @@
 
 import UIKit
 
+@MainActor
 protocol ListView: AnyObject {
     func display(title: String)
 }
 
+@MainActor
 protocol ListConfigurator {
     func configure(listViewController: ListViewController)
 }
 
 protocol ListPresenter {
-    func viewDidLoad()
-    var numberOfItems: Int { get }
-    func getTitle(forRow row: Int) -> String
-    func didSelect(row: Int)
-    func cartButtonTapped()
+    func viewDidLoad() async
+    var numberOfRows: Int { get }
+    func text(for row: Int) -> String
+    func didSelect(row: Int) async
+    func cartButtonTapped() async
 }
 
-class ListViewController: UIViewController, ListView {
+class ListViewController: UITableViewController, ListView {
     
     var configurator: ListConfigurator!
     var presenter: ListPresenter!
-    var rootView: ListRootView!
     
-    override func loadView() {
-        configurator.configure(listViewController: self)
-        view = rootView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        configurator.configure(listViewController: self)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.reuseId)
         setupNavigationBar()
-        setupCollectinView()
-        presenter.viewDidLoad()
+        Task { await presenter.viewDidLoad() }
     }
     
     func display(title: String) {
-        self.title = title.uppercased()
+        self.title = title
     }
     
     // MARK: - Private methods
     
-    private func setupCollectinView() {
-        rootView.сollectionView.register(ListViewCell.self, forCellWithReuseIdentifier: ListViewCell.reuseId)
-        rootView.сollectionView.bounces = false
-        rootView.сollectionView.delegate = self
-        rootView.сollectionView.dataSource = self
-    }
-    
     private func setupNavigationBar() {
-        // add BarButtonItem to rightBarButtonItems
+        // add cart button
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "cart", tintColor: .appBlack, pointSize: 19, weight: .semibold),
             style: .plain,
@@ -64,31 +54,34 @@ class ListViewController: UIViewController, ListView {
     }
     
     @objc private func cartButtonTapped() {
-        presenter.cartButtonTapped()
-    }
-}
-
-extension ListViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.numberOfItems
+        Task { await presenter.cartButtonTapped() }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListViewCell.reuseId, for: indexPath)
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.numberOfRows
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseId, for: indexPath)
+        let text = presenter.text(for: indexPath.row)
         
-        if let cell = cell as? ListViewCell {
-            let title = presenter.getTitle(forRow: indexPath.row)
-            cell.setTitle(title: title)
-        }
+        var config = cell.defaultContentConfiguration()
+        config.text = text
+        config.textProperties.font = UIFont.Oswald.medium.withSize(18)
+        config.textProperties.color = .appBlack
+        
+        cell.accessoryType = .disclosureIndicator
+        cell.contentConfiguration = config
         
         return cell
     }
-}
-
-extension ListViewController: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter.didSelect(row: indexPath.row)
-        collectionView.deselectItem(at: indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat(80)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Task { await presenter.didSelect(row: indexPath.row) }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

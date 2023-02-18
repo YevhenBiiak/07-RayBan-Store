@@ -7,7 +7,7 @@
 
 @MainActor
 protocol RegistrationRouter {
-    func presentProducts(user: User)
+    func presentProducts()
     func dismiss(animated: Bool)
 }
 
@@ -45,16 +45,16 @@ extension RegistrationPresenterImpl: RegistrationPresenter {
     
     func loginWithFacebookButtonTapped() async {
         await with(errorHandler) {
-            let user = try await authUseCase.executeLoginWithFacebookRequest()
-            await router.presentProducts(user: user)
+            try await authUseCase.executeLoginWithFacebookRequest()
+            await router.presentProducts()
         }
     }
     
     func createAccountButtonTapped(registreationParameters: RegistrationParameters) async {
         await with(errorHandler) {
             let registrationRequest = RegistrationRequest(registrationParameters: registreationParameters)
-            let user = try await authUseCase.execute(registrationRequest)
-            await router.presentProducts(user: user)
+            try await authUseCase.execute(registrationRequest)
+            await router.presentProducts()
         }
     }
     
@@ -91,16 +91,10 @@ private extension RegistrationPresenterImpl {
                  .facebookError,
                  .notAcceptedPolicy:     await view?.displayWarning(message: error.localizedDescription)
                 
-            // irrelevant errors in this case
-            case .fbLoginWasCancelled,
-                 .userNotFound,
-                 .operationNotAllowed,
-                 .invalidSender,
-                 .invalidRecipientEmail:
-                print("irrelevant error for Registration:", error.localizedDescription)
-                
             case .unknown:
                 fatalError(error.localizedDescription)
+            default:
+                print("irrelevant error for Registration:", error.localizedDescription)
             }
             return
         }
