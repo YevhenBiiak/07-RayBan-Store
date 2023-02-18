@@ -1,5 +1,5 @@
 //
-//  RemoteRepositoryImpl.swift
+//  RemoteRepositoryAPI.swift
 //  07 RayBan Store
 //
 //  Created by Евгений Бияк on 31.08.2022.
@@ -8,10 +8,9 @@
 import Foundation
 import FirebaseDatabase
 
-protocol RemoteRepository {
-}
+protocol RemoteRepositoryAPI {}
 
-class RemoteRepositoryImpl: RemoteRepository {
+class RemoteRepositoryImpl: RemoteRepositoryAPI {
     
     private let database: DatabaseReference = Database.database().reference()
 }
@@ -20,15 +19,15 @@ class RemoteRepositoryImpl: RemoteRepository {
 
 extension RemoteRepositoryImpl: ProfilesAPI {
     
-    func fetchProfile(for user: User) async throws -> ProfileDTO {
+    func fetchProfile(for user: User) async throws -> Profile {
         try await with(errorHandler) {
             let value = await database.child("customers").child(user.id).value
             let data = try JSONSerialization.data(withJSONObject: value as Any)
-            return try JSONDecoder().decode(ProfileDTO.self, from: data)
+            return try JSONDecoder().decode(Profile.self, from: data)
         }
     }
     
-    func saveProfile(_ profile: ProfileDTO) async throws {
+    func saveProfile(_ profile: Profile) async throws {
         return try await with(errorHandler) {
             try await database.child("customers").child(profile.id).updateChildValues(profile.asDictionary)
         }
@@ -64,5 +63,13 @@ extension DatabaseReference {
                 self.observeSingleEvent(of: .value) { continuation.resume(returning: $0.value) }
             }
         }
+    }
+}
+
+extension Encodable {
+    var asDictionary: [String: Any] {
+        guard let jsonData = try? JSONEncoder().encode(self) else { return [:] }
+        guard let dictionary = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else { return [:] }
+        return dictionary
     }
 }

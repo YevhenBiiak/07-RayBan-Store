@@ -42,7 +42,7 @@ class UpdateProfileUseCaseImpl: UpdateProfileUseCase {
 //        }
     }
     
-    private func updateProfile(_ profile: inout ProfileDTO, withUpdateProfileRequest request: UpdateProfileRequest) {
+    private func updateProfile(_ profile: inout Profile, withUpdateProfileRequest request: UpdateProfileRequest) {
         if let firstName = request.firstName {
             profile.firstName = firstName
         }

@@ -8,9 +8,9 @@
 import Foundation
 
 protocol AuthGateway {
-    func login(email: String, password: String) async throws -> ProfileDTO
-    func register(firstName: String, lastName: String, email: String, password: String) async throws -> ProfileDTO
-    func loginWithFacebook() async throws -> ProfileDTO
+    func login(email: String, password: String) async throws -> Profile
+    func register(firstName: String, lastName: String, email: String, password: String) async throws -> Profile
+    func loginWithFacebook() async throws -> Profile
     func forgotPassword(email: String) async throws
     func logout() throws
 }

@@ -31,7 +31,6 @@
 		574F276C28C38AFE0092D293 /* IsProfileFilledUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F276B28C38AFE0092D293 /* IsProfileFilledUseCase.swift */; };
 		574F276E28C38BDB0092D293 /* UpdateProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F276D28C38BDB0092D293 /* UpdateProfileUseCase.swift */; };
 		574F277028C38C990092D293 /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F276F28C38C990092D293 /* UpdateProfileRequest.swift */; };
-		574F277228C38D430092D293 /* ProfileDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F277128C38D430092D293 /* ProfileDTO.swift */; };
 		574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F278E28C4C3150092D293 /* OrderGateway.swift */; };
 		574F279F28C66EC90092D293 /* CartRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F279E28C66EC90092D293 /* CartRequests.swift */; };
 		574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574F27A328C68D870092D293 /* LoginPresenter.swift */; };
@@ -44,7 +43,7 @@
 		57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5128BEA041000328AC /* AuthGatewayImpl.swift */; };
 		57508A5428BEA7D9000328AC /* ProductGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */; };
 		57508A5828BF45E5000328AC /* AuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5728BF45E5000328AC /* AuthProvider.swift */; };
-		57508A5A28BF54E5000328AC /* RemoteRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5928BF54E5000328AC /* RemoteRepositoryImpl.swift */; };
+		57508A5A28BF54E5000328AC /* RemoteRepositoryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5928BF54E5000328AC /* RemoteRepositoryAPI.swift */; };
 		57508A5D28BFB34B000328AC /* ProductImagesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A5C28BFB34B000328AC /* ProductImagesAPI.swift */; };
 		57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6428BFD48A000328AC /* ProfileGateway.swift */; };
 		57508A6728BFD525000328AC /* ProfileGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57508A6628BFD525000328AC /* ProfileGatewayImpl.swift */; };
@@ -62,9 +61,6 @@
 		575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */; };
 		575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */; };
 		575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */; };
-		5763FFAC28CD09B400E48713 /* FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFAB28CD09B400E48713 /* FetchRequest.swift */; };
-		5763FFAE28CD09D800E48713 /* SaveRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFAD28CD09D800E48713 /* SaveRequest.swift */; };
-		5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5763FFB528CF903B00E48713 /* DictionaryConvertible.swift */; };
 		577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */ = {isa = PBXBuildFile; fileRef = 577301F928BBFB4E007FB72F /* ClassDiagram.mdj */; };
 		577301FC28BBFD29007FB72F /* AppDesign.png in Resources */ = {isa = PBXBuildFile; fileRef = 577301FB28BBFD29007FB72F /* AppDesign.png */; };
 		5773020428BBFE9A007FB72F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020328BBFE9A007FB72F /* Product.swift */; };
@@ -166,7 +162,6 @@
 		574F276B28C38AFE0092D293 /* IsProfileFilledUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsProfileFilledUseCase.swift; sourceTree = "<group>"; };
 		574F276D28C38BDB0092D293 /* UpdateProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileUseCase.swift; sourceTree = "<group>"; };
 		574F276F28C38C990092D293 /* UpdateProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileRequest.swift; sourceTree = "<group>"; };
-		574F277128C38D430092D293 /* ProfileDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDTO.swift; sourceTree = "<group>"; };
 		574F278E28C4C3150092D293 /* OrderGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderGateway.swift; sourceTree = "<group>"; };
 		574F279E28C66EC90092D293 /* CartRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRequests.swift; sourceTree = "<group>"; };
 		574F27A328C68D870092D293 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
@@ -179,7 +174,7 @@
 		57508A5128BEA041000328AC /* AuthGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGatewayImpl.swift; sourceTree = "<group>"; };
 		57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGatewayImpl.swift; sourceTree = "<group>"; };
 		57508A5728BF45E5000328AC /* AuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthProvider.swift; sourceTree = "<group>"; };
-		57508A5928BF54E5000328AC /* RemoteRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRepositoryImpl.swift; sourceTree = "<group>"; };
+		57508A5928BF54E5000328AC /* RemoteRepositoryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRepositoryAPI.swift; sourceTree = "<group>"; };
 		57508A5C28BFB34B000328AC /* ProductImagesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImagesAPI.swift; sourceTree = "<group>"; };
 		57508A6428BFD48A000328AC /* ProfileGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGateway.swift; sourceTree = "<group>"; };
 		57508A6628BFD525000328AC /* ProfileGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGatewayImpl.swift; sourceTree = "<group>"; };
@@ -197,9 +192,6 @@
 		575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesConfigurator.swift; sourceTree = "<group>"; };
 		575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesPresenter.swift; sourceTree = "<group>"; };
 		575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesRouter.swift; sourceTree = "<group>"; };
-		5763FFAB28CD09B400E48713 /* FetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequest.swift; sourceTree = "<group>"; };
-		5763FFAD28CD09D800E48713 /* SaveRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRequest.swift; sourceTree = "<group>"; };
-		5763FFB528CF903B00E48713 /* DictionaryConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryConvertible.swift; sourceTree = "<group>"; };
 		577301F928BBFB4E007FB72F /* ClassDiagram.mdj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ClassDiagram.mdj; sourceTree = "<group>"; };
 		577301FB28BBFD29007FB72F /* AppDesign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppDesign.png; sourceTree = "<group>"; };
 		5773020328BBFE9A007FB72F /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -347,14 +339,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		574F275C28C368A40092D293 /* DTOs */ = {
-			isa = PBXGroup;
-			children = (
-				574F277128C38D430092D293 /* ProfileDTO.swift */,
-			);
-			path = DTOs;
-			sourceTree = "<group>";
-		};
 		574F276928C38ACE0092D293 /* IsProfileFilled */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,19 +394,10 @@
 			path = Gateways;
 			sourceTree = "<group>";
 		};
-		57508A5028BE9ED8000328AC /* RemoteRepository */ = {
-			isa = PBXGroup;
-			children = (
-				57508A5928BF54E5000328AC /* RemoteRepositoryImpl.swift */,
-				5763FFAB28CD09B400E48713 /* FetchRequest.swift */,
-				5763FFAD28CD09D800E48713 /* SaveRequest.swift */,
-			);
-			path = RemoteRepository;
-			sourceTree = "<group>";
-		};
 		57508A5B28BFB315000328AC /* APIs */ = {
 			isa = PBXGroup;
 			children = (
+				57508A5928BF54E5000328AC /* RemoteRepositoryAPI.swift */,
 				57508A5C28BFB34B000328AC /* ProductImagesAPI.swift */,
 				57508A5728BF45E5000328AC /* AuthProvider.swift */,
 			);
@@ -454,7 +429,6 @@
 		5763FFB428CF901A00E48713 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				5763FFB528CF903B00E48713 /* DictionaryConvertible.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -524,10 +498,8 @@
 		5773020128BBFE3D007FB72F /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				574F275C28C368A40092D293 /* DTOs */,
 				57508A4F28BE9ECC000328AC /* Gateways */,
 				57508A5B28BFB315000328AC /* APIs */,
-				57508A5028BE9ED8000328AC /* RemoteRepository */,
 				57E9DB3F2993AE1900EDE67E /* Helpers */,
 				5763FFB428CF901A00E48713 /* Common */,
 			);
@@ -1038,7 +1010,6 @@
 				571AA4A428E0D31C0078F6A9 /* AppMenuConfigurator.swift in Sources */,
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
 				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
-				5763FFAC28CD09B400E48713 /* FetchRequest.swift in Sources */,
 				579404E8298FE2000048FD33 /* UIApplication + .swift in Sources */,
 				578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
@@ -1052,7 +1023,7 @@
 				57BDD19728D892E900A9007B /* ProductImagesViewCell.swift in Sources */,
 				5773020A28BC0226007FB72F /* GetProductsUseCase.swift in Sources */,
 				57C56B1C299682B7002A9BCB /* Sectionable Itemable.swift in Sources */,
-				57508A5A28BF54E5000328AC /* RemoteRepositoryImpl.swift in Sources */,
+				57508A5A28BF54E5000328AC /* RemoteRepositoryAPI.swift in Sources */,
 				577B93C428C1E12100E31B88 /* LoginRequest.swift in Sources */,
 				5773020628BBFF6E007FB72F /* Profile.swift in Sources */,
 				574F277028C38C990092D293 /* UpdateProfileRequest.swift in Sources */,
@@ -1080,7 +1051,6 @@
 				57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */,
 				577B93D328C2064600E31B88 /* RegistrationRequest.swift in Sources */,
 				57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */,
-				5763FFAE28CD09D800E48713 /* SaveRequest.swift in Sources */,
 				5773020428BBFE9A007FB72F /* Product.swift in Sources */,
 				57508A5D28BFB34B000328AC /* ProductImagesAPI.swift in Sources */,
 				57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */,
@@ -1089,7 +1059,6 @@
 				5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */,
 				57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */,
 				57E9DB3B299259C100EDE67E /* ForgotPasswordRouter.swift in Sources */,
-				574F277228C38D430092D293 /* ProfileDTO.swift in Sources */,
 				575F562828EC8DDD00A44E6D /* UIImage +.swift in Sources */,
 				57BDD19028D786FC00A9007B /* ProductDetailsViewController.swift in Sources */,
 				57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */,
@@ -1120,7 +1089,6 @@
 				574F275928C360550092D293 /* GetProductRequests.swift in Sources */,
 				57433E13298B036400E723CB /* ForgotPasswordRequest.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
-				5763FFB628CF903B00E48713 /* DictionaryConvertible.swift in Sources */,
 				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
 				57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */,

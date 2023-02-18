@@ -13,9 +13,9 @@ protocol CartAPI {
 
 class CartGatewayImpl {
     
-    private let remoteRepository: RemoteRepository
+    private let remoteRepository: RemoteRepositoryAPI
     
-    init(remoteRepository: RemoteRepository) {
+    init(remoteRepository: RemoteRepositoryAPI) {
         self.remoteRepository = remoteRepository
     }
 }

@@ -9,12 +9,14 @@ import Foundation
 
 struct Profile {
     let id: String
-    let firstName: String?
-    let lastName: String?
-    let email: String
-    let address: String?
+    var firstName: String?
+    var lastName: String?
+    var email: String
+    var address: String?
     
     var isProfileFilled: Bool {
         firstName != nil && lastName != nil && address != nil
     }
 }
+
+extension Profile: Codable {}

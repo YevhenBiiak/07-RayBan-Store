@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ProfilesAPI {
-    func saveProfile(_ profile: ProfileDTO) async throws
-    func fetchProfile(for user: User) async throws -> ProfileDTO
+    func saveProfile(_ profile: Profile) async throws
+    func fetchProfile(for user: User) async throws -> Profile
 }
 
 class ProfileGatewayImpl {
@@ -23,12 +23,12 @@ class ProfileGatewayImpl {
 
 extension ProfileGatewayImpl: ProfileGateway {
     
-    func fetchProfile(for user: User) async throws -> ProfileDTO {
+    func fetchProfile(for user: User) async throws -> Profile {
         try await profilesAPI.fetchProfile(for: user)
         // profile image can be uploaded here if it exists
     }
     
-    func saveProfile(_ profile: ProfileDTO) async throws {
+    func saveProfile(_ profile: Profile) async throws {
         try await profilesAPI.saveProfile(profile)
     }
 }

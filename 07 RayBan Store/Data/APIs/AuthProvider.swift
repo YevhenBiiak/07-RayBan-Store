@@ -46,12 +46,12 @@ struct AuthProvider {
         }
     }
     
-    static func loginWithFacebook() async throws -> ProfileDTO {
+    static func loginWithFacebook() async throws -> Profile {
         return try await with(errorHandler) {
             let (credential, firstName, lastName) = try await performFacebookRequest()
             let authResult = try await Auth.auth().signIn(with: credential)
             let (uid, email) = try parse(authResult)
-            return ProfileDTO(id: uid, firstName: firstName, lastName: lastName, email: email)
+            return Profile(id: uid, firstName: firstName, lastName: lastName, email: email)
         }
     }
 }

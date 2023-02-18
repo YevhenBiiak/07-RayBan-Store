@@ -13,8 +13,8 @@ class Session {
     
     private init() {}
     
-    var userId: String = ""
+    var user: User!
     
-    lazy var remoteRepository: RemoteRepository = RemoteRepositoryImpl()
+    lazy var remoteRepositoryAPI: RemoteRepositoryAPI = RemoteRepositoryImpl()
     
 }

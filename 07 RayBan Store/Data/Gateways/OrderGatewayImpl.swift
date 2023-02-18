@@ -9,9 +9,9 @@ import Foundation
 
 class OrderGatewayImpl: OrderGateway {
     
-    private let remoteRepository: RemoteRepository
+    private let remoteRepository: RemoteRepositoryAPI
     
-    init(remoteRepository: RemoteRepository) {
+    init(remoteRepository: RemoteRepositoryAPI) {
         self.remoteRepository = remoteRepository
     }
     

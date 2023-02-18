@@ -18,19 +18,19 @@ class AuthGatewayImpl {
 
 extension AuthGatewayImpl: AuthGateway {
     
-    func login(email: String, password: String) async throws -> ProfileDTO {
+    func login(email: String, password: String) async throws -> Profile {
         let user = try await AuthProvider.login(email: email, password: password)
         return try await profileGateway.fetchProfile(for: user)
     }
     
-    func register(firstName: String, lastName: String, email: String, password: String) async throws -> ProfileDTO {
+    func register(firstName: String, lastName: String, email: String, password: String) async throws -> Profile {
         let user = try await AuthProvider.register(email: email, password: password)
-        let profile = ProfileDTO(id: user.id, firstName: firstName, lastName: lastName, email: email)
+        let profile = Profile(id: user.id, firstName: firstName, lastName: lastName, email: email)
         try await profileGateway.saveProfile(profile)
         return profile
     }
     
-    func loginWithFacebook() async throws -> ProfileDTO {
+    func loginWithFacebook() async throws -> Profile {
         let profile = try await AuthProvider.loginWithFacebook()
         try await profileGateway.saveProfile(profile)
         return profile
