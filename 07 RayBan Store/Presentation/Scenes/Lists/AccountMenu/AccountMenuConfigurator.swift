@@ -6,18 +6,20 @@
 //
 
 class AccountMenuConfiguratorImpl: ListConfigurator {
+    
     func configure(listViewController: ListViewController) {
         
-        let router = AccountMenuRouterImpl(accountMenuViewController: listViewController)
-        
         let remoteRepository = RemoteRepositoryImpl()
-        let cartGateway = CartGatewayImpl(remoteRepository: remoteRepository)
+        let productImagesApi = ProductImagesApiImpl()
+        
+        let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
+        let router = AccountMenuRouterImpl(accountMenuViewController: listViewController)
         let presenter = AccountMenuPresenterImpl(view: listViewController,
                                                  router: router,
                                                  cartUseCase: cartUseCase)
-        
         listViewController.presenter = presenter
     }
 }

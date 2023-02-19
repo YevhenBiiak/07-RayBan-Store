@@ -37,10 +37,12 @@ extension ProductGatewayImpl: ProductGateway {
         return product
     }
     
-    // Product by Id
     func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product {
         let product = try await productsAPI.fetchProducts().first { $0.variations.contains { $0.productID == productID }}
-        guard var product else { throw AppError.invalidProductIdentifier }
+        let variation = product?.variations.first { $0.productID == productID }
+        guard var product, let variation else { throw AppError.invalidProductIdentifier }
+        product.variations = [variation]
+        
         guard includeImages else { return product }
         
         // load images for product variant with productID

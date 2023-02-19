@@ -19,11 +19,11 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
         let productImagesApi = ProductImagesApiImpl()
         let remoteRepository = RemoteRepositoryImpl()
         
-        let cartGateway = CartGatewayImpl(remoteRepository: remoteRepository)
-        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
-        
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
+        
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let rootView = ProductsRootView()
         let router = ProductsRouterImpl(viewController: productsViewController)
