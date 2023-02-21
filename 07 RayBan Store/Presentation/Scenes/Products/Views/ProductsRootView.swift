@@ -33,13 +33,16 @@ class ProductsRootView: UIView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
+        
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(0.4875),
             heightDimension: .fractionalHeight(1)))
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalWidth(0.78)),
             subitems: [item])
+        
         group.interItemSpacing = .flexible(1)
         let section = NSCollectionLayoutSection(group: group)
         

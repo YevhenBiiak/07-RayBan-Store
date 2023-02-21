@@ -76,17 +76,19 @@ extension ProductsViewController: ProductsView {
         rootView.collectionView.reloadData()
     }
     
-    func display(productItem: any Itemable, at indexPath: IndexPath) {
-        section.items[indexPath] = productItem
+    func display(productItem: any Itemable, at index: Int) {
+        section.insert(productItem, at: index)
         productItem.viewModel == nil
-            ? rootView.collectionView.insertItems(at: [indexPath])
-            : rootView.collectionView.reloadItems(at: [indexPath])
+            ? rootView.collectionView.insertItems(at: [IndexPath(item: index, section: 0)])
+            : rootView.collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
     }
     
     func displayError(title: String, message: String?) {
         print("ERROR:", title)
     }
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension ProductsViewController: UICollectionViewDataSource {
     
@@ -96,7 +98,7 @@ extension ProductsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
-        let viewModel = section.items[indexPath]?.viewModel as? ProductCellViewModel
+        let viewModel = section.items[indexPath.item].viewModel as? ProductCellViewModel
         (cell as? ProductsViewCell)?.viewModel = viewModel
         return cell
     }
@@ -119,6 +121,6 @@ extension ProductsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard indexPath.item == section.items.count - 1 else { return }
-        Task { await presenter.willDisplayLastItem(at: indexPath) }
+        Task { await presenter.willDisplayLastItem(at: indexPath.item) }
     }
 }

@@ -24,14 +24,14 @@ protocol ProductsRouter {
 protocol ProductsView: AnyObject {
     func display(title: String)
     func display(productsSection: any Sectionable)
-    func display(productItem: any Itemable, at indexPath: IndexPath)
+    func display(productItem: any Itemable, at index: Int)
     func displayError(title: String, message: String?)
 }
 
 protocol ProductsPresenter {
     func viewDidLoad() async
     func menuButtonTapped() async
-    func willDisplayLastItem(at indexPath: IndexPath) async
+    func willDisplayLastItem(at index: Int) async
     func didSelectItem(at indexPath: IndexPath) async
 }
 
@@ -76,27 +76,27 @@ extension ProductsPresenterImpl: ProductsPresenter {
         }
     }
     
-    func willDisplayLastItem(at indexPath: IndexPath) async {
+    func willDisplayLastItem(at index: Int) async {
         let (category, gender, style) = (currentCategory, currentGender, currentStyle)
-        let nextIndexPath = indexPath + 1
-        guard nextIndexPath.item < totalProductsCount,
-              requestStack.notContains(nextIndexPath) else { return }
+        let nextIndex = index + 1
+        guard nextIndex < totalProductsCount,
+              requestStack.notContains(nextIndex) else { return }
         
-        await requestStack.add(nextIndexPath)
-        await displayLoadingItem(at: nextIndexPath)
+        await requestStack.add(nextIndex)
+        await displayLoadingItem(at: nextIndex)
         await with(errorHandler) {
-            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndexPath.item)
+            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndex)
             let product = try await getProductsUseCase.execute(productRequest)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            let viewModel = try await createViewModel(with: product, for: nextIndexPath)
+            let viewModel = try await createViewModel(with: product, forIndex: nextIndex)
             let productItem = ProductItem(viewModel: viewModel)
-            await view?.display(productItem: productItem, at: nextIndexPath)
+            await view?.display(productItem: productItem, at: nextIndex)
         }
         
-        requestStack.remove(nextIndexPath)
+        requestStack.remove(nextIndex)
     }
 }
 
@@ -124,12 +124,12 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
 
 extension ProductsPresenterImpl {
     
-    private func displayLoadingItem(at indexPath: IndexPath) async {
-        await view?.display(productItem: ProductItem(), at: indexPath)
+    private func displayLoadingItem(at index: Int) async {
+        await view?.display(productItem: ProductItem(), at: index)
     }
     
     private func displayEmptySection(andTitle title: String) async {
-        let section = ProductsSection(header: "0 PRODUCTS", items: [:])
+        let section = ProductsSection(header: "0 PRODUCTS", items: [])
         await view?.display(productsSection: section)
         await view?.display(title: title.uppercased())
     }
@@ -147,7 +147,7 @@ extension ProductsPresenterImpl {
             totalProductsCount = productsCount
             if productsCount > 0 {
                 let header = "\(productsCount) PRODUCTS"
-                let section = ProductsSection(header: header, items: [IndexPath(item: 0, section: 0): ProductItem()])
+                let section = ProductsSection(header: header, items: [ProductItem()])
                 await view?.display(productsSection: section)
             }
             
@@ -156,9 +156,9 @@ extension ProductsPresenterImpl {
             let product = try await getProductsUseCase.execute(productRequest)
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
-            let viewModel = try await createViewModel(with: product, for: IndexPath(item: 0, section: 0))
+            let viewModel = try await createViewModel(with: product, forIndex: 0)
             let item = ProductItem(viewModel: viewModel)
-            await view?.display(productItem: item, at: IndexPath(item: 0, section: 0))
+            await view?.display(productItem: item, at: 0)
         }
     }
     
@@ -170,13 +170,13 @@ extension ProductsPresenterImpl {
             let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)
             try await cartUseCase.execute(addRequest)
             // update cell
-            let newViewModel = try await createViewModel(with: product, for: viewModel.indexPath)
+            let newViewModel = try await createViewModel(with: product, forIndex: viewModel.index)
             let productItem = ProductItem(viewModel: newViewModel)
-            await view?.display(productItem: productItem, at: viewModel.indexPath)
+            await view?.display(productItem: productItem, at: viewModel.index)
         }
     }
     
-    private func createViewModel(with product: Product, for indexPath: IndexPath) async throws -> ProductCellViewModel? {
+    private func createViewModel(with product: Product, forIndex index: Int) async throws -> ProductCellViewModel? {
         guard let variation = product.variations.first else { return nil }
         
         let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
@@ -190,7 +190,7 @@ extension ProductsPresenterImpl {
             price: "$ " + String(format: "%.2f", Double(variation.price) / 100.0),
             colors: "\(product.variations.count) COLORS",
             imageData: variation.imageData?.first ?? Data(),
-            indexPath: indexPath,
+            index: index,
             addButtonTapped: { [weak self] viewModel in
                 await self?.addProductTapped(in: viewModel)
             },

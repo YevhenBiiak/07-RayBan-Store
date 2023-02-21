@@ -8,8 +8,8 @@
 import UIKit
 
 struct ProductsSection: Sectionable {
-    var header: String
-    var items: [IndexPath: any Itemable]
+    var header: String?
+    var items: [any Itemable]
 }
 struct ProductItem: Itemable {
     var viewModel: ProductCellViewModel?
@@ -23,7 +23,7 @@ struct ProductCellViewModel {
     let price: String
     let colors: String
     let imageData: Data
-    let indexPath: IndexPath
+    let index: Int
     let addButtonTapped: (ProductCellViewModel) async -> Void
     let cartButtonTapped: () async -> Void
 }

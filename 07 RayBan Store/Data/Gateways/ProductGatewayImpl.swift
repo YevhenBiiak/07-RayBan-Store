@@ -71,11 +71,12 @@ extension ProductGatewayImpl: ProductGateway {
     }
     
     // Representation Of Product Styles Of Category
-    func fetchProductStyles(category: Product.Category) async throws -> [Product] {
+    func fetchProductStyles(category: Product.Category, includeImages: Bool) async throws -> [Product] {
         var products = try await productsAPI.fetchProducts()
             .filter(category: category)
             .parseProductStyles()
         
+        guard includeImages else { return products }
         try await loadImages(for: &products, imgTypes: [.main], bgColor: .appWhite)
         return products
     }

@@ -32,21 +32,21 @@ class AppMenuRouterImpl: AppMenuRouter {
     }
     
     func presentSunglassesCategories() {
-//        let sunglassesCategoriesViewController = CategoriesViewController()
-//        let sunglassesCategoriesConfigurator = SunglassesCategoriesConfiguratorImpl(
-//            productsPresentationDelegate: productsPresentationDelegate)
-//
-//        sunglassesCategoriesViewController.configurator = sunglassesCategoriesConfigurator
-//        navigationController?.pushViewController(sunglassesCategoriesViewController, animated: true)
+        let sunglassesCategoriesViewController = CategoriesViewController()
+        let sunglassesCategoriesConfigurator = SunglassesCategoriesConfiguratorImpl(
+            productsPresentationDelegate: productsPresentationDelegate)
+
+        sunglassesCategoriesViewController.configurator = sunglassesCategoriesConfigurator
+        navigationController?.pushViewController(sunglassesCategoriesViewController, animated: true)
     }
     
     func presentEyeglassesCategories() {
-//        let eyeglassesCategoriesViewController = CategoriesViewController()
-//        let eyeglassesCategoriesConfigurator = EyeglassesCategoriesConfiguratorImpl(
-//            productsPresentationDelegate: productsPresentationDelegate)
-//
-//        eyeglassesCategoriesViewController.configurator = eyeglassesCategoriesConfigurator
-//        navigationController?.pushViewController(eyeglassesCategoriesViewController, animated: true)
+        let eyeglassesCategoriesViewController = CategoriesViewController()
+        let eyeglassesCategoriesConfigurator = EyeglassesCategoriesConfiguratorImpl(
+            productsPresentationDelegate: productsPresentationDelegate)
+
+        eyeglassesCategoriesViewController.configurator = eyeglassesCategoriesConfigurator
+        navigationController?.pushViewController(eyeglassesCategoriesViewController, animated: true)
     }
     
     func presentShoppingCart() {

@@ -7,6 +7,7 @@
 
 struct ProductStylesRequest {
     let category: Product.Category
+    let includeImages: Bool
 }
 
 struct ProductWithIDRequest {

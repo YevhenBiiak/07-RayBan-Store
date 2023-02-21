@@ -65,7 +65,7 @@ class ProductsViewCell: UICollectionViewCell {
     
     var viewModel: ProductCellViewModel? {
         didSet {
-            guard let viewModel else { return startAnimation() }
+            guard let viewModel else { return startAnimating() }
             setImage(with: viewModel.imageData)
             newLabel.isHidden = viewModel.isNew
             nameLabel.text = viewModel.name
@@ -109,7 +109,7 @@ class ProductsViewCell: UICollectionViewCell {
         }
     }
     
-    private func startAnimation() {
+    private func startAnimating() {
         imageShimmerView.startShimmerAnimating()
         nameShimmerView.startShimmerAnimating()
         priceShimmerView.startShimmerAnimating()

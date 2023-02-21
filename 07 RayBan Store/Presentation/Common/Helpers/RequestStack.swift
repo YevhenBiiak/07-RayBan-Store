@@ -11,24 +11,24 @@ import Semaphore
 class RequestStack {
     
     private let semaphore: AsyncSemaphore
-    private var stack: [IndexPath] = []
+    private var stack: [Int] = []
     
     init(capacity: Int) {
         semaphore = AsyncSemaphore(value: capacity)
     }
     
-    func add(_ indexPath: IndexPath) async {
+    func add(_ index: Int) async {
         await semaphore.wait()
-        stack.append(indexPath)
+        stack.append(index)
     }
     
-    func remove(_ indexPath: IndexPath) {
-        guard let index = stack.firstIndex(of: indexPath) else { return }
-        stack.remove(at: index)
+    func remove(_ index: Int) {
+        guard let i = stack.firstIndex(of: index) else { return }
+        stack.remove(at: i)
         semaphore.signal()
     }
     
-    func notContains(_ indexPath: IndexPath) -> Bool {
-        !stack.contains(indexPath)
+    func notContains(_ index: Int) -> Bool {
+        !stack.contains(index)
     }
 }

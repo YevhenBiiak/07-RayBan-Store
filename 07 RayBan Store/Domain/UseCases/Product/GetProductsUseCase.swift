@@ -52,7 +52,7 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     
     // get the products for categories screen
     func execute(_ request: ProductStylesRequest) async throws -> [Product] {
-        try await productGateway.fetchProductStyles(category: request.category)
+        try await productGateway.fetchProductStyles(category: request.category, includeImages: request.includeImages)
         // here can be some domain logic
     }
 }

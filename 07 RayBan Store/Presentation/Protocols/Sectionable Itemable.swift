@@ -8,8 +8,16 @@
 import Foundation
 
 protocol Sectionable {
-    var header: String { get }
-    var items: [IndexPath: any Itemable] { get set }
+    var header: String? { get }
+    var items: [any Itemable] { get set }
+}
+
+extension Sectionable {
+    mutating func insert(_ item: any Itemable, at index: Int) {
+        index < items.count
+            ? items[index] = item
+            : items.append(item)
+    }
 }
 
 protocol Itemable {
