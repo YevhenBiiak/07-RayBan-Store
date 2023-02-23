@@ -16,11 +16,11 @@ class ProductsRouterImpl: Routable, ProductsRouter {
     }
     
     func presentProductDetails(product: Product) {
-//        let productDetailsViewController = ProductDetailsViewController()
-//        let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
-//
-//        productDetailsViewController.configurator = productDetailsConfigurator
-//        navigationController?.pushViewController(productDetailsViewController, animated: true)
+        let productDetailsViewController = ProductDetailsViewController()
+        let productDetailsConfigurator = ProductDetailsConfiguratorImpl(product: product)
+
+        productDetailsViewController.configurator = productDetailsConfigurator
+        navigationController?.pushViewController(productDetailsViewController, animated: true)
     }
     
     func presentAppMenu(productsPresentationDelegate: ProductsPresentationDelegate?) {

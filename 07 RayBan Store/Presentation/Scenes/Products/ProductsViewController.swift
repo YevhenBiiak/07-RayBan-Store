@@ -116,7 +116,7 @@ extension ProductsViewController: UICollectionViewDataSource {
 extension ProductsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        Task { await presenter.didSelectItem(at: indexPath) }
+        Task { await presenter.didSelectItem(at: indexPath.item) }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

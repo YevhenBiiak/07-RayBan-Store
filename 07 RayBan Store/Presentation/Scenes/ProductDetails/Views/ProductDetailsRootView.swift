@@ -8,106 +8,310 @@
 import UIKit
 import Stevia
 
+protocol ColorSegmentedControlDelegate: AnyObject {
+    func didSelectSegment(atIndex index: Int)
+}
+
 class ProductDetailsRootView: UIView {
     
-    enum Section: Int, Hashable, CaseIterable {
-        case promo
-        case images
-        case description
-        case property
-        case details
-        case actions
-    }
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private var collectionView: UICollectionView!
     
-    let trailingBuyButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.Oswald.regular
-        button.tintColor = UIColor.appWhite
-        button.backgroundColor = UIColor.appRed
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont.Oswald.bold.withSize(18)
+        return label
+    }()
+    
+    private let favoriteButton: CheckboxButton = {
+        let checkedImage = UIImage(systemName: "heart.fill")!
+            .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
+        let uncheckedImage = UIImage(systemName: "heart")!
+            .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
+        let button = CheckboxButton(checkedImage: checkedImage, uncheckedImage: uncheckedImage, scale: .medium)
         return button
     }()
     
-    var collectionView: UICollectionView!
-
-    // MARK: - Initializers and overridden methods
-
+    private let colorsCountTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appBlack
+        label.text = "COLORS"
+        return label
+    }()
+    
+    private let colorsCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appDarkGray
+        return label
+    }()
+    
+    private let colorSegmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        return segmentedControl
+    }()
+    
+    private let sizeTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appBlack
+        label.text = "SIZE"
+        return label
+    }()
+    
+    let sizeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appDarkGray
+        return label
+    }()
+    
+    private let geofitTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appBlack
+        label.text = "GEOFIT"
+        return label
+    }()
+    
+    let geofitLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appDarkGray
+        return label
+    }()
+    
+    private let productDetailsTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.Oswald.regular
+        label.textColor = .appBlack
+        label.text = "PRODUCT DETAILS"
+        return label
+    }()
+    
+    let productDetailsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .justified
+        label.numberOfLines = 0
+        label.font = UIFont.Lato.regular
+        label.textColor = .appDarkGray
+        return label
+    }()
+    
+    private let priceTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular.withSize(20)
+        label.textColor = .appBlack
+        label.text = "PRICE"
+        return label
+    }()
+    
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.Oswald.regular.withSize(20)
+        label.textColor = .appRed
+        return label
+    }()
+    
+    let applePayButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .appBlack
+        button.tintColor = .appWhite
+        let image = UIImage(systemName: "applelogo")!
+        button.setImage(image, for: .normal)
+        button.setTitle(" Pay", for: .normal)
+        return button
+    }()
+    
+    let addToCartButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.Oswald.bold
+        button.tintColor = .appWhite
+        button.backgroundColor = .appRed
+        button.setTitle("ADD TO BAG", for: .normal)
+        return button
+    }()
+    
+    private let trailingBuyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.Oswald.bold
+        button.tintColor = .appWhite
+        button.backgroundColor = .appRed
+        button.setTitle("ADD TO BAG", for: .normal)
+        return button
+    }()
+    
+    weak var colorSegmentsDelegate: ColorSegmentedControlDelegate?
+    
+    var imageData: [Data] = [] {
+        didSet { collectionView.reloadData() }
+    }
+    
+    var selectedColorSegment: Int = 0 {
+        didSet { colorSegmentedControl.selectedSegmentIndex = selectedColorSegment }
+    }
+    
+    var colorSegments: [String] = [] {
+        didSet {
+            colorsCountLabel.text = "\(colorSegments.count)"
+            colorSegmentedControl.removeAllSegments()
+            for (i, title) in colorSegments.enumerated() {
+                colorSegmentedControl.insertSegment(withTitle: title, at: i, animated: false)
+            }
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
-        configureCollectinView()
+        backgroundColor = .appWhite
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
-    func setPriceForTrailingButton(price: Int) {
-        let formattedPrice = String(format: "%.2f", Double(price) / 100.0)
-        trailingBuyButton.setTitle("SHOP - $ \(formattedPrice)", for: .normal)
-    }
-    
-    func getNumberOfSections() -> Int {
-        Section.allCases.count
-    }
-    
-    func getSectionKind(forSection section: Int) -> ProductDetailsRootView.Section? {
-        Section(rawValue: section)
+    override func draw(_ rect: CGRect) {
+        setupViews()
     }
     
     // MARK: - Private methods
     
-    private func configureCollectinView() {
+    private func setupViews() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
+        collectionView.register(ProductImageViewCell.self,
+                                forCellWithReuseIdentifier: ProductImageViewCell.reuseId)
         collectionView.backgroundColor = .appLightGray
+        collectionView.dataSource = self
+        scrollView.delegate = self
+        configureLayout()
         
-        subviews(
-            collectionView,
-            trailingBuyButton
-        )
-        
-        collectionView.width(100%).height(100%).top(0)
-        trailingBuyButton.centerHorizontally().width(90%).height(44).bottom(20)
+        colorSegmentedControl.addTarget(self, action: #selector(didSelectSegment), for: .valueChanged)
+    }
+    
+    @objc private func didSelectSegment() {
+        colorSegmentsDelegate?.didSelectSegment(atIndex: colorSegmentedControl.selectedSegmentIndex)
     }
     
     private func creatrLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] (sectionIndex: Int, _: NSCollectionLayoutEnvironment) in
-            guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
+        UICollectionViewCompositionalLayout(sectionProvider: { _, _ in
             
-            switch sectionKind {
-            case .promo:       return self?.estimatedSectionLayout()
-            case .images:      return self?.imagesSectionLayout()
-            case .description: return self?.estimatedSectionLayout()
-            case .property:    return self?.propertySectionLayout()
-            case .details:     return self?.estimatedSectionLayout()
-            case .actions:     return self?.estimatedSectionLayout() }
+            let item = NSCollectionLayoutItem(layoutSize: .init(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .fractionalHeight(1)))
+            
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
+                widthDimension: .fractionalWidth(0.8),
+                heightDimension: .fractionalHeight(1)), subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPagingCentered
+            
+            return section
         })
     }
     
-    private func imagesSectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: .init(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
-            widthDimension: .fractionalWidth(0.8),
-            heightDimension: .fractionalWidth(0.8)), subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPagingCentered
-        return section
+    private func configureLayout() {
+        
+        let descriptionSection = UIView()
+        let sizeSection = UIView()
+        let geofitSection = UIView()
+        let detailsSection = UIView()
+        let priceSection = UIView()
+        
+        descriptionSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        sizeSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        geofitSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        detailsSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        priceSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        
+        subviews(
+            scrollView.subviews(
+                contentView.subviews(
+                    collectionView,
+                    descriptionSection.subviews(nameLabel, favoriteButton, colorsCountTitleLabel, colorsCountLabel, colorSegmentedControl),
+                    sizeSection.subviews(sizeTitleLabel, sizeLabel),
+                    geofitSection.subviews(geofitTitleLabel, geofitLabel),
+                    detailsSection.subviews(productDetailsTitleLabel, productDetailsLabel),
+                    priceSection.subviews(priceTitleLabel, priceLabel, applePayButton, addToCartButton)
+                )
+            ),
+            trailingBuyButton
+        )
+        
+        // set constraints
+        scrollView.fillHorizontally().fillVertically()
+        contentView.fillHorizontally().fillVertically().width(100%)
+        trailingBuyButton.width(90%).centerHorizontally().height(44).Bottom == safeAreaLayoutGuide.Bottom
+        
+        collectionView    .fillHorizontally().height(300).top(0)
+        descriptionSection.fillHorizontally().Top == collectionView.Bottom
+        sizeSection       .fillHorizontally().Top == descriptionSection.Bottom
+        geofitSection     .fillHorizontally().Top == sizeSection.Bottom
+        detailsSection    .fillHorizontally().Top == geofitSection.Bottom
+        priceSection      .fillHorizontally().bottom(0).Top == detailsSection.Bottom
+        
+        // layout DescriptionSection
+        let padding = 0.05 * frame.width
+        nameLabel.top(16).left(padding).Right == favoriteButton.Left - padding
+        favoriteButton.right(padding).CenterY == nameLabel.CenterY
+        colorsCountTitleLabel.Top == nameLabel.Bottom + 14
+        colorsCountTitleLabel.left(padding).Right == colorsCountLabel.Left - 8
+        colorsCountLabel.right(padding).CenterY == colorsCountTitleLabel.CenterY
+        colorsCountLabel.setContentHuggingPriority(.init(100), for: .horizontal)
+        colorSegmentedControl.fillHorizontally(padding: padding).bottom(20).Top == colorsCountTitleLabel.Bottom + 16
+        
+        // layout SizeSection
+        sizeTitleLabel.left(padding).height(60).top(0).bottom(0)
+        sizeLabel.right(padding).height(60).top(0).bottom(0).Left == sizeTitleLabel.Right + 8
+        sizeLabel.setContentHuggingPriority(.init(100), for: .horizontal)
+        
+        // layout GeofitSection
+        geofitTitleLabel.left(padding).height(60).top(0).bottom(0)
+        geofitLabel.right(padding).height(60).top(0).bottom(0).Left == geofitTitleLabel.Right + 8
+        geofitLabel.setContentHuggingPriority(.init(100), for: .horizontal)
+        
+        // layout DetailsSection
+        productDetailsTitleLabel.fillHorizontally(padding: padding).top(16)
+        productDetailsLabel.fillHorizontally(padding: padding).bottom(16).Top == productDetailsTitleLabel.Bottom + 16
+        
+        // layout PriceSection
+        priceTitleLabel.left(padding).top(padding)
+        priceLabel.right(padding).top(padding).Left == priceTitleLabel.Right + 8
+        priceLabel.setContentHuggingPriority(.init(100), for: .horizontal)
+        applePayButton.fillHorizontally(padding: padding).height(44).Top == priceTitleLabel.Bottom + padding
+        addToCartButton.fillHorizontally(padding: padding).height(44).bottom(0).Top == applePayButton.Bottom + padding
+    }
+}
+
+extension ProductDetailsRootView: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        imageData.count
     }
     
-    private func propertySectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: .init(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: .init(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(60)), subitems: [item])
-        return NSCollectionLayoutSection(group: group)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductImageViewCell.reuseId, for: indexPath)
+        let data = imageData[indexPath.item]
+        
+        (cell as? ProductImageViewCell)?.imageView.image = UIImage(data: data)
+        
+        return cell
     }
+}
 
-    private func estimatedSectionLayout() -> NSCollectionLayoutSection {
-        let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(300))
-        let item = NSCollectionLayoutItem(layoutSize: size)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
-        return NSCollectionLayoutSection(group: group)
+extension ProductDetailsRootView: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let addToCartButtonIsVisible = scrollView.bounds.intersects(addToCartButton.frame)
+        
+        if addToCartButtonIsVisible, trailingBuyButton.isHidden == true {
+            trailingBuyButton.isHidden = false
+            trailingBuyButton.setTitle("SHOP - \(priceLabel.text ?? "")", for: .normal)
+        }
+        if !addToCartButtonIsVisible, trailingBuyButton.isHidden == false {
+            trailingBuyButton.isHidden = true
+        }
     }
 }

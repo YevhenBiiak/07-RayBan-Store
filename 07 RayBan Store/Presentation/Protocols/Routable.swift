@@ -17,9 +17,11 @@ protocol Routable {
 }
 
 extension Routable {
+    
     var navigationController: UINavigationController? {
         viewController.navigationController
     }
+    
     func dismiss(animated: Bool) {
         navigationController?.popViewController(animated: animated)
     }

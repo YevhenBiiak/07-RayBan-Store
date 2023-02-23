@@ -18,15 +18,36 @@ extension UIView {
     
     @discardableResult
     func addBorder(at position: BorderPosition, color: UIColor, width: CGFloat) -> CALayer {
-        let border = CALayer()
-        border.backgroundColor = color.cgColor
+        
+        let border = UIView()
+        border.layer.backgroundColor = color.cgColor
+        border.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(border)
+        
         switch position {
-        case .top:    border.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: width)
-        case .left:   border.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.height)
-        case .right:  border.frame = CGRect(x: self.frame.width - width, y: 0, width: width, height: self.frame.height)
-        case .bottom: border.frame = CGRect(x: 0, y: self.frame.height - width, width: self.frame.width, height: width)
+        case .top:
+            border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            border.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            border.bottomAnchor.constraint(equalTo: topAnchor, constant: width).isActive = true
+        case .left:
+            border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            border.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            border.rightAnchor.constraint(equalTo: leftAnchor, constant: width).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        case .right:
+            border.leftAnchor.constraint(equalTo: rightAnchor, constant: -width).isActive = true
+            border.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        case .bottom:
+            border.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+            border.topAnchor.constraint(equalTo: bottomAnchor, constant: -width).isActive = true
+            border.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+            border.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-        self.layer.addSublayer(border)
-        return border
+        
+        return border.layer
     }
 }

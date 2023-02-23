@@ -32,7 +32,7 @@ protocol ProductsPresenter {
     func viewDidLoad() async
     func menuButtonTapped() async
     func willDisplayLastItem(at index: Int) async
-    func didSelectItem(at indexPath: IndexPath) async
+    func didSelectItem(at index: Int) async
 }
 
 class ProductsPresenterImpl {
@@ -67,9 +67,8 @@ extension ProductsPresenterImpl: ProductsPresenter {
         await router.presentAppMenu(productsPresentationDelegate: self)
     }
     
-    func didSelectItem(at indexPath: IndexPath) async {
+    func didSelectItem(at index: Int) async {
         await with(errorHandler) {
-            let index = indexPath.item
             let request = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: index)
             let product = try await getProductsUseCase.execute(request)
             await router.presentProductDetails(product: product)

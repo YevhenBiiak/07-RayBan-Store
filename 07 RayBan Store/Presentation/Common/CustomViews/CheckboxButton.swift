@@ -17,7 +17,8 @@ class CheckboxButton: UIButton {
             .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.white, UIColor.black])),
          uncheckedImage: UIImage = UIImage(systemName: "square")!
             .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.black, UIColor.white])),
-         scale: UIImage.SymbolScale) {
+         scale: UIImage.SymbolScale
+    ) {
         self.checkedImage = checkedImage
         self.uncheckedImage = uncheckedImage
         
@@ -36,14 +37,15 @@ class CheckboxButton: UIButton {
             self.isChecked.toggle()
             
         }), for: .touchUpInside)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        // set initial state image
+        
+        // set image for initial state
         setImage(self.uncheckedImage, for: .normal)
     }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+//    override func draw(_ rect: CGRect) {
+//        // set initial state image
+//        setImage(self.uncheckedImage, for: .normal)
+//    }
 }
