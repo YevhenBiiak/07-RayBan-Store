@@ -13,6 +13,12 @@ protocol RemoteRepositoryAPI {}
 class RemoteRepositoryImpl: RemoteRepositoryAPI {
     
     private let database: DatabaseReference = Database.database().reference()
+    
+    private var isProductsObserved = false
+    private var products: [Product] = []
+    
+    private var isCartItemsObserved = false
+    private var cartItems: [(productID: Int, amount: Int)] = []
 }
 
 // MARK: - ProfilesAPI
@@ -37,9 +43,20 @@ extension RemoteRepositoryImpl: ProfilesAPI {
 extension RemoteRepositoryImpl: ProductsAPI {
     
     func fetchProducts() async throws -> [Product] {
-        try await with(errorHandler) {
+        guard products.isEmpty else { return products }
+        let products = try await with(errorHandler) {
             try await self.database.child("products").decodeArray(of: Product.self)
         }
+        
+        guard !isProductsObserved else { return products }
+        isProductsObserved = true
+        database.child("products").observe(.value) { [weak self] snapshot in
+            do {
+                let data = try JSONSerialization.data(withJSONObject: snapshot.value as Any)
+                self?.products = try JSONDecoder().decode([Product].self, from: data)
+            } catch {}
+        }
+        return products
     }
 }
 
@@ -57,11 +74,28 @@ extension RemoteRepositoryImpl: CartItemsAPI {
     }
     
     func fetchCartItems(for user: User) async throws -> [(productID: Int, amount: Int)] {
-        try await with(errorHandler) {
-             try await database.child("carts").child(user.id)
+        guard cartItems.isEmpty else { return cartItems }
+        let cartItems = try await with(errorHandler) {
+            try await database.child("carts").child(user.id)
                 .decodeArray(of: CartItemWrapper.self)
                 .map { (productID: $0.productID, amount: $0.amount) }
         }
+        
+        guard !isCartItemsObserved else { return cartItems }
+        isCartItemsObserved = true
+        database.child("carts").child(user.id).observe(.value) { [weak self] snapshot in
+            do {
+                if snapshot.value is NSNull {
+                    self?.cartItems = []
+                } else {
+                    let data = try JSONSerialization.data(withJSONObject: snapshot.value as Any)
+                    self?.cartItems = try JSONDecoder()
+                        .decode([CartItemWrapper].self, from: data)
+                        .map { (productID: $0.productID, amount: $0.amount) }
+                }
+            } catch {}
+        }
+        return cartItems
     }
 }
 

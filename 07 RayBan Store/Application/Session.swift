@@ -19,6 +19,6 @@ class Session {
     
     var user: User!
     
-    lazy var remoteRepositoryAPI: RemoteRepositoryAPI = RemoteRepositoryImpl()
+    lazy var remoteRepositoryAPI = RemoteRepositoryImpl()
     
 }

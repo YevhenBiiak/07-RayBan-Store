@@ -17,7 +17,7 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
     func configure(productsViewController: ProductsViewController) {
         
         let productImagesApi = ProductImagesApiImpl()
-        let remoteRepository = RemoteRepositoryImpl()
+        let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)

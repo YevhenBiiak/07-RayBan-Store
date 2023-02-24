@@ -10,6 +10,9 @@ import UIKit
 @MainActor
 protocol ListView: AnyObject {
     func display(title: String)
+    func hideCartBadge()
+    func displayCartBadge()
+    func displayError(title: String, message: String?)
 }
 
 @MainActor
@@ -42,12 +45,26 @@ class ListViewController: UITableViewController, ListView {
         self.title = title
     }
     
+    func hideCartBadge() {
+        navigationItem.rightBarButtonItem?.image = UIImage(
+            systemName: "cart", pointSize: 19, weight: .semibold, paletteColors: [.appBlack])
+    }
+    
+    func displayCartBadge() {
+        navigationItem.rightBarButtonItem?.image = UIImage(
+            named: "cart.badge", pointSize: 19, weight: .semibold, paletteColors: [.appRed, .appBlack])
+    }
+    
+    func displayError(title: String, message: String?) {
+        print("ERROR: ", title)
+    }
+    
     // MARK: - Private methods
     
     private func setupNavigationBar() {
         // add cart button
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "cart", tintColor: .appBlack, pointSize: 19, weight: .semibold),
+            image: UIImage(systemName: "cart", pointSize: 19, weight: .semibold, paletteColors: [.appBlack]),
             style: .plain,
             target: self,
             action: #selector(cartButtonTapped))

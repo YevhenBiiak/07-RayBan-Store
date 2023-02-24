@@ -9,8 +9,8 @@ class AccountMenuConfiguratorImpl: ListConfigurator {
     
     func configure(listViewController: ListViewController) {
         
-        let remoteRepository = RemoteRepositoryImpl()
         let productImagesApi = ProductImagesApiImpl()
+        let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)

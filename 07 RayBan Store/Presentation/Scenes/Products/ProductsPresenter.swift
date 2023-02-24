@@ -23,6 +23,8 @@ protocol ProductsRouter {
 @MainActor
 protocol ProductsView: AnyObject {
     func display(title: String)
+    func hideMenuBadge()
+    func displayMenuBadge()
     func display(productsSection: any Sectionable)
     func display(productItem: any Itemable, at index: Int)
     func displayError(title: String, message: String?)
@@ -138,7 +140,11 @@ extension ProductsPresenterImpl {
         (currentCategory, currentGender, currentStyle) = (category, gender, style)
         
         await with(errorHandler) {
-            // first phase
+            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+            isCartEmpty ? await view?.hideMenuBadge() : await view?.displayMenuBadge()
+            
+            // first phase (display products count and loading item)
             let productsCountRequest = ProductsCountRequest(category: currentCategory, gender: currentGender, style: currentStyle)
             let productsCount = try await getProductsUseCase.execute(productsCountRequest)
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
@@ -150,7 +156,7 @@ extension ProductsPresenterImpl {
                 await view?.display(productsSection: section)
             }
             
-            // second phase
+            // second phase (display first product item)
             let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: 0)
             let product = try await getProductsUseCase.execute(productRequest)
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
@@ -168,7 +174,9 @@ extension ProductsPresenterImpl {
             
             let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)
             try await cartUseCase.execute(addRequest)
-            // update cell
+            
+            // update view
+            await view?.displayMenuBadge()
             let newViewModel = try await createViewModel(with: product, forIndex: viewModel.index)
             let productItem = ProductItem(viewModel: newViewModel)
             await view?.display(productItem: productItem, at: viewModel.index)

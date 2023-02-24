@@ -12,6 +12,8 @@ protocol ProductDetailsRouter {
 
 @MainActor
 protocol ProductDetailsView: AnyObject {
+    func hideCartBadge()
+    func displayCartBadge()
     func display(viewModel: ProductDetailsViewModel)
     func displayError(title: String, message: String?)
 }
@@ -19,6 +21,7 @@ protocol ProductDetailsView: AnyObject {
 protocol ProductDetailsPresenter {
     func viewDidLoad() async
     func didSelectColorSegment(at index: Int) async
+    func addToCartButtonTapped(productID: Int) async
     func cartButtonTapped() async
 }
 
@@ -26,15 +29,17 @@ class ProductDetailsPresenterImpl {
     
     private weak var view: ProductDetailsView?
     private let router: ProductDetailsRouter
+    private let cartUseCase: CartUseCase
     private let getProductsUseCase: GetProductsUseCase
     
     private var product: Product
     private var currentVariationIndex = 0
     
-    init(product: Product, view: ProductDetailsView?, router: ProductDetailsRouter, getProductsUseCase: GetProductsUseCase) {
+    init(product: Product, view: ProductDetailsView?, router: ProductDetailsRouter, cartUseCase: CartUseCase, getProductsUseCase: GetProductsUseCase) {
         self.product = product
         self.view = view
         self.router = router
+        self.cartUseCase = cartUseCase
         self.getProductsUseCase = getProductsUseCase
     }
 }
@@ -42,27 +47,49 @@ class ProductDetailsPresenterImpl {
 extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
     
     func viewDidLoad() async {
-        await updateView()
-        
         await with(errorHandler) {
+            // display product with single main image
+            try await displayUpdatedViewModel()
+            
+            // display cart badge
+            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+            isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
+            
+            // load and display all images for first product variation
             let productIDRequest = ProductWithIDRequest(productID: product.variations[0].productID)
             product.variations[0] = try await getProductsUseCase.execute(productIDRequest).variations[0]
-            await updateView()
+            try await displayUpdatedViewModel()
             
             // load all images for variations and display selected
             let request = ProductWithModelIDRequest(modelID: product.modelID)
             product = try await getProductsUseCase.execute(request)
-            await updateView()
+            try await displayUpdatedViewModel()
         }
     }
     
     func didSelectColorSegment(at index: Int) async {
-        currentVariationIndex = index
-        await updateView()
+        await with(errorHandler) {
+            currentVariationIndex = index
+            try await displayUpdatedViewModel()
+        }
+    }
+    
+    func addToCartButtonTapped(productID: Int) async {
+        await with(errorHandler) {
+            let productRequest = ProductWithIDRequest(productID: productID)
+            let product = try await getProductsUseCase.execute(productRequest)
+            
+            let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)
+            try await cartUseCase.execute(addRequest)
+            
+            await view?.displayCartBadge()
+            try await displayUpdatedViewModel()
+        }
     }
     
     func cartButtonTapped() async {
-        print("cartButtonTapped")
+//        await view?.displayCartBadge()
     }
 }
 
@@ -70,16 +97,21 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
 
 extension ProductDetailsPresenterImpl {
     
-    private func updateView() async {
-        let viewModel = createProductViewModel(with: product)
+    private func displayUpdatedViewModel() async throws {
+        let viewModel = try await createProductViewModel(with: product)
         await view?.display(viewModel: viewModel)
     }
     
-    private func createProductViewModel(with product: Product) -> ProductDetailsViewModel {
+    private func createProductViewModel(with product: Product) async throws -> ProductDetailsViewModel {
         let selectedVariation = product.variations[currentVariationIndex]
+        
+        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
+        let isInCart = try await cartUseCase.execute(inCartRequest)
+        
         return ProductDetailsViewModel(
             modelID: product.modelID,
             productID: selectedVariation.productID,
+            isInCart: isInCart,
             name: product.name.uppercased(),
             category: product.category.rawValue.uppercased(),
             gender: product.gender.rawValue.uppercased(),
@@ -87,11 +119,11 @@ extension ProductDetailsPresenterImpl {
             size: product.size.uppercased(),
             geofit: product.geofit.uppercased(),
             colors: product.variations.map { "\($0.frameColor)/\($0.lenseColor)".uppercased() },
+            price: "$ " + String(format: "%.2f", Double(selectedVariation.price) / 100.0),
             frameColor: selectedVariation.frameColor,
             lenseColor: selectedVariation.lenseColor,
             selectedColorIndex: currentVariationIndex,
-            price: "$ " + String(format: "%.2f", Double(selectedVariation.price) / 100.0),
-            details: product.details,
+            description: product.details,
             imageData: selectedVariation.imageData ?? [])
     }
     

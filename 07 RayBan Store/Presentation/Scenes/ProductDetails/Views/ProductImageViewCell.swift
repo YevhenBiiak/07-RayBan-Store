@@ -12,9 +12,15 @@ class ProductImageViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.appLightGray
+        imageView.backgroundColor = .appLightGray
         imageView.contentMode = .scaleAspectFit
         return imageView
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
     }()
     
     private var zoomableView = ZoomableView()
@@ -33,8 +39,12 @@ class ProductImageViewCell: UICollectionViewCell {
     }
     
     private func configureLayout() {
-        subviews( zoomableView )
-        zoomableView.fillContainer()    
+        subviews(
+            zoomableView,
+            activityIndicator
+        )
+        zoomableView.fillContainer()
+        activityIndicator.centerInContainer()
     }
 }
 

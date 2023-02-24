@@ -10,6 +10,7 @@ import UIKit
 struct ProductDetailsViewModel {
     let modelID: String
     let productID: Int
+    let isInCart: Bool
     let name: String
     let category: String
     let gender: String
@@ -17,10 +18,10 @@ struct ProductDetailsViewModel {
     let size: String
     let geofit: String
     let colors: [String]
+    let price: String
     let frameColor: String
     let lenseColor: String
     let selectedColorIndex: Int
-    let price: String
-    let details: String
+    let description: String
     let imageData: [Data]
 }

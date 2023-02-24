@@ -23,15 +23,19 @@ class ProductDetailsConfiguratorImpl: ProductDetailsConfigurator {
     func configure(productDetailsViewController: ProductDetailsViewController) {
 
         let productImagesApi = ProductImagesApiImpl()
-        let remoteRepository = RemoteRepositoryImpl()
-
+        let remoteRepository = Session.shared.remoteRepositoryAPI
+        
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
+        
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let router = ProductDetailsRouterImpl(viewController: productDetailsViewController)
         let presenter = ProductDetailsPresenterImpl(product: product,
                                                     view: productDetailsViewController,
                                                     router: router,
+                                                    cartUseCase: cartUseCase,
                                                     getProductsUseCase: getProductsUseCase)
 
         productDetailsViewController.presenter = presenter

@@ -16,7 +16,7 @@ class LoginConfiguratorImpl: LoginConfigurator {
     
     func configure(loginViewController: LoginViewController) {
         
-        let remoteRepository = RemoteRepositoryImpl()
+        let remoteRepository = Session.shared.remoteRepositoryAPI
         let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
         let authGateway = AuthGatewayImpl(profileGateway: profileGateway)
         let authUseCase = AuthUseCaseImpl(authGateway: authGateway)

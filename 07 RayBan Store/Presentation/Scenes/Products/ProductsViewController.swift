@@ -49,11 +49,7 @@ class ProductsViewController: UIViewController {
             .font: UIFont.Oswald.medium.withSize(22)]
         
         // add BarButtonItem to rightBarButtonItems
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "line.3.horizontal", tintColor: .appBlack, pointSize: 20, weight: .semibold),
-            style: .plain,
-            target: self,
-            action: #selector(menuButtonTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(menuButtonTapped))
         
         // add logo image to navigationItems
         let logo = UIImage(named: "logo")!
@@ -69,6 +65,16 @@ extension ProductsViewController: ProductsView {
     
     func display(title: String) {
         self.title = title
+    }
+    
+    func hideMenuBadge() {
+        navigationItem.rightBarButtonItem?.image = UIImage(
+            systemName: "line.3.horizontal", pointSize: 20, weight: .semibold, paletteColors: [.appBlack])
+    }
+    
+    func displayMenuBadge() {
+        navigationItem.rightBarButtonItem?.image = UIImage(
+            named: "menu.badge", pointSize: 20, weight: .semibold, paletteColors: [.appRed, .appBlack])
     }
     
     func display(productsSection: any Sectionable) {

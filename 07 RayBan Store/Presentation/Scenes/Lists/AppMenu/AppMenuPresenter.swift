@@ -37,7 +37,14 @@ class AppMenuPresenterImpl: ListPresenter {
     
     // MARK: - ListPresenter
     
-    func viewDidLoad() async {}
+    func viewDidLoad() async {
+        await with(errorHandler) {
+            // display cart badge
+            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+            isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
+        }
+    }
     
     var numberOfRows: Int {
         Row.allCases.count
@@ -59,5 +66,14 @@ class AppMenuPresenterImpl: ListPresenter {
     
     func cartButtonTapped() async {
         await router.presentShoppingCart()
+    }
+}
+
+// MARK: - Private extension
+
+extension AppMenuPresenterImpl {
+    
+    private func errorHandler(_ error: Error) async {
+        await view?.displayError(title: error.localizedDescription, message: nil)
     }
 }

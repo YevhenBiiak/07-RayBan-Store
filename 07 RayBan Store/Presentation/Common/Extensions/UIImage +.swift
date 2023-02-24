@@ -8,11 +8,20 @@
 import UIKit
 
 extension UIImage {
-    convenience init?(systemName: String, tintColor: UIColor, pointSize: CGFloat, weight: UIImage.SymbolWeight) {
+    
+    convenience init?(systemName: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor]) {
         let sizeConfig = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight)
-        let colorConfig = UIImage.SymbolConfiguration(hierarchicalColor: tintColor)
+        let colorConfig = UIImage.SymbolConfiguration(paletteColors: paletteColors)
         let config = sizeConfig.applying(colorConfig)
         
         self.init(systemName: systemName, withConfiguration: config)
+    }
+    
+    convenience init?(named: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor]) {
+        let config = UIImage.SymbolConfiguration.unspecified
+            .applying(UIImage.SymbolConfiguration(paletteColors: paletteColors))
+            .applying(UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold))
+        
+        self.init(named: named, in: nil, with: config)
     }
 }

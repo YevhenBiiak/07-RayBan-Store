@@ -72,7 +72,7 @@ class CategoriesViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark", tintColor: .appDarkGray, pointSize: 22, weight: .medium),
+            image: UIImage(systemName: "xmark", pointSize: 22, weight: .medium, paletteColors: [.appDarkGray]),
             style: .plain,
             target: self,
             action: #selector(closeButtonTapped))

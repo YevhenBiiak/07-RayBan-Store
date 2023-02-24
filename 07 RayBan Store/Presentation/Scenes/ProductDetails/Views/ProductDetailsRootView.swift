@@ -93,7 +93,7 @@ class ProductDetailsRootView: UIView {
         return label
     }()
     
-    let productDetailsLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .justified
         label.numberOfLines = 0
@@ -131,8 +131,6 @@ class ProductDetailsRootView: UIView {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.bold
         button.tintColor = .appWhite
-        button.backgroundColor = .appRed
-        button.setTitle("ADD TO BAG", for: .normal)
         return button
     }()
     
@@ -140,12 +138,14 @@ class ProductDetailsRootView: UIView {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.bold
         button.tintColor = .appWhite
-        button.backgroundColor = .appRed
-        button.setTitle("ADD TO BAG", for: .normal)
         return button
     }()
     
     weak var colorSegmentsDelegate: ColorSegmentedControlDelegate?
+    
+    var showActivityIndicator: Bool = false {
+        didSet { collectionView.reloadData() }
+    }
     
     var imageData: [Data] = [] {
         didSet { collectionView.reloadData() }
@@ -165,33 +165,52 @@ class ProductDetailsRootView: UIView {
         }
     }
     
+    var addToCartButtonTitle: String = "ADD TO BAG" {
+        didSet {
+            addToCartButton.setTitle(addToCartButtonTitle, for: .normal)
+            trailingBuyButton.setTitle(addToCartButtonTitle, for: .normal)
+        }
+    }
+    var addToCartButtonCoolor: UIColor = .appRed {
+        didSet {
+            addToCartButton.backgroundColor = addToCartButtonCoolor
+            trailingBuyButton.backgroundColor = addToCartButtonCoolor
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
-        backgroundColor = .appWhite
+        setupViews()
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
     override func draw(_ rect: CGRect) {
-        setupViews()
+        configureLayout()
     }
     
     // MARK: - Private methods
     
     private func setupViews() {
+        backgroundColor = .appWhite
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: creatrLayout())
         collectionView.register(ProductImageViewCell.self,
                                 forCellWithReuseIdentifier: ProductImageViewCell.reuseId)
         collectionView.backgroundColor = .appLightGray
         collectionView.dataSource = self
         scrollView.delegate = self
-        configureLayout()
         
         colorSegmentedControl.addTarget(self, action: #selector(didSelectSegment), for: .valueChanged)
+        trailingBuyButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
     }
     
     @objc private func didSelectSegment() {
         colorSegmentsDelegate?.didSelectSegment(atIndex: colorSegmentedControl.selectedSegmentIndex)
+    }
+    
+    @objc private func addToCartButtonTapped() {
+        addToCartButton.sendActions(for: .touchUpInside)
     }
     
     private func creatrLayout() -> UICollectionViewLayout {
@@ -233,7 +252,7 @@ class ProductDetailsRootView: UIView {
                     descriptionSection.subviews(nameLabel, favoriteButton, colorsCountTitleLabel, colorsCountLabel, colorSegmentedControl),
                     sizeSection.subviews(sizeTitleLabel, sizeLabel),
                     geofitSection.subviews(geofitTitleLabel, geofitLabel),
-                    detailsSection.subviews(productDetailsTitleLabel, productDetailsLabel),
+                    detailsSection.subviews(productDetailsTitleLabel, descriptionLabel),
                     priceSection.subviews(priceTitleLabel, priceLabel, applePayButton, addToCartButton)
                 )
             ),
@@ -274,7 +293,7 @@ class ProductDetailsRootView: UIView {
         
         // layout DetailsSection
         productDetailsTitleLabel.fillHorizontally(padding: padding).top(16)
-        productDetailsLabel.fillHorizontally(padding: padding).bottom(16).Top == productDetailsTitleLabel.Bottom + 16
+        descriptionLabel.fillHorizontally(padding: padding).bottom(16).Top == productDetailsTitleLabel.Bottom + 16
         
         // layout PriceSection
         priceTitleLabel.left(padding).top(padding)
@@ -296,6 +315,9 @@ extension ProductDetailsRootView: UICollectionViewDataSource {
         let data = imageData[indexPath.item]
         
         (cell as? ProductImageViewCell)?.imageView.image = UIImage(data: data)
+        showActivityIndicator
+            ? (cell as? ProductImageViewCell)?.activityIndicator.startAnimating()
+            : (cell as? ProductImageViewCell)?.activityIndicator.stopAnimating()
         
         return cell
     }
@@ -304,11 +326,11 @@ extension ProductDetailsRootView: UICollectionViewDataSource {
 extension ProductDetailsRootView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let addToCartButtonIsVisible = scrollView.bounds.intersects(addToCartButton.frame)
+        let addToCartButtonIsVisible = scrollView.bounds.intersects(priceLabel.frame)
         
         if addToCartButtonIsVisible, trailingBuyButton.isHidden == true {
             trailingBuyButton.isHidden = false
-            trailingBuyButton.setTitle("SHOP - \(priceLabel.text ?? "")", for: .normal)
+//            trailingBuyButton.setTitle("SHOP - \(priceLabel.text ?? "")", for: .normal)
         }
         if !addToCartButtonIsVisible, trailingBuyButton.isHidden == false {
             trailingBuyButton.isHidden = true
