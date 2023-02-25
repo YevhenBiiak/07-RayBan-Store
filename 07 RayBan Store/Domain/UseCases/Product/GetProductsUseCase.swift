@@ -34,7 +34,7 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     
     // get the product for product details
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product {
-        try await productGateway.fetchProducts(modelID: request.modelID)
+        try await productGateway.fetchProduct(modelID: request.modelID, includeImages: true)
         // here can be some domain logic
     }
     

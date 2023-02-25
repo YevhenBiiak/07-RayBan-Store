@@ -8,13 +8,15 @@
 import Foundation
 
 typealias Cent = Int
+typealias ModelID = String
+typealias ProductID = Int
 
 struct Product {
     enum Category: String { case sunglasses, eyeglasses }
     enum Gender: String { case male, female, unisex, child }
     enum Style: String { case aviator, round, clubmaster, wayfarer, ferrari, erika, justin }
 
-    let modelID: String
+    let modelID: ModelID
     let name: String
     let style: Style
     let gender: Gender
@@ -26,7 +28,7 @@ struct Product {
 }
 
 struct ProductVariation {
-    let productID: Int
+    let productID: ProductID
     let price: Cent
     let frameColor: String
     let lenseColor: String

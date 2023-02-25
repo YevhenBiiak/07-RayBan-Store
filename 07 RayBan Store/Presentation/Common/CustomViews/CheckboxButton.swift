@@ -8,10 +8,16 @@
 import UIKit
 
 class CheckboxButton: UIButton {
+    
     private let checkedImage: UIImage
     private let uncheckedImage: UIImage
     
-    var isChecked: Bool = false
+    var isChecked: Bool = false {
+        didSet {
+            isChecked ? setImage(self.checkedImage, for: .normal)
+                      : setImage(self.uncheckedImage, for: .normal)
+        }
+    }
      
     init(checkedImage: UIImage = UIImage(systemName: "checkmark.square.fill")!
             .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.white, UIColor.black])),
@@ -44,6 +50,7 @@ class CheckboxButton: UIButton {
     
     required init?(coder: NSCoder) { fatalError() }
     
+    // delete
 //    override func draw(_ rect: CGRect) {
 //        // set initial state image
 //        setImage(self.uncheckedImage, for: .normal)

@@ -11,6 +11,7 @@ struct ProductDetailsViewModel {
     let modelID: String
     let productID: Int
     let isInCart: Bool
+    let isInFavorite: Bool
     let name: String
     let category: String
     let gender: String

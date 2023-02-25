@@ -17,11 +17,7 @@ class ProductImageViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .large)
-        indicator.hidesWhenStopped = true
-        return indicator
-    }()
+    let activityIndicator = ActivityIndicatorView()
     
     private var zoomableView = ZoomableView()
     

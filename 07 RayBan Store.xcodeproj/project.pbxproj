@@ -85,6 +85,12 @@
 		579B498329994F2E004D519D /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = 579B498229994F2E004D519D /* Semaphore */; };
 		57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4628DCB62000819E88 /* CheckboxButton.swift */; };
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
+		57B75D3C29A9239E0017E0F3 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D3B29A9239E0017E0F3 /* ActivityIndicatorView.swift */; };
+		57B75D4029A92AA80017E0F3 /* FavoriteGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D3F29A92AA80017E0F3 /* FavoriteGateway.swift */; };
+		57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D4129A92CD00017E0F3 /* FavoriteGatewayImpl.swift */; };
+		57B75D4429A9E9B50017E0F3 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D4329A9E9B50017E0F3 /* Favorite.swift */; };
+		57B75D4629AA065C0017E0F3 /* FavoriteUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D4529AA065C0017E0F3 /* FavoriteUseCase.swift */; };
+		57B75D4829AA066D0017E0F3 /* FavoriteRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D4729AA066D0017E0F3 /* FavoriteRequests.swift */; };
 		57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17328D77E4500A9007B /* Lato-Thin.ttf */; };
 		57BDD18028D77E4500A9007B /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17428D77E4500A9007B /* Lato-Bold.ttf */; };
 		57BDD18128D77E4500A9007B /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57BDD17528D77E4500A9007B /* Lato-Black.ttf */; };
@@ -209,6 +215,12 @@
 		579404E7298FE2000048FD33 /* UIApplication + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + .swift"; sourceTree = "<group>"; };
 		57A1BF4628DCB62000819E88 /* CheckboxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxButton.swift; sourceTree = "<group>"; };
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
+		57B75D3B29A9239E0017E0F3 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		57B75D3F29A92AA80017E0F3 /* FavoriteGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteGateway.swift; sourceTree = "<group>"; };
+		57B75D4129A92CD00017E0F3 /* FavoriteGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteGatewayImpl.swift; sourceTree = "<group>"; };
+		57B75D4329A9E9B50017E0F3 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
+		57B75D4529AA065C0017E0F3 /* FavoriteUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteUseCase.swift; sourceTree = "<group>"; };
+		57B75D4729AA066D0017E0F3 /* FavoriteRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRequests.swift; sourceTree = "<group>"; };
 		57BDD17328D77E4500A9007B /* Lato-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Thin.ttf"; sourceTree = "<group>"; };
 		57BDD17428D77E4500A9007B /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		57BDD17528D77E4500A9007B /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
@@ -378,6 +390,7 @@
 				57508A5328BEA7D9000328AC /* ProductGatewayImpl.swift */,
 				57508A6A28BFDC8D000328AC /* CartGatewayImpl.swift */,
 				5720BF6428D4DF84003EBAA6 /* OrderGatewayImpl.swift */,
+				57B75D4129A92CD00017E0F3 /* FavoriteGatewayImpl.swift */,
 			);
 			path = Gateways;
 			sourceTree = "<group>";
@@ -437,6 +450,7 @@
 				5773020328BBFE9A007FB72F /* Product.swift */,
 				57508A4928BE4BBF000328AC /* Cart.swift */,
 				57508A4B28BE4DF7000328AC /* Order.swift */,
+				57B75D4329A9E9B50017E0F3 /* Favorite.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -449,6 +463,7 @@
 				5773020728BC010F007FB72F /* ProductGateway.swift */,
 				57508A6828BFDC71000328AC /* CartGateway.swift */,
 				574F278E28C4C3150092D293 /* OrderGateway.swift */,
+				57B75D3F29A92AA80017E0F3 /* FavoriteGateway.swift */,
 			);
 			path = Gateways;
 			sourceTree = "<group>";
@@ -460,6 +475,7 @@
 				577B93BF28C1DBE800E31B88 /* Profile */,
 				577B93BE28C1DBE000E31B88 /* Product */,
 				577B93C028C1DBF100E31B88 /* Cart */,
+				57B75D3D29A92A830017E0F3 /* Favorite */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -626,8 +642,18 @@
 				57A1BF4628DCB62000819E88 /* CheckboxButton.swift */,
 				578DB1B02906D50D009C1FD2 /* ShimmerView.swift */,
 				57D0828B28F317C5005FF050 /* ZoomableView.swift */,
+				57B75D3B29A9239E0017E0F3 /* ActivityIndicatorView.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		57B75D3D29A92A830017E0F3 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				57B75D4529AA065C0017E0F3 /* FavoriteUseCase.swift */,
+				57B75D4729AA066D0017E0F3 /* FavoriteRequests.swift */,
+			);
+			path = Favorite;
 			sourceTree = "<group>";
 		};
 		57BDD17228D77E4500A9007B /* Lato */ = {
@@ -995,6 +1021,7 @@
 				571AA49E28E0D2D60078F6A9 /* ListViewController.swift in Sources */,
 				57433E0D298AF46A00E723CB /* String + .swift in Sources */,
 				5752CE3228DB721E001BAE4A /* UICollectionReusableView +.swift in Sources */,
+				57B75D4429A9E9B50017E0F3 /* Favorite.swift in Sources */,
 				571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */,
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
 				575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */,
@@ -1006,13 +1033,16 @@
 				577B93D328C2064600E31B88 /* AuthRequests.swift in Sources */,
 				57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */,
 				5773020428BBFE9A007FB72F /* Product.swift in Sources */,
+				57B75D4829AA066D0017E0F3 /* FavoriteRequests.swift in Sources */,
 				57508A5D28BFB34B000328AC /* ProductImagesAPI.swift in Sources */,
 				57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */,
 				5708386E29A4DE6900205B34 /* ProductDetailsViewModel.swift in Sources */,
 				57ED3DC228E73B5E0015CFDE /* CategoriesRootView.swift in Sources */,
 				571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */,
 				5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */,
+				57B75D4029A92AA80017E0F3 /* FavoriteGateway.swift in Sources */,
 				57ED3DB828E5E9A30015CFDE /* AccountMenuConfigurator.swift in Sources */,
+				57B75D3C29A9239E0017E0F3 /* ActivityIndicatorView.swift in Sources */,
 				57E9DB3B299259C100EDE67E /* ForgotPasswordRouter.swift in Sources */,
 				575F562828EC8DDD00A44E6D /* UIImage +.swift in Sources */,
 				57BDD19028D786FC00A9007B /* ProductDetailsViewController.swift in Sources */,
@@ -1020,6 +1050,7 @@
 				573A25C728E8399E000B1548 /* SunglassesCategoriesPresenter.swift in Sources */,
 				57E9DB34299254DE00EDE67E /* ForgotPasswordPresenter.swift in Sources */,
 				57D0829028F44398005FF050 /* UIViewController +.swift in Sources */,
+				57B75D4629AA065C0017E0F3 /* FavoriteUseCase.swift in Sources */,
 				573A25C328E83714000B1548 /* SunglassesCategoriesConfigurator.swift in Sources */,
 				574F276C28C38AFE0092D293 /* IsProfileFilledUseCase.swift in Sources */,
 				5784000928D5FD94003766F0 /* ProductViewCell.swift in Sources */,
@@ -1064,6 +1095,7 @@
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
 				579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */,
+				57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,6 +19,9 @@ class RemoteRepositoryImpl: RemoteRepositoryAPI {
     
     private var isCartItemsObserved = false
     private var cartItems: [(productID: Int, amount: Int)] = []
+    
+    private var isFavoriteItemsObserved = false
+    private var favoriteItems: [ModelID] = []
 }
 
 // MARK: - ProfilesAPI
@@ -27,7 +30,7 @@ extension RemoteRepositoryImpl: ProfilesAPI {
     
     func fetchProfile(for user: User) async throws -> Profile {
         try await with(errorHandler) {
-            try await database.child("customers").child(user.id).decode(Profile.self)
+            try await database.child("customers").child(user.id).value.decode(Profile.self)
         }
     }
     
@@ -45,15 +48,14 @@ extension RemoteRepositoryImpl: ProductsAPI {
     func fetchProducts() async throws -> [Product] {
         guard products.isEmpty else { return products }
         let products = try await with(errorHandler) {
-            try await self.database.child("products").decodeArray(of: Product.self)
+            try await self.database.child("products").value.decodeArray(of: Product.self)
         }
         
-        guard !isProductsObserved else { return products }
+        if isProductsObserved { return products }
         isProductsObserved = true
         database.child("products").observe(.value) { [weak self] snapshot in
             do {
-                let data = try JSONSerialization.data(withJSONObject: snapshot.value as Any)
-                self?.products = try JSONDecoder().decode([Product].self, from: data)
+                self?.products = try snapshot.value.decodeArray(of: Product.self)
             } catch {}
         }
         return products
@@ -76,26 +78,54 @@ extension RemoteRepositoryImpl: CartItemsAPI {
     func fetchCartItems(for user: User) async throws -> [(productID: Int, amount: Int)] {
         guard cartItems.isEmpty else { return cartItems }
         let cartItems = try await with(errorHandler) {
-            try await database.child("carts").child(user.id)
+            try await database.child("carts").child(user.id).value
                 .decodeArray(of: CartItemWrapper.self)
                 .map { (productID: $0.productID, amount: $0.amount) }
         }
         
-        guard !isCartItemsObserved else { return cartItems }
+        if isCartItemsObserved { return cartItems }
         isCartItemsObserved = true
         database.child("carts").child(user.id).observe(.value) { [weak self] snapshot in
             do {
-                if snapshot.value is NSNull {
-                    self?.cartItems = []
-                } else {
-                    let data = try JSONSerialization.data(withJSONObject: snapshot.value as Any)
-                    self?.cartItems = try JSONDecoder()
-                        .decode([CartItemWrapper].self, from: data)
-                        .map { (productID: $0.productID, amount: $0.amount) }
-                }
+                self?.cartItems = try snapshot.value.decodeArray(of: CartItemWrapper.self)
+                    .map { (productID: $0.productID, amount: $0.amount) }
             } catch {}
         }
         return cartItems
+    }
+}
+
+// MARK: - FavoriteItemsAPI
+
+extension RemoteRepositoryImpl: FavoriteItemsAPI {
+    
+    struct FavoriteItemWrapper: Codable { let modelID: ModelID }
+    
+    func saveFavoriteItems(_ items: [ModelID], for user: User) async throws {
+        return try await with(errorHandler) {
+            let array = items.map { FavoriteItemWrapper(modelID: $0) }
+            print(items)
+            try await database.child("favorites").child(user.id).setValue(array.asFIRArray)
+        }
+    }
+    
+    func fetchFavoriteItems(for user: User) async throws -> [ModelID] {
+        guard favoriteItems.isEmpty else { return favoriteItems }
+        let favoriteItems = try await with(errorHandler) {
+            try await database.child("favorites").child(user.id).value
+                .decodeArray(of: FavoriteItemWrapper.self)
+                .map { $0.modelID }
+        }
+        
+        if isFavoriteItemsObserved { return favoriteItems }
+        isFavoriteItemsObserved = true
+        database.child("favorites").child(user.id).observe(.value) { [weak self] snapshot in
+            do {
+                self?.favoriteItems = try snapshot.value.decodeArray(of: FavoriteItemWrapper.self)
+                    .map { $0.modelID }
+            } catch {}
+        }
+        return favoriteItems
     }
 }
 
@@ -116,17 +146,18 @@ extension DatabaseReference {
             }
         }
     }
-    
-    func decode<T: Decodable>(_ type: T.Type) async throws -> T {
-        let data = try JSONSerialization.data(withJSONObject: await value as Any)
+}
+
+extension Any? {
+    func decode<T: Decodable>(_ type: T.Type) throws -> T {
+        let data = try JSONSerialization.data(withJSONObject: self as Any)
         return try JSONDecoder().decode(T.self, from: data)
     }
     
-    func decodeArray<T: Decodable>(of type: T.Type) async throws -> [T] {
-        let value = await value
-        if value is NSNull { return [] }
+    func decodeArray<T: Decodable>(of type: T.Type) throws -> [T] {
+        if self is NSNull { return [] }
         
-        let data = try JSONSerialization.data(withJSONObject: value as Any)
+        let data = try JSONSerialization.data(withJSONObject: self as Any)
         return try JSONDecoder().decode([T].self, from: data)
     }
 }

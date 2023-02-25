@@ -31,11 +31,15 @@ class ProductDetailsConfiguratorImpl: ProductDetailsConfigurator {
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
+        let favoriteGateway = FavoriteGatewayImpl(favoriteAPI: remoteRepository, productGateway: productGateway)
+        let favoriteUseCase = FavoriteUseCaseImpl(favoriteGateway: favoriteGateway)
+        
         let router = ProductDetailsRouterImpl(viewController: productDetailsViewController)
         let presenter = ProductDetailsPresenterImpl(product: product,
                                                     view: productDetailsViewController,
                                                     router: router,
                                                     cartUseCase: cartUseCase,
+                                                    favoriteUseCase: favoriteUseCase,
                                                     getProductsUseCase: getProductsUseCase)
 
         productDetailsViewController.presenter = presenter

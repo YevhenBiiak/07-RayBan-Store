@@ -28,9 +28,10 @@ class ProductGatewayImpl {
 
 extension ProductGatewayImpl: ProductGateway {
     
-    func fetchProducts(modelID: String) async throws -> Product {
+    func fetchProduct(modelID: String, includeImages: Bool) async throws -> Product {
         let product = try await productsAPI.fetchProducts().first { $0.modelID == modelID }
         guard var product else { throw AppError.invalidProductModelID }
+        guard includeImages else { return product }
         
         // load images for all product variants
         try await loadImages(for: &product, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], bgColor: .appLightGray)

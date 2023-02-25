@@ -25,12 +25,12 @@ class ProductDetailsRootView: UIView {
         return label
     }()
     
-    private let favoriteButton: CheckboxButton = {
+    let favoriteButton: CheckboxButton = {
         let checkedImage = UIImage(systemName: "heart.fill")!
             .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
         let uncheckedImage = UIImage(systemName: "heart")!
             .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
-        let button = CheckboxButton(checkedImage: checkedImage, uncheckedImage: uncheckedImage, scale: .medium)
+        let button = CheckboxButton(checkedImage: checkedImage, uncheckedImage: uncheckedImage, scale: .large)
         return button
     }()
     
@@ -145,6 +145,10 @@ class ProductDetailsRootView: UIView {
     
     var showActivityIndicator: Bool = false {
         didSet { collectionView.reloadData() }
+    }
+    
+    var isProductInFavorite: Bool = false {
+        didSet { favoriteButton.isChecked = isProductInFavorite }
     }
     
     var imageData: [Data] = [] {
@@ -273,8 +277,8 @@ class ProductDetailsRootView: UIView {
         
         // layout DescriptionSection
         let padding = 0.05 * frame.width
-        nameLabel.top(16).left(padding).Right == favoriteButton.Left - padding
-        favoriteButton.right(padding).CenterY == nameLabel.CenterY
+        nameLabel.top(16).left(padding).Right == favoriteButton.Left - 8
+        favoriteButton.width(36).height(36).right(padding).Top == nameLabel.Top
         colorsCountTitleLabel.Top == nameLabel.Bottom + 14
         colorsCountTitleLabel.left(padding).Right == colorsCountLabel.Left - 8
         colorsCountLabel.right(padding).CenterY == colorsCountTitleLabel.CenterY

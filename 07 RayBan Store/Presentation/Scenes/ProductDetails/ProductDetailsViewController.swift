@@ -19,6 +19,7 @@ class ProductDetailsViewController: UIViewController {
             rootView.imageData = viewModel.imageData
             rootView.colorSegments = viewModel.colors
             rootView.selectedColorSegment = viewModel.selectedColorIndex
+            rootView.isProductInFavorite = viewModel.isInFavorite
             rootView.sizeLabel.text = viewModel.size
             rootView.geofitLabel.text = viewModel.geofit
             rootView.descriptionLabel.text = viewModel.description
@@ -44,8 +45,13 @@ class ProductDetailsViewController: UIViewController {
     
     private func setupViews() {
         rootView.colorSegmentsDelegate = self
+        rootView.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         rootView.addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(cartButtonTapped))
+    }
+    
+    @objc private func favoriteButtonTapped(_ sender: CheckboxButton) {
+        Task { await presenter.favoriteButtonTapped(isFavorite: sender.isChecked) }
     }
     
     @objc private func addToCartButtonTapped() {

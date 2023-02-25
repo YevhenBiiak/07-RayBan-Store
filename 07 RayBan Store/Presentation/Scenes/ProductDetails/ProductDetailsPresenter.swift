@@ -22,6 +22,7 @@ protocol ProductDetailsPresenter {
     func viewDidLoad() async
     func didSelectColorSegment(at index: Int) async
     func addToCartButtonTapped(productID: Int) async
+    func favoriteButtonTapped(isFavorite: Bool) async
     func cartButtonTapped() async
 }
 
@@ -30,16 +31,23 @@ class ProductDetailsPresenterImpl {
     private weak var view: ProductDetailsView?
     private let router: ProductDetailsRouter
     private let cartUseCase: CartUseCase
+    private let favoriteUseCase: FavoriteUseCase
     private let getProductsUseCase: GetProductsUseCase
     
     private var product: Product
     private var currentVariationIndex = 0
     
-    init(product: Product, view: ProductDetailsView?, router: ProductDetailsRouter, cartUseCase: CartUseCase, getProductsUseCase: GetProductsUseCase) {
+    init(product: Product, view: ProductDetailsView?,
+         router: ProductDetailsRouter,
+         cartUseCase: CartUseCase,
+         favoriteUseCase: FavoriteUseCase,
+         getProductsUseCase: GetProductsUseCase
+    ) {
         self.product = product
         self.view = view
         self.router = router
         self.cartUseCase = cartUseCase
+        self.favoriteUseCase = favoriteUseCase
         self.getProductsUseCase = getProductsUseCase
     }
 }
@@ -88,6 +96,18 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
         }
     }
     
+    func favoriteButtonTapped(isFavorite: Bool) async {
+        await with(errorHandler) {
+            if isFavorite {
+                let request = AddFavoriteItemRequest(user: Session.shared.user, product: product)
+                try await favoriteUseCase.execute(request)
+            } else {
+                let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: product.modelID, includeImages: false)
+                try await favoriteUseCase.execute(request)
+            }
+        }
+    }
+    
     func cartButtonTapped() async {
 //        await view?.displayCartBadge()
     }
@@ -108,10 +128,14 @@ extension ProductDetailsPresenterImpl {
         let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
         let isInCart = try await cartUseCase.execute(inCartRequest)
         
+        let inFavoriteRequest = IsItemInFavoriteRequset(user: Session.shared.user, product: product)
+        let isInFavorite = try await favoriteUseCase.execute(inFavoriteRequest)
+        
         return ProductDetailsViewModel(
             modelID: product.modelID,
             productID: selectedVariation.productID,
             isInCart: isInCart,
+            isInFavorite: isInFavorite,
             name: product.name.uppercased(),
             category: product.category.rawValue.uppercased(),
             gender: product.gender.rawValue.uppercased(),
