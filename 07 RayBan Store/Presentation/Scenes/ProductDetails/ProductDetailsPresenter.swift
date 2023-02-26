@@ -7,7 +7,9 @@
 
 import Foundation
 
+@MainActor
 protocol ProductDetailsRouter {
+    func presentShoppingCart()
 }
 
 @MainActor
@@ -109,7 +111,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
     }
     
     func cartButtonTapped() async {
-//        await view?.displayCartBadge()
+        await router.presentShoppingCart()
     }
 }
 

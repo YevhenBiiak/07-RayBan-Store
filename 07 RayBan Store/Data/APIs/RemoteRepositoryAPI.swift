@@ -104,7 +104,6 @@ extension RemoteRepositoryImpl: FavoriteItemsAPI {
     func saveFavoriteItems(_ items: [ModelID], for user: User) async throws {
         return try await with(errorHandler) {
             let array = items.map { FavoriteItemWrapper(modelID: $0) }
-            print(items)
             try await database.child("favorites").child(user.id).setValue(array.asFIRArray)
         }
     }

@@ -5,16 +5,20 @@
 //  Created by Евгений Бияк on 29.09.2022.
 //
 
-class AccountMenuRouterImpl: AccountMenuRouter {
+class AccountMenuRouterImpl: Routable, AccountMenuRouter {
     
-    private weak var accountMenuViewController: ListViewController!
+    weak var viewController: ListViewController!
     
-    init(accountMenuViewController: ListViewController) {
-        self.accountMenuViewController = accountMenuViewController
+    required init(viewController: ListViewController) {
+        self.viewController = viewController
     }
     
     func presentShoppingCart() {
+        let cartViewController = CartViewController()
+        let cartConfigurator = CartConfiguratorImpl()
         
+        cartViewController.configurator = cartConfigurator
+        navigationController?.pushViewController(cartViewController, animated: true)
     }
     
     func presentPersonalDetails() {

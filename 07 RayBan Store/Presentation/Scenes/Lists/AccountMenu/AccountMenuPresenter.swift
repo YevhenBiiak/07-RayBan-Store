@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol AccountMenuRouter {
     func presentPersonalDetails()
     func presentShoppingCart()
@@ -59,16 +60,16 @@ class AccountMenuPresenterImpl: ListPresenter {
         case .favorites: return "FAVORITE LIST" }
     }
     
-    func didSelect(row: Int) {
+    func didSelect(row: Int) async {
         switch Row(rawValue: row)! {
-        case .profile:   return router.presentPersonalDetails()
-        case .cart:      return router.presentShoppingCart()
-        case .orders:    return router.presentOrderHistory()
-        case .favorites: return router.presentFavoriteList() }
+        case .profile:   return await router.presentPersonalDetails()
+        case .cart:      return await router.presentShoppingCart()
+        case .orders:    return await router.presentOrderHistory()
+        case .favorites: return await router.presentFavoriteList() }
     }
     
-    func cartButtonTapped() {
-        router.presentShoppingCart()
+    func cartButtonTapped() async {
+        await router.presentShoppingCart()
     }
 }
 

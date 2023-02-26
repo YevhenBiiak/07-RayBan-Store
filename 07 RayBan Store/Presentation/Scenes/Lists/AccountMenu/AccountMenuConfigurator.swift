@@ -16,7 +16,7 @@ class AccountMenuConfiguratorImpl: ListConfigurator {
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
-        let router = AccountMenuRouterImpl(accountMenuViewController: listViewController)
+        let router = AccountMenuRouterImpl(viewController: listViewController)
         let presenter = AccountMenuPresenterImpl(view: listViewController,
                                                  router: router,
                                                  cartUseCase: cartUseCase)
