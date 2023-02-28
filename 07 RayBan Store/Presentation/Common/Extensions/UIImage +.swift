@@ -9,7 +9,7 @@ import UIKit
 
 extension UIImage {
     
-    convenience init?(systemName: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor]) {
+    convenience init?(systemName: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor] = []) {
         let sizeConfig = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight)
         let colorConfig = UIImage.SymbolConfiguration(paletteColors: paletteColors)
         let config = sizeConfig.applying(colorConfig)
@@ -17,7 +17,7 @@ extension UIImage {
         self.init(systemName: systemName, withConfiguration: config)
     }
     
-    convenience init?(named: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor]) {
+    convenience init?(named: String, pointSize: CGFloat, weight: UIImage.SymbolWeight, paletteColors: [UIColor] = []) {
         let config = UIImage.SymbolConfiguration.unspecified
             .applying(UIImage.SymbolConfiguration(paletteColors: paletteColors))
             .applying(UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold))

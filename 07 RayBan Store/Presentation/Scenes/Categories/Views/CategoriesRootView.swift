@@ -10,7 +10,7 @@ import Stevia
 
 class CategoriesRootView: UIView {
     
-    enum Section: Int, Hashable, CaseIterable {
+    private enum Section: Int, Hashable, CaseIterable {
         case gender
         case style
     }

@@ -243,11 +243,11 @@ class ProductDetailsRootView: UIView {
         let detailsSection = UIView()
         let priceSection = UIView()
         
-        descriptionSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
-        sizeSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
-        geofitSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
-        detailsSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
-        priceSection.addBorder(at: .top, color: .appDarkGray, width: 0.5)
+        descriptionSection.addBorder(at: .top, color: .appLightGray, width: 1)
+        sizeSection.addBorder(at: .top, color: .appLightGray, width: 1)
+        geofitSection.addBorder(at: .top, color: .appLightGray, width: 1)
+        detailsSection.addBorder(at: .top, color: .appLightGray, width: 1)
+        priceSection.addBorder(at: .top, color: .appLightGray, width: 1)
         
         subviews(
             scrollView.subviews(
