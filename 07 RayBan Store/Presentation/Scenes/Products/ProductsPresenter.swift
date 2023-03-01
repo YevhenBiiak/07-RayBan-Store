@@ -208,6 +208,6 @@ extension ProductsPresenterImpl {
     }
     
     private func errorHandler(_ error: Error) async {
-        await view?.displayError(title: error.localizedDescription, message: nil)
+        await view?.displayError(title: "Error", message: error.localizedDescription)
     }
 }

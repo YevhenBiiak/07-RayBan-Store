@@ -86,6 +86,6 @@ extension EyeglassesCategoriesPresenterImpl: CategoriesPresenter {
 private extension EyeglassesCategoriesPresenterImpl {
     
     func errorHandler(_ error: Error) async {
-        await view?.displayError(title: error.localizedDescription, message: nil)
+        await view?.displayError(title: "Error", message: error.localizedDescription)
     }
 }

@@ -14,6 +14,7 @@ class CartViewController: UIViewController {
     var rootView: CartRootView!
     
     private var section: Sectionable!
+    private var shippingMethods: [ShippingMethodModel] = []
     
     // MARK: - Life Cycle and overridden methods
     
@@ -49,8 +50,13 @@ extension CartViewController: CartView {
         rootView.сollectionView.reloadData()
     }
     
+    func display(shippingMethods: [ShippingMethodModel]) {
+        self.shippingMethods = shippingMethods
+        rootView.сollectionView.reloadData()
+    }
+    
     func displayError(title: String, message: String?) {
-        
+        showAlert(title: title, message: message, buttonTitle: "OK")
     }
 }
 
@@ -73,6 +79,7 @@ extension CartViewController: UICollectionViewDataSource {
             (cell as? CartItemViewCell)?.viewModel = section.items[indexPath.item].viewModel as? CartItemCellViewModel
         case 1:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShippingViewCell.reuseId, for: indexPath)
+            (cell as? ShippingViewCell)?.shippingMethods = shippingMethods
         default:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummaryViewCell.reuseId, for: indexPath)
         }

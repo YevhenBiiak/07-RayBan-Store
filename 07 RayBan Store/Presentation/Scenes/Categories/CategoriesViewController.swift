@@ -107,7 +107,7 @@ extension CategoriesViewController: CategoriesView {
     }
     
     func displayError(title: String, message: String?) {
-        print("ERROR: ", title)
+        showAlert(title: title, message: message, buttonTitle: "OK")
     }
 }
 

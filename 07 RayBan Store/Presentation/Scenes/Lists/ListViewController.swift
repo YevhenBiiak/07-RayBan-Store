@@ -56,7 +56,7 @@ class ListViewController: UITableViewController, ListView {
     }
     
     func displayError(title: String, message: String?) {
-        print("ERROR: ", title)
+        showAlert(title: title, message: message, buttonTitle: "OK")
     }
     
     // MARK: - Private methods

@@ -1,0 +1,19 @@
+Refactor alert presentation and add WarningView
+
+This commit refactors the way alerts are presented in the app by creating a new WarningView that can be used to display warning messages to the user. The showWarning(with:) method has been moved to the WarningView file and the animation logic has been updated to use autolayout constraints instead of frame-based calculations.
+
+The AlertViewController has also been updated to handle cases where no button title is provided by not displaying the action button in that case. Additionally, the message label is now aligned to the bottom of the contentView when no button is present.
+
+Overall, this commit improves the code structure and makes it easier to use and customize the alert and warning views in the app.
+
+feat: Implement ShippingViewCell and ShippingItemView
+
+This commit adds ShippingViewCell and ShippingItemView to the Cart scene. ShippingViewCell is a UICollectionViewCell subclass that displays a list of available shipping methods. ShippingItemView is a UIView subclass that represents a single shipping method.
+
+ShippingViewCell includes a stack view that arranges ShippingItemView instances vertically, allowing the user to choose a shipping method by tapping on a corresponding checkbox.
+
+ShippingMethodModel protocol defines the required properties for each shipping method.
+
+UI elements, such as labels and buttons, are customized with appropriate fonts, colors, and sizes.
+
+Tests have not yet been included in this commit.

@@ -98,7 +98,7 @@ private extension AuthProvider {
         if error is AppError {
             return error
         } else if let errorCode = AuthErrorCode.Code(rawValue: error._code) {
-            print(error.localizedDescription)
+            
             switch errorCode {
             // case .invalidMessagePayload - Indicates an invalid email template for sending update email.
                 

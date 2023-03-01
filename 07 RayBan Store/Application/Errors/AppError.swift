@@ -50,10 +50,15 @@ enum AppError: LocalizedError {
     case facebookError(String)
     /// Unhandled error type
     case unknown(Error)
-    
+    // Database
+    /// Invalid product identifier
     case invalidProductIdentifier
+    /// Invalid product model identifier
     case invalidProductModelID
+    /// Invalid product index
     case invalidProductIndex
+    /// Database: permissions denied
+    case permissionsDenied
     
     var errorDescription: String? {
         switch self {
@@ -81,6 +86,7 @@ enum AppError: LocalizedError {
         case .invalidProductIdentifier: return "Invalid product identifier"
         case .invalidProductModelID:    return "Invalid product model identifier"
         case .invalidProductIndex:      return "Invalid product index"
+        case .permissionsDenied:        return "Database: permissions denied"
         }
     }
 }

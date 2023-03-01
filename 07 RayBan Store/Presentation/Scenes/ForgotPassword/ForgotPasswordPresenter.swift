@@ -70,7 +70,9 @@ private extension ForgotPasswordPresenterImpl {
             case .userNotFound,
                  .invalidRecipientEmail,
                  .facebookError:         await view?.displayWarning(message: error.localizedDescription)
-
+                
+            case .permissionsDenied:    await view?.displayAlert(title: "Error", message: error.localizedDescription)
+                
             case .unknown:
                 fatalError(error.localizedDescription)
             default:

@@ -11,6 +11,8 @@ import FBSDKCoreKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    
+    private var networkMonitor: NetworkMonitor!
         
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -33,6 +35,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             loginViewController.configurator = LoginConfiguratorImpl()
             navigationController.setViewControllers([loginViewController], animated: true)
         }
+        
+        let blurEffect = UIBlurEffect(style: .regular)
+        let blurredView = UIVisualEffectView(effect: blurEffect)
+        blurredView.frame = window?.frame ?? .zero
+        
+        networkMonitor = NetworkMonitor()
+        networkMonitor.updateHandler = { [weak self] network in
+            DispatchQueue.main.async {
+                network.isConnected
+                    ? self?.window?.rootViewController?.dismiss(animated: true)
+                    : self?.window?.rootViewController?.showAlert(title: "Error", message: "Check your connection", buttonTitle: nil)
+                self?.window?.isUserInteractionEnabled = network.isConnected
+            }
+        }
+        networkMonitor.startMonitoring()
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

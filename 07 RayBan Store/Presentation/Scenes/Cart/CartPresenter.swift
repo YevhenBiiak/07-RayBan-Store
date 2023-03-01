@@ -16,6 +16,7 @@ protocol CartRouter {
 protocol CartView: AnyObject {
     func display(title: String)
     func display(cartSection: any Sectionable)
+    func display(shippingMethods: [ShippingMethodModel])
     func displayError(title: String, message: String?)
 }
 
@@ -44,6 +45,12 @@ extension CartPresenterImpl: CartPresenter {
             let request = GetCartItemsRequest(user: Session.shared.user)
             let cartItems = try await cartUseCase.execute(request)
             await display(cartItems: cartItems)
+            let shippingMethods = [
+                ShippingMethod(isSelected: false, title: "Standart Shipping", subtitle: "(2-4 business days)", price: "FREE"),
+                ShippingMethod(isSelected: false, title: "Express Shipping", subtitle: "(2 business days)", price: "$ 12.00"),
+                ShippingMethod(isSelected: false, title: "Pick up in Store", subtitle: "", price: "FREE")
+            ]
+            await view?.display(shippingMethods: shippingMethods)
         }
     }
 }
@@ -95,6 +102,6 @@ private extension CartPresenterImpl {
     }
     
     private func errorHandler(_ error: Error) async {
-        await view?.displayError(title: error.localizedDescription, message: nil)
+        await view?.displayError(title: "Error", message: error.localizedDescription)
     }
 }

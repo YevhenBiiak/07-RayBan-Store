@@ -49,6 +49,6 @@ extension ForgotPasswordViewController: ForgotPasswordView {
     }
     
     func displayAlert(title: String, message: String) {
-        showAlert(title: title, message: message)
+        showAlert(title: title, message: message, buttonTitle: "OK")
     }
 }

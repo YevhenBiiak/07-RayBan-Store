@@ -12,6 +12,7 @@ class QuantityStepper: UIControl {
     private let minusButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemGray5
+        button.layer.cornerRadius = 5
         button.tintColor = .black
         return button
     }()
@@ -19,6 +20,7 @@ class QuantityStepper: UIControl {
     private let plusButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemGray5
+        button.layer.cornerRadius = 5
         button.tintColor = .black
         return button
     }()

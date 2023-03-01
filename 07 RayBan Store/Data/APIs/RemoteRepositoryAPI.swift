@@ -64,9 +64,9 @@ extension RemoteRepositoryImpl: ProductsAPI {
 
 // MARK: - CartItemsAPI
 
-struct CartItemWrapper: Codable { let productID, amount: Int }
-
 extension RemoteRepositoryImpl: CartItemsAPI {
+    
+    struct CartItemWrapper: Codable { let productID, amount: Int }
     
     func saveCartItems(_ cartItems: [CartItem], for user: User) async throws {
         try await with(errorHandler) {
@@ -133,15 +133,21 @@ extension RemoteRepositoryImpl: FavoriteItemsAPI {
 private extension RemoteRepositoryImpl {
     
     func errorHandler(_ error: Error) -> Error {
-        return AppError.unknown(error)
+        error.localizedDescription == "Permission Denied"
+            ? AppError.permissionsDenied
+            : AppError.unknown(error)
     }
 }
 
 extension DatabaseReference {
     var value: Any? {
-        get async {
-            await withCheckedContinuation { continuation in
-                self.observeSingleEvent(of: .value) { continuation.resume(returning: $0.value) }
+        get async throws {
+            try await withCheckedThrowingContinuation { continuation in
+                observeSingleEvent(of: .value) { snapshot in
+                    continuation.resume(returning: snapshot.value)
+                } withCancel: { error in
+                    continuation.resume(throwing: error)
+                }
             }
         }
     }
