@@ -32,6 +32,8 @@ class ProductDetailsViewController: UIViewController {
         }
     }
     
+    // MARK: - Initializers and overridden methods
+    
     override func loadView() {
         configurator.configure(productDetailsViewController: self)
         view = rootView
@@ -42,6 +44,13 @@ class ProductDetailsViewController: UIViewController {
         setupViews()
         Task { await presenter.viewDidLoad() }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { await presenter.viewWillAppear() }
+    }
+    
+    // MARK: - Private methods
     
     private func setupViews() {
         rootView.colorSegmentsDelegate = self

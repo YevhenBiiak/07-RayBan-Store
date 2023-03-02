@@ -22,6 +22,7 @@ protocol ProductDetailsView: AnyObject {
 
 protocol ProductDetailsPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
     func didSelectColorSegment(at index: Int) async
     func addToCartButtonTapped(productID: Int) async
     func favoriteButtonTapped(isFavorite: Bool) async
@@ -78,6 +79,18 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
         }
     }
     
+    func viewWillAppear() async {
+        await with(errorHandler) {
+            // display cart badge
+            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+            isCartEmpty ? await view?.hideCartBadge()
+                        : await view?.displayCartBadge()
+
+            try await displayUpdatedViewModel()
+        }
+    }
+    
     func didSelectColorSegment(at index: Int) async {
         await with(errorHandler) {
             currentVariationIndex = index
@@ -127,7 +140,7 @@ extension ProductDetailsPresenterImpl {
     private func createProductViewModel(with product: Product) async throws -> ProductDetailsViewModel {
         let selectedVariation = product.variations[currentVariationIndex]
         
-        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
+        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, productID: selectedVariation.productID)
         let isInCart = try await cartUseCase.execute(inCartRequest)
         
         let inFavoriteRequest = IsItemInFavoriteRequset(user: Session.shared.user, product: product)

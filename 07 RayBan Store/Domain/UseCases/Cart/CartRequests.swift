@@ -11,7 +11,7 @@ struct IsCartEmptyRequest {
 
 struct IsProductInCartRequset {
     let user: User
-    let product: Product
+    let productID: ProductID
 }
 
 struct GetCartItemsRequest {

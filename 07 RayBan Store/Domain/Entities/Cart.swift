@@ -36,10 +36,10 @@ struct Cart {
         items.removeAll { $0.product.variations.first?.productID == productID }
     }
     
-    func contains(_ product: Product) -> Bool {
+    func contains(_ productID: ProductID) -> Bool {
         items.contains {
             $0.product.variations.contains {
-                $0.productID == product.variations.first?.productID
+                $0.productID == productID
             }
         }
     }

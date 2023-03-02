@@ -38,12 +38,11 @@ class AppMenuPresenterImpl: ListPresenter {
     // MARK: - ListPresenter
     
     func viewDidLoad() async {
-        await with(errorHandler) {
-            // display cart badge
-            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
-            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
-            isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
-        }
+        await updateView()
+    }
+    
+    func viewWillAppear() async {
+        await updateView()
     }
     
     var numberOfRows: Int {
@@ -72,6 +71,14 @@ class AppMenuPresenterImpl: ListPresenter {
 // MARK: - Private extension
 
 extension AppMenuPresenterImpl {
+    
+    private func updateView() async {
+        await with(errorHandler) {
+            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+            isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
+        }
+    }
     
     private func errorHandler(_ error: Error) async {
         await view?.displayError(title: "Error", message: error.localizedDescription)

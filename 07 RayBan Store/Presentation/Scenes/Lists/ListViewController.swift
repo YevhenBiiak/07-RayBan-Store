@@ -22,6 +22,7 @@ protocol ListConfigurator {
 
 protocol ListPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
     var numberOfRows: Int { get }
     func text(for row: Int) -> String
     func didSelect(row: Int) async
@@ -33,6 +34,8 @@ class ListViewController: UITableViewController, ListView {
     var configurator: ListConfigurator!
     var presenter: ListPresenter!
     
+    // MARK: - Initializers and overridden methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configurator.configure(listViewController: self)
@@ -40,6 +43,13 @@ class ListViewController: UITableViewController, ListView {
         setupNavigationBar()
         Task { await presenter.viewDidLoad() }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { await presenter.viewWillAppear() }
+    }
+
+    // MARK: - ListView
     
     func display(title: String) {
         self.title = title

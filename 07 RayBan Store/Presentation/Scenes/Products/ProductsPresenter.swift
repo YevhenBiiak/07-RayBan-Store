@@ -32,6 +32,7 @@ protocol ProductsView: AnyObject {
 
 protocol ProductsPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
     func menuButtonTapped() async
     func willDisplayLastItem(at index: Int) async
     func didSelectItem(at index: Int) async
@@ -63,6 +64,10 @@ extension ProductsPresenterImpl: ProductsPresenter {
     
     func viewDidLoad() async {
         await presentProducts(category: currentCategory)
+    }
+    
+    func viewWillAppear() async {
+        await presentProducts(category: currentCategory, gender: currentGender, style: currentStyle)
     }
     
     func menuButtonTapped() async {
@@ -186,7 +191,7 @@ extension ProductsPresenterImpl {
     private func createViewModel(with product: Product, forIndex index: Int) async throws -> ProductCellViewModel? {
         guard let variation = product.variations.first else { return nil }
         
-        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, product: product)
+        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, productID: variation.productID)
         let isInCart = try await cartUseCase.execute(inCartRequest)
         
         return ProductCellViewModel(

@@ -29,6 +29,11 @@ class ProductsViewController: UIViewController {
         Task { await presenter.viewDidLoad() }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { await presenter.viewWillAppear() }
+    }
+    
     // MARK: - Private methods
     
     private func setupCollectionView() {

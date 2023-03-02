@@ -41,7 +41,7 @@ extension CartUseCaseImpl: CartUseCase {
     func execute(_ request: IsProductInCartRequset) async throws -> Bool {
         let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
         let cart = Cart(items: cartItems)
-        return cart.contains(request.product)
+        return cart.contains(request.productID)
     }
     
     func execute(_ request: GetCartItemsRequest) async throws -> [CartItem] {
