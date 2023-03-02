@@ -89,6 +89,13 @@
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
 		57A7C86529AE125100E979CB /* CartItemCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7C86429AE125100E979CB /* CartItemCellViewModel.swift */; };
 		57A7C86729AE885B00E979CB /* ShippingMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7C86629AE885B00E979CB /* ShippingMethod.swift */; };
+		57AAE78B29AFB0F7009FD328 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */; };
+		57AAE78D29AFB109009FD328 /* FavoritesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */; };
+		57AAE78F29AFB122009FD328 /* FavoritesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */; };
+		57AAE79129AFB131009FD328 /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE79029AFB131009FD328 /* FavoritesPresenter.swift */; };
+		57AAE79329AFB139009FD328 /* FavoritesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE79229AFB139009FD328 /* FavoritesRouter.swift */; };
+		57AAE79529AFB154009FD328 /* FavoritesConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE79429AFB154009FD328 /* FavoritesConfigurator.swift */; };
+		57AAE79C29AFB978009FD328 /* FavoriteItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE79B29AFB978009FD328 /* FavoriteItemModel.swift */; };
 		57B75D3C29A9239E0017E0F3 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D3B29A9239E0017E0F3 /* ActivityIndicatorView.swift */; };
 		57B75D4029A92AA80017E0F3 /* FavoriteGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D3F29A92AA80017E0F3 /* FavoriteGateway.swift */; };
 		57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B75D4129A92CD00017E0F3 /* FavoriteGatewayImpl.swift */; };
@@ -232,6 +239,13 @@
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
 		57A7C86429AE125100E979CB /* CartItemCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemCellViewModel.swift; sourceTree = "<group>"; };
 		57A7C86629AE885B00E979CB /* ShippingMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShippingMethod.swift; sourceTree = "<group>"; };
+		57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRootView.swift; sourceTree = "<group>"; };
+		57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewCell.swift; sourceTree = "<group>"; };
+		57AAE79029AFB131009FD328 /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
+		57AAE79229AFB139009FD328 /* FavoritesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRouter.swift; sourceTree = "<group>"; };
+		57AAE79429AFB154009FD328 /* FavoritesConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesConfigurator.swift; sourceTree = "<group>"; };
+		57AAE79B29AFB978009FD328 /* FavoriteItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteItemModel.swift; sourceTree = "<group>"; };
 		57B75D3B29A9239E0017E0F3 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		57B75D3F29A92AA80017E0F3 /* FavoriteGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteGateway.swift; sourceTree = "<group>"; };
 		57B75D4129A92CD00017E0F3 /* FavoriteGatewayImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteGatewayImpl.swift; sourceTree = "<group>"; };
@@ -393,6 +407,7 @@
 				571AA49B28E0CEF60078F6A9 /* Lists */,
 				57ED3DBD28E5F7200015CFDE /* Categories */,
 				57B75D4929AA31610017E0F3 /* Cart */,
+				57AAE78829AFB0D3009FD328 /* Favorites */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -430,16 +445,6 @@
 				57508A5728BF45E5000328AC /* AuthProvider.swift */,
 			);
 			path = APIs;
-			sourceTree = "<group>";
-		};
-		5752CE3C28DC574D001BAE4A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				5752CE3D28DC575D001BAE4A /* ProductCellViewModel.swift */,
-				575F562528EC885200A44E6D /* CategoryCellViewModel.swift */,
-				5708386D29A4DE6900205B34 /* ProductDetailsViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		577301F828BBFA50007FB72F /* Application */ = {
@@ -522,7 +527,6 @@
 			isa = PBXGroup;
 			children = (
 				57E9DB2B29924FCC00EDE67E /* Protocols */,
-				5752CE3C28DC574D001BAE4A /* ViewModels */,
 				574F27A228C68D1D0092D293 /* Scenes */,
 				5784000428D5FCE0003766F0 /* Common */,
 			);
@@ -586,6 +590,7 @@
 		5784000128D5FC67003766F0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				57AAE79729AFB90B009FD328 /* Models */,
 				571EDB9E28D61B3600C8EBAA /* Views */,
 				5784000E28D5FE68003766F0 /* ProductsViewController.swift */,
 				5784001028D5FEBC003766F0 /* ProductsPresenter.swift */,
@@ -677,6 +682,69 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
+		57AAE78829AFB0D3009FD328 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				57AAE79A29AFB944009FD328 /* Models */,
+				57AAE78929AFB0E3009FD328 /* Views */,
+				57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */,
+				57AAE79029AFB131009FD328 /* FavoritesPresenter.swift */,
+				57AAE79229AFB139009FD328 /* FavoritesRouter.swift */,
+				57AAE79429AFB154009FD328 /* FavoritesConfigurator.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
+		57AAE78929AFB0E3009FD328 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */,
+				57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		57AAE79629AFB8F6009FD328 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				57A7C86429AE125100E979CB /* CartItemCellViewModel.swift */,
+				57A7C86629AE885B00E979CB /* ShippingMethod.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		57AAE79729AFB90B009FD328 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5752CE3D28DC575D001BAE4A /* ProductCellViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		57AAE79829AFB91B009FD328 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5708386D29A4DE6900205B34 /* ProductDetailsViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		57AAE79929AFB928009FD328 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				575F562528EC885200A44E6D /* CategoryCellViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		57AAE79A29AFB944009FD328 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				57AAE79B29AFB978009FD328 /* FavoriteItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		57B75D3D29A92A830017E0F3 /* Favorite */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,13 +757,12 @@
 		57B75D4929AA31610017E0F3 /* Cart */ = {
 			isa = PBXGroup;
 			children = (
+				57AAE79629AFB8F6009FD328 /* Models */,
 				57B75D4A29AA317E0017E0F3 /* Views */,
 				57B75D4F29AA31C70017E0F3 /* CartViewController.swift */,
 				57B75D5129AA31D60017E0F3 /* CartPresenter.swift */,
 				57B75D5329AA31DE0017E0F3 /* CartRouter.swift */,
 				57B75D5529AA31E90017E0F3 /* CartConfigurator.swift */,
-				57A7C86429AE125100E979CB /* CartItemCellViewModel.swift */,
-				57A7C86629AE885B00E979CB /* ShippingMethod.swift */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
@@ -739,6 +806,7 @@
 		57BDD18A28D785F500A9007B /* ProductDetails */ = {
 			isa = PBXGroup;
 			children = (
+				57AAE79829AFB91B009FD328 /* Models */,
 				57BDD19128D7885000A9007B /* Views */,
 				57BDD18F28D786FC00A9007B /* ProductDetailsViewController.swift */,
 				57BDD18D28D786B100A9007B /* ProductDetailsPresenter.swift */,
@@ -825,6 +893,7 @@
 		57ED3DBD28E5F7200015CFDE /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				57AAE79929AFB928009FD328 /* Models */,
 				57ED3DBE28E6EFB50015CFDE /* Views */,
 				57ED3DBF28E6F01D0015CFDE /* CategoriesViewController.swift */,
 				573A25C028E8355D000B1548 /* Sunglasses */,
@@ -1079,10 +1148,13 @@
 				57508A5428BEA7D9000328AC /* ProductGatewayImpl.swift in Sources */,
 				57508A4C28BE4DF7000328AC /* Order.swift in Sources */,
 				57B75D4E29AA31B90017E0F3 /* CartItemViewCell.swift in Sources */,
+				57AAE79329AFB139009FD328 /* FavoritesRouter.swift in Sources */,
 				571AA49E28E0D2D60078F6A9 /* ListViewController.swift in Sources */,
 				57B75D5C29ACC2C60017E0F3 /* QuantityStepper.swift in Sources */,
 				57433E0D298AF46A00E723CB /* String + .swift in Sources */,
 				5752CE3228DB721E001BAE4A /* UICollectionReusableView +.swift in Sources */,
+				57AAE79129AFB131009FD328 /* FavoritesPresenter.swift in Sources */,
+				57AAE78F29AFB122009FD328 /* FavoritesViewCell.swift in Sources */,
 				57B75D4429A9E9B50017E0F3 /* Favorite.swift in Sources */,
 				571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */,
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
@@ -1090,6 +1162,7 @@
 				575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */,
 				57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */,
 				57FA03D8299D38F00066B869 /* RequestStack.swift in Sources */,
+				57AAE79C29AFB978009FD328 /* FavoriteItemModel.swift in Sources */,
 				57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */,
 				5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */,
 				57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */,
@@ -1125,6 +1198,7 @@
 				57E9DB302992540000EDE67E /* ForgotPasswordViewController.swift in Sources */,
 				57ED3DC028E6F01D0015CFDE /* CategoriesViewController.swift in Sources */,
 				57E9DB412993AE5000EDE67E /* ErrorHandlableFunction.swift in Sources */,
+				57AAE79529AFB154009FD328 /* FavoritesConfigurator.swift in Sources */,
 				571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */,
 				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */,
@@ -1138,7 +1212,9 @@
 				57508A5828BF45E5000328AC /* AuthProvider.swift in Sources */,
 				5752CE3E28DC575D001BAE4A /* ProductCellViewModel.swift in Sources */,
 				57B75D5A29AB9FAD0017E0F3 /* SummaryViewCell.swift in Sources */,
+				57AAE78D29AFB109009FD328 /* FavoritesRootView.swift in Sources */,
 				573A25C528E83934000B1548 /* SunglassesCategoriesRouter.swift in Sources */,
+				57AAE78B29AFB0F7009FD328 /* FavoritesViewController.swift in Sources */,
 				574F275928C360550092D293 /* GetProductRequests.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
 				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,

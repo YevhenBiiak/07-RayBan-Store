@@ -48,6 +48,6 @@ extension FavoriteUseCaseImpl: FavoriteUseCase {
         var favoriteList = FavoritList(items: favoriteItems)
         favoriteList.delete(modelID: request.modelID)
         try await favoriteGateway.saveFavoriteItems(favoriteList.items, for: request.user)
-        return favoriteItems
+        return favoriteList.items
     }
 }

@@ -1,15 +1,17 @@
 //
-//  CartRouter.swift
+//  FavoritesRouter.swift
 //  07 RayBan Store
 //
-//  Created by Yevhen Biiak on 25.02.2023.
+//  Created by Yevhen Biiak on 01.03.2023.
 //
 
-class CartRouterImpl: Routable, CartRouter {
+import UIKit
+
+class FavoritesRouterImpl: Routable, FavoritesRouter {
     
-    weak var viewController: CartViewController!
+    weak var viewController: FavoritesViewController!
     
-    required init(viewController: CartViewController) {
+    required init(viewController: FavoritesViewController) {
         self.viewController = viewController
     }
     

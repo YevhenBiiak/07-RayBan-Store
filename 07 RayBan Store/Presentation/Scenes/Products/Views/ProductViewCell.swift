@@ -45,7 +45,7 @@ class ProductsViewCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.Lato.bold
+        label.font = UIFont.Lato.medium
         label.textColor = .appBlack
         label.text = "unknown"
         return label

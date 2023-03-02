@@ -13,7 +13,7 @@ class CartViewController: UIViewController {
     var presenter: CartPresenter!
     var rootView: CartRootView!
     
-    private var section: Sectionable!
+    private var itemsSection: Sectionable!
     private var shippingMethods: [ShippingMethodModel] = []
     
     // MARK: - Life Cycle and overridden methods
@@ -30,9 +30,8 @@ class CartViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        rootView.сollectionView.dataSource = self
         rootView.сollectionView.delegate = self
-        
+        rootView.сollectionView.dataSource = self
         rootView.сollectionView.register(CartItemViewCell.self, forCellWithReuseIdentifier: CartItemViewCell.reuseId)
         rootView.сollectionView.register(ShippingViewCell.self, forCellWithReuseIdentifier: ShippingViewCell.reuseId)
         rootView.сollectionView.register(SummaryViewCell.self, forCellWithReuseIdentifier: SummaryViewCell.reuseId)
@@ -46,7 +45,7 @@ extension CartViewController: CartView {
     }
     
     func display(cartSection: any Sectionable) {
-        section = cartSection
+        self.itemsSection = cartSection
         rootView.сollectionView.reloadData()
     }
     
@@ -63,11 +62,11 @@ extension CartViewController: CartView {
 extension CartViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        section?.items.count == 0 ? 0 : 3
+        itemsSection?.items.count == 0 ? 0 : 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        section == 0 ? self.section?.items.count ?? 0 : 1
+        section == 0 ? itemsSection?.items.count ?? 0 : 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -76,7 +75,7 @@ extension CartViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartItemViewCell.reuseId, for: indexPath)
-            (cell as? CartItemViewCell)?.viewModel = section.items[indexPath.item].viewModel as? CartItemCellViewModel
+            (cell as? CartItemViewCell)?.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemCellViewModel
         case 1:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShippingViewCell.reuseId, for: indexPath)
             (cell as? ShippingViewCell)?.shippingMethods = shippingMethods
@@ -90,4 +89,8 @@ extension CartViewController: UICollectionViewDataSource {
 
 extension CartViewController: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = itemsSection.items[indexPath.item]
+        Task { await presenter.didSelectItem(item) }
+    }
 }

@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol CartRouter {
-    func presentCart()
+    func presentProductDetails(product: Product)
 }
 
 @MainActor
@@ -22,6 +22,7 @@ protocol CartView: AnyObject {
 
 protocol CartPresenter {
     func viewDidLoad() async
+    func didSelectItem(_ item: any Itemable) async
 }
 
 class CartPresenterImpl {
@@ -51,6 +52,18 @@ extension CartPresenterImpl: CartPresenter {
                 ShippingMethod(isSelected: false, title: "Pick up in Store", subtitle: "", price: "FREE")
             ]
             await view?.display(shippingMethods: shippingMethods)
+        }
+    }
+    
+    func didSelectItem(_ item: any Itemable) async {
+        await with(errorHandler) {
+            guard let viewModel = (item as? CartSectionItem)?.viewModel else { return }
+            let request = GetCartItemsRequest(user: Session.shared.user)
+            let cartItems = try await cartUseCase.execute(request)
+            guard let cartItem = cartItems.first(where: {
+                $0.product.variations.contains(where: { $0.productID == viewModel.productID})
+            }) else { return }
+            await router.presentProductDetails(product: cartItem.product)
         }
     }
 }

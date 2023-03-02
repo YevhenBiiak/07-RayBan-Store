@@ -65,7 +65,6 @@ class ShippingViewCell: UICollectionViewCell {
     // MARK: - Private methods
     
     @objc private func shippingMethodSelected(_ sender: CheckboxButton) {
-        guard sender.isChecked else { return }
         stackView.arrangedSubviews.forEach {
             ($0 as? ShippingItemView)?.checkboxButton.isChecked = false
         }

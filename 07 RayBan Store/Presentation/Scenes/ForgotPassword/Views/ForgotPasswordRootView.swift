@@ -22,7 +22,7 @@ class ForgotPasswordRootView: UIView {
         let label = UILabel()
         label.textColor = UIColor.appBlack
         label.text = "Ray-Ban password assistance."
-        label.font = UIFont.Lato.bold
+        label.font = UIFont.Lato.medium
         label.numberOfLines = 0
         label.textAlignment = .justified
         return label

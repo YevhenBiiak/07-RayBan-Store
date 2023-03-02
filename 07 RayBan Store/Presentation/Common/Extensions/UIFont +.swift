@@ -17,8 +17,8 @@ extension UIFont {
     }
     
     struct Lato {
-        static var bold: UIFont { UIFont(name: "Lato-Bold", size: 16)! }
-        static var black: UIFont { UIFont(name: "Lato-Black", size: 16)! }
+        static var bold: UIFont { UIFont(name: "Lato-Black", size: 16)! }
+        static var medium: UIFont { UIFont(name: "Lato-Bold", size: 16)! }
         static var regular: UIFont { UIFont(name: "Lato-Regular", size: 16)! }
         static var light: UIFont { UIFont(name: "Lato-Light", size: 16)! }
     }

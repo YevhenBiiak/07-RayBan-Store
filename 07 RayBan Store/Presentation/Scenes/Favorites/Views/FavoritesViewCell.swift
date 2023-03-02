@@ -1,14 +1,25 @@
 //
-//  CartItemViewCell.swift
+//  FavoritesViewCell.swift
 //  07 RayBan Store
 //
-//  Created by Yevhen Biiak on 25.02.2023.
+//  Created by Yevhen Biiak on 01.03.2023.
 //
 
 import UIKit
 import Stevia
 
-class CartItemViewCell: UICollectionViewCell {
+protocol FavoriteItemViewModel {
+    var modelID: ModelID { get }
+    var name: String { get }
+    var price: String { get }
+    var frame: String { get }
+    var lense: String { get }
+    var size: String { get }
+    var imageData: Data { get }
+    var favoriteButtonTapped: (ModelID) async -> Void  { get }
+}
+
+class FavoritesViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -59,9 +70,16 @@ class CartItemViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let stepper = QuantityStepper()
+    let favoriteButton: CheckboxButton = {
+        let checkedImage = UIImage(systemName: "heart.fill")!
+            .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
+        let uncheckedImage = UIImage(systemName: "heart")!
+            .withConfiguration(UIImage.SymbolConfiguration(paletteColors: [UIColor.appBlack]))
+        let button = CheckboxButton(checkedImage: checkedImage, uncheckedImage: uncheckedImage, scale: .large)
+        return button
+    }()
     
-    var viewModel: CartItemCellViewModel? {
+    var viewModel: FavoriteItemViewModel? {
         didSet {
             guard let viewModel else { return }
             setImage(with: viewModel.imageData)
@@ -70,7 +88,7 @@ class CartItemViewCell: UICollectionViewCell {
             lenseLabel.text = viewModel.lense
             sizeLabel.text = viewModel.size
             priceLabel.text = viewModel.price
-            stepper.value = viewModel.quantity
+            favoriteButton.isChecked = true
         }
     }
     
@@ -79,18 +97,14 @@ class CartItemViewCell: UICollectionViewCell {
         configureLayout()
         addBorder(at: .top, color: .appGray, width: 0.5)
         addBorder(at: .bottom, color: .appGray, width: 0.5)
-        stepper.addTarget(self, action: #selector(stepperValueChanged), for: .valueChanged)
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) { fatalError() }
     
-    @objc private func stepperValueChanged(_ sender: QuantityStepper) {
+    @objc private func favoriteButtonTapped(_ sender: CheckboxButton) {
         guard let viewModel else { return }
-        if sender.value == 0 {
-            Task { await viewModel.deleteItemButtonTapped(viewModel.productID) }
-        } else {
-            Task { await viewModel.itemAmountDidChange(viewModel.productID, sender.value) }
-        }
+        Task { await viewModel.favoriteButtonTapped(viewModel.modelID) }
     }
     
     private func setImage(with data: Data) {
@@ -117,7 +131,7 @@ class CartItemViewCell: UICollectionViewCell {
             nameLabel,
             stackView,
             priceLabel,
-            stepper
+            favoriteButton
         )
         
         imageView.left(0).top(0).bottom(0).heightEqualsWidth()
@@ -126,9 +140,10 @@ class CartItemViewCell: UICollectionViewCell {
         priceLabel.right(16).Left == nameLabel.Right + 8
         stackView.Left == imageView.Right + 8
         stackView.bottom(>=8).Top == nameLabel.Bottom + 8
-        stepper.right(8).bottom(16).Left == stackView.Right + 8
+        favoriteButton.right(8).bottom(16).Left == stackView.Right + 8
         
         priceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         priceLabel.setContentHuggingPriority(.required, for: .horizontal)
+        favoriteButton.setContentHuggingPriority(.required, for: .horizontal)
     }
 }

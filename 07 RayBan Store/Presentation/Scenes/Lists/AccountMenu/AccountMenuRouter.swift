@@ -30,6 +30,10 @@ class AccountMenuRouterImpl: Routable, AccountMenuRouter {
     }
     
     func presentFavoriteList() {
+        let favoritesViewController = FavoritesViewController()
+        let favoritesConfigurator = FavoritesConfiguratorImpl()
         
+        favoritesViewController.configurator = favoritesConfigurator
+        navigationController?.pushViewController(favoritesViewController, animated: true)
     }
 }
