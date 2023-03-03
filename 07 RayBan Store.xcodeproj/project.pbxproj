@@ -132,7 +132,6 @@
 		57C56B1C299682B7002A9BCB /* Sectionable Itemable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C56B1B299682B7002A9BCB /* Sectionable Itemable.swift */; };
 		57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828B28F317C5005FF050 /* ZoomableView.swift */; };
 		57D0829028F44398005FF050 /* UIViewController +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828F28F44398005FF050 /* UIViewController +.swift */; };
-		57E81681299BB02300E48685 /* IndexPath + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E81680299BB02300E48685 /* IndexPath + .swift */; };
 		57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2C29924FD900EDE67E /* Routable.swift */; };
 		57E9DB302992540000EDE67E /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */; };
 		57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */; };
@@ -283,7 +282,6 @@
 		57C56B1B299682B7002A9BCB /* Sectionable Itemable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sectionable Itemable.swift"; sourceTree = "<group>"; };
 		57D0828B28F317C5005FF050 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		57D0828F28F44398005FF050 /* UIViewController +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController +.swift"; sourceTree = "<group>"; };
-		57E81680299BB02300E48685 /* IndexPath + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath + .swift"; sourceTree = "<group>"; };
 		57E9DB2C29924FD900EDE67E /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordConfigurator.swift; sourceTree = "<group>"; };
@@ -627,7 +625,6 @@
 				5752CE3128DB721E001BAE4A /* UICollectionReusableView +.swift */,
 				57A1BF4828DDBA3F00819E88 /* UIView +.swift */,
 				571BC16F29B11EFD00CD5D0E /* Sequence + .swift */,
-				57E81680299BB02300E48685 /* IndexPath + .swift */,
 				57433E0C298AF46A00E723CB /* String + .swift */,
 				578DB1AE2906D039009C1FD2 /* Array +.swift */,
 			);
@@ -1207,7 +1204,6 @@
 				5773021028BCE474007FB72F /* Result.swift in Sources */,
 				5784000D28D5FE0F003766F0 /* ProductsConfigurator.swift in Sources */,
 				5720BF6B28D4EA2D003EBAA6 /* LoginRootView.swift in Sources */,
-				57E81681299BB02300E48685 /* IndexPath + .swift in Sources */,
 				57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */,
 				579404DA298D1C970048FD33 /* RegistrationConfigurator.swift in Sources */,
 				579404DC298D1CB40048FD33 /* RegistrationPresenter.swift in Sources */,

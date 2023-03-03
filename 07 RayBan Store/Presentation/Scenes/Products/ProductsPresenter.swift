@@ -74,7 +74,7 @@ extension ProductsPresenterImpl: ProductsPresenter {
             let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
             isCartEmpty ? await view?.hideMenuBadge() : await view?.displayMenuBadge()
             
-            let productsRequest = ProductsRequest(category: currentCategory, gender: currentGender, style: currentStyle, indices: indices)
+            let productsRequest = ProductsRequest(category: category, gender: gender, style: style, indices: indices)
             let products = try await getProductsUseCase.execute(productsRequest)
             
             let viewModels = try await products.concurrentMap { [weak self] in
@@ -109,18 +109,20 @@ extension ProductsPresenterImpl: ProductsPresenter {
               requestStack.notContains(nextIndex) else { return }
         
         await requestStack.add(nextIndex)
-        await displayLoadingItem(at: nextIndex)
         await with(errorHandler) {
+            // if it's still available request -> display loading item
+            guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
+            await view?.display(productItem: ProductItem(), at: nextIndex)
+            
             let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndex)
             let product = try await getProductsUseCase.execute(productRequest)
             let viewModel = try await createViewModel(with: product)
+            let productItem = ProductItem(viewModel: viewModel)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
-            let productItem = ProductItem(viewModel: viewModel)
             await view?.display(productItem: productItem, at: nextIndex)
         }
-        
         requestStack.remove(nextIndex)
     }
 }
@@ -135,12 +137,12 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
     }
     
     func presentProducts(category: Product.Category, style: Product.Style) async {
-        await displayEmptySection(andTitle: category.rawValue + " " + style.rawValue)
+        await displayEmptySection(andTitle: style.rawValue + " " + category.rawValue)
         await presentProducts(category: category, gender: nil, style: style)
     }
     
     func presentProducts(category: Product.Category, gender: Product.Gender) async {
-        await displayEmptySection(andTitle: category.rawValue + " " + gender.rawValue)
+        await displayEmptySection(andTitle: gender.rawValue + " " + category.rawValue)
         await presentProducts(category: category, gender: gender, style: nil)
     }
 }
@@ -148,10 +150,6 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
 // MARK: - Private methods
 
 extension ProductsPresenterImpl {
-    
-    private func displayLoadingItem(at index: Int) async {
-        await view?.display(productItem: ProductItem(), at: index)
-    }
     
     private func displayEmptySection(andTitle title: String) async {
         let section = ProductsSection(header: "0 PRODUCTS", items: [])

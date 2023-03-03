@@ -31,6 +31,7 @@ class ProductsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard section?.items.isEmpty == false else { return }
         let visibleIndices = rootView.collectionView.visibleCells.compactMap {
             rootView.collectionView.indexPath(for: $0)?.item
         }
