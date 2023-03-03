@@ -31,7 +31,10 @@ class ProductsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Task { await presenter.viewWillAppear() }
+        let visibleIndices = rootView.collectionView.visibleCells.compactMap {
+            rootView.collectionView.indexPath(for: $0)?.item
+        }
+        Task { await presenter.willDisplayItems(at: visibleIndices.sorted()) }
     }
     
     // MARK: - Private methods

@@ -13,6 +13,7 @@
 		571AA4A228E0D3050078F6A9 /* AppMenuRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571AA4A128E0D3050078F6A9 /* AppMenuRouter.swift */; };
 		571AA4A428E0D31C0078F6A9 /* AppMenuConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571AA4A328E0D31C0078F6A9 /* AppMenuConfigurator.swift */; };
 		571AA4AA28E1C15F0078F6A9 /* HeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571AA4A928E1C15F0078F6A9 /* HeaderReusableView.swift */; };
+		571BC17029B11EFD00CD5D0E /* Sequence + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BC16F29B11EFD00CD5D0E /* Sequence + .swift */; };
 		571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */; };
 		571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */; };
 		571EDB9D28D61B0600C8EBAA /* ProductsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */; };
@@ -163,6 +164,7 @@
 		571AA4A128E0D3050078F6A9 /* AppMenuRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenuRouter.swift; sourceTree = "<group>"; };
 		571AA4A328E0D31C0078F6A9 /* AppMenuConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenuConfigurator.swift; sourceTree = "<group>"; };
 		571AA4A928E1C15F0078F6A9 /* HeaderReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderReusableView.swift; sourceTree = "<group>"; };
+		571BC16F29B11EFD00CD5D0E /* Sequence + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence + .swift"; sourceTree = "<group>"; };
 		571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationItem +.swift"; sourceTree = "<group>"; };
 		571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton +.swift"; sourceTree = "<group>"; };
 		571EDB9C28D61B0600C8EBAA /* ProductsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRouter.swift; sourceTree = "<group>"; };
@@ -616,9 +618,6 @@
 			isa = PBXGroup;
 			children = (
 				5784000628D5FCFC003766F0 /* UIColor +.swift */,
-				57E81680299BB02300E48685 /* IndexPath + .swift */,
-				57433E0C298AF46A00E723CB /* String + .swift */,
-				578DB1AE2906D039009C1FD2 /* Array +.swift */,
 				57D0828F28F44398005FF050 /* UIViewController +.swift */,
 				579404E7298FE2000048FD33 /* UIApplication + .swift */,
 				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
@@ -627,6 +626,10 @@
 				571EDB9F28D61D2200C8EBAA /* UIFont +.swift */,
 				5752CE3128DB721E001BAE4A /* UICollectionReusableView +.swift */,
 				57A1BF4828DDBA3F00819E88 /* UIView +.swift */,
+				571BC16F29B11EFD00CD5D0E /* Sequence + .swift */,
+				57E81680299BB02300E48685 /* IndexPath + .swift */,
+				57433E0C298AF46A00E723CB /* String + .swift */,
+				578DB1AE2906D039009C1FD2 /* Array +.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1146,6 +1149,7 @@
 				57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */,
 				571AA4A028E0D2EF0078F6A9 /* AppMenuPresenter.swift in Sources */,
 				57508A5428BEA7D9000328AC /* ProductGatewayImpl.swift in Sources */,
+				571BC17029B11EFD00CD5D0E /* Sequence + .swift in Sources */,
 				57508A4C28BE4DF7000328AC /* Order.swift in Sources */,
 				57B75D4E29AA31B90017E0F3 /* CartItemViewCell.swift in Sources */,
 				57AAE79329AFB139009FD328 /* FavoritesRouter.swift in Sources */,

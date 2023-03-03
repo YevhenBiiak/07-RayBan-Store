@@ -23,7 +23,6 @@ struct ProductCellViewModel {
     let price: String
     let colors: String
     let imageData: Data
-    let index: Int
-    let addButtonTapped: (ProductCellViewModel) async -> Void
+    let addButtonTapped: (ProductID, Int) async -> Void
     let cartButtonTapped: () async -> Void
 }

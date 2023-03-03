@@ -28,7 +28,7 @@ class ProductDetailsViewController: UIViewController {
             let color = viewModel.isInCart ? UIColor.appBlack : UIColor.appRed
             rootView.addToCartButtonTitle = title
             rootView.addToCartButtonCoolor = color
-            rootView.showActivityIndicator = viewModel.imageData.count == 1
+            rootView.showActivityIndicator = viewModel.imageData.count <= 1
         }
     }
     

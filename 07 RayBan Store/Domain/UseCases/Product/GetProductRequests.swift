@@ -25,6 +25,13 @@ struct ProductRequest {
     var index: Int
 }
 
+struct ProductsRequest {
+    let category: Product.Category
+    let gender: Product.Gender?
+    let style: Product.Style?
+    var indices: [Int]
+}
+
 struct ProductsCountRequest {
     let category: Product.Category
     let gender: Product.Gender?

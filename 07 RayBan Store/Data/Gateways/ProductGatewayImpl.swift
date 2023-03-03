@@ -64,6 +64,19 @@ extension ProductGatewayImpl: ProductGateway {
         return product
     }
     
+    // Products by Category, Style, Gender with indices
+    func fetchProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?, indices: [Int]) async throws -> [Product] {
+        var products = try await productsAPI.fetchProducts()
+            .filter(category: category, gender: gender, style: style)
+        
+        guard indices.count <= products.count else { throw AppError.invalidProductIndex }
+        products = Array(products.prefix(indices.last ?? 0))
+        
+        // load images for first product variant
+        try await loadImages(for: &products, imgTypes: [.main], bgColor: .appLightGray)
+        return products
+    }
+    
     // Products count by Category, Style, Gender
     func productsCount(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async throws -> Int {
         try await productsAPI.fetchProducts()
@@ -93,37 +106,22 @@ private extension ProductGatewayImpl {
             product.variations[index].imageData = try await imagesApi.loadImages(imgTypes, imageId: productID, bgColor: bgColor)
             
         } else {
-            try await withThrowingTaskGroup(of: (index: Int, images: [Data]).self) { taskGroup in
-                
-                for (i, variant) in product.variations.enumerated() {
-                    taskGroup.addTask {
-                        let images = try await self.imagesApi.loadImages(imgTypes, imageId: variant.productID, bgColor: bgColor)
-                        return (index: i, images: images)
-                    }
-                }
-                for try await (i, images) in taskGroup {
-                    product.variations[i].imageData = images
-                }
+            product.variations = try await product.variations.concurrentMap { [weak self] in var variation = $0
+                let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, bgColor: bgColor)
+                variation.imageData = imageData
+                return variation
             }
         }
     }
     
     func loadImages(for products: inout [Product], imgTypes: [ImageType], bgColor: UIColor) async throws {
-        try await withThrowingTaskGroup(of: (index: Int, images: [Data]).self) { taskGroup in
-
-            for (i, product) in products.enumerated() {
-                taskGroup.addTask {
-                    guard let imageId = product.variations.first?.productID else {
-                        return (index: i, images: [])
-                    }
-                    let images = try await self.imagesApi.loadImages(imgTypes, imageId: imageId, bgColor: bgColor)
-                    return (index: i, images: images)
-                }
-            }
+        products = try await products.concurrentMap { [weak self] in var product = $0
+            guard let variation = product.variations.first else { return product }
             
-            for try await (i, images) in taskGroup {
-                products[i].variations[0].imageData = images
-            }
+            let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, bgColor: bgColor)
+            product.variations[0].imageData = imageData
+            
+            return product
         }
     }
 }

@@ -85,6 +85,10 @@ extension CartViewController: UICollectionViewDataSource {
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        indexPath.section == 0
+    }
 }
 
 extension CartViewController: UICollectionViewDelegate {

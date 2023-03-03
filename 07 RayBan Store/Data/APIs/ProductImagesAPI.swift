@@ -28,27 +28,12 @@ class ProductImagesApiImpl: ImagesAPI {
         imageId: Int,
         bgColor: UIColor
     ) async throws -> [Data] {
-        return try await withThrowingTaskGroup(of: (index: Int, data: Data?).self) { taskGroup in
-            var images: [Data?] = Array(repeating: nil, count: types.count)
-            for (i, type) in types.enumerated() {
-                taskGroup.addTask {
-                    
-                    let url = self.configureURL(type: type, imageId: imageId, bgColor: bgColor)
-                    let (data, response) = try await self.session.data(from: url)
-                    
-                    guard (response as? HTTPURLResponse)?.statusCode == 200 else {
-                        return (index: i, data: nil)
-                    }
-                    
-                    return (index: i, data: data)
-                }
-            }
-            
-            for try await (i, data) in taskGroup {
-                images[i] = data
-            }
-            return images.compactMap({$0})
-        }
+        try await types.concurrentMap { type in
+            let url = self.configureURL(type: type, imageId: imageId, bgColor: bgColor)
+            let (data, response) = try await self.session.data(from: url)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
+            return data
+        }.compactMap({$0})
     }
     
     // MARK: - Private methods

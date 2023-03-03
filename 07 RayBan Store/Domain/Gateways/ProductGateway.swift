@@ -12,5 +12,6 @@ protocol ProductGateway {
     func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product
     func fetchProductStyles(category: Product.Category, includeImages: Bool) async throws -> [Product]
     func fetchProduct(category: Product.Category, gender: Product.Gender?, style: Product.Style?, index: Int) async throws -> Product
+    func fetchProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?, indices: [Int]) async throws -> [Product]
     func productsCount(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async throws -> Int
 }

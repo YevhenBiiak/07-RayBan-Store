@@ -12,6 +12,7 @@ class ActivityIndicatorView: UIView {
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let actInd = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         actInd.translatesAutoresizingMaskIntoConstraints = false
+        actInd.hidesWhenStopped = true
         actInd.style = .large
         actInd.color = .white
         return actInd
@@ -37,10 +38,12 @@ class ActivityIndicatorView: UIView {
     required init?(coder: NSCoder) { fatalError() }
     
     func startAnimating() {
+        isHidden = false
         activityIndicator.startAnimating()
     }
     
     func stopAnimating() {
-        self.removeFromSuperview()
+        isHidden = true
+        activityIndicator.stopAnimating()
     }
 }

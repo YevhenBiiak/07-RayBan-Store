@@ -311,17 +311,21 @@ class ProductDetailsRootView: UIView {
 extension ProductDetailsRootView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        imageData.count
+        max(imageData.count, 1) // display image.count cells or one for activity Indicator
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductImageViewCell.reuseId, for: indexPath)
-        let data = imageData[indexPath.item]
+        guard let cell = cell as? ProductImageViewCell else { return cell }
         
-        (cell as? ProductImageViewCell)?.imageView.image = UIImage(data: data)
+        if imageData.count > indexPath.item {
+            let data = imageData[indexPath.item]
+            cell.imageView.image = UIImage(data: data)
+        }
+        
         showActivityIndicator
-            ? (cell as? ProductImageViewCell)?.activityIndicator.startAnimating()
-            : (cell as? ProductImageViewCell)?.activityIndicator.stopAnimating()
+            ? cell.activityIndicator.startAnimating()
+            : cell.activityIndicator.stopAnimating()
         
         return cell
     }

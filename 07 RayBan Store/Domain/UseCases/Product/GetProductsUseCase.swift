@@ -11,6 +11,7 @@ protocol GetProductsUseCase {
     func execute(_ request: ProductWithIDRequest) async throws -> Product
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product
     func execute(_ request: ProductRequest) async throws -> Product
+    func execute(_ request: ProductsRequest) async throws -> [Product]
     func execute(_ request: ProductsCountRequest) async throws -> Int
     func execute(_ request: ProductStylesRequest) async throws -> [Product]
 }
@@ -26,11 +27,11 @@ class GetProductsUseCaseImpl {
 
 extension GetProductsUseCaseImpl: GetProductsUseCase {
     
-     // get the product for cart or order
-     func execute(_ request: ProductWithIDRequest) async throws -> Product {
-         try await productGateway.fetchProduct(productID: request.productID, includeImages: true)
-         // here can be some domain logic
-     }
+    // get the product for cart or order
+    func execute(_ request: ProductWithIDRequest) async throws -> Product {
+        try await productGateway.fetchProduct(productID: request.productID, includeImages: true)
+        // here can be some domain logic
+    }
     
     // get the product for product details
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product {
@@ -41,6 +42,12 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     // get the product for products screen
     func execute(_ request: ProductRequest) async throws -> Product {
         try await productGateway.fetchProduct(category: request.category, gender: request.gender, style: request.style, index: request.index)
+        // here can be some domain logic
+    }
+    
+    // get product for update visible cells
+    func execute(_ request: ProductsRequest) async throws -> [Product] {
+        try await productGateway.fetchProducts(category: request.category, gender: request.gender, style: request.style, indices: request.indices)
         // here can be some domain logic
     }
     

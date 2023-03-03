@@ -92,11 +92,14 @@ class ProductsViewCell: UICollectionViewCell {
     // MARK: - Private methods
     
     @objc private func cartButtonTapped() {
-        guard let viewModel else { return }
+        guard let collectionView = superview as? UICollectionView,
+              let index = collectionView.indexPath(for: self)?.item,
+              let viewModel else { return }
+        
         if viewModel.isInCart == true {
-            Task {  await viewModel.cartButtonTapped() }
+            Task { await viewModel.cartButtonTapped() }
         } else {
-            Task {  await viewModel.addButtonTapped(viewModel) }
+            Task { await viewModel.addButtonTapped(viewModel.productID, index) }
         }
     }
     
