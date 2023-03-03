@@ -28,6 +28,12 @@ class FavoritesViewController: UIViewController {
         Task { await presenter.viewDidLoad() }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard section?.items.isEmpty == false else { return }
+        Task { await presenter.viewWillAppear() }
+    }
+    
     private func setupCollectionView() {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
@@ -59,8 +65,9 @@ extension FavoritesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesViewCell.reuseId, for: indexPath)
+        let viewModel = section.items[indexPath.item].viewModel as? FavoriteItemViewModel
         
-        (cell as? FavoritesViewCell)?.viewModel = section.items[indexPath.item].viewModel as? FavoriteItemViewModel
+        (cell as? FavoritesViewCell)?.viewModel = viewModel
         
         return cell
     }

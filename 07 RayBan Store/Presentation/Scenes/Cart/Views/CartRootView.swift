@@ -16,12 +16,39 @@ class CartRootView: UIView {
         case orderSummary
     }
     
+    private let backgroundView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        return view
+    }()
+    
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "image_placeholder")
+        imageView.contentMode = .scaleAspectFit
+        imageView.alpha = 0.8
+        return imageView
+    }()
+    
+    private let label: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = .appDarkGray.withAlphaComponent(0.4)
+        label.font = .Lato.medium.withSize(24)
+        label.text = "There are no products in your shopping bag."
+        return label
+    }()
+    
     var сollectionView: UICollectionView!
+    
+    private var observation: NSKeyValueObservation?
 
     // MARK: - Initializers and overridden methods
 
     init() {
         super.init(frame: .zero)
+        setupViews()
         configureLayout()
     }
     
@@ -29,11 +56,32 @@ class CartRootView: UIView {
 
     // MARK: - Private methods
     
-    private func configureLayout() {
+    private func setupViews() {
         сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         
-        subviews( сollectionView )
+        observation = сollectionView.observe(\.contentSize, options: .new) { [weak self] (_, change) in
+            self?.backgroundView.isHidden = change.newValue?.height != 0
+        }
+    }
+    
+    private func configureLayout() {
+        
+        subviews(
+            сollectionView.subviews (
+                backgroundView.subviews(
+                    imageView,
+                    label
+                )
+            )
+        )
+        
         сollectionView.fillContainer()
+        backgroundView.Left == safeAreaLayoutGuide.Left
+        backgroundView.Right == safeAreaLayoutGuide.Right
+        backgroundView.Top == safeAreaLayoutGuide.Top
+
+        imageView.width(90%).heightEqualsWidth().centerHorizontally().top(0)
+        label.width(90%).centerHorizontally().bottom(0).Top == imageView.Bottom
     }
     
     private func createLayout() -> UICollectionViewLayout {

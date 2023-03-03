@@ -114,7 +114,7 @@ extension ProductsPresenterImpl: ProductsPresenter {
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             await view?.display(productItem: ProductItem(), at: nextIndex)
             
-            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: nextIndex)
+            let productRequest = ProductRequest(category: category, gender: gender, style: style, index: nextIndex)
             let product = try await getProductsUseCase.execute(productRequest)
             let viewModel = try await createViewModel(with: product)
             let productItem = ProductItem(viewModel: viewModel)

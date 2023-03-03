@@ -24,4 +24,8 @@ extension UIImage {
         
         self.init(named: named, in: nil, with: config)
     }
+    
+    var aspectRation: CGFloat {
+        size.width / size.height
+    }
 }

@@ -338,7 +338,6 @@ extension ProductDetailsRootView: UIScrollViewDelegate {
         
         if addToCartButtonIsVisible, trailingBuyButton.isHidden == true {
             trailingBuyButton.isHidden = false
-//            trailingBuyButton.setTitle("SHOP - \(priceLabel.text ?? "")", for: .normal)
         }
         if !addToCartButtonIsVisible, trailingBuyButton.isHidden == false {
             trailingBuyButton.isHidden = true

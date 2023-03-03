@@ -21,6 +21,7 @@ protocol FavoritesView: AnyObject {
 
 protocol FavoritesPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
     func didSelectItem(_ item: any Itemable) async
 }
 
@@ -42,8 +43,14 @@ extension FavoritesPresenterImpl: FavoritesPresenter {
     func viewDidLoad() async {
         await with(errorHandler) {
             await view?.display(title: "FAVORITE LIST")
-            let request =  GetFavoriteItemsRequest(user: Session.shared.user)
-            let favoriteItems = try await favoriteUseCase.execute(request)
+            let favoriteItems = try await getFavoriteItems()
+            await display(favoriteItems: favoriteItems)
+        }
+    }
+    
+    func viewWillAppear() async {
+        await with(errorHandler) {
+            let favoriteItems = try await getFavoriteItems()
             await display(favoriteItems: favoriteItems)
         }
     }
@@ -51,8 +58,7 @@ extension FavoritesPresenterImpl: FavoritesPresenter {
     func didSelectItem(_ item: any Itemable) async {
         await with(errorHandler) {
             guard let viewModel = (item as? FavoriteSectionItem)?.viewModel else { return }
-            let request =  GetFavoriteItemsRequest(user: Session.shared.user)
-            let favoriteItems = try await favoriteUseCase.execute(request)
+            let favoriteItems = try await getFavoriteItems()
             guard let favoriteItem = favoriteItems.first(where: {
                 $0.product.modelID == viewModel.modelID
             }) else { return }
@@ -64,6 +70,11 @@ extension FavoritesPresenterImpl: FavoritesPresenter {
 // MARK: - Private extension
 
 private extension FavoritesPresenterImpl {
+    
+    private func getFavoriteItems() async throws -> [FavoriteItem] {
+        let request =  GetFavoriteItemsRequest(user: Session.shared.user)
+        return try await favoriteUseCase.execute(request)
+    }
     
     private func display(favoriteItems: [FavoriteItem]) async {
         let viewModels = favoriteItems.map { createViewModel(with: $0) }
@@ -90,7 +101,7 @@ private extension FavoritesPresenterImpl {
     
     private func deleteFavoriteItem(modelID: ModelID) async {
         await with(errorHandler) {
-            let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: modelID, includeImages: false)
+            let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: modelID, includeImages: true)
             let favoriteItems = try await favoriteUseCase.execute(request)
             await display(favoriteItems: favoriteItems)
         }

@@ -23,8 +23,7 @@ class RequestStack {
     }
     
     func remove(_ index: Int) {
-        guard let i = stack.firstIndex(of: index) else { return }
-        stack.remove(at: i)
+        stack = stack.filter { $0 != index }
         semaphore.signal()
     }
     

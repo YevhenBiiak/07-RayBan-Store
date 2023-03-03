@@ -142,14 +142,16 @@ extension CategoriesViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
-        case 0: Task { await presenter.didSelectHeader(at: indexPath.item) }
-        case 1: Task { await presenter.didSelectProduct(at: indexPath.item) }
+        case 0:
+            Task { await presenter.didSelectHeader(at: indexPath.item) }
+        case 1:
+            guard productSection.items[indexPath.item].viewModel != nil else { return }
+            Task { await presenter.didSelectProduct(at: indexPath.item) }
         default: break }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let productSection,
-              indexPath.section == 1,
+        guard let productSection, indexPath.section == 1,
               indexPath.item == productSection.items.count - 1
         else { return }
         

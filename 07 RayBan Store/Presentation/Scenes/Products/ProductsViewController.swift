@@ -32,9 +32,7 @@ class ProductsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard section?.items.isEmpty == false else { return }
-        let visibleIndices = rootView.collectionView.visibleCells.compactMap {
-            rootView.collectionView.indexPath(for: $0)?.item
-        }
+        let visibleIndices = rootView.collectionView.indexPathsForVisibleItems.map { $0.item }
         Task { await presenter.willDisplayItems(at: visibleIndices.sorted()) }
     }
     
@@ -131,6 +129,7 @@ extension ProductsViewController: UICollectionViewDataSource {
 extension ProductsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard section.items[indexPath.item].viewModel != nil else { return }
         Task { await presenter.didSelectItem(at: indexPath.item) }
     }
     
