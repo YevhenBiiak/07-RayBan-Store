@@ -16,7 +16,8 @@ protocol CartRouter {
 protocol CartView: AnyObject {
     func display(title: String)
     func display(cartSection: any Sectionable)
-    func display(shippingMethods: [ShippingMethodModel])
+    func display(shippingMethods: [any ShippingMethodViewModel])
+    func display(orderSummary: OrderSummaryViewModel)
     func displayError(title: String, message: String?)
 }
 
@@ -30,11 +31,17 @@ class CartPresenterImpl {
     private weak var view: CartView?
     private let router: CartRouter
     private let cartUseCase: CartUseCase
+    private let orderUseCase: OrderUseCase
     
-    init(view: CartView?, router: CartRouter, cartUseCase: CartUseCase) {
+    private var selectedShipping: ShippingMethod! {
+        didSet { print(selectedShipping) }
+    }
+    
+    init(view: CartView?, router: CartRouter, cartUseCase: CartUseCase, orderUseCase: OrderUseCase) {
         self.view = view
         self.router = router
         self.cartUseCase = cartUseCase
+        self.orderUseCase = orderUseCase
     }
 }
 
@@ -45,13 +52,7 @@ extension CartPresenterImpl: CartPresenter {
             await view?.display(title: "SHOPPING BAG")
             let request = GetCartItemsRequest(user: Session.shared.user)
             let cartItems = try await cartUseCase.execute(request)
-            await display(cartItems: cartItems)
-            let shippingMethods = [
-                ShippingMethod(isSelected: false, title: "Standart Shipping", subtitle: "(2-4 business days)", price: "FREE"),
-                ShippingMethod(isSelected: false, title: "Express Shipping", subtitle: "(2 business days)", price: "$ 12.00"),
-                ShippingMethod(isSelected: false, title: "Pick up in Store", subtitle: "", price: "FREE")
-            ]
-            await view?.display(shippingMethods: shippingMethods)
+            try await display(cartItems: cartItems)
         }
     }
     
@@ -72,16 +73,58 @@ extension CartPresenterImpl: CartPresenter {
 
 private extension CartPresenterImpl {
     
-    private func display(cartItems: [CartItem]) async {
-        let viewModels = cartItems.map { createViewModel(with: $0) }
-        let items = viewModels.map { CartSectionItem(viewModel: $0) }
-        let section = CartSection(items: items)
-        await view?.display(cartSection: section)
+    private func updateCartItem(productID: ProductID, amount: Int) async {
+        await with(errorHandler) {
+            let requset = UpdateCartItemRequest(user: Session.shared.user, productID: productID, amount: amount)
+            let cartItems = try await cartUseCase.execute(requset)
+            try await display(cartItems: cartItems)
+        }
     }
     
-    private func createViewModel(with cartItem: CartItem) -> CartItemCellViewModel? {
+    private func deleteCartItem(productID: ProductID) async {
+        await with(errorHandler) {
+            let request = DeleteCartItemRequest(user: Session.shared.user, productID: productID)
+            let cartItems = try await cartUseCase.execute(request)
+            try await display(cartItems: cartItems)
+        }
+    }
+    
+    private func didSelectShippingMethod(_ shippingMethod: ShippingMethod) async {
+        await with(errorHandler) {
+            selectedShipping = shippingMethod
+            try await displayShippingMethods()
+            try await displayOrderSummary()
+        }
+    }
+    
+    private func display(cartItems: [CartItem]) async throws {
+        let viewModels = cartItems.map(createCartItemModel)
+        let items = viewModels.map(CartSectionItem.init)
+        let section = CartSection(items: items)
+        await view?.display(cartSection: section)
+        
+        try await displayShippingMethods()
+        try await displayOrderSummary()
+    }
+    
+    private func displayShippingMethods() async throws {
+        let shippingRequest = ShippingMethodsRequest(user: Session.shared.user)
+        let shippingMethods = try await orderUseCase.execute(shippingRequest)
+        if selectedShipping == nil { selectedShipping = shippingMethods.first }
+        let shippingMethodModels = shippingMethods.map(createShippingMethodModel)
+        await view?.display(shippingMethods: shippingMethodModels)
+    }
+    
+    private func displayOrderSummary() async throws {
+        let summaryRequest = OrderSummaryRequest(user: Session.shared.user, shippingMethods: selectedShipping)
+        let summary = try await cartUseCase.execute(summaryRequest)
+        let orderSummary = createOrderSummaryModel(with: summary)
+        await view?.display(orderSummary: orderSummary)
+    }
+    
+    private func createCartItemModel(with cartItem: CartItem) -> CartItemModel? {
         guard let variation = cartItem.product.variations.first else { return nil }
-        return CartItemCellViewModel(
+        return CartItemModel(
             productID: variation.productID,
             quantity: cartItem.amount,
             name: cartItem.product.name.uppercased(),
@@ -98,20 +141,24 @@ private extension CartPresenterImpl {
         )
     }
     
-    private func updateCartItem(productID: ProductID, amount: Int) async {
-        await with(errorHandler) {
-            let requset = UpdateCartItemRequest(user: Session.shared.user, productID: productID, amount: amount)
-            let cartItems = try await cartUseCase.execute(requset)
-            await display(cartItems: cartItems)
-        }
+    private func createShippingMethodModel(with shippingMethod: ShippingMethod) -> ShippingMethodModel {
+        ShippingMethodModel(
+            title: shippingMethod.name,
+            subtitle: shippingMethod.duration,
+            price: shippingMethod.price == 0 ? "FREE" : "$ " + String(format: "%.2f", Double(shippingMethod.price) / 100.0),
+            isSelected: shippingMethod == selectedShipping,
+            didSelectMethod: { [weak self] in
+                await self?.didSelectShippingMethod(shippingMethod)
+            }
+        )
     }
     
-    private func deleteCartItem(productID: ProductID) async {
-        await with(errorHandler) {
-            let request = DeleteCartItemRequest(user: Session.shared.user, productID: productID)
-            let cartItems = try await cartUseCase.execute(request)
-            await display(cartItems: cartItems)
-        }
+    private func createOrderSummaryModel(with summary: OrderSummary) -> OrderSummaryModel {
+        OrderSummaryModel(
+            subtotal: "$ " + String(format: "%.2f", Double(summary.subtotal) / 100.0),
+            shipping: "$ " + String(format: "%.2f", Double(summary.shipping) / 100.0),
+            total: "$ " + String(format: "%.2f", Double(summary.total) / 100.0)
+        )
     }
     
     private func errorHandler(_ error: Error) async {

@@ -17,8 +17,7 @@ protocol CartUseCase {
     func execute(_ request: DeleteCartItemRequest) async throws -> [CartItem]
     @discardableResult
     func execute(_ request: UpdateCartItemRequest) async throws -> [CartItem]
-    @discardableResult
-    func execute(_ request: CreateOrderRequest) async throws -> Order
+    func execute(_ request: OrderSummaryRequest) async throws -> OrderSummary
 }
 
 class CartUseCaseImpl {
@@ -77,12 +76,9 @@ extension CartUseCaseImpl: CartUseCase {
         return cart.items
     }
     
-    func execute(_ request: CreateOrderRequest) async throws -> Order {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
+    func execute(_ request: OrderSummaryRequest) async throws -> OrderSummary {
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
         let cart = Cart(items: cartItems)
-        let order = cart.createOrder(shippindAddress: request.shippingAddress, shippingMethods: request.shippingMethods)
-        
-        try await cartGateway.saveOrder(order, for: request.user)
-        return order
+        return cart.orderSummary(shippingMethod: request.shippingMethods)
     }
 }

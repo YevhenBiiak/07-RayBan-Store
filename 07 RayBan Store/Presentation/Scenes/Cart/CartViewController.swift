@@ -14,7 +14,8 @@ class CartViewController: UIViewController {
     var rootView: CartRootView!
     
     private var itemsSection: Sectionable!
-    private var shippingMethods: [ShippingMethodModel] = []
+    private var shippingMethods: [any ShippingMethodViewModel] = []
+    private var orderSummary: OrderSummaryViewModel?
     
     // MARK: - Life Cycle and overridden methods
     
@@ -49,8 +50,13 @@ extension CartViewController: CartView {
         rootView.сollectionView.reloadData()
     }
     
-    func display(shippingMethods: [ShippingMethodModel]) {
+    func display(shippingMethods: [any ShippingMethodViewModel]) {
         self.shippingMethods = shippingMethods
+        rootView.сollectionView.reloadData()
+    }
+    
+    func display(orderSummary: OrderSummaryViewModel) {
+        self.orderSummary = orderSummary
         rootView.сollectionView.reloadData()
     }
     
@@ -75,12 +81,13 @@ extension CartViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartItemViewCell.reuseId, for: indexPath)
-            (cell as? CartItemViewCell)?.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemCellViewModel
+            (cell as? CartItemViewCell)?.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemViewModel
         case 1:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShippingViewCell.reuseId, for: indexPath)
-            (cell as? ShippingViewCell)?.shippingMethods = shippingMethods
+            (cell as? ShippingViewCell)?.viewModels = shippingMethods
         default:
             cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummaryViewCell.reuseId, for: indexPath)
+            (cell as? SummaryViewCell)?.viewModel = orderSummary
         }
         
         return cell

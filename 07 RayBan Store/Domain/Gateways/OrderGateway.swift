@@ -8,6 +8,5 @@
 import Foundation
 
 protocol OrderGateway {
-//    func fetchOrders(byUserId userId: String, first: Int, skip: Int, completionHandler: @escaping (Result<[OrderDTO]>) -> Void)
-//    func createOrder(_ order: OrderDTO, forUserId userId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void)
+    func fetchShippingMethods() async throws -> [ShippingMethod]
 }

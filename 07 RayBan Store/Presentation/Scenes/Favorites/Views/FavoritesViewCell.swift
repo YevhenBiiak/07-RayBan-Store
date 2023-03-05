@@ -64,7 +64,7 @@ class FavoritesViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
-        label.font = .Oswald.regular.withSize(20)
+        label.font = .Oswald.medium.withSize(18)
         label.textAlignment = .right
         label.text = "$ 129.00"
         return label
@@ -136,8 +136,7 @@ class FavoritesViewCell: UICollectionViewCell {
         
         imageView.left(0).top(0).bottom(0).heightEqualsWidth()
         nameLabel.top(8).Left == imageView.Right + 8
-        priceLabel.CenterY == nameLabel.CenterY
-        priceLabel.right(16).Left == nameLabel.Right + 8
+        priceLabel.top(8).right(16).Left == nameLabel.Right + 8
         stackView.Left == imageView.Right + 8
         stackView.bottom(>=8).Top == nameLabel.Bottom + 8
         favoriteButton.right(8).bottom(16).Left == stackView.Right + 8

@@ -8,11 +8,12 @@
 import UIKit
 import Stevia
 
-protocol ShippingMethodModel {
-    var isSelected: Bool { get }
+protocol ShippingMethodViewModel {
     var title: String { get }
     var subtitle: String { get }
     var price: String { get }
+    var isSelected: Bool { get }
+    var didSelectMethod: () async -> Void { get }
 }
 
 class ShippingViewCell: UICollectionViewCell {
@@ -40,15 +41,15 @@ class ShippingViewCell: UICollectionViewCell {
         return stack
     }()
     
-    var shippingMethods: [ShippingMethodModel] = [] {
+    var viewModels: [any ShippingMethodViewModel] = [] {
         didSet {
             stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-            for method in shippingMethods {
+            for viewModel in viewModels {
                 let shippingItem = ShippingItemView()
-                shippingItem.checkboxButton.isChecked = method.isSelected
-                shippingItem.titleLabel.text = method.title
-                shippingItem.subtitleLabel.text = method.subtitle
-                shippingItem.priceLabel.text = method.price
+                shippingItem.titleLabel.text = viewModel.title
+                shippingItem.subtitleLabel.text = viewModel.subtitle
+                shippingItem.priceLabel.text = viewModel.price
+                shippingItem.checkboxButton.isChecked = viewModel.isSelected
                 shippingItem.checkboxButton.addTarget(self, action: #selector(shippingMethodSelected), for: .touchUpInside)
                 stackView.addArrangedSubview(shippingItem)
             }
@@ -65,10 +66,19 @@ class ShippingViewCell: UICollectionViewCell {
     // MARK: - Private methods
     
     @objc private func shippingMethodSelected(_ sender: CheckboxButton) {
-        stackView.arrangedSubviews.forEach {
-            ($0 as? ShippingItemView)?.checkboxButton.isChecked = false
+        for (i, item) in stackView.arrangedSubviews.enumerated() {
+            guard let shippingView = item as? ShippingItemView else { break }
+            
+            if shippingView.checkboxButton == sender {
+                Task {
+                    let viewModel = viewModels[i]
+                    await viewModel.didSelectMethod()
+                }
+                shippingView.checkboxButton.isChecked = true
+            } else {
+                shippingView.checkboxButton.isChecked = false
+            }
         }
-        sender.isChecked = true
     }
     
     private func configureLayout() {
@@ -105,6 +115,7 @@ private class ShippingItemView: UIView {
     
     let subtitleLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 0
         label.textColor = .appDarkGray
         label.font = .Lato.regular.withSize(14)
         label.text = "(4-5 business days)"

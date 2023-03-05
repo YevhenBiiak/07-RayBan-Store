@@ -66,11 +66,11 @@ extension RemoteRepositoryImpl: ProductsAPI {
 
 extension RemoteRepositoryImpl: CartItemsAPI {
     
-    struct CartItemWrapper: Codable { let productID, amount: Int }
+    struct CartItemCodable: Codable { let productID, amount: Int }
     
     func saveCartItems(_ cartItems: [CartItem], for user: User) async throws {
         try await with(errorHandler) {
-            let array = cartItems.map { CartItemWrapper(productID: $0.product.variations[0].productID, amount: $0.amount) }
+            let array = cartItems.map { CartItemCodable(productID: $0.product.variations[0].productID, amount: $0.amount) }
             try await database.child("carts").child(user.id).setValue(array.asFIRArray)
         }
     }
@@ -79,7 +79,7 @@ extension RemoteRepositoryImpl: CartItemsAPI {
         guard cartItems.isEmpty else { return cartItems }
         let cartItems = try await with(errorHandler) {
             try await database.child("carts").child(user.id).value
-                .decodeArray(of: CartItemWrapper.self)
+                .decodeArray(of: CartItemCodable.self)
                 .map { (productID: $0.productID, amount: $0.amount) }
         }
         
@@ -87,11 +87,25 @@ extension RemoteRepositoryImpl: CartItemsAPI {
         isCartItemsObserved = true
         database.child("carts").child(user.id).observe(.value) { [weak self] snapshot in
             do {
-                self?.cartItems = try snapshot.value.decodeArray(of: CartItemWrapper.self)
+                self?.cartItems = try snapshot.value.decodeArray(of: CartItemCodable.self)
                     .map { (productID: $0.productID, amount: $0.amount) }
             } catch {}
         }
         return cartItems
+    }
+}
+
+// MARK: - CartItemsAPI
+
+extension RemoteRepositoryImpl: OrderAPI {
+    
+    struct ShippingMethodCodable: Codable { let name, duration: String, price: Int }
+    
+    func fetchShippingMethods() async throws -> [ShippingMethod] {
+        try await with(errorHandler) {
+            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
+                .map { ShippingMethod(name: $0.name, duration: $0.duration, price: $0.price) }
+        }
     }
 }
 

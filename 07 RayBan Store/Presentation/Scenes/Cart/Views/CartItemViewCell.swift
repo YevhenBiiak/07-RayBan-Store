@@ -8,6 +8,19 @@
 import UIKit
 import Stevia
 
+protocol CartItemViewModel {
+    var productID: Int { get }
+    var quantity: Int { get }
+    var name: String { get }
+    var price: String { get }
+    var frame: String { get }
+    var lense: String { get }
+    var size: String { get }
+    var imageData: Data { get }
+    var itemAmountDidChange: (ProductID, Int) async -> Void { get }
+    var deleteItemButtonTapped: (ProductID) async -> Void { get }
+}
+
 class CartItemViewCell: UICollectionViewCell {
     
     private let imageView: UIImageView = {
@@ -53,7 +66,7 @@ class CartItemViewCell: UICollectionViewCell {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
-        label.font = .Oswald.regular.withSize(20)
+        label.font = .Oswald.medium.withSize(18)
         label.textAlignment = .right
         label.text = "$ 129.00"
         return label
@@ -61,7 +74,7 @@ class CartItemViewCell: UICollectionViewCell {
     
     private let stepper = QuantityStepper()
     
-    var viewModel: CartItemCellViewModel? {
+    var viewModel: CartItemViewModel? {
         didSet {
             guard let viewModel else { return }
             setImage(with: viewModel.imageData)
@@ -122,8 +135,7 @@ class CartItemViewCell: UICollectionViewCell {
         
         imageView.left(0).top(0).bottom(0).heightEqualsWidth()
         nameLabel.top(8).Left == imageView.Right + 8
-        priceLabel.CenterY == nameLabel.CenterY
-        priceLabel.right(16).Left == nameLabel.Right + 8
+        priceLabel.top(8).right(16).Left == nameLabel.Right + 8
         stackView.Left == imageView.Right + 8
         stackView.bottom(>=8).Top == nameLabel.Bottom + 8
         stepper.right(8).bottom(16).Left == stackView.Right + 8

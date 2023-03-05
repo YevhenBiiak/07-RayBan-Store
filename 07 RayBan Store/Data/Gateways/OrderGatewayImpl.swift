@@ -7,35 +7,20 @@
 
 import Foundation
 
+protocol OrderAPI {
+    func fetchShippingMethods() async throws -> [ShippingMethod]
+}
+
 class OrderGatewayImpl: OrderGateway {
     
-    private let remoteRepository: RemoteRepositoryAPI
+    private let orderApi: OrderAPI
     
-    init(remoteRepository: RemoteRepositoryAPI) {
-        self.remoteRepository = remoteRepository
+    init(orderApi: OrderAPI) {
+        self.orderApi = orderApi
     }
     
-//    func fetchOrders(byUserId userId: String, first: Int, skip: Int, completionHandler: @escaping (Result<[OrderDTO]>) -> Void) {
-//        remoteRepository.executeFetchRequest(ofType: .orders(userId: userId)) { (result: Result<[OrderDTO]>) in
-//            switch result {
-//            case .success(var orders):
-//                orders = Array(orders.dropFirst(skip).prefix(first))
-//                completionHandler(.success(orders))
-//            case .failure(let error):
-//                completionHandler(.failure(error))
-//            }
-//        }
-//    }
-    
-//    func createOrder(_ order: OrderDTO, forUserId userId: String, completionHandler: @escaping (Result<OrderDTO>) -> Void) {
-//        remoteRepository.executeSaveRequest(ofType: .order(order, userId: userId)) { result in
-//            switch result {
-//            case .success:
-//                completionHandler(.success(order))
-//            case .failure(let error):
-//                completionHandler(.failure(error))
-//            }
-//        }
-//    }
+    func fetchShippingMethods() async throws -> [ShippingMethod] {
+        try await orderApi.fetchShippingMethods()
+    }
     
 }

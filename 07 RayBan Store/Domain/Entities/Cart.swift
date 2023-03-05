@@ -44,11 +44,21 @@ struct Cart {
         }
     }
     
-    func createOrder(shippindAddress: String, shippingMethods: String) -> Order {
-        Order(items: items,
-              shippingMethods: shippingMethods,
-              shippindAddress: shippindAddress,
-              price: totalPrice())
+    func orderSummary(shippingMethod: ShippingMethod) -> OrderSummary {
+        OrderSummary(
+            subtotal: totalPrice(),
+            shipping: shippingMethod.price,
+            total: totalPrice() + shippingMethod.price
+        )
+    }
+    
+    func createOrder(shippindAddress: String, shippingMethod: ShippingMethod) -> Order {
+        Order(
+            items: items,
+            shippindAddress: shippindAddress,
+            shippingMethods: shippingMethod,
+            summary: orderSummary(shippingMethod: shippingMethod)
+        )
     }
     
     func totalPrice() -> Cent {

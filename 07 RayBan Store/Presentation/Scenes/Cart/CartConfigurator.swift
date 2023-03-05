@@ -22,11 +22,15 @@ class CartConfiguratorImpl: CartConfigurator {
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
+        let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
+        let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
+        
         let rootView = CartRootView()
         let router = CartRouterImpl(viewController: cartViewController)
         let presenter = CartPresenterImpl(view: cartViewController,
                                           router: router,
-                                          cartUseCase: cartUseCase)
+                                          cartUseCase: cartUseCase,
+                                          orderUseCase: orderUseCase)
         
         cartViewController.presenter = presenter
         cartViewController.rootView = rootView

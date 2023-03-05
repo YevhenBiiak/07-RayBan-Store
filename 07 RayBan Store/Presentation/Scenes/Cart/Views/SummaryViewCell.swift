@@ -8,6 +8,12 @@
 import UIKit
 import Stevia
 
+protocol OrderSummaryViewModel {
+    var subtotal: String { get }
+    var shipping: String { get }
+    var total: String { get }
+}
+
 class SummaryViewCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
@@ -42,7 +48,7 @@ class SummaryViewCell: UICollectionViewCell {
         return label
     }()
     
-    let subtotalPriceLabel: UILabel = {
+    private let subtotalPriceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
         label.font = .Lato.regular
@@ -75,6 +81,15 @@ class SummaryViewCell: UICollectionViewCell {
         button.setTitle(" Pay", for: .normal)
         return button
     }()
+    
+    var viewModel: OrderSummaryViewModel? {
+        didSet {
+            guard let viewModel else { return }
+            subtotalPriceLabel.text = viewModel.subtotal
+            shippingPriceLabel.text = viewModel.shipping
+            totalPriceLabel.text = viewModel.total
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

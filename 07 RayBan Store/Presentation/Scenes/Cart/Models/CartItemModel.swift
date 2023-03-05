@@ -1,5 +1,5 @@
 //
-//  CartItemCellViewModel.swift
+//  CartItemModel.swift
 //  07 RayBan Store
 //
 //  Created by Yevhen Biiak on 28.02.2023.
@@ -11,11 +11,12 @@ struct CartSection: Sectionable {
     var header: String?
     var items: [any Itemable]
 }
+
 struct CartSectionItem: Itemable {
-    var viewModel: CartItemCellViewModel?
+    var viewModel: CartItemViewModel?
 }
 
-struct CartItemCellViewModel {
+struct CartItemModel: CartItemViewModel {
     let productID: Int
     let quantity: Int
     let name: String
