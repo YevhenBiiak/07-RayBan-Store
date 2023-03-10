@@ -146,7 +146,6 @@
 		57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828B28F317C5005FF050 /* ZoomableView.swift */; };
 		57D0829028F44398005FF050 /* UIViewController +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0828F28F44398005FF050 /* UIViewController +.swift */; };
 		57E2F5EE29BB91DB00A721FA /* ThankYouViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2F5ED29BB91DB00A721FA /* ThankYouViewController.swift */; };
-		57E2F5F029BB91FC00A721FA /* ThankYouRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E2F5EF29BB91FC00A721FA /* ThankYouRootView.swift */; };
 		57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2C29924FD900EDE67E /* Routable.swift */; };
 		57E9DB302992540000EDE67E /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */; };
 		57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */; };
@@ -311,7 +310,6 @@
 		57D0828B28F317C5005FF050 /* ZoomableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableView.swift; sourceTree = "<group>"; };
 		57D0828F28F44398005FF050 /* UIViewController +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController +.swift"; sourceTree = "<group>"; };
 		57E2F5ED29BB91DB00A721FA /* ThankYouViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouViewController.swift; sourceTree = "<group>"; };
-		57E2F5EF29BB91FC00A721FA /* ThankYouRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThankYouRootView.swift; sourceTree = "<group>"; };
 		57E9DB2C29924FD900EDE67E /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		57E9DB2F2992540000EDE67E /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
 		57E9DB312992540B00EDE67E /* ForgotPasswordConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordConfigurator.swift; sourceTree = "<group>"; };
@@ -908,7 +906,6 @@
 			isa = PBXGroup;
 			children = (
 				57E2F5ED29BB91DB00A721FA /* ThankYouViewController.swift */,
-				57E2F5EF29BB91FC00A721FA /* ThankYouRootView.swift */,
 			);
 			path = ThankYou;
 			sourceTree = "<group>";
@@ -1199,7 +1196,6 @@
 				5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */,
 				57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */,
 				57E9DB372992554100EDE67E /* ForgotPasswordRootView.swift in Sources */,
-				57E2F5F029BB91FC00A721FA /* ThankYouRootView.swift in Sources */,
 				571BC17529B2742C00CD5D0E /* OrderUseCase.swift in Sources */,
 				57BDD19728D892E900A9007B /* ProductImageViewCell.swift in Sources */,
 				5773020A28BC0226007FB72F /* GetProductsUseCase.swift in Sources */,

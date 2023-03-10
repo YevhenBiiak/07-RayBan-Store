@@ -18,12 +18,11 @@ struct Cart {
     
     mutating func add(product: Product, amount: Int) {
         let item = CartItem(product: product, amount: amount)
-        items.append(item)
-//        if let index = items.firstIndex(where: { $0.product.variations.first?.productID == product.variations.first?.productID }) {
-//            items[index].amount += amount
-//        } else {
-//            items.append(item)
-//        }
+        if let index = items.firstIndex(where: { $0.product.variations.first?.productID == product.variations.first?.productID }) {
+            items[index].amount += amount
+        } else {
+            items.append(item)
+        }
     }
     
     mutating func update(productID: Int, amount: Int) {

@@ -45,7 +45,7 @@ class ProductImagesApiImpl: ImagesAPI {
     ) -> URL {
         var imgName = "\(imageId)"
         var imgWidth = 2048
-        // https://images.ray-ban.com/is/image/RayBan/8056597786683__001.png
+        // https://images.ray-ban.com/is/image/RayBan/805289126577__001.png
         switch type {
         case .main:   imgName += "__001.png"; imgWidth = 800
         case .main2:  imgName += "__002.png"
