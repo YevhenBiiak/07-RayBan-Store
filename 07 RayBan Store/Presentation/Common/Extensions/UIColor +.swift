@@ -24,7 +24,7 @@ extension UIColor {
         UIColor(red: 31 / 255, green: 31 / 255, blue: 36 / 255, alpha: 1)
     }
     static var appRed: UIColor {
-        UIColor.systemRed
+        UIColor(red: 222 / 255, green: 10 / 255, blue: 1 / 255, alpha: 1)
     }
 }
 

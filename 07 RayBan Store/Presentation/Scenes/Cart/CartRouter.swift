@@ -20,4 +20,12 @@ class CartRouterImpl: Routable, CartRouter {
         productDetailsViewController.configurator = productDetailsConfigurator
         navigationController?.pushViewController(productDetailsViewController, animated: true)
     }
+    
+    func presentCheckout(shippingMethod: ShippingMethod) {
+        let checkoutViewController = CheckoutViewController()
+        let checkoutConfigurator = CheckoutConfiguratorImpl(shippingMethod: shippingMethod)
+
+        checkoutViewController.configurator = checkoutConfigurator
+        navigationController?.pushViewController(checkoutViewController, animated: true)
+    }
 }

@@ -52,12 +52,12 @@ extension CartViewController: CartView {
     
     func display(shippingMethods: [any ShippingMethodViewModel]) {
         self.shippingMethods = shippingMethods
-        rootView.сollectionView.reloadData()
+        rootView.сollectionView.reconfigureItems(at: [IndexPath(item: 0, section: 1)])
     }
     
     func display(orderSummary: OrderSummaryViewModel) {
         self.orderSummary = orderSummary
-        rootView.сollectionView.reloadData()
+        rootView.сollectionView.reconfigureItems(at: [IndexPath(item: 0, section: 2)])
     }
     
     func displayError(title: String, message: String?) {
@@ -76,21 +76,20 @@ extension CartViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: UICollectionViewCell
-        
         switch indexPath.section {
         case 0:
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartItemViewCell.reuseId, for: indexPath)
-            (cell as? CartItemViewCell)?.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemViewModel
+            return collectionView.dequeueReusableCell(CartItemViewCell.self, for: indexPath) { cell in
+                cell.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemViewModel
+            }
         case 1:
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShippingViewCell.reuseId, for: indexPath)
-            (cell as? ShippingViewCell)?.viewModels = shippingMethods
+            return collectionView.dequeueReusableCell(ShippingViewCell.self, for: indexPath) { cell in
+                cell.viewModels = shippingMethods
+            }
         default:
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummaryViewCell.reuseId, for: indexPath)
-            (cell as? SummaryViewCell)?.viewModel = orderSummary
+            return collectionView.dequeueReusableCell(SummaryViewCell.self, for: indexPath) { cell in
+                cell.viewModel = orderSummary
+            }
         }
-        
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {

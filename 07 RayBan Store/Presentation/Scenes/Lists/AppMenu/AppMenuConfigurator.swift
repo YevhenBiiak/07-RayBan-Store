@@ -15,11 +15,13 @@ class AppMenuConfiguratorImpl: ListConfigurator {
     
     func configure(listViewController: ListViewController) {
         
-        let productImagesApi = ProductImagesApiImpl()
+        let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
-        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
+        
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let router = AppMenuRouterImpl(appMenuViewController: listViewController,

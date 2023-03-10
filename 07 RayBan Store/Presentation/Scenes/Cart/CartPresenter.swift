@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 protocol CartRouter {
     func presentProductDetails(product: Product)
+    func presentCheckout(shippingMethod: ShippingMethod)
 }
 
 @MainActor
@@ -33,9 +34,7 @@ class CartPresenterImpl {
     private let cartUseCase: CartUseCase
     private let orderUseCase: OrderUseCase
     
-    private var selectedShipping: ShippingMethod! {
-        didSet { print(selectedShipping) }
-    }
+    private var selectedShipping: ShippingMethod!
     
     init(view: CartView?, router: CartRouter, cartUseCase: CartUseCase, orderUseCase: OrderUseCase) {
         self.view = view
@@ -73,30 +72,6 @@ extension CartPresenterImpl: CartPresenter {
 
 private extension CartPresenterImpl {
     
-    private func updateCartItem(productID: ProductID, amount: Int) async {
-        await with(errorHandler) {
-            let requset = UpdateCartItemRequest(user: Session.shared.user, productID: productID, amount: amount)
-            let cartItems = try await cartUseCase.execute(requset)
-            try await display(cartItems: cartItems)
-        }
-    }
-    
-    private func deleteCartItem(productID: ProductID) async {
-        await with(errorHandler) {
-            let request = DeleteCartItemRequest(user: Session.shared.user, productID: productID)
-            let cartItems = try await cartUseCase.execute(request)
-            try await display(cartItems: cartItems)
-        }
-    }
-    
-    private func didSelectShippingMethod(_ shippingMethod: ShippingMethod) async {
-        await with(errorHandler) {
-            selectedShipping = shippingMethod
-            try await displayShippingMethods()
-            try await displayOrderSummary()
-        }
-    }
-    
     private func display(cartItems: [CartItem]) async throws {
         let viewModels = cartItems.map(createCartItemModel)
         let items = viewModels.map(CartSectionItem.init)
@@ -116,7 +91,7 @@ private extension CartPresenterImpl {
     }
     
     private func displayOrderSummary() async throws {
-        let summaryRequest = OrderSummaryRequest(user: Session.shared.user, shippingMethods: selectedShipping)
+        let summaryRequest = OrderSummaryRequest(user: Session.shared.user, shippingMethod: selectedShipping)
         let summary = try await cartUseCase.execute(summaryRequest)
         let orderSummary = createOrderSummaryModel(with: summary)
         await view?.display(orderSummary: orderSummary)
@@ -157,8 +132,36 @@ private extension CartPresenterImpl {
         OrderSummaryModel(
             subtotal: "$ " + String(format: "%.2f", Double(summary.subtotal) / 100.0),
             shipping: "$ " + String(format: "%.2f", Double(summary.shipping) / 100.0),
-            total: "$ " + String(format: "%.2f", Double(summary.total) / 100.0)
+            total: "$ " + String(format: "%.2f", Double(summary.total) / 100.0),
+            checkoutButtonTapped: { [weak self] in
+                guard let self else { return }
+                await self.router.presentCheckout(shippingMethod: self.selectedShipping)
+            }
         )
+    }
+    
+    private func updateCartItem(productID: ProductID, amount: Int) async {
+        await with(errorHandler) {
+            let requset = UpdateCartItemRequest(user: Session.shared.user, productID: productID, amount: amount)
+            let cartItems = try await cartUseCase.execute(requset)
+            try await display(cartItems: cartItems)
+        }
+    }
+    
+    private func deleteCartItem(productID: ProductID) async {
+        await with(errorHandler) {
+            let request = DeleteCartItemRequest(user: Session.shared.user, productID: productID)
+            let cartItems = try await cartUseCase.execute(request)
+            try await display(cartItems: cartItems)
+        }
+    }
+    
+    private func didSelectShippingMethod(_ shippingMethod: ShippingMethod) async {
+        await with(errorHandler) {
+            selectedShipping = shippingMethod
+            try await displayShippingMethods()
+            try await displayOrderSummary()
+        }
     }
     
     private func errorHandler(_ error: Error) async {

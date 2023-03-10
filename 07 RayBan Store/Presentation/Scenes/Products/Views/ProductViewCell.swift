@@ -20,7 +20,7 @@ class ProductsViewCell: UICollectionViewCell {
     private let newLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.Oswald.regular
-        label.textColor = .red
+        label.textColor = .appRed
         label.isHidden = true
         label.text = "NEW"
         return label

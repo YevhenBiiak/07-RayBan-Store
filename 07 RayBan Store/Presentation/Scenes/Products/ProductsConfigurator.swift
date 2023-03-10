@@ -16,13 +16,15 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
     
     func configure(productsViewController: ProductsViewController) {
         
-        let productImagesApi = ProductImagesApiImpl()
+        let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
         
-        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
+        
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let rootView = ProductsRootView()

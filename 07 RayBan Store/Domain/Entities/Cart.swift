@@ -52,11 +52,11 @@ struct Cart {
         )
     }
     
-    func createOrder(shippindAddress: String, shippingMethod: ShippingMethod) -> Order {
+    func createOrder(deliveryInfo: DeliveryInfo, shippingMethod: ShippingMethod) -> Order {
         Order(
             items: items,
-            shippindAddress: shippindAddress,
-            shippingMethods: shippingMethod,
+            deliveryInfo: deliveryInfo,
+            shippingMethod: shippingMethod,
             summary: orderSummary(shippingMethod: shippingMethod)
         )
     }

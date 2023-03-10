@@ -96,7 +96,7 @@ class ShippingViewCell: UICollectionViewCell {
     }
 }
 
-private class ShippingItemView: UIView {
+class ShippingItemView: UIView {
     
     let checkboxButton: CheckboxButton = {
         let config = UIImage.SymbolConfiguration(paletteColors: [.appBlack])

@@ -9,4 +9,5 @@ struct OrderSummaryModel: OrderSummaryViewModel {
     let subtotal: String
     let shipping: String
     let total: String
+    let checkoutButtonTapped: () async -> Void
 }

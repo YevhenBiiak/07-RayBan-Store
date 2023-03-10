@@ -17,7 +17,7 @@ class SunglassesCategoriesConfiguratorImpl: CategoriesConfigurator {
     
     func configure(categoriesViewController: CategoriesViewController) {
         
-        let productImagesApi = ProductImagesApiImpl()
+        let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)

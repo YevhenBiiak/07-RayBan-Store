@@ -117,13 +117,12 @@ class ProductDetailsRootView: UIView {
         return label
     }()
     
-    let applePayButton: UIButton = {
+    let buyNowButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .appBlack
+        button.backgroundColor = .appRed
         button.tintColor = .appWhite
-        let image = UIImage(systemName: "applelogo")!
-        button.setImage(image, for: .normal)
-        button.setTitle(" Pay", for: .normal)
+        button.titleLabel?.font = UIFont.Oswald.bold
+        button.setTitle("BUY NOW", for: .normal)
         return button
     }()
     
@@ -257,7 +256,7 @@ class ProductDetailsRootView: UIView {
                     sizeSection.subviews(sizeTitleLabel, sizeLabel),
                     geofitSection.subviews(geofitTitleLabel, geofitLabel),
                     detailsSection.subviews(productDetailsTitleLabel, descriptionLabel),
-                    priceSection.subviews(priceTitleLabel, priceLabel, applePayButton, addToCartButton)
+                    priceSection.subviews(priceTitleLabel, priceLabel, buyNowButton, addToCartButton)
                 )
             ),
             trailingBuyButton
@@ -303,8 +302,8 @@ class ProductDetailsRootView: UIView {
         priceTitleLabel.left(padding).top(padding)
         priceLabel.right(padding).top(padding).Left == priceTitleLabel.Right + 8
         priceLabel.setContentHuggingPriority(.init(100), for: .horizontal)
-        applePayButton.fillHorizontally(padding: padding).height(44).Top == priceTitleLabel.Bottom + padding
-        addToCartButton.fillHorizontally(padding: padding).height(44).bottom(0).Top == applePayButton.Bottom + padding
+        buyNowButton.fillHorizontally(padding: padding).height(44).Top == priceTitleLabel.Bottom + padding
+        addToCartButton.fillHorizontally(padding: padding).height(44).bottom(0).Top == buyNowButton.Bottom + padding
     }
 }
 

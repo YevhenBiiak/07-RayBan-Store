@@ -14,10 +14,12 @@ class CartGatewayImpl {
     
     private let cartAPI: CartItemsAPI
     private let productGateway: ProductGateway
+    private let orderGateway: OrderGateway
     
-    init(cartAPI: CartItemsAPI, productGateway: ProductGateway) {
+    init(cartAPI: CartItemsAPI, productGateway: ProductGateway, orderGateway: OrderGateway) {
         self.cartAPI = cartAPI
         self.productGateway = productGateway
+        self.orderGateway = orderGateway
     }
 }
 
@@ -37,6 +39,6 @@ extension CartGatewayImpl: CartGateway {
     }
     
     func saveOrder(_ order: Order, for user: User) async throws {
-        
+        try await orderGateway.saveOrder(order, for: user)
     }
 }

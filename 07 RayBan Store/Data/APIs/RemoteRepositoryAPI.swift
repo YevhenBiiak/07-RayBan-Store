@@ -99,12 +99,50 @@ extension RemoteRepositoryImpl: CartItemsAPI {
 
 extension RemoteRepositoryImpl: OrderAPI {
     
+    typealias OrderItemCodable = CartItemCodable
+    struct OrderSummaryCodable: Codable { let subtotal, shipping, total: Int }
     struct ShippingMethodCodable: Codable { let name, duration: String, price: Int }
+    struct DeliveryInfoCodable: Codable { let firstName, lastName, emailAddress, phoneNumber, shippingAddress: String }
     
     func fetchShippingMethods() async throws -> [ShippingMethod] {
         try await with(errorHandler) {
             try await database.child("shipping").value.decode([ShippingMethodCodable].self)
                 .map { ShippingMethod(name: $0.name, duration: $0.duration, price: $0.price) }
+        }
+    }
+    
+    func saveOrder(_ order: Order, for user: User) async throws {
+        try await with(errorHandler) {
+            let items = order.items.map {
+                OrderItemCodable(
+                    productID: $0.product.variations.first!.productID,
+                    amount: $0.amount
+                )
+            }
+            let summary = OrderSummaryCodable(
+                subtotal: order.summary.subtotal,
+                shipping: order.summary.shipping,
+                total: order.summary.total
+            )
+            let shipping = ShippingMethodCodable(
+                name: order.shippingMethod.name,
+                duration: order.shippingMethod.duration,
+                price: order.shippingMethod.price
+            )
+            let deliveryInfo = DeliveryInfoCodable(
+                firstName: order.deliveryInfo.firstName,
+                lastName: order.deliveryInfo.lastName,
+                emailAddress: order.deliveryInfo.emailAddress,
+                phoneNumber: order.deliveryInfo.phoneNumber,
+                shippingAddress: order.deliveryInfo.shippingAddress
+            )
+            let dict: [String: Any] = [
+                "items": items.asFIRArray,
+                "summary": summary.asDictionary,
+                "shippingMethod": shipping.asDictionary,
+                "deliveryInfo": deliveryInfo.asDictionary
+            ]
+            try await database.child("orders").child(user.id).childByAutoId().setValue(dict)
         }
     }
 }

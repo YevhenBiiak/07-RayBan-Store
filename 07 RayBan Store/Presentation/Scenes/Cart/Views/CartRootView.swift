@@ -115,11 +115,11 @@ class CartRootView: UIView {
         
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)))
+            heightDimension: .estimated(410)))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)),
+            heightDimension: .estimated(410)),
             subitems: [item])
         
         return NSCollectionLayoutSection(group: group)
@@ -129,11 +129,11 @@ class CartRootView: UIView {
         
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)))
+            heightDimension: .estimated(220)))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)),
+            heightDimension: .estimated(220)),
             subitems: [item])
         
         return NSCollectionLayoutSection(group: group)

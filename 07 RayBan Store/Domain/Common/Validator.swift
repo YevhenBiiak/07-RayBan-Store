@@ -14,6 +14,39 @@ struct Validator {
     
     // MARK: Public methods
     
+    static func validateFirstName(_ value: String?) throws {
+        guard let firstName = value, !firstName.isEmpty else {
+            throw AppError.firstNameValueIsEmpty
+        }
+    }
+    
+    static func validateLastName(_ value: String?) throws {
+        guard let lastName = value, !lastName.isEmpty else {
+            throw AppError.lastNameValueIsEmpty
+        }
+    }
+    
+    static func validatePhone(_ phone: String) throws {
+        if phone.isEmpty {
+            throw AppError.phoneValueIsEmpty
+        }
+        if Int(phone.replacingOccurrences(of: "+", with: "")) == nil {
+            throw AppError.phoneFormatIsWrong
+        }
+    }
+    
+    static func validateAddress(_ address: String) throws {
+        if address.isEmpty {
+            throw AppError.addressValueIsEmpty
+        }
+    }
+    
+    static func validatePasswordsMatch(_ password: String, and conformPassrowd: String) throws {
+        guard password == conformPassrowd else {
+            throw AppError.passwordsDoNotMatch
+        }
+    }
+    
     static func validateEmail(_ value: String?) throws {
         guard let email = value, !email.isEmpty else {
             throw AppError.emailValueIsEmpty
@@ -32,23 +65,6 @@ struct Validator {
         }
     }
     
-    static func validateFirstName(_ value: String?) throws {
-        guard let firstName = value, !firstName.isEmpty else {
-            throw AppError.firstNameValueIsEmpty
-        }
-    }
-    
-    static func validateLastName(_ value: String?) throws {
-        guard let lastName = value, !lastName.isEmpty else {
-            throw AppError.lastNameValueIsEmpty
-        }
-    }
-    
-    static func validatePasswordsMatch(_ password: String, and conformPassrowd: String) throws {
-        guard password == conformPassrowd else {
-            throw AppError.passwordsDoNotMatch
-        }
-    }
     static func validatePolicyAcceptance(_ acceptedPolicy: Bool) throws {
         guard acceptedPolicy else {
             throw AppError.notAcceptedPolicy

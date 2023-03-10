@@ -34,3 +34,9 @@ struct UpdateCartItemRequest {
     let productID: Int
     let amount: Int
 }
+
+struct CreateOrderRequest {
+    let user: User
+    let shippingMethod: ShippingMethod
+    let deliveryInfo: DeliveryInfo
+}

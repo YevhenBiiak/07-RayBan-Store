@@ -16,10 +16,14 @@ class ProductDetailsRouterImpl: Routable, ProductDetailsRouter {
     }
     
     func presentShoppingCart() {
-        let cartViewController = CartViewController()
-        let cartConfigurator = CartConfiguratorImpl()
-        
-        cartViewController.configurator = cartConfigurator
-        navigationController?.pushViewController(cartViewController, animated: true)
+        if let cartViewController = navigationController?.viewControllers.first(where: { $0 is CartViewController }) {
+            navigationController?.popToViewController(cartViewController, animated: true)
+        } else {
+            let cartViewController = CartViewController()
+            let cartConfigurator = CartConfiguratorImpl()
+            
+            cartViewController.configurator = cartConfigurator
+            navigationController?.pushViewController(cartViewController, animated: true)
+        }
     }
 }

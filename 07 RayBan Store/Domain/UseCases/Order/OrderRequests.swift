@@ -20,11 +20,5 @@ struct ShippingMethodsRequest {
 
 struct OrderSummaryRequest {
     let user: User
-    let shippingMethods: ShippingMethod
-}
-
-struct CreateOrderRequest {
-    let user: User
-    let shippingAddress: String
-    let shippingMethods: String
+    let shippingMethod: ShippingMethod
 }

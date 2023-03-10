@@ -11,8 +11,8 @@ typealias OrderItem = CartItem
 
 struct Order {
     let items: [OrderItem]
-    let shippindAddress: String
-    let shippingMethods: ShippingMethod
+    let deliveryInfo: DeliveryInfo
+    let shippingMethod: ShippingMethod
     let summary: OrderSummary
 }
 
@@ -26,4 +26,12 @@ struct ShippingMethod: Hashable {
     let name: String
     let duration: String
     let price: Cent
+}
+
+struct DeliveryInfo {
+    let firstName: String
+    let lastName: String
+    let emailAddress: String
+    let phoneNumber: String
+    let shippingAddress: String
 }

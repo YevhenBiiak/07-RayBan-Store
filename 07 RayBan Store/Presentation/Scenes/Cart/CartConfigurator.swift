@@ -14,16 +14,16 @@ class CartConfiguratorImpl: CartConfigurator {
     
     func configure(cartViewController: CartViewController) {
         
-        let productImagesApi = ProductImagesApiImpl()
+        let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         
-        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
-        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
-        
         let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
         let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
+        
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let rootView = CartRootView()
         let router = CartRouterImpl(viewController: cartViewController)

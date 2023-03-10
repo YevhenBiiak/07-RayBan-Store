@@ -27,6 +27,7 @@ class RequiredTextField: UITextField {
     
     private var inset: CGFloat = 7
     private var bottomBorder: CALayer!
+    private var observation: NSKeyValueObservation?
     
     // MARK: - Overridden methods
     
@@ -54,6 +55,11 @@ class RequiredTextField: UITextField {
     // draw bottom border
     override func draw(_ rect: CGRect) {
         bottomBorder = addBorder(at: .bottom, color: .black, width: 1.3)
+        observation = observe(\.text, options: .new) { [weak self] (_, change) in
+            if change.newValue??.isEmpty == false {
+                self?.showLabel(animated: false)
+            }
+        }
     }
     
     func triggerRequirements(with message: String) {
@@ -64,8 +70,10 @@ class RequiredTextField: UITextField {
         placeholderLabel.removeFromSuperview()
         
         adjustAppearance(focused: false)
-        requirementsLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-        requirementsLabel.frame.origin = CGPoint(x: 0, y: -self.bounds.height / 2)
+        UIView.performWithoutAnimation {
+            requirementsLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            requirementsLabel.frame.origin = CGPoint(x: 0, y: -self.bounds.height / 2)
+        }
     }
     
     // MARK: - Private methods
@@ -78,7 +86,10 @@ class RequiredTextField: UITextField {
         addSubview(placeholderLabel)
         
         adjustAppearance(focused: true)
-        UIView.animate(withDuration: animated ? 0.25 : 0) {
+        animated ? UIView.animate(withDuration: 0.25, animations: trasnform)
+                 : UIView.performWithoutAnimation(trasnform)
+        
+        func trasnform() {
             self.placeholderLabel.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.placeholderLabel.frame.origin = CGPoint(x: 0, y: -self.bounds.height / 2)
         }

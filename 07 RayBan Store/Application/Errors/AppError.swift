@@ -10,6 +10,7 @@ import Foundation
 enum AppError: LocalizedError {
     /// The Internet connection appears to be offline.
     case networkError
+    
     // Validation
     /// Email is empty. Please fill it.
     case emailValueIsEmpty
@@ -19,6 +20,14 @@ enum AppError: LocalizedError {
     case firstNameValueIsEmpty
     /// Last name is empty. Please fill it.
     case lastNameValueIsEmpty
+    /// Phone number is empty. Please fill it.
+    case phoneValueIsEmpty
+    /// Phone has wrong Format
+    case phoneFormatIsWrong
+    /// Shipping Address is empty. Please fill it.
+    case addressValueIsEmpty
+    /// Shipping address has wrong Format
+    case addressFormatIsWrong
     /// Email has wrong format.
     case emailFormatIsWrong
     /// Password must have minimum 6 symbols.
@@ -27,6 +36,7 @@ enum AppError: LocalizedError {
     case passwordsDoNotMatch
     /// Please read and accept the privacy policy
     case notAcceptedPolicy
+    
     // Auth
     ///  This account are disabled.
     case operationNotAllowed
@@ -50,6 +60,7 @@ enum AppError: LocalizedError {
     case facebookError(String)
     /// Unhandled error type
     case unknown(Error)
+    
     // Database
     /// Invalid product identifier
     case invalidProductIdentifier
@@ -67,10 +78,17 @@ enum AppError: LocalizedError {
         case .passwordValueIsEmpty:  return "Password is empty. Please fill it."
         case .firstNameValueIsEmpty: return "First name is empty. Please fill it."
         case .lastNameValueIsEmpty:  return "Last name is empty. Please fill it."
+            
+        case .phoneValueIsEmpty:     return "Phone number is empty. Please fill it."
+        case .phoneFormatIsWrong:    return "Phone has wrong Format."
+        case .addressValueIsEmpty:   return "Shipping Address is empty. Please fill it."
+        case .addressFormatIsWrong:  return "Shipping address has wrong Format"
+            
         case .emailFormatIsWrong:    return "Email has wrong format."
         case .passwordLengthIsWrong: return "Password must have minimum 6 symbols."
         case .passwordsDoNotMatch:   return "You entered two different passwords. Please try again."
         case .notAcceptedPolicy:     return "Please read and accept the privacy policy."
+            
         case .operationNotAllowed:   return "This account are disabled."
         case .weakPassword:          return "The password must be 6 characters long or more."
         case .wrongPassword:         return "The password is invalid or the user does not have a password."
