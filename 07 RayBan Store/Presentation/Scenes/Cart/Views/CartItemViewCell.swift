@@ -42,7 +42,7 @@ class CartItemViewCell: UICollectionViewCell {
     private let frameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
-        label.font = .Lato.regular.withSize(12)
+        label.font = .Lato.regular.withSize(13)
         label.text = "Frame color: gold"
         return label
     }()
@@ -50,7 +50,7 @@ class CartItemViewCell: UICollectionViewCell {
     private let lenseLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
-        label.font = .Lato.regular.withSize(12)
+        label.font = .Lato.regular.withSize(13)
         label.text = "Lense colro: green"
         return label
     }()
@@ -58,7 +58,7 @@ class CartItemViewCell: UICollectionViewCell {
     private let sizeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
-        label.font = .Lato.regular.withSize(12)
+        label.font = .Lato.regular.withSize(13)
         label.text = "Size: Standart"
         return label
     }()

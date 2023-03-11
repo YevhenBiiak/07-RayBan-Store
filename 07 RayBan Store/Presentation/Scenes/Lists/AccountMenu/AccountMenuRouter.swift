@@ -26,7 +26,11 @@ class AccountMenuRouterImpl: Routable, AccountMenuRouter {
     }
     
     func presentOrderHistory() {
+        let ordersViewController = OrdersViewController()
+        let ordersConfigurator = OrdersConfiguratorImpl()
         
+        ordersViewController.configurator = ordersConfigurator
+        navigationController?.pushViewController(ordersViewController, animated: true)
     }
     
     func presentFavoriteList() {

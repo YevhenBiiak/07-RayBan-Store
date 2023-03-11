@@ -15,9 +15,11 @@ protocol OrderAPI {
 class OrderGatewayImpl {
     
     private let orderAPI: OrderAPI
+    private let profileGateway: ProfileGateway
     
-    init(orderApi: OrderAPI) {
-        self.orderAPI = orderApi
+    init(orderAPI: OrderAPI, profileGateway: ProfileGateway) {
+        self.orderAPI = orderAPI
+        self.profileGateway = profileGateway
     }
 }
 
@@ -33,5 +35,10 @@ extension OrderGatewayImpl: OrderGateway {
     
     func saveOrder(_ order: Order, for user: User) async throws {
         try await orderAPI.saveOrder(order, for: user)
+        
+        var profile = try await profileGateway.fetchProfile(for: user)
+        profile.phone = order.deliveryInfo.phoneNumber
+        profile.address = order.deliveryInfo.shippingAddress
+        try await profileGateway.saveProfile(profile)
     }
 }

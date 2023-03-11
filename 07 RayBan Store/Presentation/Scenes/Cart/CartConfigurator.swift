@@ -18,8 +18,9 @@ class CartConfiguratorImpl: CartConfigurator {
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
+        let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
         
-        let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
+        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, profileGateway: profileGateway)
         let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
         
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)

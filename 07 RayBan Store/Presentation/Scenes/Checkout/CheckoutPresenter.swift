@@ -83,8 +83,9 @@ private extension CheckoutPresenterImpl {
         return OrderItemModel(
             productID: variation.productID,
             name: cartItem.product.name.uppercased(),
+            color: "\(variation.frameColor)/\(variation.lenseColor)",
             price: "$ " + String(format: "%.2f", Double(variation.price) / 100.0),
-            quantity: "Quantity: \(cartItem.amount)",
+            quantity: "qty: \(cartItem.amount)",
             imageData: variation.imageData?.first ?? Data()
         )
     }

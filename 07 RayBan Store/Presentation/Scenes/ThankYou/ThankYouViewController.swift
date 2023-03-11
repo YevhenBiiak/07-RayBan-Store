@@ -13,7 +13,7 @@ class ThankYouViewController: UIViewController {
     private let backgroundView: UIView = {
         let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
         let blurredView: UIView = UIVisualEffectView(effect: blurEffect)
-        blurredView.alpha = 0.98
+        blurredView.alpha = 0.99
         return blurredView
     }()
     

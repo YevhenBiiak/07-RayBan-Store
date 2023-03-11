@@ -25,13 +25,13 @@ class CheckoutConfiguratorImpl: CheckoutConfigurator {
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         
-        let orderGateway = OrderGatewayImpl(orderApi: remoteRepository)
+        let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
+        let profileUseCase = ProfileUseCaseImpl(profileGateway: profileGateway)
+        
+        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, profileGateway: profileGateway)
         
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)
         let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
-        
-        let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
-        let profileUseCase = ProfileUseCaseImpl(profileGateway: profileGateway)
         
         let rootView = CheckoutRootView()
         let router = CheckoutRouterImpl(viewController: checkoutViewController)

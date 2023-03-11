@@ -19,6 +19,7 @@ struct OrderSectionItem: Itemable {
 struct OrderItemModel: OrderItemViewModel {
     let productID: Int
     let name: String
+    let color: String
     let price: String
     let quantity: String
     let imageData: Data

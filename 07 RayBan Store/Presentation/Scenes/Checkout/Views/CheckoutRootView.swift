@@ -51,11 +51,11 @@ class CheckoutRootView: UIView {
         
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.0)))
+            heightDimension: .estimated(95)))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(75)),
+            heightDimension: .estimated(95)),
             subitems: [item])
         
         return NSCollectionLayoutSection(group: group)
