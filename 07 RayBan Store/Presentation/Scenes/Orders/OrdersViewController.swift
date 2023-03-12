@@ -13,6 +13,8 @@ class OrdersViewController: UIViewController {
     var presenter: OrdersPresenter!
     var rootView: OrdersRootView!
     
+    private var viewModels: [ViewModel] = []
+    
     // MARK: - Life Cycle and overridden methods
     
     override func loadView() {
@@ -22,7 +24,14 @@ class OrdersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.viewDidLoad()
+        setupCollectionView()
+        Task { await presenter.viewDidLoad() }
+    }
+    
+    private func setupCollectionView() {
+        rootView.сollectionView.delegate = self
+        rootView.сollectionView.dataSource = self
+        rootView.сollectionView.register(OrderItemsViewCell.self, forCellWithReuseIdentifier: OrderItemsViewCell.reuseId)
     }
     
 }
@@ -30,10 +39,32 @@ class OrdersViewController: UIViewController {
 extension OrdersViewController: OrdersView {
     
     func display(title: String) {
-        
+        self.title = title
+    }
+    
+    func display(viewModels: [ViewModel]) {
+        self.viewModels = viewModels
+        rootView.сollectionView.reloadData()
     }
     
     func displayError(title: String, message: String?) {
-        
+        showAlert(title: title, message: message, buttonTitle: "OK")
     }
+}
+
+extension OrdersViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModels.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        collectionView.dequeueReusableCell(OrderItemsViewCell.self, for: indexPath) { cell in
+            cell.viewModel = viewModels[indexPath.item]
+        }
+    }
+}
+
+extension OrdersViewController: UICollectionViewDelegate {
+    
 }

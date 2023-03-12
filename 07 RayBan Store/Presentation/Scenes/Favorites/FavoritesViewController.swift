@@ -64,12 +64,9 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesViewCell.reuseId, for: indexPath)
-        let viewModel = section.items[indexPath.item].viewModel as? FavoriteItemViewModel
-        
-        (cell as? FavoritesViewCell)?.viewModel = viewModel
-        
-        return cell
+        collectionView.dequeueReusableCell(FavoritesViewCell.self, for: indexPath) { cell in
+            cell.viewModel = section.items[indexPath.item].viewModel as? FavoriteItemViewModel
+        }
     }
 }
 

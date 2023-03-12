@@ -53,6 +53,8 @@ struct Cart {
     
     func createOrder(deliveryInfo: DeliveryInfo, shippingMethod: ShippingMethod) -> Order {
         Order(
+            orderID: generateOrderID(),
+            date: Date.now,
             items: items,
             deliveryInfo: deliveryInfo,
             shippingMethod: shippingMethod,
@@ -62,6 +64,12 @@ struct Cart {
     
     func totalPrice() -> Cent {
         items.map { $0.price() }.reduce(0, +)
+    }
+    
+    private func generateOrderID() -> String {
+        let timestamp = Int(Date().timeIntervalSince1970 * 1000)
+        let random = Int.random(in: 100...999)
+        return "\(timestamp)\(random)"
     }
 }
 

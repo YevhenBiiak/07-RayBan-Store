@@ -8,37 +8,43 @@
 import Foundation
 
 protocol OrderAPI {
-    func fetchShippingMethods() async throws -> [ShippingMethod]
-    func saveOrder(_ order: Order, for user: User) async throws
+    func saveOrders(_ orders: [OrderCodable], for user: User) async throws
+    func fetchOrders(for user: User) async throws -> [OrderCodable]
 }
 
 class OrderGatewayImpl {
     
     private let orderAPI: OrderAPI
-    private let profileGateway: ProfileGateway
+    private let productGateway: ProductGateway
     
-    init(orderAPI: OrderAPI, profileGateway: ProfileGateway) {
+    init(orderAPI: OrderAPI, productGateway: ProductGateway) {
         self.orderAPI = orderAPI
-        self.profileGateway = profileGateway
+        self.productGateway = productGateway
     }
 }
 
 extension OrderGatewayImpl: OrderGateway {
     
-    func fetchShippingMethods() async throws -> [ShippingMethod] {
-        try await orderAPI.fetchShippingMethods()
+    func saveOrders(_ orders: [Order], for user: User) async throws {
+        let orders = orders.map(OrderCodable.init)
+        try await orderAPI.saveOrders(orders, for: user)
     }
     
     func fetchOrders(for user: User) async throws -> [Order] {
-        []
-    }
-    
-    func saveOrder(_ order: Order, for user: User) async throws {
-        try await orderAPI.saveOrder(order, for: user)
-        
-        var profile = try await profileGateway.fetchProfile(for: user)
-        profile.phone = order.deliveryInfo.phoneNumber
-        profile.address = order.deliveryInfo.shippingAddress
-        try await profileGateway.saveProfile(profile)
+        let orders = try await orderAPI.fetchOrders(for: user).concurrentMap { order in
+            let items = try await order.items.concurrentMap { [unowned self] item in
+                let product = try await productGateway.fetchProduct(productID: item.productID, includeImages: true)
+                return OrderItem(product: product, amount: item.amount)
+            }
+            return Order(
+                orderID: order.orderID,
+                date: Date(timeIntervalSince1970: TimeInterval(order.date)),
+                items: items,
+                deliveryInfo: DeliveryInfo(order.deliveryInfo),
+                shippingMethod: ShippingMethod(order.shippingMethod),
+                summary: OrderSummary(order.summary)
+            )
+        }
+        return orders
     }
 }

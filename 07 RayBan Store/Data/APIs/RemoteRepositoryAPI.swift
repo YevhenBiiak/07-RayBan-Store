@@ -18,10 +18,10 @@ class RemoteRepositoryImpl: RemoteRepositoryAPI {
     private var products: [Product] = []
     
     private var isCartItemsObserved = false
-    private var cartItems: [(productID: Int, amount: Int)] = []
+    private var cartItems: [CartItemCodable] = []
     
     private var isFavoriteItemsObserved = false
-    private var favoriteItems: [ModelID] = []
+    private var favoriteItems: [FavoriteItemCodable] = []
 }
 
 // MARK: - ProfilesAPI
@@ -36,7 +36,7 @@ extension RemoteRepositoryImpl: ProfilesAPI {
     
     func saveProfile(_ profile: Profile) async throws {
         return try await with(errorHandler) {
-            try await database.child("customers").child(profile.id).updateChildValues(profile.asDictionary)
+            try await database.child("customers").child(profile.id).updateChildValues(profile.asFIRDictionary)
         }
     }
 }
@@ -62,25 +62,21 @@ extension RemoteRepositoryImpl: ProductsAPI {
     }
 }
 
-// MARK: - CartItemsAPI
+// MARK: - CartAPI
 
-extension RemoteRepositoryImpl: CartItemsAPI {
+extension RemoteRepositoryImpl: CartAPI {
     
-    struct CartItemCodable: Codable { let productID, amount: Int }
-    
-    func saveCartItems(_ cartItems: [CartItem], for user: User) async throws {
-        try await with(errorHandler) {
-            let array = cartItems.map { CartItemCodable(productID: $0.product.variations[0].productID, amount: $0.amount) }
-            try await database.child("carts").child(user.id).setValue(array.asFIRArray)
+    func saveCartItems(_ items: [CartItemCodable], for user: User) async throws {
+        return try await with(errorHandler) {
+            try await database.child("carts").child(user.id).setValue(items.asFIRArray)
         }
     }
     
-    func fetchCartItems(for user: User) async throws -> [(productID: Int, amount: Int)] {
+    func fetchCartItems(for user: User) async throws -> [CartItemCodable] {
         guard cartItems.isEmpty else { return cartItems }
         let cartItems = try await with(errorHandler) {
             try await database.child("carts").child(user.id).value
                 .decodeArray(of: CartItemCodable.self)
-                .map { (productID: $0.productID, amount: $0.amount) }
         }
         
         if isCartItemsObserved { return cartItems }
@@ -88,61 +84,32 @@ extension RemoteRepositoryImpl: CartItemsAPI {
         database.child("carts").child(user.id).observe(.value) { [weak self] snapshot in
             do {
                 self?.cartItems = try snapshot.value.decodeArray(of: CartItemCodable.self)
-                    .map { (productID: $0.productID, amount: $0.amount) }
             } catch {}
         }
         return cartItems
     }
+    
+    func fetchShippingMethods() async throws -> [ShippingMethodCodable] {
+        try await with(errorHandler) {
+            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
+        }
+    }
 }
 
-// MARK: - CartItemsAPI
+// MARK: - OrderAPI
 
 extension RemoteRepositoryImpl: OrderAPI {
     
-    typealias OrderItemCodable = CartItemCodable
-    struct OrderSummaryCodable: Codable { let subtotal, shipping, total: Int }
-    struct ShippingMethodCodable: Codable { let name, duration: String, price: Int }
-    struct DeliveryInfoCodable: Codable { let firstName, lastName, emailAddress, phoneNumber, shippingAddress: String }
-    
-    func fetchShippingMethods() async throws -> [ShippingMethod] {
+    func fetchOrders(for user: User) async throws -> [OrderCodable] {
         try await with(errorHandler) {
-            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
-                .map { ShippingMethod(name: $0.name, duration: $0.duration, price: $0.price) }
+            try await database.child("orders").child(user.id).value
+                .decodeArray(of: OrderCodable.self)
         }
     }
     
-    func saveOrder(_ order: Order, for user: User) async throws {
-        try await with(errorHandler) {
-            let items = order.items.map {
-                OrderItemCodable(
-                    productID: $0.product.variations.first!.productID,
-                    amount: $0.amount
-                )
-            }
-            let summary = OrderSummaryCodable(
-                subtotal: order.summary.subtotal,
-                shipping: order.summary.shipping,
-                total: order.summary.total
-            )
-            let shipping = ShippingMethodCodable(
-                name: order.shippingMethod.name,
-                duration: order.shippingMethod.duration,
-                price: order.shippingMethod.price
-            )
-            let deliveryInfo = DeliveryInfoCodable(
-                firstName: order.deliveryInfo.firstName,
-                lastName: order.deliveryInfo.lastName,
-                emailAddress: order.deliveryInfo.emailAddress,
-                phoneNumber: order.deliveryInfo.phoneNumber,
-                shippingAddress: order.deliveryInfo.shippingAddress
-            )
-            let dict: [String: Any] = [
-                "items": items.asFIRArray,
-                "summary": summary.asDictionary,
-                "shippingMethod": shipping.asDictionary,
-                "deliveryInfo": deliveryInfo.asDictionary
-            ]
-            try await database.child("orders").child(user.id).childByAutoId().setValue(dict)
+    func saveOrders(_ orders: [OrderCodable], for user: User) async throws {
+        return try await with(errorHandler) {
+            try await database.child("orders").child(user.id).setValue(orders.asFIRArray)
         }
     }
 }
@@ -151,29 +118,24 @@ extension RemoteRepositoryImpl: OrderAPI {
 
 extension RemoteRepositoryImpl: FavoriteItemsAPI {
     
-    struct FavoriteItemWrapper: Codable { let modelID: ModelID }
-    
-    func saveFavoriteItems(_ items: [ModelID], for user: User) async throws {
+    func saveFavoriteItems(_ items: [FavoriteItemCodable], for user: User) async throws {
         return try await with(errorHandler) {
-            let array = items.map { FavoriteItemWrapper(modelID: $0) }
-            try await database.child("favorites").child(user.id).setValue(array.asFIRArray)
+            try await database.child("favorites").child(user.id).setValue(items.asFIRArray)
         }
     }
     
-    func fetchFavoriteItems(for user: User) async throws -> [ModelID] {
+    func fetchFavoriteItems(for user: User) async throws -> [FavoriteItemCodable] {
         guard favoriteItems.isEmpty else { return favoriteItems }
         let favoriteItems = try await with(errorHandler) {
             try await database.child("favorites").child(user.id).value
-                .decodeArray(of: FavoriteItemWrapper.self)
-                .map { $0.modelID }
+                .decodeArray(of: FavoriteItemCodable.self)
         }
         
         if isFavoriteItemsObserved { return favoriteItems }
         isFavoriteItemsObserved = true
         database.child("favorites").child(user.id).observe(.value) { [weak self] snapshot in
             do {
-                self?.favoriteItems = try snapshot.value.decodeArray(of: FavoriteItemWrapper.self)
-                    .map { $0.modelID }
+                self?.favoriteItems = try snapshot.value.decodeArray(of: FavoriteItemCodable.self)
             } catch {}
         }
         return favoriteItems
@@ -223,14 +185,14 @@ private extension Array where Element: Codable {
     var asFIRArray: [String: Any] {
         var array = [String: Any]()
         for (i, item) in self.enumerated() {
-            array["\(i)"] = item.asDictionary
+            array["\(i)"] = item.asFIRDictionary
         }
         return array
     }
 }
 
 extension Encodable {
-    var asDictionary: [String: Any] {
+    var asFIRDictionary: [String: Any] {
         guard let jsonData = try? JSONEncoder().encode(self) else { return [:] }
         guard let dictionary = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else { return [:] }
         return dictionary

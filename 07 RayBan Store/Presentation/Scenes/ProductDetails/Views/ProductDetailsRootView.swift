@@ -174,10 +174,10 @@ class ProductDetailsRootView: UIView {
             trailingBuyButton.setTitle(addToCartButtonTitle, for: .normal)
         }
     }
-    var addToCartButtonCoolor: UIColor = .appRed {
+    var addToCartButtonColor: UIColor = .appRed {
         didSet {
-            addToCartButton.backgroundColor = addToCartButtonCoolor
-            trailingBuyButton.backgroundColor = addToCartButtonCoolor
+            addToCartButton.backgroundColor = addToCartButtonColor
+            trailingBuyButton.backgroundColor = addToCartButtonColor
         }
     }
     

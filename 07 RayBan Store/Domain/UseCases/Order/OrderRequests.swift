@@ -9,16 +9,7 @@ struct OrdersRequest {
     let user: User
 }
 
-struct OrderItemsRequest {
+struct DeleteOrderRequest {
     let user: User
-    let orderID: String
-}
-
-struct ShippingMethodsRequest {
-    let user: User
-}
-
-struct OrderSummaryRequest {
-    let user: User
-    let shippingMethod: ShippingMethod
+    let orderID: OrderID
 }

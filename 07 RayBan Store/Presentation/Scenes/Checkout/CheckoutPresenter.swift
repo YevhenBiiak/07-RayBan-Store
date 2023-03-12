@@ -78,7 +78,7 @@ extension CheckoutPresenterImpl: CheckoutPresenter {
 
 private extension CheckoutPresenterImpl {
     
-    private func createOrderItemModel(with cartItem: CartItem) -> OrderItemModel? {
+    func createOrderItemModel(with cartItem: CartItem) -> OrderItemModel? {
         guard let variation = cartItem.product.variations.first else { return nil }
         return OrderItemModel(
             productID: variation.productID,
@@ -90,7 +90,7 @@ private extension CheckoutPresenterImpl {
         )
     }
     
-    private func createOrderDetailsModel(with orderSummary: OrderSummary) -> OrderDetailsModel {
+    func createOrderDetailsModel(with orderSummary: OrderSummary) -> OrderDetailsModel {
         OrderDetailsModel(
             shippingTitle: shippingMethod.name,
             shippingSubtitle: shippingMethod.duration,
@@ -101,7 +101,7 @@ private extension CheckoutPresenterImpl {
         )
     }
     
-    private func createDeliveryInfoModel(with profile: Profile) -> DeliveryInfoModel {
+    func createDeliveryInfoModel(with profile: Profile) -> DeliveryInfoModel {
         DeliveryInfoModel(
             firstName: profile.firstName ?? "",
             lastName: profile.lastName ?? "",
@@ -114,7 +114,7 @@ private extension CheckoutPresenterImpl {
         )
     }
     
-    private func displayUpdatedDeliveryInfo(
+    func displayUpdatedDeliveryInfo(
         firstNameError: String? = nil,
         lastNameError: String? = nil,
         emailError: String? = nil,
@@ -139,7 +139,7 @@ private extension CheckoutPresenterImpl {
         await view?.display(deliveryInfo: updatedDeliveryInfo)
     }
     
-    private func paymentButtonTapped(viewModel: DeliveryInfoViewModel) async {
+    func paymentButtonTapped(viewModel: DeliveryInfoViewModel) async {
         await with(errorHandler) {
             currentDeliveryInfo = viewModel
             let info = DeliveryInfo(
@@ -156,7 +156,7 @@ private extension CheckoutPresenterImpl {
         }
     }
     
-    private func errorHandler(_ error: Error) async {
+    func errorHandler(_ error: Error) async {
         if let error = error as? AppError {
             switch error {
             case .networkError:          await view?.displayError(title: "Error", message: error.localizedDescription)

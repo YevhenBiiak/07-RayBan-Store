@@ -26,7 +26,7 @@ protocol ProductDetailsPresenter {
     func didSelectColorSegment(at index: Int) async
     func addToCartButtonTapped(productID: Int) async
     func favoriteButtonTapped(isFavorite: Bool) async
-    func cartButtonTapped() async
+    func showCartButtonTapped() async
 }
 
 class ProductDetailsPresenterImpl {
@@ -123,7 +123,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
         }
     }
     
-    func cartButtonTapped() async {
+    func showCartButtonTapped() async {
         await router.presentShoppingCart()
     }
 }

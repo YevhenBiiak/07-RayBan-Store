@@ -26,16 +26,7 @@ extension UICollectionView {
         
         let cell: Cell! = dequeueReusableCell(withReuseIdentifier: Cell.reuseId, for: indexPath) as? Cell
         configurationHandler(cell)
+        
         return cell
     }
-    
-//    func dequeueRegisteredCell<Cell>(_ type: Cell.Type, for indexPath: IndexPath, configurationHandler: (Cell) -> Void) ->
-//    UICollectionViewCell where Cell: UICollectionViewCell, Cell: ReuseIdentifiable {
-//        let cellRegistration = UICollectionView.CellRegistration<Cell == Cell> { (cell, _, product) in
-//                
-//            }
-//        
-//        let cell: Cell! = dequeueConfiguredReusableCell(using: cellRegistration(), for: indexPath, item: nil)
-//    }
-    
 }

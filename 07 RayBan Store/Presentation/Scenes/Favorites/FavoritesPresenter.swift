@@ -71,19 +71,19 @@ extension FavoritesPresenterImpl: FavoritesPresenter {
 
 private extension FavoritesPresenterImpl {
     
-    private func getFavoriteItems() async throws -> [FavoriteItem] {
+    func getFavoriteItems() async throws -> [FavoriteItem] {
         let request =  GetFavoriteItemsRequest(user: Session.shared.user)
         return try await favoriteUseCase.execute(request)
     }
     
-    private func display(favoriteItems: [FavoriteItem]) async {
-        let viewModels = favoriteItems.map { createViewModel(with: $0) }
+    func display(favoriteItems: [FavoriteItem]) async {
+        let viewModels = favoriteItems.map(createViewModel)
         let items = viewModels.map { FavoriteSectionItem(viewModel: $0) }
         let section = FavoriteSection(items: items)
         await view?.display(section: section)
     }
     
-    private func createViewModel(with favoriteItems: FavoriteItem) -> FavoriteItemViewModel? {
+    func createViewModel(with favoriteItems: FavoriteItem) -> FavoriteItemViewModel? {
         guard let variation = favoriteItems.product.variations.first else { return nil }
         return FavoriteItemModel(
             modelID: favoriteItems.product.modelID,
@@ -99,7 +99,7 @@ private extension FavoritesPresenterImpl {
         )
     }
     
-    private func deleteFavoriteItem(modelID: ModelID) async {
+    func deleteFavoriteItem(modelID: ModelID) async {
         await with(errorHandler) {
             let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: modelID, includeImages: true)
             let favoriteItems = try await favoriteUseCase.execute(request)
@@ -107,7 +107,7 @@ private extension FavoritesPresenterImpl {
         }
     }
     
-    private func errorHandler(_ error: Error) async {
+    func errorHandler(_ error: Error) async {
         await view?.displayError(title: "Error", message: error.localizedDescription)
     }
 }

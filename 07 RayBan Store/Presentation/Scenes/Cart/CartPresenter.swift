@@ -32,15 +32,13 @@ class CartPresenterImpl {
     private weak var view: CartView?
     private let router: CartRouter
     private let cartUseCase: CartUseCase
-    private let orderUseCase: OrderUseCase
     
     private var selectedShipping: ShippingMethod!
     
-    init(view: CartView?, router: CartRouter, cartUseCase: CartUseCase, orderUseCase: OrderUseCase) {
+    init(view: CartView?, router: CartRouter, cartUseCase: CartUseCase) {
         self.view = view
         self.router = router
         self.cartUseCase = cartUseCase
-        self.orderUseCase = orderUseCase
     }
 }
 
@@ -84,7 +82,7 @@ private extension CartPresenterImpl {
     
     private func displayShippingMethods() async throws {
         let shippingRequest = ShippingMethodsRequest(user: Session.shared.user)
-        let shippingMethods = try await orderUseCase.execute(shippingRequest)
+        let shippingMethods = try await cartUseCase.execute(shippingRequest)
         if selectedShipping == nil { selectedShipping = shippingMethods.first }
         let shippingMethodModels = shippingMethods.map(createShippingMethodModel)
         await view?.display(shippingMethods: shippingMethodModels)

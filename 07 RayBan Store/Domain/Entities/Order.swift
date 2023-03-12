@@ -8,8 +8,24 @@
 import Foundation
 
 typealias OrderItem = CartItem
+typealias OrderID = String
+
+struct OrderList {
+    
+    var orders: [Order]
+    
+    mutating func add(order: Order) {
+        orders.append(order)
+    }
+    
+    mutating func delete(orderID: OrderID) {
+        orders.removeAll { $0.orderID == orderID }
+    }
+}
 
 struct Order {
+    let orderID: OrderID
+    let date: Date
     let items: [OrderItem]
     let deliveryInfo: DeliveryInfo
     let shippingMethod: ShippingMethod

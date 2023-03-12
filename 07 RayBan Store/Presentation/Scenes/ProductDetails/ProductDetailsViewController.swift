@@ -27,7 +27,7 @@ class ProductDetailsViewController: UIViewController {
             let title = viewModel.isInCart ? "SHOPPING BAG" : "ADD TO BAG"
             let color = viewModel.isInCart ? UIColor.appBlack : UIColor.appRed
             rootView.addToCartButtonTitle = title
-            rootView.addToCartButtonCoolor = color
+            rootView.addToCartButtonColor = color
             rootView.showActivityIndicator = viewModel.imageData.count <= 1
         }
     }
@@ -66,13 +66,13 @@ class ProductDetailsViewController: UIViewController {
     @objc private func addToCartButtonTapped() {
         Task {
             viewModel.isInCart == true
-                ? await presenter.cartButtonTapped()
+                ? await presenter.showCartButtonTapped()
                 : await presenter.addToCartButtonTapped(productID: viewModel.productID)
         }
     }
     
     @objc private func cartButtonTapped() {
-        Task { await presenter.cartButtonTapped() }
+        Task { await presenter.showCartButtonTapped() }
     }
 }
 

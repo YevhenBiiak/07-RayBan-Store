@@ -24,7 +24,7 @@ class OrderItemViewCell: UICollectionViewCell {
     var viewModel: OrderItemViewModel? {
         didSet {
             guard let viewModel else { return }
-            setImage(with: viewModel.imageData)
+            itemView.setImage(with: viewModel.imageData)
             itemView.nameLabel.text = viewModel.name
             itemView.colorLabel.text = viewModel.color
             itemView.priceLabel.text = viewModel.price
@@ -40,15 +40,6 @@ class OrderItemViewCell: UICollectionViewCell {
     }
     
     required init?(coder: NSCoder) { fatalError() }
-    
-    private func setImage(with data: Data) {
-        DispatchQueue.global().async {
-            guard let image = UIImage(data: data)?.preparingForDisplay() else { return }
-            DispatchQueue.main.async {
-                self.itemView.imageView.image = image
-            }
-        }
-    }
     
     private func configureLayout() {
         subviews(itemView)

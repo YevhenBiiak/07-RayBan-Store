@@ -23,10 +23,10 @@ class ProductsConfiguratorImpl: ProductsConfigurator {
         let getProductsUseCase = GetProductsUseCaseImpl(productGateway: productGateway)
         
         let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
-        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, profileGateway: profileGateway)
+        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, productGateway: productGateway)
         
-        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway, orderGateway: orderGateway)
-        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway, orderGateway: orderGateway)
         
         let rootView = ProductsRootView()
         let router = ProductsRouterImpl(viewController: productsViewController)

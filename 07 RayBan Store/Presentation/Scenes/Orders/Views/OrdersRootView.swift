@@ -9,10 +9,12 @@ import UIKit
 
 class OrdersRootView: UIView {
     
+    var сollectionView: UICollectionView!
+    
     // MARK: - Initializers and overridden methods
     
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupViews()
         configureLayout()
     }
@@ -26,6 +28,21 @@ class OrdersRootView: UIView {
     }
     
     private func configureLayout() {
+        сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        subviews(сollectionView)
+        сollectionView.fillContainer()
+    }
+    
+    private func createLayout() -> UICollectionViewLayout {
+        let item = NSCollectionLayoutItem(layoutSize: .init(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(95)))
         
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(95)),
+            subitems: [item])
+        
+        return UICollectionViewCompositionalLayout(section: .init(group: group))
     }
 }

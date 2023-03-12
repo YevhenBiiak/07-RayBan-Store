@@ -20,14 +20,17 @@ protocol CartUseCase {
     func execute(_ request: OrderSummaryRequest) async throws -> OrderSummary
     @discardableResult
     func execute(_ request: CreateOrderRequest) async throws -> Order
+    func execute(_ request: ShippingMethodsRequest) async throws -> [ShippingMethod]
 }
 
 class CartUseCaseImpl {
     
     private let cartGateway: CartGateway
+    private let orderGateway: OrderGateway
     
-    init(cartGateway: CartGateway) {
+    init(cartGateway: CartGateway, orderGateway: OrderGateway) {
         self.cartGateway = cartGateway
+        self.orderGateway = orderGateway
     }
 }
 
@@ -91,14 +94,24 @@ extension CartUseCaseImpl: CartUseCase {
         try Validator.validatePhone(request.deliveryInfo.phoneNumber)
         try Validator.validateAddress(request.deliveryInfo.shippingAddress)
         
+        // fetch cart items, create cart with cart items, create order with request params
         let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
         let cart = Cart(items: cartItems)
+        let newOrder = cart.createOrder(deliveryInfo: request.deliveryInfo, shippingMethod: request.shippingMethod)
         
-        let order = cart.createOrder(deliveryInfo: request.deliveryInfo, shippingMethod: request.shippingMethod)
-        // send order
-        try await cartGateway.saveOrder(order, for: request.user)
-        // clear shopping cart
+        // fetch orders, create order list, add created order to list
+        let orders = try await orderGateway.fetchOrders(for: request.user)
+        var orderList = OrderList(orders: orders)
+        orderList.add(order: newOrder)
+        
+        // save order list, clear cart
+        try await orderGateway.saveOrders(orderList.orders, for: request.user)
         try await cartGateway.saveCartItems([], for: request.user)
-        return order
+        
+        return newOrder
+    }
+    
+    func execute(_ request: ShippingMethodsRequest) async throws -> [ShippingMethod] {
+        try await cartGateway.fetchShippingMethods()
     }
 }

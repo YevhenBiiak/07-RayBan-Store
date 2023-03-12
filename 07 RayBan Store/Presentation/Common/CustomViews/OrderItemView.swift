@@ -10,7 +10,7 @@ import Stevia
 
 class OrderItemView: UIView {
     
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .appLightGray
         imageView.contentMode = .scaleAspectFit
@@ -58,6 +58,15 @@ class OrderItemView: UIView {
     }
     
     required init?(coder: NSCoder) { fatalError() }
+    
+    func setImage(with data: Data) {
+        DispatchQueue.global().async {
+            guard let image = UIImage(data: data)?.preparingForDisplay() else { return }
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }
+    }
     
     // MARK: - Private methods
         

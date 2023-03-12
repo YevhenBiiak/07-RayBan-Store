@@ -9,8 +9,8 @@ import Foundation
 
 protocol OrderUseCase {
     func execute(_ request: OrdersRequest) async throws -> [Order]
-    func execute(_ request: OrderItemsRequest) async throws -> [OrderItem]
-    func execute(_ request: ShippingMethodsRequest) async throws -> [ShippingMethod]
+    @discardableResult
+    func execute(_ request: DeleteOrderRequest) async throws -> [Order]
 }
 
 class OrderUseCaseImpl {
@@ -25,14 +25,15 @@ class OrderUseCaseImpl {
 extension OrderUseCaseImpl: OrderUseCase {
 
     func execute(_ request: OrdersRequest) async throws -> [Order] {
-        []
+        try await orderGateway.fetchOrders(for: request.user)
     }
     
-    func execute(_ request: OrderItemsRequest) async throws -> [OrderItem] {
-        []
-    }
-    
-    func execute(_ request: ShippingMethodsRequest) async throws -> [ShippingMethod] {
-        try await orderGateway.fetchShippingMethods()
+    func execute(_ request: DeleteOrderRequest) async throws -> [Order] {
+        let orders = try await orderGateway.fetchOrders(for: request.user)
+        var orderList = OrderList(orders: orders)
+        orderList.delete(orderID: request.orderID)
+        
+        try await orderGateway.saveOrders(orderList.orders, for: request.user)
+        return orderList.orders
     }
 }
