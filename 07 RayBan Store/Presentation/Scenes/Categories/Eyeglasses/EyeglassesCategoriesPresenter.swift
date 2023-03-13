@@ -62,7 +62,7 @@ extension EyeglassesCategoriesPresenterImpl: CategoriesPresenter {
         switch index {
         case 0: Task { await router.presentProducts(gender: .male) }
         case 1: Task { await router.presentProducts(gender: .female) }
-        case 2: Task { await router.presentProducts(gender: .child) }
+        case 2: Task { await router.presentProducts(gender: .kids) }
         case 3: Task { await router.presentAllProducts() }
         default: break }
     }

@@ -172,11 +172,11 @@ extension ProductsPresenterImpl {
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
             
             totalProductsCount = productsCount
-            if productsCount > 0 {
-                let header = "\(productsCount) PRODUCTS"
-                let section = ProductsSection(header: header, items: [ProductItem()])
-                await view?.display(productsSection: section)
-            }
+            guard productsCount > 0 else { return }
+            
+            let header = "\(productsCount) PRODUCTS"
+            let section = ProductsSection(header: header, items: [ProductItem()])
+            await view?.display(productsSection: section)
             
             // second phase (display first product item)
             let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: 0)

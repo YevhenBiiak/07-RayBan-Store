@@ -15,7 +15,7 @@ class RemoteRepositoryImpl: RemoteRepositoryAPI {
     private let database: DatabaseReference = Database.database().reference()
     
     private var isProductsObserved = false
-    private var products: [Product] = []
+    private var products: [ProductCodable] = []
     
     private var isCartItemsObserved = false
     private var cartItems: [CartItemCodable] = []
@@ -28,13 +28,13 @@ class RemoteRepositoryImpl: RemoteRepositoryAPI {
 
 extension RemoteRepositoryImpl: ProfilesAPI {
     
-    func fetchProfile(for user: User) async throws -> Profile {
+    func fetchProfile(for user: User) async throws -> ProfileCodable {
         try await with(errorHandler) {
-            try await database.child("customers").child(user.id).value.decode(Profile.self)
+            try await database.child("customers").child(user.id).value.decode(ProfileCodable.self)
         }
     }
     
-    func saveProfile(_ profile: Profile) async throws {
+    func saveProfile(_ profile: ProfileCodable) async throws {
         return try await with(errorHandler) {
             try await database.child("customers").child(profile.id).updateChildValues(profile.asFIRDictionary)
         }
@@ -45,17 +45,17 @@ extension RemoteRepositoryImpl: ProfilesAPI {
 
 extension RemoteRepositoryImpl: ProductsAPI {
     
-    func fetchProducts() async throws -> [Product] {
+    func fetchProducts() async throws -> [ProductCodable] {
         guard products.isEmpty else { return products }
         let products = try await with(errorHandler) {
-            try await self.database.child("products").value.decodeArray(of: Product.self)
+            try await self.database.child("products").value.decodeArray(of: ProductCodable.self)
         }
         
         if isProductsObserved { return products }
         isProductsObserved = true
         database.child("products").observe(.value) { [weak self] snapshot in
             do {
-                self?.products = try snapshot.value.decodeArray(of: Product.self)
+                self?.products = try snapshot.value.decodeArray(of: ProductCodable.self)
             } catch {}
         }
         return products

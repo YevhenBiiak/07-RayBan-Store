@@ -23,5 +23,3 @@ struct Profile {
         firstName != nil && lastName != nil && address != nil
     }
 }
-
-extension Profile: Codable {}

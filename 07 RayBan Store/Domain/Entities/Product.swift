@@ -13,7 +13,7 @@ typealias ProductID = Int
 
 struct Product {
     enum Category: String { case sunglasses, eyeglasses }
-    enum Gender: String { case male, female, unisex, child }
+    enum Gender: String { case male, female, unisex, kids }
     enum Style: String { case aviator, round, clubmaster, wayfarer, ferrari, erika, justin }
 
     let modelID: ModelID
@@ -34,9 +34,3 @@ struct ProductVariation {
     let lenseColor: String
     var imageData: [Data]?
 }
-
-extension Product: Codable {}
-extension Product.Category: Codable {}
-extension Product.Gender: Codable {}
-extension Product.Style: Codable {}
-extension ProductVariation: Codable {}

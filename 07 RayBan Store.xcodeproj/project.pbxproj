@@ -80,6 +80,8 @@
 		5773020E28BC040E007FB72F /* AuthGateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020D28BC040E007FB72F /* AuthGateway.swift */; };
 		5773021028BCE474007FB72F /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020F28BCE474007FB72F /* Result.swift */; };
 		5774FE0B29BF81C300744524 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0A29BF81C300744524 /* EmptyStateView.swift */; };
+		5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0C29BF878200744524 /* ProductCodable.swift */; };
+		5774FE0F29BF983B00744524 /* ProfileCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0E29BF983B00744524 /* ProfileCodable.swift */; };
 		577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C928C1F8B400E31B88 /* AuthUseCase.swift */; };
 		577B93D328C2064600E31B88 /* AuthRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D228C2064600E31B88 /* AuthRequests.swift */; };
 		5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000228D5FC7D003766F0 /* ProductsRootView.swift */; };
@@ -260,6 +262,8 @@
 		5773020D28BC040E007FB72F /* AuthGateway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGateway.swift; sourceTree = "<group>"; };
 		5773020F28BCE474007FB72F /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		5774FE0A29BF81C300744524 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		5774FE0C29BF878200744524 /* ProductCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCodable.swift; sourceTree = "<group>"; };
+		5774FE0E29BF983B00744524 /* ProfileCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCodable.swift; sourceTree = "<group>"; };
 		577B93C928C1F8B400E31B88 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		577B93D228C2064600E31B88 /* AuthRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequests.swift; sourceTree = "<group>"; };
 		5784000228D5FC7D003766F0 /* ProductsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRootView.swift; sourceTree = "<group>"; };
@@ -976,12 +980,14 @@
 		57E2F60A29BE009700A721FA /* Codable */ = {
 			isa = PBXGroup;
 			children = (
+				5774FE0C29BF878200744524 /* ProductCodable.swift */,
 				57E2F60B29BE00BD00A721FA /* CartItemCodable.swift */,
 				57E2F60D29BE011000A721FA /* FavoriteItemCodable.swift */,
 				57E2F60F29BE024E00A721FA /* OrderCodable.swift */,
 				57E2F61529BE036800A721FA /* OrderSummaryCodable.swift */,
 				57E2F61329BE035500A721FA /* DeliveryInfoCodable.swift */,
 				57E2F61129BE034200A721FA /* ShippingMethodCodable.swift */,
+				5774FE0E29BF983B00744524 /* ProfileCodable.swift */,
 			);
 			path = Codable;
 			sourceTree = "<group>";
@@ -1337,6 +1343,7 @@
 				57ED3DC228E73B5E0015CFDE /* CategoriesRootView.swift in Sources */,
 				571EDB9B28D61A3E00C8EBAA /* UIButton +.swift in Sources */,
 				5784000728D5FCFC003766F0 /* UIColor +.swift in Sources */,
+				5774FE0F29BF983B00744524 /* ProfileCodable.swift in Sources */,
 				57B75D4029A92AA80017E0F3 /* FavoriteGateway.swift in Sources */,
 				57E2F60429BCC63300A721FA /* Date + .swift in Sources */,
 				57A188B729AF742B009C3AE1 /* WarningView.swift in Sources */,
@@ -1405,6 +1412,7 @@
 				575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
 				5774FE0B29BF81C300744524 /* EmptyStateView.swift in Sources */,
+				5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
 				579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */,
 				571BC18929B7414800CD5D0E /* CheckoutConfigurator.swift in Sources */,

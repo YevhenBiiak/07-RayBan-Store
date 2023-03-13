@@ -12,7 +12,7 @@ protocol ImagesAPI {
 }
 
 protocol ProductsAPI {
-    func fetchProducts() async throws -> [Product]
+    func fetchProducts() async throws -> [ProductCodable]
 }
 
 class ProductGatewayImpl {
@@ -29,8 +29,10 @@ class ProductGatewayImpl {
 extension ProductGatewayImpl: ProductGateway {
     
     func fetchProduct(modelID: String, includeImages: Bool) async throws -> Product {
-        let product = try await productsAPI.fetchProducts().first { $0.modelID == modelID }
-        guard var product else { throw AppError.invalidProductModelID }
+        guard let productCodable = try await productsAPI.fetchProducts().first(where: { $0.modelID == modelID })
+        else { throw AppError.invalidProductModelID }
+        
+        var product = Product(productCodable)
         guard includeImages else { return product }
         
         // load images for all product variants
@@ -39,10 +41,12 @@ extension ProductGatewayImpl: ProductGateway {
     }
     
     func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product {
-        let product = try await productsAPI.fetchProducts().first { $0.variations.contains { $0.productID == productID }}
-        let variation = product?.variations.first { $0.productID == productID }
-        guard var product, let variation else { throw AppError.invalidProductIdentifier }
-        product.variations = [variation]
+        guard let productCodable = try await productsAPI.fetchProducts().first(where: { $0.variations.contains { $0.productID == productID }}),
+              let variation = productCodable.variations.first(where: { $0.productID == productID })
+        else { throw AppError.invalidProductIdentifier }
+        
+        var product = Product(productCodable)
+        product.variations = [ProductVariation(variation)]
         
         guard includeImages else { return product }
         
@@ -54,6 +58,7 @@ extension ProductGatewayImpl: ProductGateway {
     // Product by Category, Style, Gender
     func fetchProduct(category: Product.Category, gender: Product.Gender?, style: Product.Style?, index: Int) async throws -> Product {
         let products = try await productsAPI.fetchProducts()
+            .map(Product.init)
             .filter(category: category, gender: gender, style: style)
         
         guard index < products.count else { throw AppError.invalidProductIndex }
@@ -67,6 +72,7 @@ extension ProductGatewayImpl: ProductGateway {
     // Products by Category, Style, Gender with indices
     func fetchProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?, indices: [Int]) async throws -> [Product] {
         var products = try await productsAPI.fetchProducts()
+            .map(Product.init)
             .filter(category: category, gender: gender, style: style)
         
         guard indices.count <= products.count else { throw AppError.invalidProductIndex }
@@ -80,6 +86,7 @@ extension ProductGatewayImpl: ProductGateway {
     // Products count by Category, Style, Gender
     func productsCount(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async throws -> Int {
         try await productsAPI.fetchProducts()
+            .map(Product.init)
             .filter(category: category, gender: gender, style: style)
             .count
     }
@@ -87,6 +94,7 @@ extension ProductGatewayImpl: ProductGateway {
     // Representation Of Product Styles Of Category
     func fetchProductStyles(category: Product.Category, includeImages: Bool) async throws -> [Product] {
         var products = try await productsAPI.fetchProducts()
+            .map(Product.init)
             .filter(category: category)
             .parseProductStyles()
         
@@ -136,7 +144,7 @@ private extension Array where Element == Product {
         switch gender {
         case .male:   products = products.filter { $0.gender == .male || $0.gender == .unisex }
         case .female: products = products.filter { $0.gender == .female || $0.gender == .unisex }
-        case .child:  products = products.filter { $0.gender == .child }
+        case .kids:  products = products.filter { $0.gender == .kids }
         case .unisex: products = products.filter { $0.gender == .unisex }
         case .none: break }
         
