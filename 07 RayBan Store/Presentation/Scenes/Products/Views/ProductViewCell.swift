@@ -67,12 +67,12 @@ class ProductsViewCell: UICollectionViewCell {
         didSet {
             guard let viewModel else { return startAnimating() }
             setImage(with: viewModel.imageData)
-            newLabel.isHidden = viewModel.isNew
+            newLabel.isHidden = !viewModel.isNew
             nameLabel.text = viewModel.name
             colorsLabel.text = viewModel.colors
             priceLabel.text = viewModel.price
             let title = viewModel.isInCart ? "SHOPPING BAG" : "ADD TO BAG"
-            let color = viewModel.isInCart ? UIColor.appRed : UIColor.appBlack
+            let color = viewModel.isInCart ? UIColor.appBlack : UIColor.appRed
             cartButton.setTitle(title, for: .normal)
             cartButton.backgroundColor = color
             stopAnimating()
@@ -138,7 +138,7 @@ class ProductsViewCell: UICollectionViewCell {
         
         let padding = 0.05 * frame.width
         
-        imageView.width(100%).top(0)//.heightEqualsWidth()
+        imageView.width(100%).top(0)
         newLabel.right(padding).top(padding)
         colorsLabel.left(padding).bottom(padding)
         nameLabel.width(90%).centerHorizontally().Top == imageView.Bottom + padding

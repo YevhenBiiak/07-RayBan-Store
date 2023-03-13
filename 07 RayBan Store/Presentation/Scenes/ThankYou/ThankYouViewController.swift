@@ -63,10 +63,9 @@ class ThankYouViewController: UIViewController {
         self.modalTransitionStyle = .crossDissolve
         self.modalPresentationStyle = .overFullScreen
         
-        let action = UIAction { [weak self] _ in
+        actionButton.addAction { [weak self] in
             self?.dismiss(animated: true, completion: onDismiss)
         }
-        actionButton.addAction(action, for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) { fatalError() }

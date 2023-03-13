@@ -15,7 +15,7 @@ class CheckoutRouterImpl: Routable, CheckoutRouter {
         self.viewController = viewController
     }
     
-    func returnToProducts() {
+    func presentThankYouForOrder() {
         let thankYouViewController = ThankYouViewController(onDismiss: { [weak self] in
             self?.navigationController?.popToRootViewController(animated: true)
         })

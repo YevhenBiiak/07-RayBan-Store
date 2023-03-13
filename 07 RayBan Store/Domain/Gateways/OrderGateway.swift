@@ -10,4 +10,6 @@ import Foundation
 protocol OrderGateway {
     func fetchOrders(for user: User) async throws -> [Order]
     func saveOrders(_ orders: [Order], for user: User) async throws
+    func deleteCartItems(for user: User) async throws
+    func fetchShippingMethods() async throws -> [ShippingMethod]
 }

@@ -43,11 +43,19 @@ struct Cart {
         }
     }
     
+    func cartSummary() -> CartSummary {
+        CartSummary(
+            subtotal: totalPrice(),
+            discount: discount(),
+            total: totalPrice() - discount()
+        )
+    }
+    
     func orderSummary(shippingMethod: ShippingMethod) -> OrderSummary {
         OrderSummary(
-            subtotal: totalPrice(),
+            subtotal: totalPrice() - discount(),
             shipping: shippingMethod.price,
-            total: totalPrice() + shippingMethod.price
+            total: totalPrice() - discount() + shippingMethod.price
         )
     }
     
@@ -64,6 +72,10 @@ struct Cart {
     
     func totalPrice() -> Cent {
         items.map { $0.price() }.reduce(0, +)
+    }
+    
+    private func discount() -> Cent {
+        totalPrice() / 15
     }
     
     private func generateOrderID() -> String {
@@ -83,4 +95,10 @@ struct CartItem {
     func price() -> Cent {
         product.variations.first!.price * amount
     }
+}
+
+struct CartSummary {
+    let subtotal: Cent
+    let discount: Cent
+    let total: Cent
 }

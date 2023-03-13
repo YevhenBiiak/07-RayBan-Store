@@ -13,3 +13,20 @@ struct DeleteOrderRequest {
     let user: User
     let orderID: OrderID
 }
+
+struct OrderSummaryRequest {
+    let user: User
+    let cartItems: [CartItem]
+    let shippingMethod: ShippingMethod
+}
+
+struct CreateOrderRequest {
+    let user: User
+    let cartItems: [CartItem]
+    let shippingMethod: ShippingMethod
+    let deliveryInfo: DeliveryInfo
+}
+
+struct ShippingMethodsRequest {
+    let user: User
+}

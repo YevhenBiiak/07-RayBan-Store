@@ -20,8 +20,8 @@ class CheckoutRootView: UIView {
     
     // MARK: - Initializers and overridden methods
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureLayout()
     }
     
@@ -41,9 +41,9 @@ class CheckoutRootView: UIView {
             guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
 
             switch sectionKind {
-            case .items:      return self?.itemsSectionLayout()
+            case .items:   return self?.itemsSectionLayout()
             case .details: return self?.detailsSectionLayout()
-            case .info:   return self?.infoSectionLayout() }
+            case .info:    return self?.infoSectionLayout() }
         })
     }
     
@@ -65,11 +65,11 @@ class CheckoutRootView: UIView {
         
         let item = NSCollectionLayoutItem(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(410)))
+            heightDimension: .estimated(609)))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(410)),
+            heightDimension: .estimated(609)),
             subitems: [item])
         
         return NSCollectionLayoutSection(group: group)

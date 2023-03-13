@@ -8,7 +8,6 @@
 protocol CartAPI {
     func fetchCartItems(for user: User) async throws -> [CartItemCodable]
     func saveCartItems(_ items: [CartItemCodable], for user: User) async throws
-    func fetchShippingMethods() async throws -> [ShippingMethodCodable]
 }
 
 class CartGatewayImpl {
@@ -36,9 +35,5 @@ extension CartGatewayImpl: CartGateway {
     func saveCartItems(_ items: [CartItem], for user: User) async throws {
         let items = items.map(CartItemCodable.init)
         try await cartAPI.saveCartItems(items, for: user)
-    }
-    
-    func fetchShippingMethods() async throws -> [ShippingMethod] {
-        try await cartAPI.fetchShippingMethods().map(ShippingMethod.init)
     }
 }

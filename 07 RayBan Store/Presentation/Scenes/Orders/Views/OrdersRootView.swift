@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import Stevia
 
 class OrdersRootView: UIView {
     
     var сollectionView: UICollectionView!
+    
+    private let emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.image = UIImage(named: "image_placeholder")
+        view.title = "There are no orders in your order history."
+        return view
+    }()
     
     // MARK: - Initializers and overridden methods
     
@@ -24,13 +32,22 @@ class OrdersRootView: UIView {
     // MARK: - Private methods
     
     private func setupViews() {
-        
+        сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        emptyStateView.observeCollectionView(сollectionView)
     }
     
     private func configureLayout() {
-        сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        subviews(сollectionView)
+        
+        subviews(
+            сollectionView.subviews(
+                emptyStateView
+            )
+        )
+        
         сollectionView.fillContainer()
+        emptyStateView.Left == safeAreaLayoutGuide.Left
+        emptyStateView.Right == safeAreaLayoutGuide.Right
+        emptyStateView.Top == safeAreaLayoutGuide.Top
     }
     
     private func createLayout() -> UICollectionViewLayout {

@@ -88,12 +88,6 @@ extension RemoteRepositoryImpl: CartAPI {
         }
         return cartItems
     }
-    
-    func fetchShippingMethods() async throws -> [ShippingMethodCodable] {
-        try await with(errorHandler) {
-            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
-        }
-    }
 }
 
 // MARK: - OrderAPI
@@ -110,6 +104,12 @@ extension RemoteRepositoryImpl: OrderAPI {
     func saveOrders(_ orders: [OrderCodable], for user: User) async throws {
         return try await with(errorHandler) {
             try await database.child("orders").child(user.id).setValue(orders.asFIRArray)
+        }
+    }
+    
+    func fetchShippingMethods() async throws -> [ShippingMethodCodable] {
+        try await with(errorHandler) {
+            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
         }
     }
 }

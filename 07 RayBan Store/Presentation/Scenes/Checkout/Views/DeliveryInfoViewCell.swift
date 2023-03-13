@@ -145,11 +145,10 @@ class DeliveryInfoViewCell: UICollectionViewCell {
         phoneTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         addressTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
         
-        let action = UIAction { [weak self] _ in
+        paymentButton.addAction { [weak self] in
             guard let viewModel = self?.viewModel else { return }
             Task { await viewModel.paymentButtonTapped(viewModel) }
         }
-        paymentButton.addAction(action, for: .touchUpInside)
     }
     
     @objc private func textFieldEditingChanged(sender: UITextField) {

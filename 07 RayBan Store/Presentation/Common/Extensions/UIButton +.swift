@@ -8,6 +8,7 @@
 import UIKit
 
 extension UIButton {
+    
     static func buttonWithSFImage(name: String, color: UIColor, size: CGFloat, weight: UIImage.SymbolWeight = .regular) -> UIButton {
         guard let image = UIImage(systemName: name) else {
             fatalError("image not found")
@@ -19,5 +20,12 @@ extension UIButton {
         config.baseForegroundColor = color
         
         return UIButton(configuration: config)
+    }
+    
+    func addAction(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping () -> Void) {
+        let action = UIAction { _ in
+            closure()
+        }
+        addAction(action, for: controlEvents)
     }
 }

@@ -8,10 +8,16 @@
 import Foundation
 
 struct OrderDetailsModel: OrderDetailsViewModel {
-    let shippingTitle: String
-    let shippingSubtitle: String
-    let shippingPrice: String
-    let orderSubtotal: String
-    let orderShippingCost: String
-    let orderTotal: String
+    var shippingMethods: [ShippingMethodViewModel]
+    let subtotal: String
+    let shippingCost: String
+    let total: String
+}
+
+struct ShippingMethodModel: ShippingMethodViewModel {
+    let name: String
+    let duration: String
+    let price: String
+    let isSelected: Bool
+    let didSelectMethod: () async -> Void
 }

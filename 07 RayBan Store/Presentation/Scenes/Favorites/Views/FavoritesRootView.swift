@@ -12,31 +12,12 @@ class FavoritesRootView: UIView {
     
     var сollectionView: UICollectionView!
     
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.isHidden = true
+    private let emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.image = UIImage(named: "image_placeholder")
+        view.title = "There are no products in your favorite list."
         return view
     }()
-    
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "image_placeholder")
-        imageView.contentMode = .scaleAspectFit
-        imageView.alpha = 0.8
-        return imageView
-    }()
-    
-    private let label: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.textColor = .appDarkGray.withAlphaComponent(0.4)
-        label.font = .Lato.medium.withSize(24)
-        label.text = "There are no products in your favorite list."
-        return label
-    }()
-    
-    private var observation: NSKeyValueObservation?
     
     // MARK: - Initializers and overridden methods
     
@@ -52,29 +33,20 @@ class FavoritesRootView: UIView {
     
     private func setupViews() {
         сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        
-        observation = сollectionView.observe(\.contentSize, options: .new) { [weak self] (_, change) in
-            self?.backgroundView.isHidden = change.newValue?.height != 0
-        }
+        emptyStateView.observeCollectionView(сollectionView)
     }
     
     private func configureLayout() {
         
         subviews(
             сollectionView.subviews (
-                backgroundView.subviews(
-                    imageView,
-                    label
-                )
+                emptyStateView
             )
         )
         сollectionView.fillContainer()
-        backgroundView.Left == safeAreaLayoutGuide.Left
-        backgroundView.Right == safeAreaLayoutGuide.Right
-        backgroundView.Top == safeAreaLayoutGuide.Top
-
-        imageView.width(90%).heightEqualsWidth().centerHorizontally().top(0)
-        label.width(90%).centerHorizontally().bottom(0).Top == imageView.Bottom
+        emptyStateView.Left == safeAreaLayoutGuide.Left
+        emptyStateView.Right == safeAreaLayoutGuide.Right
+        emptyStateView.Top == safeAreaLayoutGuide.Top
     }
     
     private func createLayout() -> UICollectionViewLayout {

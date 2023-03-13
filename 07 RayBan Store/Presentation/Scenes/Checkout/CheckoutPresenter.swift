@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol CheckoutRouter {
-    func returnToProducts()
+    func presentThankYouForOrder()
 }
 
 @MainActor
@@ -29,54 +29,103 @@ class CheckoutPresenterImpl {
     
     private weak var view: CheckoutView?
     private let router: CheckoutRouter
-    private let cartUseCase: CartUseCase
+    private let orderUseCase: OrderUseCase
     private let profileUseCase: ProfileUseCase
     
-    private let shippingMethod: ShippingMethod
-    private var currentDeliveryInfo: DeliveryInfoViewModel!
+    private let cartItems: [CartItem]
+    private var shippingMethod: ShippingMethod!
+    private var deliveryInfo: DeliveryInfo!
     
-    init(shippingMethod: ShippingMethod,
-         view: CheckoutView?,
+    init(view: CheckoutView?,
          router: CheckoutRouter,
-         cartUseCase: CartUseCase,
-         profileUseCase: ProfileUseCase
+         orderUseCase: OrderUseCase,
+         profileUseCase: ProfileUseCase,
+         cartItems: [CartItem]
     ) {
-        self.shippingMethod = shippingMethod
         self.view = view
         self.router = router
-        self.cartUseCase = cartUseCase
+        self.orderUseCase = orderUseCase
         self.profileUseCase = profileUseCase
+        self.cartItems = cartItems
     }
 }
 
 extension CheckoutPresenterImpl: CheckoutPresenter {
     
     func viewDidLoad() async {
-        await with(errorHandler) {
-            await view?.display(title: "CHECKOUT")
-            let request = GetCartItemsRequest(user: Session.shared.user)
-            let cartItems = try await cartUseCase.execute(request)
-            let viewModels = cartItems.map(createOrderItemModel)
-            let items = viewModels.map(OrderSectionItem.init)
-            let section = OrderItemsSection(items: items)
-            await view?.display(itemsSection: section)
-            
-            let summaryRequest = OrderSummaryRequest(user: Session.shared.user, shippingMethod: shippingMethod)
-            let orderSummary = try await cartUseCase.execute(summaryRequest)
-            let orderDetails = createOrderDetailsModel(with: orderSummary)
-            await view?.display(orderDetails: orderDetails)
-            
-            let profileRequest = GetProfileRequest(user: Session.shared.user)
-            let profile = try await profileUseCase.execute(profileRequest)
-            currentDeliveryInfo = createDeliveryInfoModel(with: profile)
-            await view?.display(deliveryInfo: currentDeliveryInfo)
-        }
+        await view?.display(title: "CHECKOUT")
+        await displayCartItems()
+        await displayOrderDetails()
+        await displayDeliveryInfo()
     }
 }
 
 // MARK: - Private extension
 
 private extension CheckoutPresenterImpl {
+    
+    func displayCartItems() async {
+        let viewModels = cartItems.map(createOrderItemModel)
+        let items = viewModels.map(OrderSectionItem.init)
+        let section = OrderItemsSection(items: items)
+        await view?.display(itemsSection: section)
+    }
+    
+    func displayOrderDetails() async {
+        await with(errorHandler) {
+            let shippingRequest = ShippingMethodsRequest(user: Session.shared.user)
+            let shippingMethods = try await orderUseCase.execute(shippingRequest)
+            if shippingMethod == nil { shippingMethod = shippingMethods.first }
+            let shippingMethodModels = shippingMethods.map(createShippingMethodModel)
+            
+            let summaryRequest = OrderSummaryRequest(user: Session.shared.user, cartItems: cartItems, shippingMethod: shippingMethod)
+            let orderSummary = try await orderUseCase.execute(summaryRequest)
+            let orderDetails = createOrderDetailsModel(with: orderSummary, shippingMethods: shippingMethodModels)
+            
+            await view?.display(orderDetails: orderDetails)
+        }
+    }
+    
+    func displayDeliveryInfo() async {
+        await with(errorHandler) {
+            let profileRequest = GetProfileRequest(user: Session.shared.user)
+            let profile = try await profileUseCase.execute(profileRequest)
+            deliveryInfo = DeliveryInfo(
+                firstName: profile.firstName ?? "",
+                lastName: profile.lastName ?? "",
+                emailAddress: profile.email,
+                phoneNumber: profile.phone ?? "",
+                shippingAddress: profile.address ?? ""
+            )
+            let deliveryInfoModel = createDeliveryInfoModel(with: deliveryInfo)
+            await view?.display(deliveryInfo: deliveryInfoModel)
+        }
+    }
+    
+    func displayUpdatedDeliveryInfo(
+        firstNameError: String? = nil,
+        lastNameError: String? = nil,
+        emailError: String? = nil,
+        phoneError: String? = nil,
+        addressError: String? = nil
+    ) async {
+        let updatedDeliveryInfo = DeliveryInfoModel(
+            firstName: deliveryInfo.firstName,
+            lastName: deliveryInfo.lastName,
+            emailAddress: deliveryInfo.emailAddress,
+            phoneNumber: deliveryInfo.phoneNumber,
+            shippingAddress: deliveryInfo.shippingAddress,
+            firstNameError: firstNameError,
+            lastNameError: lastNameError,
+            emailError: emailError,
+            phoneError: phoneError,
+            addressError: addressError,
+            paymentButtonTapped: { [weak self] viewModel in
+                await self?.paymentButtonTapped(viewModel: viewModel)
+            }
+        )
+        await view?.display(deliveryInfo: updatedDeliveryInfo)
+    }
     
     func createOrderItemModel(with cartItem: CartItem) -> OrderItemModel? {
         guard let variation = cartItem.product.variations.first else { return nil }
@@ -90,69 +139,57 @@ private extension CheckoutPresenterImpl {
         )
     }
     
-    func createOrderDetailsModel(with orderSummary: OrderSummary) -> OrderDetailsModel {
-        OrderDetailsModel(
-            shippingTitle: shippingMethod.name,
-            shippingSubtitle: shippingMethod.duration,
-            shippingPrice: shippingMethod.price == 0 ? "FREE" : "$ " + String(format: "%.2f", Double(shippingMethod.price) / 100.0),
-            orderSubtotal: "$ " + String(format: "%.2f", Double(orderSummary.subtotal) / 100.0),
-            orderShippingCost: "$ " + String(format: "%.2f", Double(orderSummary.shipping) / 100.0),
-            orderTotal: "$ " + String(format: "%.2f", Double(orderSummary.total) / 100.0)
+    func createShippingMethodModel(with shippingMethod: ShippingMethod) -> ShippingMethodModel {
+        .init(
+            name: shippingMethod.name,
+            duration: shippingMethod.duration,
+            price: shippingMethod.price == 0 ? "FREE" : "$ " + String(format: "%.2f", Double(shippingMethod.price) / 100.0),
+            isSelected: self.shippingMethod == shippingMethod,
+            didSelectMethod: { [weak self] in
+                await self?.didSelectShippingMethod(shippingMethod)
+            }
         )
     }
     
-    func createDeliveryInfoModel(with profile: Profile) -> DeliveryInfoModel {
-        DeliveryInfoModel(
-            firstName: profile.firstName ?? "",
-            lastName: profile.lastName ?? "",
-            emailAddress: profile.email,
-            phoneNumber: profile.phone ?? "",
-            shippingAddress: profile.address ?? "",
+    func createOrderDetailsModel(with orderSummary: OrderSummary, shippingMethods: [ShippingMethodModel]) -> OrderDetailsModel {
+        .init(
+            shippingMethods: shippingMethods,
+            subtotal: "$ " + String(format: "%.2f", Double(orderSummary.subtotal) / 100.0),
+            shippingCost: "$ " + String(format: "%.2f", Double(orderSummary.shipping) / 100.0),
+            total: "$ " + String(format: "%.2f", Double(orderSummary.total) / 100.0)
+        )
+    }
+    
+    func createDeliveryInfoModel(with deliveryInfo: DeliveryInfo) -> DeliveryInfoModel {
+        .init(
+            firstName: deliveryInfo.firstName,
+            lastName: deliveryInfo.lastName,
+            emailAddress: deliveryInfo.emailAddress,
+            phoneNumber: deliveryInfo.phoneNumber,
+            shippingAddress: deliveryInfo.shippingAddress,
             paymentButtonTapped: { [weak self] viewModel in
                 await self?.paymentButtonTapped(viewModel: viewModel)
             }
         )
     }
     
-    func displayUpdatedDeliveryInfo(
-        firstNameError: String? = nil,
-        lastNameError: String? = nil,
-        emailError: String? = nil,
-        phoneError: String? = nil,
-        addressError: String? = nil
-    ) async {
-        let updatedDeliveryInfo = DeliveryInfoModel(
-            firstName: currentDeliveryInfo.firstName,
-            lastName: currentDeliveryInfo.lastName,
-            emailAddress: currentDeliveryInfo.emailAddress,
-            phoneNumber: currentDeliveryInfo.phoneNumber,
-            shippingAddress: currentDeliveryInfo.shippingAddress,
-            firstNameError: firstNameError,
-            lastNameError: lastNameError,
-            emailError: emailError,
-            phoneError: phoneError,
-            addressError: addressError,
-            paymentButtonTapped: { [weak self] viewModel in
-                await self?.paymentButtonTapped(viewModel: viewModel)
-            }
-        )
-        await view?.display(deliveryInfo: updatedDeliveryInfo)
+    func didSelectShippingMethod(_ shippingMethod: ShippingMethod) async {
+        self.shippingMethod = shippingMethod
+        await displayOrderDetails()
     }
     
     func paymentButtonTapped(viewModel: DeliveryInfoViewModel) async {
         await with(errorHandler) {
-            currentDeliveryInfo = viewModel
-            let info = DeliveryInfo(
+            deliveryInfo = DeliveryInfo(
                 firstName: viewModel.firstName,
                 lastName: viewModel.lastName,
                 emailAddress: viewModel.emailAddress,
                 phoneNumber: viewModel.phoneNumber,
                 shippingAddress: viewModel.shippingAddress
             )
-            let request = CreateOrderRequest(user: Session.shared.user, shippingMethod: shippingMethod, deliveryInfo: info)
-            try await cartUseCase.execute(request)
-            // present thanks screen
-            await router.returnToProducts()
+            let request = CreateOrderRequest(user: Session.shared.user, cartItems: cartItems, shippingMethod: shippingMethod, deliveryInfo: deliveryInfo)
+            try await orderUseCase.execute(request)
+            await router.presentThankYouForOrder()
         }
     }
     

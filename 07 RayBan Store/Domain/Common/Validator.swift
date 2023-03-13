@@ -7,7 +7,6 @@
 
 import Foundation
 
-/// Responsible to validate different data.
 struct Validator {
     
     private static let passwordRequiredLength = 6

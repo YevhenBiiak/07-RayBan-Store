@@ -19,16 +19,16 @@ protocol OrderItemViewModel {
 
 class OrderItemViewCell: UICollectionViewCell {
     
-    private let itemView = OrderItemView()
+    private let orderItemView = OrderItemView()
     
     var viewModel: OrderItemViewModel? {
         didSet {
             guard let viewModel else { return }
-            itemView.setImage(with: viewModel.imageData)
-            itemView.nameLabel.text = viewModel.name
-            itemView.colorLabel.text = viewModel.color
-            itemView.priceLabel.text = viewModel.price
-            itemView.quantityLabel.text = viewModel.quantity
+            orderItemView.setImage(with: viewModel.imageData)
+            orderItemView.nameLabel.text = viewModel.name
+            orderItemView.colorLabel.text = viewModel.color
+            orderItemView.priceLabel.text = viewModel.price
+            orderItemView.quantityLabel.text = viewModel.quantity
         }
     }
     
@@ -42,7 +42,7 @@ class OrderItemViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) { fatalError() }
     
     private func configureLayout() {
-        subviews(itemView)
-        itemView.fillContainer()
+        subviews(orderItemView)
+        orderItemView.fillContainer()
     }
 }

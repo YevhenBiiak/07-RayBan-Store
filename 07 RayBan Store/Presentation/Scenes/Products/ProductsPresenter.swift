@@ -214,7 +214,7 @@ extension ProductsPresenterImpl {
         
         return ProductCellViewModel(
             productID: variation.productID,
-            isNew: true, // hardcode :(
+            isNew: true, // :(
             isInCart: isInCart,
             name: product.name.uppercased(),
             price: "$ " + String(format: "%.2f", Double(variation.price) / 100.0),

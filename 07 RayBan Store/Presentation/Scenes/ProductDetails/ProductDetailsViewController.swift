@@ -56,6 +56,7 @@ class ProductDetailsViewController: UIViewController {
         rootView.colorSegmentsDelegate = self
         rootView.favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         rootView.addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
+        rootView.buyNowButton.addTarget(self, action: #selector(buyNowButtonTapped), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(cartButtonTapped))
     }
     
@@ -69,6 +70,10 @@ class ProductDetailsViewController: UIViewController {
                 ? await presenter.showCartButtonTapped()
                 : await presenter.addToCartButtonTapped(productID: viewModel.productID)
         }
+    }
+    
+    @objc private func buyNowButtonTapped() {
+        Task { await presenter.buyNowButtonTapped(productID: viewModel.productID) }
     }
     
     @objc private func cartButtonTapped() {

@@ -97,15 +97,13 @@ class FavoritesViewCell: UICollectionViewCell {
         configureLayout()
         addBorder(at: .top, color: .appGray, width: 0.5)
         addBorder(at: .bottom, color: .appGray, width: 0.5)
-        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        favoriteButton.addAction { [weak self] in
+            guard let viewModel = self?.viewModel else { return }
+            Task { await viewModel.favoriteButtonTapped(viewModel.modelID) }
+        }
     }
     
     required init?(coder: NSCoder) { fatalError() }
-    
-    @objc private func favoriteButtonTapped(_ sender: CheckboxButton) {
-        guard let viewModel else { return }
-        Task { await viewModel.favoriteButtonTapped(viewModel.modelID) }
-    }
     
     private func setImage(with data: Data) {
         DispatchQueue.global().async {

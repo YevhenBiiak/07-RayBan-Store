@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct User: Identifiable {
+    let id: String
+}
+
 struct Profile {
     let id: String
     var firstName: String?

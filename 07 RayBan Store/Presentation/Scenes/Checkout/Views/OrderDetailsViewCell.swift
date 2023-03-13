@@ -8,20 +8,26 @@
 import UIKit
 import Stevia
 
+protocol ShippingMethodViewModel {
+    var name: String { get }
+    var duration: String { get }
+    var price: String { get }
+    var isSelected: Bool { get }
+    var didSelectMethod: () async -> Void { get }
+}
+
 protocol OrderDetailsViewModel {
-    var shippingTitle: String { get }
-    var shippingSubtitle: String { get }
-    var shippingPrice: String { get }
-    var orderSubtotal: String { get }
-    var orderShippingCost: String { get }
-    var orderTotal: String { get }
+    var shippingMethods: [ShippingMethodViewModel] { get }
+    var subtotal: String { get }
+    var shippingCost: String { get }
+    var total: String { get }
 }
 
 class OrderDetailsViewCell: UICollectionViewCell {
     
     private let shippingContainer: OrderDetailsContainer = {
         let container = OrderDetailsContainer()
-        container.titleLabel.text = "SHIPPING METHOD"
+        container.titleLabel.text = "SELECT A SHIPPING METHOD"
         return container
     }()
     
@@ -31,12 +37,13 @@ class OrderDetailsViewCell: UICollectionViewCell {
         return container
     }()
     
-    private let shippingView: ShippingItemView = {
-        let view = ShippingItemView()
-        view.checkboxButton.isChecked = true
-        let action = UIAction { _ in view.checkboxButton.isChecked = true }
-        view.checkboxButton.addAction(action, for: .touchUpInside)
-        return view
+    private let shippingStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 8
+        return stack
     }()
     
     private let summaryView = SummaryView()
@@ -44,12 +51,21 @@ class OrderDetailsViewCell: UICollectionViewCell {
     var viewModel: OrderDetailsViewModel? {
         didSet {
             guard let viewModel else { return }
-            shippingView.titleLabel.text = viewModel.shippingTitle
-            shippingView.subtitleLabel.text = viewModel.shippingSubtitle
-            shippingView.priceLabel.text = viewModel.shippingPrice
-            summaryView.subtotalPriceLabel.text = viewModel.orderSubtotal
-            summaryView.shippingPriceLabel.text = viewModel.orderShippingCost
-            summaryView.totalPriceLabel.text = viewModel.orderTotal
+            
+            shippingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            for shipping in viewModel.shippingMethods {
+                let shippingItem = ShippingItemView()
+                shippingItem.titleLabel.text = shipping.name
+                shippingItem.subtitleLabel.text = shipping.duration
+                shippingItem.priceLabel.text = shipping.price
+                shippingItem.checkboxButton.isChecked = shipping.isSelected
+                shippingItem.checkboxButton.addTarget(self, action: #selector(shippingMethodSelected), for: .touchUpInside)
+                shippingStackView.addArrangedSubview(shippingItem)
+            }
+            
+            summaryView.subtotalPriceLabel.text = viewModel.subtotal
+            summaryView.shippingPriceLabel.text = viewModel.shippingCost
+            summaryView.totalPriceLabel.text = viewModel.total
         }
     }
     
@@ -64,8 +80,25 @@ class OrderDetailsViewCell: UICollectionViewCell {
     
     // MARK: - Private methods
     
+    @objc private func shippingMethodSelected(_ sender: CheckboxButton) {
+        for (i, item) in shippingStackView.arrangedSubviews.enumerated() {
+            guard let shippingView = item as? ShippingItemView else { break }
+            
+            if shippingView.checkboxButton == sender {
+                Task {
+                    let shippingMethod = viewModel?.shippingMethods[i]
+                    await shippingMethod?.didSelectMethod()
+                }
+                shippingView.checkboxButton.isChecked = true
+            } else {
+                shippingView.checkboxButton.isChecked = false
+            }
+        }
+    }
+    
     private func configureLayout() {
-        shippingContainer.contentView.subviews(shippingView)
+        
+        shippingContainer.contentView.subviews(shippingStackView)
         summaryContainer.contentView.subviews(summaryView)
         
         subviews(
@@ -74,10 +107,86 @@ class OrderDetailsViewCell: UICollectionViewCell {
         )
         
         let padding = 0.05 * frame.width
-        shippingView.fillContainer()
+        shippingStackView.fillContainer()
         summaryView.fillContainer()
         shippingContainer.left(padding).top(padding).right(padding)
         summaryContainer.left(padding).bottom(padding).right(padding).Top == shippingContainer.Bottom + padding
+    }
+}
+
+private class ShippingItemView: UIView {
+    
+    let checkboxButton: CheckboxButton = {
+        let config = UIImage.SymbolConfiguration(paletteColors: [.appBlack])
+        let checkedImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)!
+        let uncheckedImage = UIImage(systemName: "circle", withConfiguration: config)!
+        return CheckboxButton(checkedImage: checkedImage, uncheckedImage: uncheckedImage, scale: .medium)
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appBlack
+        label.font = .Lato.regular
+        label.text = "Standart Shipping"
+        return label
+    }()
+    
+    let subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .appDarkGray
+        label.font = .Lato.regular.withSize(14)
+        label.text = "(4-5 business days)"
+        return label
+    }()
+    
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .appBlack
+        label.font = .Lato.regular
+        label.text = "FREE"
+        return label
+    }()
+    
+    init() {
+        super.init(frame: .zero)
+        setupViews()
+        configureLayout()
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    // MARK: - Private methods
+    
+    private func setupViews() {
+        backgroundColor = .appWhite
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectAction))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func selectAction() {
+        checkboxButton.sendActions(for: .touchUpInside)
+    }
+    
+    private func configureLayout() {
+        subviews(
+            checkboxButton,
+            titleLabel,
+            subtitleLabel,
+            priceLabel
+        )
+        
+        checkboxButton.width(42).left(0).heightEqualsWidth().CenterY == CenterY
+        priceLabel.top(8).right(8).bottom(8)
+        titleLabel.top(8).Left == checkboxButton.Right
+        titleLabel.Right == priceLabel.Left - 8
+        subtitleLabel.bottom(8).Left == checkboxButton.Right
+        subtitleLabel.Right == priceLabel.Left - 8
+        subtitleLabel.Top == titleLabel.Bottom
+        
+        priceLabel.setContentHuggingPriority(.init(251), for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.init(749), for: .horizontal)
+        subtitleLabel.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     }
 }
 

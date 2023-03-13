@@ -12,10 +12,10 @@ protocol CheckoutConfigurator {
 
 class CheckoutConfiguratorImpl: CheckoutConfigurator {
     
-    let shippingMethod: ShippingMethod
+    private let cartItems: [CartItem]
     
-    init(shippingMethod: ShippingMethod) {
-        self.shippingMethod = shippingMethod
+    init(cartItems: [CartItem]) {
+        self.cartItems = cartItems
     }
     
     func configure(checkoutViewController: CheckoutViewController) {
@@ -24,22 +24,21 @@ class CheckoutConfiguratorImpl: CheckoutConfigurator {
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         
         let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
         let profileUseCase = ProfileUseCaseImpl(profileGateway: profileGateway)
         
-        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, productGateway: productGateway)
-        
-        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
-        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway, orderGateway: orderGateway)
-        
+        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, cartGateway: cartGateway, productGateway: productGateway)
+        let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
+                
         let rootView = CheckoutRootView()
         let router = CheckoutRouterImpl(viewController: checkoutViewController)
-        let presenter = CheckoutPresenterImpl(shippingMethod: shippingMethod,
-                                              view: checkoutViewController,
+        let presenter = CheckoutPresenterImpl(view: checkoutViewController,
                                               router: router,
-                                              cartUseCase: cartUseCase,
-                                              profileUseCase: profileUseCase)
+                                              orderUseCase: orderUseCase,
+                                              profileUseCase: profileUseCase,
+                                              cartItems: cartItems)
         
         checkoutViewController.presenter = presenter
         checkoutViewController.rootView = rootView

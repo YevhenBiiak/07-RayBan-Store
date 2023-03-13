@@ -14,8 +14,7 @@ class CartViewController: UIViewController {
     var rootView: CartRootView!
     
     private var itemsSection: Sectionable!
-    private var shippingMethods: [any ShippingMethodViewModel] = []
-    private var orderSummary: OrderSummaryViewModel?
+    private var cartSummary: CartSummaryViewModel?
     
     // MARK: - Life Cycle and overridden methods
     
@@ -34,8 +33,7 @@ class CartViewController: UIViewController {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
         rootView.сollectionView.register(CartItemViewCell.self, forCellWithReuseIdentifier: CartItemViewCell.reuseId)
-        rootView.сollectionView.register(ShippingViewCell.self, forCellWithReuseIdentifier: ShippingViewCell.reuseId)
-        rootView.сollectionView.register(SummaryViewCell.self, forCellWithReuseIdentifier: SummaryViewCell.reuseId)
+        rootView.сollectionView.register(CartSummaryViewCell.self, forCellWithReuseIdentifier: CartSummaryViewCell.reuseId)
     }
 }
 
@@ -50,14 +48,9 @@ extension CartViewController: CartView {
         rootView.сollectionView.reloadData()
     }
     
-    func display(shippingMethods: [any ShippingMethodViewModel]) {
-        self.shippingMethods = shippingMethods
+    func display(cartSummary: CartSummaryViewModel) {
+        self.cartSummary = cartSummary
         rootView.сollectionView.reconfigureItems(at: [IndexPath(item: 0, section: 1)])
-    }
-    
-    func display(orderSummary: OrderSummaryViewModel) {
-        self.orderSummary = orderSummary
-        rootView.сollectionView.reconfigureItems(at: [IndexPath(item: 0, section: 2)])
     }
     
     func displayError(title: String, message: String?) {
@@ -68,7 +61,7 @@ extension CartViewController: CartView {
 extension CartViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        itemsSection?.items.count == 0 ? 0 : 3
+        itemsSection?.items.count == 0 ? 0 : 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -81,13 +74,9 @@ extension CartViewController: UICollectionViewDataSource {
             return collectionView.dequeueReusableCell(CartItemViewCell.self, for: indexPath) { cell in
                 cell.viewModel = itemsSection.items[indexPath.item].viewModel as? CartItemViewModel
             }
-        case 1:
-            return collectionView.dequeueReusableCell(ShippingViewCell.self, for: indexPath) { cell in
-                cell.viewModels = shippingMethods
-            }
         default:
-            return collectionView.dequeueReusableCell(SummaryViewCell.self, for: indexPath) { cell in
-                cell.viewModel = orderSummary
+            return collectionView.dequeueReusableCell(CartSummaryViewCell.self, for: indexPath) { cell in
+                cell.viewModel = cartSummary
             }
         }
     }

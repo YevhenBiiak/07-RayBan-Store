@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct User: Identifiable {
-    let id: String
-}
-
 class Session {
     
     static let shared = Session()

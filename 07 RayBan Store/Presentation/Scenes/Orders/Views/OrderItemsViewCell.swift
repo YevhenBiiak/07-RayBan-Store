@@ -99,13 +99,13 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
         addBorder(at: .top, color: .appGray, width: 0.5)
         addBorder(at: .bottom, color: .appGray, width: 0.5)
         
-        deleteOrderButton.addAction(.init(handler: { [weak self] _ in
+        deleteOrderButton.addAction { [weak self] in
             Task { await self?.orderViewModel?.deleteOrderButtonTapped() }
-        }), for: .touchUpInside)
+        }
         
-        addToCartButton.addAction(.init(handler: { [weak self] _ in
+        addToCartButton.addAction { [weak self] in
             Task { await self?.orderViewModel?.addToCartButtonTapped() }
-        }), for: .touchUpInside)
+        }
     }
     
     private func configureLayout() {

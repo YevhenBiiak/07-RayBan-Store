@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 protocol ProductDetailsRouter {
     func presentShoppingCart()
+    func presentCheckout(cartItem: CartItem)
 }
 
 @MainActor
@@ -24,8 +25,9 @@ protocol ProductDetailsPresenter {
     func viewDidLoad() async
     func viewWillAppear() async
     func didSelectColorSegment(at index: Int) async
-    func addToCartButtonTapped(productID: Int) async
+    func addToCartButtonTapped(productID: ProductID) async
     func favoriteButtonTapped(isFavorite: Bool) async
+    func buyNowButtonTapped(productID: ProductID) async
     func showCartButtonTapped() async
 }
 
@@ -121,6 +123,12 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
                 try await favoriteUseCase.execute(request)
             }
         }
+    }
+    
+    func buyNowButtonTapped(productID: ProductID) async {
+        var product = self.product
+        product.variations = [product.variations[currentVariationIndex]]
+        await router.presentCheckout(cartItem: .init(product: product, amount: 1))
     }
     
     func showCartButtonTapped() async {

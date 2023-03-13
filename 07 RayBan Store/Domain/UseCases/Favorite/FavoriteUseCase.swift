@@ -5,8 +5,6 @@
 //  Created by Yevhen Biiak on 25.02.2023.
 //
 
-//import Foundation
-
 protocol FavoriteUseCase {
     func execute(_ request: IsItemInFavoriteRequset) async throws -> Bool
     func execute(_ request: GetFavoriteItemsRequest) async throws -> [FavoriteItem]

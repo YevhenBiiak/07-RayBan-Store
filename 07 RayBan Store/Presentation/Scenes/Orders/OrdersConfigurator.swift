@@ -17,10 +17,10 @@ class OrdersConfiguratorImpl: OrdersConfigurator {
         let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
-        let profileGateway = ProfileGatewayImpl(profilesAPI: remoteRepository)
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
+        let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
         
-        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, productGateway: productGateway)
+        let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, cartGateway: cartGateway, productGateway: productGateway)
         let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
         
         let rootView = OrdersRootView()

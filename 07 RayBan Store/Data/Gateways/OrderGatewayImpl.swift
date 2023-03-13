@@ -10,15 +10,18 @@ import Foundation
 protocol OrderAPI {
     func saveOrders(_ orders: [OrderCodable], for user: User) async throws
     func fetchOrders(for user: User) async throws -> [OrderCodable]
+    func fetchShippingMethods() async throws -> [ShippingMethodCodable]
 }
 
 class OrderGatewayImpl {
     
     private let orderAPI: OrderAPI
+    private let cartGateway: CartGateway
     private let productGateway: ProductGateway
     
-    init(orderAPI: OrderAPI, productGateway: ProductGateway) {
+    init(orderAPI: OrderAPI, cartGateway: CartGateway, productGateway: ProductGateway) {
         self.orderAPI = orderAPI
+        self.cartGateway = cartGateway
         self.productGateway = productGateway
     }
 }
@@ -46,5 +49,13 @@ extension OrderGatewayImpl: OrderGateway {
             )
         }
         return orders
+    }
+    
+    func deleteCartItems(for user: User) async throws {
+        try await cartGateway.saveCartItems([], for: user)
+    }
+    
+    func fetchShippingMethods() async throws -> [ShippingMethod] {
+        try await orderAPI.fetchShippingMethods().map(ShippingMethod.init)
     }
 }
