@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class AlertViewController: UIViewController {
+private class AlertViewController: UIViewController {
     
     private let backgroundView: UIView = {
         let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialDark)
@@ -38,24 +38,47 @@ class AlertViewController: UIViewController {
         return label
     }()
     
-    private let actionButton: UIButton = {
+    private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.medium.withSize(18)
-        button.backgroundColor = .appBlack
+        button.backgroundColor = .appRed
         button.setTitleColor(UIColor.appWhite, for: .normal)
         return button
     }()
     
+    private let confirmButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.Oswald.medium.withSize(18)
+        button.backgroundColor = .appRed
+        button.setTitleColor(UIColor.appWhite, for: .normal)
+        return button
+    }()
+    
+    lazy var buttonStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
+        stack.spacing = 0
+        stack.addArrangedSubview(cancelButton)
+        stack.addArrangedSubview(confirmButton)
+        return stack
+    }()
+    
     private let alertTitle: String?
     private let alertMessage: String?
-    private let buttonTitle: String?
-    private let completionHandler: (() -> Void)?
+    private let cancelButtonTitle: String?
+    private let confirmButtonTitle: String?
+    private let cancelAction: (() -> Void)?
+    private let confirmAction: (() -> Void)?
     
-    init(title: String?, message: String?, buttonTitle: String?, completion: (() -> Void)?) {
+    init(title: String, message: String?, cancelButtonTitle: String? = nil, confirmButtonTitle: String? = nil, cancelAction: (() -> Void)? = nil, confirmAction: (() -> Void)? = nil) {
         self.alertTitle = title
         self.alertMessage = message
-        self.buttonTitle = buttonTitle
-        self.completionHandler = completion
+        self.cancelButtonTitle = cancelButtonTitle
+        self.confirmButtonTitle = confirmButtonTitle
+        self.cancelAction = cancelAction
+        self.confirmAction = confirmAction
         
         super.init(nibName: nil, bundle: nil)
         
@@ -63,9 +86,7 @@ class AlertViewController: UIViewController {
         self.modalPresentationStyle = .overFullScreen
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,53 +94,68 @@ class AlertViewController: UIViewController {
         
         self.titleLabel.text = alertTitle
         self.messageLabel.text = alertMessage
-        self.actionButton.setTitle(buttonTitle ?? "OK", for: .normal)
         
-        actionButton.addTarget(self, action: #selector(dismissAlertController), for: .touchUpInside)
-    }
-    
-    @objc private func dismissAlertController() {
-        dismiss(animated: true, completion: completionHandler)
+        self.confirmButton.setTitle(confirmButtonTitle ?? "OK", for: .normal)
+        self.cancelButton.setTitle(cancelButtonTitle ?? "CANCEL", for: .normal)
+        
+        confirmButton.addAction { [weak self] in
+            self?.confirmAction?()
+            self?.dismiss(animated: true)
+        }
+        cancelButton.addAction { [weak self] in
+            self?.cancelAction?()
+            self?.dismiss(animated: true)
+        }
     }
     
     private func configureLayout() {
-        if buttonTitle == nil {
-            view.subviews(
-                backgroundView,
-                contentView.subviews(
-                    titleLabel,
-                    messageLabel
-                )
+        let contentStack = UIStackView()
+        contentStack.axis = .vertical
+        contentStack.alignment = .fill
+        contentStack.distribution = .fill
+        contentStack.spacing = 20
+        contentStack.addArrangedSubview(titleLabel)
+        contentStack.addArrangedSubview(messageLabel)
+        contentStack.addArrangedSubview(buttonStack)
+        
+        view.subviews(
+            backgroundView,
+            contentView.subviews(
+                contentStack
             )
-            
-            backgroundView.fillContainer()
-            contentView.width(70%).centerInContainer()
-            titleLabel.width(90%).centerHorizontally().top(20)
-            messageLabel.width(90%).centerHorizontally().bottom(20).Top == titleLabel.Bottom + 20
-            
+        )
+        
+        if confirmButtonTitle == nil, cancelButtonTitle == nil {
+            buttonStack.isHidden = true
+        } else if confirmButtonTitle != nil, cancelButtonTitle == nil {
+            cancelButton.isHidden = true
+            confirmButton.backgroundColor = .appBlack
         } else {
-            view.subviews(
-                backgroundView,
-                contentView.subviews(
-                    titleLabel,
-                    messageLabel,
-                    actionButton
-                )
-            )
-            
-            backgroundView.fillContainer()
-            contentView.width(70%).centerInContainer()
-            titleLabel.width(90%).centerHorizontally().top(20)
-            messageLabel.width(90%).centerHorizontally().Top == titleLabel.Bottom + 20
-            actionButton.fillHorizontally().height(44).bottom(0) .Top == messageLabel.Bottom + 30
+            cancelButton.backgroundColor = .appDarkGray
         }
+        
+        backgroundView.fillContainer()
+        contentView.width(70%).centerInContainer()
+        contentStack.top(20).fillHorizontally(padding: 12).bottom(12)
+        cancelButton.height(44)
+        confirmButton.height(44)
     }
 }
 
 extension UIViewController {
     
-    func showAlert(title: String?, message: String?, buttonTitle: String?, completion: (() -> Void)? = nil) {
-        let alertViewController = AlertViewController(title: title, message: message, buttonTitle: buttonTitle, completion: completion)
-        present(alertViewController, animated: true)
+    func showAlert(title: String, message: String?, buttonTitle: String = "OK", action: (() -> Void)? = nil) {
+        let alert = AlertViewController(title: title, message: message, confirmButtonTitle: buttonTitle, confirmAction: action)
+        present(alert, animated: true)
+    }
+    
+    func showBlockingAlert(title: String, message: String?) {
+        let alert = AlertViewController(title: title, message: message)
+        present(alert, animated: true)
+    }
+    
+    func showDialogAlert(title: String, message: String?, confirmTitle: String = "OK", cancelTitle: String = "CANCEL", confirmAction: (() -> Void)? = nil) {
+        let alert = AlertViewController(title: title, message: message, cancelButtonTitle: cancelTitle, confirmButtonTitle: confirmTitle, confirmAction: confirmAction)
+        present(alert, animated: true)
     }
 }

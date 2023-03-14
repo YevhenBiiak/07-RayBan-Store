@@ -22,7 +22,11 @@ class AccountMenuRouterImpl: Routable, AccountMenuRouter {
     }
     
     func presentPersonalDetails() {
+        let personalDetailsViewController = PersonalDetailsViewController()
+        let personalDetailsConfigurator = PersonalDetailsConfiguratorImpl()
         
+        personalDetailsViewController.configurator = personalDetailsConfigurator
+        navigationController?.pushViewController(personalDetailsViewController, animated: true)
     }
     
     func presentOrderHistory() {

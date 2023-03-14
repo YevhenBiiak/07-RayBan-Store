@@ -82,6 +82,12 @@
 		5774FE0B29BF81C300744524 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0A29BF81C300744524 /* EmptyStateView.swift */; };
 		5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0C29BF878200744524 /* ProductCodable.swift */; };
 		5774FE0F29BF983B00744524 /* ProfileCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE0E29BF983B00744524 /* ProfileCodable.swift */; };
+		5774FE1229BFA16800744524 /* PersonalDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1129BFA16800744524 /* PersonalDetailsViewController.swift */; };
+		5774FE1429BFA17000744524 /* PersonalDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1329BFA17000744524 /* PersonalDetailsPresenter.swift */; };
+		5774FE1629BFA17600744524 /* PersonalDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1529BFA17600744524 /* PersonalDetailsRouter.swift */; };
+		5774FE1829BFA17E00744524 /* PersonalDetailsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1729BFA17E00744524 /* PersonalDetailsConfigurator.swift */; };
+		5774FE1A29BFA1CE00744524 /* PersonalDetailsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1929BFA1CE00744524 /* PersonalDetailsRootView.swift */; };
+		5774FE1E29C07BE600744524 /* PersonalDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5774FE1D29C07BE600744524 /* PersonalDetailsModel.swift */; };
 		577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93C928C1F8B400E31B88 /* AuthUseCase.swift */; };
 		577B93D328C2064600E31B88 /* AuthRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B93D228C2064600E31B88 /* AuthRequests.swift */; };
 		5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5784000228D5FC7D003766F0 /* ProductsRootView.swift */; };
@@ -264,6 +270,12 @@
 		5774FE0A29BF81C300744524 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		5774FE0C29BF878200744524 /* ProductCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCodable.swift; sourceTree = "<group>"; };
 		5774FE0E29BF983B00744524 /* ProfileCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCodable.swift; sourceTree = "<group>"; };
+		5774FE1129BFA16800744524 /* PersonalDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsViewController.swift; sourceTree = "<group>"; };
+		5774FE1329BFA17000744524 /* PersonalDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsPresenter.swift; sourceTree = "<group>"; };
+		5774FE1529BFA17600744524 /* PersonalDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsRouter.swift; sourceTree = "<group>"; };
+		5774FE1729BFA17E00744524 /* PersonalDetailsConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsConfigurator.swift; sourceTree = "<group>"; };
+		5774FE1929BFA1CE00744524 /* PersonalDetailsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsRootView.swift; sourceTree = "<group>"; };
+		5774FE1D29C07BE600744524 /* PersonalDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDetailsModel.swift; sourceTree = "<group>"; };
 		577B93C928C1F8B400E31B88 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		577B93D228C2064600E31B88 /* AuthRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequests.swift; sourceTree = "<group>"; };
 		5784000228D5FC7D003766F0 /* ProductsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRootView.swift; sourceTree = "<group>"; };
@@ -498,6 +510,7 @@
 				57B75D4929AA31610017E0F3 /* Cart */,
 				571BC17C29B7408600CD5D0E /* Checkout */,
 				57E2F5F229BC54D700A721FA /* Orders */,
+				5774FE1029BF9FFE00744524 /* PersonalDetails */,
 				57E2F5EC29BB90E300A721FA /* ThankYou */,
 			);
 			path = Scenes;
@@ -633,6 +646,35 @@
 				577301F928BBFB4E007FB72F /* ClassDiagram.mdj */,
 			);
 			path = Documents;
+			sourceTree = "<group>";
+		};
+		5774FE1029BF9FFE00744524 /* PersonalDetails */ = {
+			isa = PBXGroup;
+			children = (
+				5774FE1C29C07AC800744524 /* Models */,
+				5774FE1B29BFA20C00744524 /* Views */,
+				5774FE1129BFA16800744524 /* PersonalDetailsViewController.swift */,
+				5774FE1329BFA17000744524 /* PersonalDetailsPresenter.swift */,
+				5774FE1529BFA17600744524 /* PersonalDetailsRouter.swift */,
+				5774FE1729BFA17E00744524 /* PersonalDetailsConfigurator.swift */,
+			);
+			path = PersonalDetails;
+			sourceTree = "<group>";
+		};
+		5774FE1B29BFA20C00744524 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5774FE1929BFA1CE00744524 /* PersonalDetailsRootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5774FE1C29C07AC800744524 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5774FE1D29C07BE600744524 /* PersonalDetailsModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		577B93BD28C1DBC300E31B88 /* Auth */ = {
@@ -1263,9 +1305,12 @@
 			files = (
 				57B75D5229AA31D60017E0F3 /* CartPresenter.swift in Sources */,
 				571AA4AA28E1C15F0078F6A9 /* HeaderReusableView.swift in Sources */,
+				5774FE1429BFA17000744524 /* PersonalDetailsPresenter.swift in Sources */,
 				57433E0F298AF50900E723CB /* RequiredTextField.swift in Sources */,
 				5720BF6528D4DF84003EBAA6 /* OrderGatewayImpl.swift in Sources */,
 				571AA4A428E0D31C0078F6A9 /* AppMenuConfigurator.swift in Sources */,
+				5774FE1829BFA17E00744524 /* PersonalDetailsConfigurator.swift in Sources */,
+				5774FE1E29C07BE600744524 /* PersonalDetailsModel.swift in Sources */,
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
 				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
 				579404E8298FE2000048FD33 /* UIApplication + .swift in Sources */,
@@ -1291,7 +1336,9 @@
 				57508A5A28BF54E5000328AC /* RemoteRepositoryAPI.swift in Sources */,
 				5773020628BBFF6E007FB72F /* Profile.swift in Sources */,
 				57A7C86529AE125100E979CB /* CartItemModel.swift in Sources */,
+				5774FE1629BFA17600744524 /* PersonalDetailsRouter.swift in Sources */,
 				571BC19729BA020300CD5D0E /* ProfileUseCase.swift in Sources */,
+				5774FE1229BFA16800744524 /* PersonalDetailsViewController.swift in Sources */,
 				571BC19929BA021500CD5D0E /* ProfileRequests.swift in Sources */,
 				575F562628EC885200A44E6D /* CategoryCellViewModel.swift in Sources */,
 				5773020828BC010F007FB72F /* ProductGateway.swift in Sources */,
@@ -1390,6 +1437,7 @@
 				574F275928C360550092D293 /* GetProductRequests.swift in Sources */,
 				574F27A928C7A6C70092D293 /* LoginViewController.swift in Sources */,
 				575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */,
+				5774FE1A29BFA1CE00744524 /* PersonalDetailsRootView.swift in Sources */,
 				574F27A728C7922A0092D293 /* Validator.swift in Sources */,
 				57E9DB322992540B00EDE67E /* ForgotPasswordConfigurator.swift in Sources */,
 				57E2F60E29BE011000A721FA /* FavoriteItemCodable.swift in Sources */,

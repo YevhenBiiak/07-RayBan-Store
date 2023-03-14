@@ -54,7 +54,7 @@ extension CartViewController: CartView {
     }
     
     func displayError(title: String, message: String?) {
-        showAlert(title: title, message: message, buttonTitle: "OK")
+        showAlert(title: title, message: message)
     }
 }
 

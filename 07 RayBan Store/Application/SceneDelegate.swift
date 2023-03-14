@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var networkMonitor: NetworkMonitor!
         
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let windowScene = scene as? UIWindowScene else { return }
         let splashViewController = SplashViewController()
         let navigationController = UINavigationController(rootViewController: splashViewController)
         
@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             DispatchQueue.main.async {
                 network.isConnected
                     ? self?.window?.rootViewController?.dismiss(animated: true)
-                    : self?.window?.rootViewController?.showAlert(title: "Error", message: "Check your connection", buttonTitle: nil)
+                    : self?.window?.rootViewController?.showBlockingAlert(title: "Error", message: "Check your connection")
                 self?.window?.isUserInteractionEnabled = network.isConnected
             }
         }

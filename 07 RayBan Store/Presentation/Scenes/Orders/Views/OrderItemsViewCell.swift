@@ -100,7 +100,13 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
         addBorder(at: .bottom, color: .appGray, width: 0.5)
         
         deleteOrderButton.addAction { [weak self] in
-            Task { await self?.orderViewModel?.deleteOrderButtonTapped() }
+            UIApplication.shared.window?.rootViewController?.showDialogAlert(
+                title: "Confirm",
+                message: "Are you sure you want to delete this order from order history?",
+                confirmTitle: "DELETE"
+            ) { [weak self] in
+                Task { await self?.orderViewModel?.deleteOrderButtonTapped() }
+            }
         }
         
         addToCartButton.addAction { [weak self] in
