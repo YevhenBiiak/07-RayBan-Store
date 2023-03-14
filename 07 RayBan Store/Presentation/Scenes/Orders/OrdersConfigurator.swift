@@ -18,7 +18,9 @@ class OrdersConfiguratorImpl: OrdersConfigurator {
         let remoteRepository = Session.shared.remoteRepositoryAPI
         
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
+        
         let cartGateway = CartGatewayImpl(cartAPI: remoteRepository, productGateway: productGateway)
+        let cartUseCase = CartUseCaseImpl(cartGateway: cartGateway)
         
         let orderGateway = OrderGatewayImpl(orderAPI: remoteRepository, cartGateway: cartGateway, productGateway: productGateway)
         let orderUseCase = OrderUseCaseImpl(orderGateway: orderGateway)
@@ -27,6 +29,7 @@ class OrdersConfiguratorImpl: OrdersConfigurator {
         let router = OrdersRouterImpl(viewController: ordersViewController)
         let presenter = OrdersPresenterImpl(view: ordersViewController,
                                             router: router,
+                                            cartUseCase: cartUseCase,
                                             orderUseCase: orderUseCase)
         
         ordersViewController.presenter = presenter

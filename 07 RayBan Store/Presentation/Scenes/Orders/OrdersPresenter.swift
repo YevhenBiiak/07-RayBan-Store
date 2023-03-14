@@ -27,11 +27,13 @@ class OrdersPresenterImpl {
     
     private weak var view: OrdersView?
     private let router: OrdersRouter
+    private let cartUseCase: CartUseCase
     private let orderUseCase: OrderUseCase
     
-    init(view: OrdersView?, router: OrdersRouter, orderUseCase: OrderUseCase) {
+    init(view: OrdersView? = nil, router: OrdersRouter, cartUseCase: CartUseCase, orderUseCase: OrderUseCase) {
         self.view = view
         self.router = router
+        self.cartUseCase = cartUseCase
         self.orderUseCase = orderUseCase
     }
 }
@@ -90,7 +92,10 @@ private extension OrdersPresenterImpl {
     
     func addToCartButtonTapped(_ order: Order) async {
         await with(errorHandler) {
-            
+            try await order.items.asyncForEach { item in
+                let addRequest = AddCartItemRequest(user: Session.shared.user, product: item.product, amount: 1)
+                try await cartUseCase.execute(addRequest)
+            }
         }
     }
     

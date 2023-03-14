@@ -23,6 +23,7 @@ protocol CartView: AnyObject {
 
 protocol CartPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
     func didSelectItem(_ item: any Itemable) async
 }
 
@@ -44,6 +45,14 @@ extension CartPresenterImpl: CartPresenter {
     func viewDidLoad() async {
         await with(errorHandler) {
             await view?.display(title: "SHOPPING BAG")
+            let request = GetCartItemsRequest(user: Session.shared.user)
+            let cartItems = try await cartUseCase.execute(request)
+            try await display(cartItems: cartItems)
+        }
+    }
+    
+    func viewWillAppear() async {
+        await with(errorHandler) {
             let request = GetCartItemsRequest(user: Session.shared.user)
             let cartItems = try await cartUseCase.execute(request)
             try await display(cartItems: cartItems)
