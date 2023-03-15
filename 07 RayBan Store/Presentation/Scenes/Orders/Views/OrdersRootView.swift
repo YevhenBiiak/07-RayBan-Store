@@ -47,7 +47,7 @@ class OrdersRootView: UIView {
         сollectionView.fillContainer()
         emptyStateView.Left == safeAreaLayoutGuide.Left
         emptyStateView.Right == safeAreaLayoutGuide.Right
-        emptyStateView.Top == safeAreaLayoutGuide.Top
+        emptyStateView.Bottom == сollectionView.CenterY
     }
     
     private func createLayout() -> UICollectionViewLayout {

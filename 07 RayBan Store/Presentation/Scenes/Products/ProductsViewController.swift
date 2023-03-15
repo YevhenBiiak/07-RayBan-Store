@@ -110,10 +110,9 @@ extension ProductsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseId, for: indexPath)
-        let viewModel = section.items[indexPath.item].viewModel as? ProductCellViewModel
-        (cell as? ProductsViewCell)?.viewModel = viewModel
-        return cell
+        collectionView.dequeueReusableCell(ProductsViewCell.self, for: indexPath) { cell in
+            cell.viewModel = section.items[indexPath.item].viewModel as? ProductCellViewModel
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

@@ -12,6 +12,13 @@ class ProductsRootView: UIView {
     
     var collectionView: UICollectionView!
     
+    private let emptyStateView: EmptyStateView = {
+        let view = EmptyStateView()
+        view.image = UIImage(named: "image_placeholder")
+        view.title = "There are no products in this category."
+        return view
+    }()
+    
     // MARK: - Initializers and overridden methods
 
     init() {
@@ -19,17 +26,24 @@ class ProductsRootView: UIView {
         configureCollectinView()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError() }
     
     // MARK: - Private methods
     
     private func configureCollectinView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        emptyStateView.observeCollectionView(collectionView)
         
-        subviews( collectionView )
-        collectionView.width(100%).height(100%)
+        subviews(
+            collectionView.subviews (
+                emptyStateView
+            )
+        )
+        
+        collectionView.fillContainer()
+        emptyStateView.Left == safeAreaLayoutGuide.Left
+        emptyStateView.Right == safeAreaLayoutGuide.Right
+        emptyStateView.Bottom == collectionView.CenterY
     }
     
     private func createLayout() -> UICollectionViewLayout {

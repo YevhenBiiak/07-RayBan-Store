@@ -46,7 +46,9 @@ class EmptyStateView: UIView {
     
     func observeCollectionView(_ collectionView: UICollectionView) {
         observation = collectionView.observe(\.contentSize, options: .new) { [weak self] (_, change) in
-            self?.isHidden = change.newValue?.height != 0
+            guard let self else { return }
+            collectionView.sendSubviewToBack(self)
+            self.isHidden = change.newValue?.height ?? 0 > 50
         }
     }
     
@@ -56,7 +58,7 @@ class EmptyStateView: UIView {
             label
         )
         
-        imageView.width(90%).heightEqualsWidth().centerHorizontally().top(0)
-        label.width(90%).centerHorizontally().bottom(0).Top == imageView.Bottom
+        imageView.width(90%).heightEqualsWidth().centerHorizontally().fillVertically()
+        label.width(90%).centerHorizontally().Bottom == imageView.Bottom
     }
 }
