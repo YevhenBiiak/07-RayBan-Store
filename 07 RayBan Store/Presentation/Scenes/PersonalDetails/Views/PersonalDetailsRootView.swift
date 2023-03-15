@@ -81,7 +81,7 @@ class PersonalDetailsRootView: UIView {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.tintColor = UIColor.appWhite
         button.backgroundColor = UIColor.appBlack
-        button.titleLabel?.font = UIFont.Oswald.medium
+        button.titleLabel?.font = UIFont.Oswald.bold
         button.setTitle("SAVE", for: .normal)
         return button
     }()

@@ -23,6 +23,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
+        observeKeyboardNotification(for: rootView.scrollView.bottomConstraint, adjustOffsetFor: rootView.scrollView)
         // Add actions
         rootView.loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         rootView.forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordButtonTapped), for: .touchUpInside)

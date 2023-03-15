@@ -23,6 +23,7 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
+        observeKeyboardNotification(for: rootView.scrollView.bottomConstraint, adjustOffsetFor: rootView.scrollView)
         // Add actions
         rootView.loginWithFacebookButton.addTarget(self, action: #selector(loginWithFacebookButtonTapped), for: .touchUpInside)
         rootView.policyCheckmarkButton.addTarget(self, action: #selector(policyCheckmarTapped), for: .touchUpInside)

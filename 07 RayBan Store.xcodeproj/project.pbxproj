@@ -103,7 +103,7 @@
 		579404DE298D1CC90048FD33 /* RegistrationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404DD298D1CC90048FD33 /* RegistrationRouter.swift */; };
 		579404E0298D1CE00048FD33 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404DF298D1CE00048FD33 /* RegistrationViewController.swift */; };
 		579404E3298D1D010048FD33 /* RegistrationRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E2298D1D010048FD33 /* RegistrationRootView.swift */; };
-		579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E5298D604B0048FD33 /* AlertViewController.swift */; };
+		579404E6298D604B0048FD33 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E5298D604B0048FD33 /* Alerts.swift */; };
 		579404E8298FE2000048FD33 /* UIApplication + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 579404E7298FE2000048FD33 /* UIApplication + .swift */; };
 		579B498329994F2E004D519D /* Semaphore in Frameworks */ = {isa = PBXBuildFile; productRef = 579B498229994F2E004D519D /* Semaphore */; };
 		57A188B729AF742B009C3AE1 /* WarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A188B629AF742B009C3AE1 /* WarningView.swift */; };
@@ -291,7 +291,7 @@
 		579404DD298D1CC90048FD33 /* RegistrationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRouter.swift; sourceTree = "<group>"; };
 		579404DF298D1CE00048FD33 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		579404E2298D1D010048FD33 /* RegistrationRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRootView.swift; sourceTree = "<group>"; };
-		579404E5298D604B0048FD33 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
+		579404E5298D604B0048FD33 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		579404E7298FE2000048FD33 /* UIApplication + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + .swift"; sourceTree = "<group>"; };
 		57A188B629AF742B009C3AE1 /* WarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningView.swift; sourceTree = "<group>"; };
 		57A188B829AF768C009C3AE1 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
@@ -798,7 +798,7 @@
 		579404E4298D60270048FD33 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
-				579404E5298D604B0048FD33 /* AlertViewController.swift */,
+				579404E5298D604B0048FD33 /* Alerts.swift */,
 				57A188B629AF742B009C3AE1 /* WarningView.swift */,
 			);
 			path = Alerts;
@@ -1462,7 +1462,7 @@
 				5774FE0B29BF81C300744524 /* EmptyStateView.swift in Sources */,
 				5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
-				579404E6298D604B0048FD33 /* AlertViewController.swift in Sources */,
+				579404E6298D604B0048FD33 /* Alerts.swift in Sources */,
 				571BC18929B7414800CD5D0E /* CheckoutConfigurator.swift in Sources */,
 				57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */,
 				57E2F5EE29BB91DB00A721FA /* ThankYouViewController.swift in Sources */,

@@ -45,6 +45,9 @@ class PersonalDetailsViewController: UIViewController {
     }
     
     private func setupViews() {
+        hideKeyboardWhenTappedAround()
+        observeKeyboardNotification(for: rootView.scrollView.bottomConstraint, adjustOffsetFor: rootView.scrollView)
+        
         let button = UIButton(type: .system)
         button.setTitle("LOG OUT", for: .normal)
         button.setTitleColor(.appRed, for: .normal)

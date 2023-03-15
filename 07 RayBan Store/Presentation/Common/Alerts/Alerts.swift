@@ -25,7 +25,7 @@ private class AlertViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.Oswald.bold.withSize(20)
+        label.font = UIFont.Oswald.bold.withSize(19)
         label.textAlignment = .center
         return label
     }()
@@ -33,14 +33,14 @@ private class AlertViewController: UIViewController {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.Lato.regular
+        label.font = UIFont.Lato.regular.withSize(17)
         label.textAlignment = .center
         return label
     }()
     
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.Oswald.medium.withSize(18)
+        button.titleLabel?.font = UIFont.Oswald.bold
         button.backgroundColor = .appRed
         button.setTitleColor(UIColor.appWhite, for: .normal)
         return button
@@ -48,7 +48,7 @@ private class AlertViewController: UIViewController {
     
     private let confirmButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.Oswald.medium.withSize(18)
+        button.titleLabel?.font = UIFont.Oswald.bold
         button.backgroundColor = .appRed
         button.setTitleColor(UIColor.appWhite, for: .normal)
         return button
@@ -116,6 +116,7 @@ private class AlertViewController: UIViewController {
         contentStack.spacing = 20
         contentStack.addArrangedSubview(titleLabel)
         contentStack.addArrangedSubview(messageLabel)
+        contentStack.addArrangedSubview(UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 18)))
         contentStack.addArrangedSubview(buttonStack)
         
         view.subviews(
