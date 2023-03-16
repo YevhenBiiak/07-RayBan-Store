@@ -99,12 +99,12 @@ private class AlertViewController: UIViewController {
         self.cancelButton.setTitle(cancelButtonTitle ?? "CANCEL", for: .normal)
         
         confirmButton.addAction { [weak self] in
-            self?.confirmAction?()
             self?.dismiss(animated: true)
+            self?.confirmAction?()
         }
         cancelButton.addAction { [weak self] in
-            self?.cancelAction?()
             self?.dismiss(animated: true)
+            self?.cancelAction?()
         }
     }
     

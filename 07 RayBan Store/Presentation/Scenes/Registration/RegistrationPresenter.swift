@@ -86,14 +86,14 @@ private extension RegistrationPresenterImpl {
                  .passwordLengthIsWrong,
                  .weakPassword:          await view?.display(passwordFiledError: error.localizedDescription)
                 
-            case .passwordsDoNotMatch:   await view?.display(conformPasswordFiledError: error.localizedDescription)
+            case .valuesDoNotMatch:      await view?.display(conformPasswordFiledError: error.localizedDescription)
                 
             case .emailAlreadyInUse,
                  .wrongPassword,
                  .facebookError,
                  .notAcceptedPolicy:     await view?.displayWarning(message: error.localizedDescription)
                 
-            case .permissionsDenied:    await view?.displayAlert(title: "Error", message: error.localizedDescription)
+            case .permissionsDenied:     await view?.displayAlert(title: "Error", message: error.localizedDescription)
                 
             case .unknown:
                 fatalError(error.localizedDescription)

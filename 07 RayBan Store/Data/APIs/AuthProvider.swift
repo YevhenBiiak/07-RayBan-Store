@@ -36,6 +36,20 @@ struct AuthProvider {
         }
     }
     
+    static func updateEmail(with email: String, password: String) async throws {
+        try await with(errorHandler) {
+            try await reauthenticate(password: password)
+            try await Auth.auth().currentUser?.updateEmail(to: email)
+        }
+    }
+    
+    static func updatePassword(with newPassword: String, accountPassword: String) async throws {
+        try await with(errorHandler) {
+            try await reauthenticate(password: accountPassword)
+            try await Auth.auth().currentUser?.updatePassword(to: newPassword)
+        }
+    }
+    
     static func logout() throws {
         try with(errorHandler) {
             try Auth.auth().signOut()
@@ -84,6 +98,14 @@ private extension AuthProvider {
                 }
             }
         }
+    }
+    
+    static func reauthenticate(password: String) async throws {
+        guard let currentEmail = Auth.auth().currentUser?.email else {
+            throw AppError.invalidEmail
+        }
+        let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: password)
+        try await Auth.auth().currentUser?.reauthenticate(with: credential)
     }
     
     static func parse(_ result: AuthDataResult) throws -> (uid: String, email: String) {

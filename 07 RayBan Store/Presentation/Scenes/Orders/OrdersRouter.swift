@@ -14,8 +14,4 @@ class OrdersRouterImpl: Routable, OrdersRouter {
     required init(viewController: OrdersViewController) {
         self.viewController = viewController
     }
-    
-    func presentOrders() {
-        
-    }
 }

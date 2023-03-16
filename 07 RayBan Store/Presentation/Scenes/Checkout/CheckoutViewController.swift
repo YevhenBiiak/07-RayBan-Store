@@ -26,11 +26,14 @@ class CheckoutViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        setupViews()
         Task { await presenter.viewDidLoad() }
     }
     
-    private func setupCollectionView() {
+    private func setupViews() {
+        hideKeyboardWhenTappedAround()
+        observeKeyboardNotification(for: rootView.сollectionView.bottomConstraint, adjustOffsetFor: rootView.сollectionView)
+        
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
         rootView.сollectionView.register(OrderItemViewCell.self, forCellWithReuseIdentifier: OrderItemViewCell.reuseId)

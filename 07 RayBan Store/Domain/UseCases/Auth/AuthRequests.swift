@@ -26,3 +26,17 @@ struct RegistrationRequest {
 struct ForgotPasswordRequest {
     let email: String
 }
+
+struct UpdateEmailRequest {
+    let user: User
+    let newEmail: String
+    let confirmEmail: String
+    let password: String
+}
+
+struct UpdatePasswordRequest {
+    let user: User
+    let newPassword: String
+    let confirmPassword: String
+    let accountPassword: String
+}

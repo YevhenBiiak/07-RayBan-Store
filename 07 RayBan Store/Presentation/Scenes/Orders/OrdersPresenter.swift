@@ -9,7 +9,6 @@ import Foundation
 
 @MainActor
 protocol OrdersRouter {
-    func presentOrders()
 }
 
 @MainActor

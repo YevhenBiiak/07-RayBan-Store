@@ -45,9 +45,9 @@ struct ShippingMethod: Hashable {
 }
 
 struct DeliveryInfo {
-    let firstName: String
-    let lastName: String
-    let emailAddress: String
-    let phoneNumber: String
-    let shippingAddress: String
+    var firstName: String
+    var lastName: String
+    var emailAddress: String
+    var phoneNumber: String
+    var shippingAddress: String
 }

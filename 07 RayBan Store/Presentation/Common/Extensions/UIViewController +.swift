@@ -15,7 +15,7 @@ extension UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    @objc private func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         view.endEditing(true)
     }
 }
@@ -98,7 +98,8 @@ extension UIViewController {
         guard let userInfo = notification.userInfo,
               let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
               let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
-              let focusedField = UIResponder.firstResponder() as? UITextField
+              let focusedField = UIResponder.firstResponder() as? UITextField,
+              focusedField.isDescendant(of: view)
         else { return }
         
         var keyboardHeigh: CGFloat = 0
@@ -122,7 +123,7 @@ extension UIViewController {
         
         let keyboardTop = view.convert(keyboardFrame, to: nil).minY
         let fieldBottom = focusedField.convert(focusedField.bounds, to: nil).maxY
-        let offset = (scrollView?.contentOffset.y ?? 0) + (fieldBottom - keyboardTop) + 12
+        let offset = (scrollView?.contentOffset.y ?? 0) + max(0, fieldBottom - keyboardTop + 12)
         
         self.constraint?.constant = keyboardHeigh
         self.scrollView?.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
@@ -150,7 +151,7 @@ extension UIResponder {
         static weak var responder: UIResponder?
     }
     
-    // Finds the current first responder
+    /// Finds the current first responder
     /// - Returns: the current UIResponder if it exists
     static func firstResponder () -> UIResponder? {
         Static.responder = nil

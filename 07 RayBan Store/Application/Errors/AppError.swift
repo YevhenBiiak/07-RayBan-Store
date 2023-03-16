@@ -32,8 +32,8 @@ enum AppError: LocalizedError {
     case emailFormatIsWrong
     /// Password must have minimum 6 symbols.
     case passwordLengthIsWrong
-    /// You entered two different passwords. Please try again.
-    case passwordsDoNotMatch
+    /// You entered two different values. Please try again.
+    case valuesDoNotMatch
     /// Please read and accept the privacy policy
     case notAcceptedPolicy
     
@@ -86,7 +86,7 @@ enum AppError: LocalizedError {
             
         case .emailFormatIsWrong:    return "Email has wrong format."
         case .passwordLengthIsWrong: return "Password must have minimum 6 symbols."
-        case .passwordsDoNotMatch:   return "You entered two different passwords. Please try again."
+        case .valuesDoNotMatch:      return "You entered two different values. Please try again."
         case .notAcceptedPolicy:     return "Please read and accept the privacy policy."
             
         case .operationNotAllowed:   return "This account are disabled."

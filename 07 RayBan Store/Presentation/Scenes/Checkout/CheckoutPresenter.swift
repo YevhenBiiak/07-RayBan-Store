@@ -109,23 +109,17 @@ private extension CheckoutPresenterImpl {
         phoneError: String? = nil,
         addressError: String? = nil
     ) async {
-        let updatedDeliveryInfo = DeliveryInfoModel(
-            firstName: deliveryInfo.firstName,
-            lastName: deliveryInfo.lastName,
-            emailAddress: deliveryInfo.emailAddress,
-            phoneNumber: deliveryInfo.phoneNumber,
-            shippingAddress: deliveryInfo.shippingAddress,
-            firstNameError: firstNameError,
-            lastNameError: lastNameError,
-            emailError: emailError,
-            phoneError: phoneError,
-            addressError: addressError,
-            paymentButtonTapped: { [weak self] viewModel in
-                await self?.paymentButtonTapped(viewModel: viewModel)
-            }
-        )
-        await view?.display(deliveryInfo: updatedDeliveryInfo)
+        var infoModel = createDeliveryInfoModel(with: deliveryInfo)
+        infoModel.firstNameError = firstNameError
+        infoModel.lastNameError = lastNameError
+        infoModel.emailError = emailError
+        infoModel.phoneError = phoneError
+        infoModel.addressError = addressError
+        
+        await view?.display(deliveryInfo: infoModel)
     }
+    
+    // MARK: Creational methods
     
     func createOrderItemModel(with cartItem: CartItem) -> OrderItemModel? {
         guard let variation = cartItem.product.variations.first else { return nil }
@@ -173,6 +167,8 @@ private extension CheckoutPresenterImpl {
         )
     }
     
+    // MARK: User actions
+    
     func didSelectShippingMethod(_ shippingMethod: ShippingMethod) async {
         self.shippingMethod = shippingMethod
         await displayOrderDetails()
@@ -180,13 +176,14 @@ private extension CheckoutPresenterImpl {
     
     func paymentButtonTapped(viewModel: DeliveryInfoViewModel) async {
         await with(errorHandler) {
-            deliveryInfo = DeliveryInfo(
-                firstName: viewModel.firstName,
-                lastName: viewModel.lastName,
-                emailAddress: viewModel.emailAddress,
-                phoneNumber: viewModel.phoneNumber,
-                shippingAddress: viewModel.shippingAddress
-            )
+            // update fields
+            deliveryInfo.firstName = viewModel.firstName
+            deliveryInfo.lastName = viewModel.lastName
+            deliveryInfo.emailAddress = viewModel.emailAddress
+            deliveryInfo.phoneNumber = viewModel.phoneNumber
+            deliveryInfo.shippingAddress = viewModel.shippingAddress
+            
+            // send request
             let request = CreateOrderRequest(user: Session.shared.user, cartItems: cartItems, shippingMethod: shippingMethod, deliveryInfo: deliveryInfo)
             try await orderUseCase.execute(request)
             await router.presentThankYouForOrder()

@@ -32,6 +32,12 @@ extension ProfileUseCaseImpl: ProfileUseCase {
     }
     
     func execute(_ request: SaveProfileRequest) async throws {
+        try Validator.validateFirstName(request.profile.firstName)
+        try Validator.validateLastName(request.profile.lastName)
+        try Validator.validateEmail(request.profile.email)
+        try Validator.validatePhone(request.profile.phone)
+        try Validator.validateAddress(request.profile.address)
+        
         try await profileGateway.saveProfile(request.profile)
     }
 }

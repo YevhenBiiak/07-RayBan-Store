@@ -6,9 +6,14 @@
 //
 
 struct PersonalDetailsModel: PersonalDetailsViewModel {
-    let firstName: String
-    let lastName: String
-    let phoneNumber: String
-    let shippingAddress: String
+    var firstName: String
+    var lastName: String
+    var phoneNumber: String
+    var shippingAddress: String
     let emailAddress: String
+    let password: String
+    var firstNameError: String?
+    var lastNameError: String?
+    var phoneError: String?
+    var addressError: String?
 }

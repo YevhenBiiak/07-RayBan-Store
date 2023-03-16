@@ -111,6 +111,13 @@
 		57A1BF4728DCB62000819E88 /* CheckboxButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4628DCB62000819E88 /* CheckboxButton.swift */; };
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
 		57A7C86529AE125100E979CB /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7C86429AE125100E979CB /* CartItemModel.swift */; };
+		57A7F70029C1D462006EACCF /* UITextField + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F6FF29C1D462006EACCF /* UITextField + .swift */; };
+		57A7F70829C20CC8006EACCF /* EditCredentialsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */; };
+		57A7F71729C23508006EACCF /* EditCredentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71629C23508006EACCF /* EditCredentialModel.swift */; };
+		57A7F71B29C30A25006EACCF /* EditCredentialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */; };
+		57A7F71D29C30A4C006EACCF /* EditCredentialPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */; };
+		57A7F71F29C30A88006EACCF /* EditCredentialRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */; };
+		57A7F72129C30AAA006EACCF /* EditCredentialConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */; };
 		57AAE78B29AFB0F7009FD328 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */; };
 		57AAE78D29AFB109009FD328 /* FavoritesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */; };
 		57AAE78F29AFB122009FD328 /* FavoritesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */; };
@@ -298,6 +305,13 @@
 		57A1BF4628DCB62000819E88 /* CheckboxButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxButton.swift; sourceTree = "<group>"; };
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
 		57A7C86429AE125100E979CB /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
+		57A7F6FF29C1D462006EACCF /* UITextField + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + .swift"; sourceTree = "<group>"; };
+		57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialsRootView.swift; sourceTree = "<group>"; };
+		57A7F71629C23508006EACCF /* EditCredentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialModel.swift; sourceTree = "<group>"; };
+		57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialViewController.swift; sourceTree = "<group>"; };
+		57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialPresenter.swift; sourceTree = "<group>"; };
+		57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialRouter.swift; sourceTree = "<group>"; };
+		57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialConfigurator.swift; sourceTree = "<group>"; };
 		57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRootView.swift; sourceTree = "<group>"; };
 		57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewCell.swift; sourceTree = "<group>"; };
@@ -471,9 +485,9 @@
 		573A25C028E8355D000B1548 /* Sunglasses */ = {
 			isa = PBXGroup;
 			children = (
-				573A25C228E83714000B1548 /* SunglassesCategoriesConfigurator.swift */,
 				573A25C628E8399E000B1548 /* SunglassesCategoriesPresenter.swift */,
 				573A25C428E83934000B1548 /* SunglassesCategoriesRouter.swift */,
+				573A25C228E83714000B1548 /* SunglassesCategoriesConfigurator.swift */,
 			);
 			path = Sunglasses;
 			sourceTree = "<group>";
@@ -481,9 +495,9 @@
 		573A25C128E83565000B1548 /* Eyeglasses */ = {
 			isa = PBXGroup;
 			children = (
-				575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */,
 				575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */,
 				575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */,
+				575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */,
 			);
 			path = Eyeglasses;
 			sourceTree = "<group>";
@@ -511,6 +525,7 @@
 				571BC17C29B7408600CD5D0E /* Checkout */,
 				57E2F5F229BC54D700A721FA /* Orders */,
 				5774FE1029BF9FFE00744524 /* PersonalDetails */,
+				57A7F70129C20C73006EACCF /* EditCredentials */,
 				57E2F5EC29BB90E300A721FA /* ThankYou */,
 			);
 			path = Scenes;
@@ -756,6 +771,7 @@
 				575F562728EC8DDD00A44E6D /* UIImage +.swift */,
 				571EDB9828D61A1C00C8EBAA /* UINavigationItem +.swift */,
 				571EDB9A28D61A3E00C8EBAA /* UIButton +.swift */,
+				57A7F6FF29C1D462006EACCF /* UITextField + .swift */,
 				571EDB9F28D61D2200C8EBAA /* UIFont +.swift */,
 				57A1BF4828DDBA3F00819E88 /* UIView +.swift */,
 				571BC16F29B11EFD00CD5D0E /* Sequence + .swift */,
@@ -817,6 +833,35 @@
 				5774FE0A29BF81C300744524 /* EmptyStateView.swift */,
 			);
 			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		57A7F70129C20C73006EACCF /* EditCredentials */ = {
+			isa = PBXGroup;
+			children = (
+				57A7F71529C23491006EACCF /* Models */,
+				57A7F70229C20C8A006EACCF /* Views */,
+				57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */,
+				57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */,
+				57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */,
+				57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */,
+			);
+			path = EditCredentials;
+			sourceTree = "<group>";
+		};
+		57A7F70229C20C8A006EACCF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		57A7F71529C23491006EACCF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				57A7F71629C23508006EACCF /* EditCredentialModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		57AAE78829AFB0D3009FD328 /* Favorites */ = {
@@ -1314,14 +1359,18 @@
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
 				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
 				579404E8298FE2000048FD33 /* UIApplication + .swift in Sources */,
+				57A7F71729C23508006EACCF /* EditCredentialModel.swift in Sources */,
 				57B75D5429AA31DE0017E0F3 /* CartRouter.swift in Sources */,
+				57A7F71D29C30A4C006EACCF /* EditCredentialPresenter.swift in Sources */,
 				578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */,
 				57B75D5629AA31E90017E0F3 /* CartConfigurator.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
+				57A7F72129C30AAA006EACCF /* EditCredentialConfigurator.swift in Sources */,
 				5740C5A3298A87D5006B432E /* SplashScreen.swift in Sources */,
 				57E2F5FB29BC5ADE00A721FA /* OrdersConfigurator.swift in Sources */,
 				57508A6928BFDC71000328AC /* CartGateway.swift in Sources */,
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
+				57A7F70829C20CC8006EACCF /* EditCredentialsRootView.swift in Sources */,
 				5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */,
 				57E2F60229BC85F800A721FA /* OrderItemView.swift in Sources */,
 				57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */,
@@ -1373,6 +1422,7 @@
 				57E2F61629BE036800A721FA /* OrderSummaryCodable.swift in Sources */,
 				5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */,
 				57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */,
+				57A7F71F29C30A88006EACCF /* EditCredentialRouter.swift in Sources */,
 				57B75D5029AA31C70017E0F3 /* CartViewController.swift in Sources */,
 				577B93D328C2064600E31B88 /* AuthRequests.swift in Sources */,
 				57508A5228BEA041000328AC /* AuthGatewayImpl.swift in Sources */,
@@ -1456,6 +1506,7 @@
 				57BDD18E28D786B100A9007B /* ProductDetailsPresenter.swift in Sources */,
 				571EDB9928D61A1C00C8EBAA /* UINavigationItem +.swift in Sources */,
 				57E9DB3E299292B600EDE67E /* AppError.swift in Sources */,
+				57A7F70029C1D462006EACCF /* UITextField + .swift in Sources */,
 				577B93CA28C1F8B400E31B88 /* AuthUseCase.swift in Sources */,
 				575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */,
 				574F27A428C68D870092D293 /* LoginPresenter.swift in Sources */,
@@ -1463,6 +1514,7 @@
 				5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
 				579404E6298D604B0048FD33 /* Alerts.swift in Sources */,
+				57A7F71B29C30A25006EACCF /* EditCredentialViewController.swift in Sources */,
 				571BC18929B7414800CD5D0E /* CheckoutConfigurator.swift in Sources */,
 				57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */,
 				57E2F5EE29BB91DB00A721FA /* ThankYouViewController.swift in Sources */,

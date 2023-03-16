@@ -25,8 +25,8 @@ struct Validator {
         }
     }
     
-    static func validatePhone(_ phone: String) throws {
-        if phone.isEmpty {
+    static func validatePhone(_ value: String?) throws {
+        guard let phone = value, !phone.isEmpty else {
             throw AppError.phoneValueIsEmpty
         }
         if Int(phone.replacingOccurrences(of: "+", with: "")) == nil {
@@ -34,15 +34,15 @@ struct Validator {
         }
     }
     
-    static func validateAddress(_ address: String) throws {
-        if address.isEmpty {
+    static func validateAddress(_ value: String?) throws {
+        guard let address = value, !address.isEmpty else {
             throw AppError.addressValueIsEmpty
         }
     }
     
-    static func validatePasswordsMatch(_ password: String, and conformPassrowd: String) throws {
-        guard password == conformPassrowd else {
-            throw AppError.passwordsDoNotMatch
+    static func checkValueMatching(_ value1: String, and value2: String) throws {
+        guard value1 == value2 else {
+            throw AppError.valuesDoNotMatch
         }
     }
     

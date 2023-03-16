@@ -30,14 +30,25 @@ extension AuthGatewayImpl: AuthGateway {
         return profile
     }
     
+    func forgotPassword(email: String) async throws {
+        try await AuthProvider.forgotPassword(email: email)
+    }
+    
+    func updateEmail(with email: String, for user: User, accountPassword: String) async throws {
+        try await AuthProvider.updateEmail(with: email, password: accountPassword)
+        var profile = try await profileGateway.fetchProfile(for: user)
+        profile.email = email
+        try await profileGateway.saveProfile(profile)
+    }
+    
+    func updatePassword(with newPassword: String, for user: User, accountPassword: String) async throws {
+        try await AuthProvider.updatePassword(with: newPassword, accountPassword: accountPassword)
+    }
+    
     func loginWithFacebook() async throws -> Profile {
         let profile = try await AuthProvider.loginWithFacebook()
         try await profileGateway.saveProfile(profile)
         return profile
-    }
-    
-    func forgotPassword(email: String) async throws {
-        try await AuthProvider.forgotPassword(email: email)
     }
     
     func logout() throws {

@@ -13,6 +13,8 @@ protocol AuthUseCase {
     @discardableResult
     func execute(_ request: RegistrationRequest) async throws -> Profile
     func execute(_ request: ForgotPasswordRequest) async throws
+    func execute(_ request: UpdateEmailRequest) async throws
+    func execute(_ request: UpdatePasswordRequest) async throws
     @discardableResult
     func executeLoginWithFacebookRequest() async throws -> Profile
     func executeLogoutRequest() throws
@@ -30,13 +32,10 @@ class AuthUseCaseImpl {
 extension AuthUseCaseImpl: AuthUseCase {
     
     func execute(_ request: LoginRequest) async throws -> Profile {
-        let email = request.email
-        let password = request.password
+        try Validator.validateEmail(request.email)
+        try Validator.validatePassword(request.password)
         
-        try Validator.validateEmail(email)
-        try Validator.validatePassword(password)
-        
-        return try await authGateway.login(email: email, password: password)
+        return try await authGateway.login(email: request.email, password: request.password)
     }
     
     func execute(_ request: RegistrationRequest) async throws -> Profile {
@@ -51,16 +50,31 @@ extension AuthUseCaseImpl: AuthUseCase {
         try Validator.validateLastName(lastName)
         try Validator.validateEmail(email)
         try Validator.validatePassword(password)
-        try Validator.validatePasswordsMatch(password, and: conformPassrowd)
+        try Validator.checkValueMatching(password, and: conformPassrowd)
         try Validator.validatePolicyAcceptance(acceptedPolicy)
         
         return try await authGateway.register(firstName: firstName, lastName: lastName, email: email, password: password)
     }
     
     func execute(_ request: ForgotPasswordRequest) async throws {
-        let email = request.email
-        try Validator.validateEmail(email)
-        try await authGateway.forgotPassword(email: email)
+        try Validator.validateEmail(request.email)
+        try await authGateway.forgotPassword(email: request.email)
+    }
+    
+    func execute(_ request: UpdateEmailRequest) async throws {
+        try Validator.validateEmail(request.newEmail)
+        try Validator.checkValueMatching(request.newEmail, and: request.confirmEmail)
+        try Validator.validatePassword(request.password)
+        
+        try await authGateway.updateEmail(with: request.newEmail, for: request.user, accountPassword: request.password)
+    }
+    
+    func execute(_ request: UpdatePasswordRequest) async throws {
+        try Validator.validatePassword(request.newPassword)
+        try Validator.checkValueMatching(request.newPassword, and: request.confirmPassword)
+        try Validator.validatePassword(request.accountPassword)
+        
+        try await authGateway.updatePassword(with: request.newPassword, for: request.user, accountPassword: request.accountPassword)
     }
     
     func executeLoginWithFacebookRequest() async throws -> Profile {

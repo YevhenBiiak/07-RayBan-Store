@@ -17,10 +17,14 @@ class ViewController: UIViewController {
         imageView.image = UIImage(named: "logo")
         view.addSubview(imageView)
         
-//        showBlockingAlert(title: "Error", message: "Blockint text text text text text text text text text text")
-//        showAlert(title: "Simple Alert", message: "Simple Alert text text text text text text text text text text ", buttonTitle: "Accept") {
-//            print("accept")
-//        }
-        showDialogAlert(title: "Dialog alert", message: "text text text text text text text text text text text", confirmTitle: "DELETE")
+        Task {
+            do {
+//                try await AuthProvider.login(email: "evgeniy.bijak@gmail.com", password: "12345678")
+                
+                try await AuthProvider.updatePassword(with: "123456", accountPassword: "12345678")
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
     }
 }

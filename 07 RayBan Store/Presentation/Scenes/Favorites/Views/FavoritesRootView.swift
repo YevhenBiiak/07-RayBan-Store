@@ -43,6 +43,7 @@ class FavoritesRootView: UIView {
                 emptyStateView
             )
         )
+        
         сollectionView.fillContainer()
         emptyStateView.Left == safeAreaLayoutGuide.Left
         emptyStateView.Right == safeAreaLayoutGuide.Right
