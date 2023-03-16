@@ -6,5 +6,8 @@
 //
 
 struct EditCredentialModel {
-    
+    let title: String
+    let subtitle: String
+    let newValuePlaceholder: String
+    let confirmValuePlaceholder: String
 }

@@ -15,6 +15,7 @@ protocol LoginRouter {
 
 @MainActor
 protocol LoginView: AnyObject {
+    func display(activityIndicator show: Bool)
     func display(emailFiledError: String)
     func display(passwordFiledError: String)
     func displayWarning(message: String)
@@ -45,6 +46,11 @@ extension LoginPresenterImpl: LoginPresenter {
     
     func loginButtonTapped(email: String, password: String) async {
         await with(errorHandler) {
+            // show activity indicator and hide when error or success occurred
+            await view?.display(activityIndicator: true)
+            defer { Task { await view?.display(activityIndicator: false) }}
+            
+            // make login request
             let loginRequest = LoginRequest(email: email, password: password)
             let profile = try await authUseCase.execute(loginRequest)
             Session.shared.user = User(id: profile.id)

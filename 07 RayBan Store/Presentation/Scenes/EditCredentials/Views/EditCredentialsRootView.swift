@@ -70,12 +70,19 @@ class EditCredentialsRootView: UIView {
         return textField
     }()
     
-    let saveButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor.appBlack
-        button.titleLabel?.font = UIFont.Oswald.bold
-        button.setTitleColor(.appWhite, for: .normal)
-        button.setTitle("SAVE", for: .normal)
+    let confirmButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.baseForegroundColor = UIColor.appWhite
+        config.imagePadding = 8
+        config.title = "CONFIRM"
+        config.titleTextAttributesTransformer = .init { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.Oswald.bold
+            return outgoing
+        }
+        
+        let button = UIButton(configuration: config)
+        button.backgroundColor = .appBlack
         return button
     }()
     
@@ -107,7 +114,7 @@ class EditCredentialsRootView: UIView {
                 titleLabel,
                 subtitleLabel,
                 fieldsStack,
-                saveButton
+                confirmButton
             )
         )
         
@@ -116,6 +123,6 @@ class EditCredentialsRootView: UIView {
         titleLabel.width(80%).centerHorizontally().top(20)
         subtitleLabel.width(80%).centerHorizontally().Top == titleLabel.Bottom + 16
         fieldsStack.width(80%).centerHorizontally().Top == subtitleLabel.Bottom + 36
-        saveButton.width(90%).height(44).centerHorizontally().bottom(14).Top == fieldsStack.Bottom + 50
+        confirmButton.width(90%).height(44).centerHorizontally().bottom(14).Top == fieldsStack.Bottom + 50
     }
 }

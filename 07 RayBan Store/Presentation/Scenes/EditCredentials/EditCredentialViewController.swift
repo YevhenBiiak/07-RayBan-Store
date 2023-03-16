@@ -13,6 +13,15 @@ class EditCredentialsViewController: UIViewController {
     var presenter: EditCredentialsPresenter!
     var rootView: EditCredentialsRootView!
     
+    var viewModel: EditCredentialModel? {
+        didSet {
+            rootView.titleLabel.text = viewModel?.title
+            rootView.subtitleLabel.text = viewModel?.subtitle
+            rootView.newValueTextField.setAttributedPlaceholder(text: viewModel?.newValuePlaceholder)
+            rootView.confirmValueTextField.setAttributedPlaceholder(text: viewModel?.confirmValuePlaceholder)
+        }
+    }
+    
     // MARK: - Life Cycle and overridden methods
     
     override func loadView() {
@@ -40,7 +49,7 @@ class EditCredentialsViewController: UIViewController {
             self?.closeButtonTapped()
         }
         
-        rootView.saveButton.addAction { [weak self] in
+        rootView.confirmButton.addAction { [weak self] in
             Task { await self?.presenter.saveButtonTapped(
                 newValue: self?.rootView.newValueTextField.text ?? "",
                 confirmValue: self?.rootView.confirmValueTextField.text ?? "",
@@ -56,42 +65,34 @@ class EditCredentialsViewController: UIViewController {
 
 extension EditCredentialsViewController: EditCredentialsView {
     
-    func display(title: String) {
-        rootView.titleLabel.text = title
+    func display(viewModel: EditCredentialModel) {
+        self.viewModel = viewModel
     }
     
-    func display(subtitle: String) {
-        rootView.subtitleLabel.text = subtitle
+    func display(newValueFieldError: String) {
+        rootView.newValueTextField.triggerRequirements(with: newValueFieldError)
     }
     
-    func display(newValuePlaceholder: String) {
-        rootView.newValueTextField.setAttributedPlaceholder(text: newValuePlaceholder)
+    func display(confirmValueFieldError: String) {
+        rootView.confirmValueTextField.triggerRequirements(with: confirmValueFieldError)
     }
     
-    func display(confirmValuePlaceholder: String) {
-        rootView.confirmValueTextField.setAttributedPlaceholder(text: confirmValuePlaceholder)
+    func display(passwordFieldError: String) {
+        rootView.passwordTextField.triggerRequirements(with: passwordFieldError)
+    }
+    
+    func display(activityIndicator show: Bool) {
+        rootView.confirmButton.configuration?.showsActivityIndicator = show
+    }
+    
+    func displayWarning(message: String) {
+        showWarning(with: message)
     }
     
     func displayDialogAlert(title: String, message: String?, confirmAction: @escaping () async -> Void) {
         showDialogAlert(title: title, message: message, confirmTitle: "YES", cancelTitle: "CONTINUE") {
             Task { await confirmAction() }
         }
-    }
-    
-    func display(newValueFiledError: String) {
-        rootView.newValueTextField.triggerRequirements(with: newValueFiledError)
-    }
-    
-    func display(confirmValueFiledError: String) {
-        rootView.confirmValueTextField.triggerRequirements(with: confirmValueFiledError)
-    }
-    
-    func display(passwordFiledError: String) {
-        rootView.passwordTextField.triggerRequirements(with: passwordFiledError)
-    }
-    
-    func displayWarning(message: String) {
-        showWarning(with: message)
     }
     
     func displayAlert(title: String, message: String?, completion: @escaping () async -> Void) {

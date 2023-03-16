@@ -98,9 +98,11 @@ class PersonalDetailsRootView: UIView {
     let saveButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.system)
         button.setTitleColor(.appWhite, for: .normal)
-        button.backgroundColor = UIColor.appBlack
+        button.setBackgroundColor(.appBlack, for: .normal)
+        button.setBackgroundColor(.appGray, for: .disabled)
         button.titleLabel?.font = UIFont.Oswald.bold
         button.setTitle("SAVE", for: .normal)
+        button.isEnabled = false
         return button
     }()
 

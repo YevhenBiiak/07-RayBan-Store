@@ -80,15 +80,19 @@ class PersonalDetailsViewController: UIViewController {
         // MARK: add TextField Actions
         rootView.firstNameTextField.addAction { [weak self] sender in
             self?.viewModel?.firstName = sender.text ?? ""
+            self?.rootView.saveButton.isEnabled = true
         }
         rootView.lastNameTextField.addAction { [weak self] sender in
             self?.viewModel?.lastName = sender.text ?? ""
+            self?.rootView.saveButton.isEnabled = true
         }
         rootView.phoneTextField.addAction { [weak self] sender in
             self?.viewModel?.phoneNumber = sender.text ?? ""
+            self?.rootView.saveButton.isEnabled = true
         }
         rootView.addressTextField.addAction { [weak self] sender in
             self?.viewModel?.shippingAddress = sender.text ?? ""
+            self?.rootView.saveButton.isEnabled = true
         }
         
         // MARK: add Button Actions
@@ -100,7 +104,10 @@ class PersonalDetailsViewController: UIViewController {
         }
         rootView.saveButton.addAction { [weak self] in
             guard let self, let viewModel = self.viewModel as? PersonalDetailsModel else { return }
-            Task { await self.presenter.saveButtonTapped(viewModel: viewModel) }
+            Task {
+                await self.presenter.saveButtonTapped(viewModel: viewModel)
+                self.rootView.saveButton.isEnabled = false
+            }
         }
     }
     

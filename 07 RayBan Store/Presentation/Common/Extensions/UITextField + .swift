@@ -18,9 +18,9 @@ extension UITextField {
         addAction(action, for: controlEvents)
     }
     
-    func setAttributedPlaceholder(text: String) {
+    func setAttributedPlaceholder(text: String?) {
         if let currentAttributedPlaceholder = attributedPlaceholder {
-            let newAttributedPlaceholder = NSAttributedString(string: text, attributes: currentAttributedPlaceholder.attributes(at: 0, effectiveRange: nil))
+            let newAttributedPlaceholder = NSAttributedString(string: text ?? "", attributes: currentAttributedPlaceholder.attributes(at: 0, effectiveRange: nil))
             attributedPlaceholder = newAttributedPlaceholder
         }
     }

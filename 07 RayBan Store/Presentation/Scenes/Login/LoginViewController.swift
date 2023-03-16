@@ -62,6 +62,10 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: LoginView {
     
+    func display(activityIndicator show: Bool) {
+        rootView.loginButton.configuration?.showsActivityIndicator = show
+    }
+    
     func display(emailFiledError: String) {
         rootView.emailTextField.triggerRequirements(with: emailFiledError)
     }

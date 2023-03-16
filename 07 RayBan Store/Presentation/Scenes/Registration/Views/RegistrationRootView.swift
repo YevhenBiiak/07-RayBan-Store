@@ -112,11 +112,18 @@ class RegistrationRootView: UIView {
     }()
     
     let createAccountButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.system)
-        button.tintColor = UIColor.appWhite
-        button.backgroundColor = UIColor.appBlack
-        button.titleLabel?.font = UIFont.Oswald.medium
-        button.setTitle("CREATE ACCOUNT", for: .normal)
+        var config = UIButton.Configuration.filled()
+        config.baseForegroundColor = UIColor.appWhite
+        config.imagePadding = 8
+        config.title = "CREATE ACCOUNT"
+        config.titleTextAttributesTransformer = .init { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.Oswald.medium
+            return outgoing
+        }
+        
+        let button = UIButton(configuration: config)
+        button.backgroundColor = .appBlack
         return button
     }()
     

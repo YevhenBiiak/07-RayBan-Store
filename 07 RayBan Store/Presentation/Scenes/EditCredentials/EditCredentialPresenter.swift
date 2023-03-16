@@ -12,15 +12,13 @@ protocol EditCredentialsRouter {
 
 @MainActor
 protocol EditCredentialsView: AnyObject {
-    func display(title: String)
-    func display(subtitle: String)
-    func display(newValuePlaceholder: String)
-    func display(confirmValuePlaceholder: String)
-    func displayDialogAlert(title: String, message: String?, confirmAction: @escaping () async -> Void)
-    func display(newValueFiledError: String)
-    func display(confirmValueFiledError: String)
-    func display(passwordFiledError: String)
+    func display(viewModel: EditCredentialModel)
+    func display(newValueFieldError: String)
+    func display(confirmValueFieldError: String)
+    func display(passwordFieldError: String)
+    func display(activityIndicator show: Bool)
     func displayWarning(message: String)
+    func displayDialogAlert(title: String, message: String?, confirmAction: @escaping () async -> Void)
     func displayAlert(title: String, message: String?, completion: @escaping () async -> Void)
     func displayError(title: String, message: String?)
 }
@@ -55,31 +53,31 @@ extension EditCredentialsPresenterImpl: EditCredentialsPresenter {
     func viewDidLoad() async {
         switch changeType {
         case .email:
-            await view?.display(title: "CHANGE EMAIL ADDRESS")
-            await view?.display(subtitle: "This is the e-mail you use to login to the app.")
-            await view?.display(newValuePlaceholder: "New email address*")
-            await view?.display(confirmValuePlaceholder: "Confirm new email address*")
+            await view?.display(viewModel: editEmailModel())
         case .password:
-            await view?.display(title: "CHANGE PASSWORD")
-            await view?.display(subtitle: "This is the password you use to login to the app.")
-            await view?.display(newValuePlaceholder: "New password*")
-            await view?.display(confirmValuePlaceholder: "Confirm new password*")
+            await view?.display(viewModel: editPasswordModel())
         }
     }
     
     func saveButtonTapped(newValue: String, confirmValue: String, password: String) async {
         await with(errorHandler) {
+            // show activity indicator and hide when error or success occurred
+            await view?.display(activityIndicator: true)
+            defer { Task { await view?.display(activityIndicator: false) }}
+            
+            // make change request
             switch changeType {
             case .email:
                 let request = UpdateEmailRequest(user: Session.shared.user, newEmail: newValue, confirmEmail: confirmValue, password: password)
                 try await authUseCase.execute(request)
+                await onSuccessHandler?()
                 await view?.displayAlert(title: "Success", message: "Your email address have been changed to: \(newValue)") { [weak self] in
-                    await self?.onSuccessHandler?()
                     await self?.router.dismiss(animated: true)
                 }
             case .password:
                 let request = UpdatePasswordRequest(user: Session.shared.user, newPassword: newValue, confirmPassword: confirmValue, accountPassword: password)
                 try await authUseCase.execute(request)
+                await onSuccessHandler?()
                 await view?.displayAlert(title: "Success", message: "Your password have been changed") { [weak self] in
                     await self?.router.dismiss(animated: true)
                 }
@@ -111,6 +109,24 @@ extension EditCredentialsPresenterImpl: EditCredentialsPresenter {
 
 private extension EditCredentialsPresenterImpl {
     
+    func editEmailModel() -> EditCredentialModel {
+        .init(
+            title: "CHANGE EMAIL ADDRESS",
+            subtitle: "This is the e-mail you use to login to the app.",
+            newValuePlaceholder: "New email address*",
+            confirmValuePlaceholder: "Confirm new email address*"
+        )
+    }
+    
+    func editPasswordModel() -> EditCredentialModel {
+        .init(
+            title: "CHANGE PASSWORD",
+            subtitle: "This is the password you use to login to the app.",
+            newValuePlaceholder: "New password*",
+            confirmValuePlaceholder: "Confirm new password*"
+        )
+    }
+    
     func errorHandler(_ error: Error) async {
         if let error = error as? AppError {
             switch error {
@@ -118,13 +134,13 @@ private extension EditCredentialsPresenterImpl {
             
             case .emailValueIsEmpty,
                  .emailFormatIsWrong,
-                 .invalidEmail:          await view?.display(newValueFiledError: error.localizedDescription)
+                 .invalidEmail:          await view?.display(newValueFieldError: error.localizedDescription)
                 
             case .passwordValueIsEmpty,
                  .passwordLengthIsWrong,
-                 .weakPassword:          await view?.display(passwordFiledError: error.localizedDescription)
+                 .weakPassword:          await view?.display(passwordFieldError: error.localizedDescription)
                 
-            case .valuesDoNotMatch:      await view?.display(confirmValueFiledError: error.localizedDescription)
+            case .valuesDoNotMatch:      await view?.display(confirmValueFieldError: error.localizedDescription)
                 
             case .emailAlreadyInUse,
                  .wrongPassword,

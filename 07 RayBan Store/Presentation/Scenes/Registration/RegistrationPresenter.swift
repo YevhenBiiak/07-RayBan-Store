@@ -13,6 +13,7 @@ protocol RegistrationRouter {
 
 @MainActor
 protocol RegistrationView: AnyObject {
+    func display(activityIndicator show: Bool)
     func display(firstNameFiledError: String)
     func display(lastNameFiledError: String)
     func display(emailFiledError: String)
@@ -53,6 +54,11 @@ extension RegistrationPresenterImpl: RegistrationPresenter {
     
     func createAccountButtonTapped(registreationParameters: RegistrationParameters) async {
         await with(errorHandler) {
+            // show activity indicator and hide when error or success occurred
+            await view?.display(activityIndicator: true)
+            defer { Task { await view?.display(activityIndicator: false) }}
+            
+            // make login request
             let registrationRequest = RegistrationRequest(registrationParameters: registreationParameters)
             let profile = try await authUseCase.execute(registrationRequest)
             Session.shared.user = User(id: profile.id)

@@ -61,6 +61,10 @@ class RegistrationViewController: UIViewController {
 
 extension RegistrationViewController: RegistrationView {
     
+    func display(activityIndicator show: Bool) {
+        rootView.createAccountButton.configuration?.showsActivityIndicator = show
+    }
+    
     func display(firstNameFiledError: String) {
         rootView.firstNameTextField.triggerRequirements(with: firstNameFiledError)
     }

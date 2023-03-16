@@ -71,11 +71,18 @@ class LoginRootView: UIView {
     }()
     
     let loginButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.system)
-        button.tintColor = UIColor.appWhite
-        button.backgroundColor = UIColor.appBlack
-        button.titleLabel?.font = UIFont.Oswald.medium
-        button.setTitle("LOG IN", for: .normal)
+        var config = UIButton.Configuration.filled()
+        config.baseForegroundColor = UIColor.appWhite
+        config.imagePadding = 8
+        config.title = "LOG IN"
+        config.titleTextAttributesTransformer = .init { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.Oswald.medium
+            return outgoing
+        }
+        
+        let button = UIButton(configuration: config)
+        button.backgroundColor = .appBlack
         return button
     }()
     
