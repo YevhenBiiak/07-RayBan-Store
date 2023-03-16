@@ -33,7 +33,7 @@ class ProductsViewController: UIViewController {
         super.viewWillAppear(animated)
         guard section?.items.isEmpty == false else { return }
         let visibleIndices = rootView.collectionView.indexPathsForVisibleItems.map { $0.item }
-        Task { await presenter.willDisplayItems(at: visibleIndices.sorted()) }
+        Task { await presenter.willAppearItems(at: visibleIndices.sorted()) }
     }
     
     // MARK: - Private methods
