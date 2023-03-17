@@ -189,7 +189,6 @@
 		57ED3DC028E6F01D0015CFDE /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DBF28E6F01D0015CFDE /* CategoriesViewController.swift */; };
 		57ED3DC228E73B5E0015CFDE /* CategoriesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DC128E73B5E0015CFDE /* CategoriesRootView.swift */; };
 		57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ED3DC328E755FB0015CFDE /* CategoryViewCell.swift */; };
-		57FA03D8299D38F00066B869 /* RequestStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FA03D7299D38F00066B869 /* RequestStack.swift */; };
 		57FF081328A503B600FE5FC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081228A503B600FE5FC9 /* AppDelegate.swift */; };
 		57FF081528A503B600FE5FC9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081428A503B600FE5FC9 /* SceneDelegate.swift */; };
 		57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF081628A503B600FE5FC9 /* ViewController.swift */; };
@@ -382,7 +381,6 @@
 		57ED3DBF28E6F01D0015CFDE /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		57ED3DC128E73B5E0015CFDE /* CategoriesRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRootView.swift; sourceTree = "<group>"; };
 		57ED3DC328E755FB0015CFDE /* CategoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewCell.swift; sourceTree = "<group>"; };
-		57FA03D7299D38F00066B869 /* RequestStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStack.swift; sourceTree = "<group>"; };
 		57FA9D2E28C3322100DEB112 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		57FF080F28A503B600FE5FC9 /* 07 RayBan Store.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "07 RayBan Store.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57FF081228A503B600FE5FC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -751,7 +749,6 @@
 		5784000428D5FCE0003766F0 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				57FA03D6299D38E60066B869 /* Helpers */,
 				579404E4298D60270048FD33 /* Alerts */,
 				57A1BF4428DCB44700819E88 /* CustomViews */,
 				5784000B28D5FDDD003766F0 /* Fonts */,
@@ -1144,14 +1141,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		57FA03D6299D38E60066B869 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				57FA03D7299D38F00066B869 /* RequestStack.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
 		57FF080628A503B600FE5FC9 = {
 			isa = PBXGroup;
 			children = (
@@ -1413,7 +1402,6 @@
 				574F278F28C4C3150092D293 /* OrderGateway.swift in Sources */,
 				575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */,
 				57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */,
-				57FA03D8299D38F00066B869 /* RequestStack.swift in Sources */,
 				57AAE79C29AFB978009FD328 /* FavoriteItemModel.swift in Sources */,
 				57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */,
 				57E2F61629BE036800A721FA /* OrderSummaryCodable.swift in Sources */,

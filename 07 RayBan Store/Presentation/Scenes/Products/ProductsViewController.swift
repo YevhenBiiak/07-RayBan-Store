@@ -87,6 +87,7 @@ extension ProductsViewController: ProductsView {
     func display(productsSection: any Sectionable) {
         section = productsSection
         rootView.collectionView.reloadData()
+        rootView.collectionView.setContentOffset(.init(x: 0, y: -(topBarHeight ?? 0)), animated: false)
     }
     
     func display(productItem: any Itemable, at index: Int) {

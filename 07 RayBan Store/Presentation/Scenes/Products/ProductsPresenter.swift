@@ -49,8 +49,9 @@ class ProductsPresenterImpl {
     private var currentGender: Product.Gender?
     private var currentStyle: Product.Style?
     
-    private let requestStack = RequestStack(capacity: 6)
-    private var totalProductsCount: Int = 0
+    private var isLoading: Bool = false
+    private let batchSize: Int = 6
+    private var productsCount: Int = 0
     
     init(view: ProductsView?, router: ProductsRouter, cartUseCase: CartUseCase, getProductsUseCase: GetProductsUseCase) {
         self.view = view
@@ -68,49 +69,50 @@ extension ProductsPresenterImpl: ProductsPresenter {
     
     func willDisplayLastItem(at index: Int) async {
         let (category, gender, style) = (currentCategory, currentGender, currentStyle)
-        let nextIndex = index + 1
-        guard nextIndex < totalProductsCount,
-              requestStack.notContains(nextIndex) else { return }
+        guard !isLoading, index + 1 < productsCount else { return }
         
-        await requestStack.add(nextIndex)
+        isLoading = true; defer { isLoading = false }
+        let nextIndex = index + 1
+        let range = nextIndex..<min(nextIndex + batchSize, productsCount)
+        
         await with(errorHandler) {
-            // if it's still available request -> display loading item
-            guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
-            await view?.display(productItem: ProductItem(), at: nextIndex)
+            await range.asyncForEach { index in
+                await view?.display(productItem: ProductItem(), at: index)
+            }
             
-            let productRequest = ProductRequest(category: category, gender: gender, style: style, index: nextIndex)
-            let product = try await getProductsUseCase.execute(productRequest)
-            let viewModel = try await createViewModel(with: product)
-            let productItem = ProductItem(viewModel: viewModel)
+            let request = ProductsRequest(
+                category: category, gender: gender, style: style, range: range)
+            let items = try await getProductsUseCase.execute(request)
+                .concurrentMap(createViewModel)
+                .map(ProductItem.init)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
-            await view?.display(productItem: productItem, at: nextIndex)
+            await zip(items, range).asyncForEach { item in
+                await view?.display(productItem: item.0, at: item.1)
+            }
         }
-        requestStack.remove(nextIndex)
     }
     
     func willAppearItems(at indices: [Int]) async {
         await with(errorHandler) {
             let (category, gender, style) = (currentCategory, currentGender, currentStyle)
+            try await displayUpdatedMenuBadge()
             
-            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
-            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
-            isCartEmpty ? await view?.hideMenuBadge() : await view?.displayMenuBadge()
+            guard let first = indices.first, let last = indices.last else { return }
+            let range = Range(first...last)
             
-            let productsRequest = ProductsRequest(category: category, gender: gender, style: style, indices: indices)
-            let products = try await getProductsUseCase.execute(productsRequest)
-            
-            let viewModels = try await products.concurrentMap { [weak self] in
-                try await self?.createViewModel(with: $0)
-            }.compactMap{$0}
+            let request = ProductsRequest(
+                category: category, gender: gender, style: style, range: range)
+            let items = try await getProductsUseCase.execute(request)
+                .concurrentMap(createViewModel)
+                .map(ProductItem.init)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
-            let header = "\(totalProductsCount) PRODUCTS"
-            let items = viewModels.map { ProductItem(viewModel: $0) }
-            let section = ProductsSection(header: header, items: items)
-            await view?.display(productsSection: section)
+            await zip(items, range).asyncForEach { item in
+                await view?.display(productItem: item.0, at: item.1)
+            }
         }
     }
     
@@ -132,18 +134,18 @@ extension ProductsPresenterImpl: ProductsPresenter {
 extension ProductsPresenterImpl: ProductsPresentationDelegate {
     
     func presentProducts(category: Product.Category) async {
-        await displayEmptySection(andTitle: category.rawValue)
-        await presentProducts(category: category, gender: nil, style: nil)
+        await displayLoadingItems(andTitle: category.rawValue)
+        await displayProducts(category: category, gender: nil, style: nil)
     }
     
     func presentProducts(category: Product.Category, style: Product.Style) async {
-        await displayEmptySection(andTitle: style.rawValue + " " + category.rawValue)
-        await presentProducts(category: category, gender: nil, style: style)
+        await displayLoadingItems(andTitle: style.rawValue + " " + category.rawValue)
+        await displayProducts(category: category, gender: nil, style: style)
     }
     
     func presentProducts(category: Product.Category, gender: Product.Gender) async {
-        await displayEmptySection(andTitle: gender.rawValue + " " + category.rawValue)
-        await presentProducts(category: category, gender: gender, style: nil)
+        await displayLoadingItems(andTitle: gender.rawValue + " " + category.rawValue)
+        await displayProducts(category: category, gender: gender, style: nil)
     }
 }
 
@@ -151,42 +153,56 @@ extension ProductsPresenterImpl: ProductsPresentationDelegate {
 
 private extension ProductsPresenterImpl {
     
-    func displayEmptySection(andTitle title: String) async {
-        let section = ProductsSection(header: "0 PRODUCTS", items: [])
+    func displayLoadingItems(andTitle title: String) async {
+        // display products section with loading(empty) items
+        let items = Array(repeating: ProductItem(), count: batchSize)
+        let section = ProductsSection(header: "PRODUCTS", items: items)
         await view?.display(productsSection: section)
         await view?.display(title: title.uppercased())
     }
     
-    func presentProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async {
+    func displayUpdatedMenuBadge() async throws {
+        let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
+        let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
+        isCartEmpty ? await view?.hideMenuBadge() : await view?.displayMenuBadge()
+    }
+    
+    func displayProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?) async {
         // update state with new presentation request
         (currentCategory, currentGender, currentStyle) = (category, gender, style)
+        isLoading = true; defer { isLoading = false }
         
         await with(errorHandler) {
-            let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
-            let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
-            isCartEmpty ? await view?.hideMenuBadge() : await view?.displayMenuBadge()
+            try await displayUpdatedMenuBadge()
             
-            // first phase (display products count and loading item)
-            let productsCountRequest = ProductsCountRequest(category: currentCategory, gender: currentGender, style: currentStyle)
+            // first phase (check that the products count is not equal to zero)
+            let productsCountRequest = ProductsCountRequest(
+                category: category, gender: gender, style: style)
             let productsCount = try await getProductsUseCase.execute(productsCountRequest)
+            
+            // if it's still available request -> update totalProductsCount value
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
+            self.productsCount = productsCount
+            guard productsCount > 0 else {
+                // update view with empty product section
+                let section = ProductsSection(header: "", items: [])
+                await view?.display(productsSection: section)
+                return
+            }
             
-            totalProductsCount = productsCount
-            guard productsCount > 0 else { return }
-            
+            // second phase (display range of product items)
+            let range = 0..<min(batchSize, productsCount)
+            let request = ProductsRequest(
+                category: category, gender: gender, style: style, range: range)
+            let items = try await getProductsUseCase.execute(request)
+                .concurrentMap(createViewModel)
+                .map(ProductItem.init)
             let header = "\(productsCount) PRODUCTS"
-            let section = ProductsSection(header: header, items: [ProductItem()])
-            await view?.display(productsSection: section)
-            
-            // second phase (display first product item)
-            let productRequest = ProductRequest(category: currentCategory, gender: currentGender, style: currentStyle, index: 0)
-            let product = try await getProductsUseCase.execute(productRequest)
-            let viewModel = try await createViewModel(with: product)
+            let section = ProductsSection(header: header, items: items)
             
             // if it's still available request -> display it
             guard (currentCategory, currentGender, currentStyle) == (category, gender, style) else { return }
-            let item = ProductItem(viewModel: viewModel)
-            await view?.display(productItem: item, at: 0)
+            await view?.display(productsSection: section)
         }
     }
     

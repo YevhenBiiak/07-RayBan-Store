@@ -16,6 +16,6 @@ func with<T>(_ errorHandler: (Error) -> Error, _ code: () throws -> T) throws ->
 }
 
 func with(_ errorHandler: (Error) async -> Void, _ code: () async throws -> Void) async {
-    do    { return try await code() }
-    catch { return await errorHandler(error) }
+    do    { try await code() }
+    catch { await errorHandler(error) }
 }

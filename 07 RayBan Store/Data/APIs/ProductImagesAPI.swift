@@ -47,7 +47,7 @@ class ProductImagesApiImpl: ImagesAPI {
         var imgWidth = 2048
         // https://images.ray-ban.com/is/image/RayBan/805289126577__001.png
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 800
+        case .main:   imgName += "__001.png"; imgWidth = 400
         case .main2:  imgName += "__002.png"
         case .back:   imgName += "__STD__shad__bk.png"
         case .left:   imgName += "__STD__shad__lt.png"

@@ -70,13 +70,13 @@ extension ProductGatewayImpl: ProductGateway {
     }
     
     // Products by Category, Style, Gender with indices
-    func fetchProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?, indices: [Int]) async throws -> [Product] {
+    func fetchProducts(category: Product.Category, gender: Product.Gender?, style: Product.Style?, range: Range<Int>) async throws -> [Product] {
         var products = try await productsAPI.fetchProducts()
             .map(Product.init)
             .filter(category: category, gender: gender, style: style)
         
-        guard indices.count <= products.count else { throw AppError.invalidProductIndex }
-        products = Array(products.prefix(indices.last ?? 0))
+        guard range.upperBound <= products.count else { throw AppError.invalidProductIndex }
+        products = Array(products[range])
         
         // load images for first product variant
         try await loadImages(for: &products, imgTypes: [.main], bgColor: .appLightGray)

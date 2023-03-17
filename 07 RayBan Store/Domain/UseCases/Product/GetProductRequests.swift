@@ -29,7 +29,7 @@ struct ProductsRequest {
     let category: Product.Category
     let gender: Product.Gender?
     let style: Product.Style?
-    var indices: [Int]
+    var range: Range<Int>
 }
 
 struct ProductsCountRequest {

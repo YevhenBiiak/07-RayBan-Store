@@ -47,7 +47,7 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     
     // get product for update visible cells
     func execute(_ request: ProductsRequest) async throws -> [Product] {
-        try await productGateway.fetchProducts(category: request.category, gender: request.gender, style: request.style, indices: request.indices)
+        try await productGateway.fetchProducts(category: request.category, gender: request.gender, style: request.style, range: request.range)
         // here can be some domain logic
     }
     

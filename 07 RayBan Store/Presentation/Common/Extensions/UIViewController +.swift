@@ -9,6 +9,10 @@ import UIKit
 
 extension UIViewController {
     
+    var topBarHeight: CGFloat? {
+        (navigationController?.navigationBar.frame.height ?? 0) + (UIApplication.shared.statusBarHeight ?? 0)
+    }
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -17,13 +21,6 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }
-}
-
-extension UINavigationController {
-    
-    var navigationBarHeight: CGFloat? {
-        navigationController?.navigationBar.frame.height
     }
 }
 
