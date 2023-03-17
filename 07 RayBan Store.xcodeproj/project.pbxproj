@@ -110,12 +110,15 @@
 		57A1BF4928DDBA3F00819E88 /* UIView +.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A1BF4828DDBA3F00819E88 /* UIView +.swift */; };
 		57A7C86529AE125100E979CB /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7C86429AE125100E979CB /* CartItemModel.swift */; };
 		57A7F70029C1D462006EACCF /* UITextField + .swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F6FF29C1D462006EACCF /* UITextField + .swift */; };
-		57A7F70829C20CC8006EACCF /* EditCredentialsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */; };
-		57A7F71729C23508006EACCF /* EditCredentialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71629C23508006EACCF /* EditCredentialModel.swift */; };
-		57A7F71B29C30A25006EACCF /* EditCredentialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */; };
-		57A7F71D29C30A4C006EACCF /* EditCredentialPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */; };
+		57A7F70829C20CC8006EACCF /* EditEmailRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F70729C20CC8006EACCF /* EditEmailRootView.swift */; };
+		57A7F71B29C30A25006EACCF /* EditEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71A29C30A25006EACCF /* EditEmailViewController.swift */; };
+		57A7F71D29C30A4C006EACCF /* EditEmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71C29C30A4C006EACCF /* EditEmailPresenter.swift */; };
 		57A7F71F29C30A88006EACCF /* EditCredentialRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */; };
-		57A7F72129C30AAA006EACCF /* EditCredentialConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */; };
+		57A7F72129C30AAA006EACCF /* EditEmailConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72029C30AAA006EACCF /* EditEmailConfigurator.swift */; };
+		57A7F72529C4CC46006EACCF /* EditPasswordRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72429C4CC46006EACCF /* EditPasswordRootView.swift */; };
+		57A7F72729C4CC54006EACCF /* EditPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72629C4CC54006EACCF /* EditPasswordViewController.swift */; };
+		57A7F72929C4CE1F006EACCF /* EditPasswordConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72829C4CE1F006EACCF /* EditPasswordConfigurator.swift */; };
+		57A7F72B29C4CEA4006EACCF /* EditPasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A7F72A29C4CEA4006EACCF /* EditPasswordPresenter.swift */; };
 		57AAE78B29AFB0F7009FD328 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */; };
 		57AAE78D29AFB109009FD328 /* FavoritesRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */; };
 		57AAE78F29AFB122009FD328 /* FavoritesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */; };
@@ -301,12 +304,15 @@
 		57A1BF4828DDBA3F00819E88 /* UIView +.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView +.swift"; sourceTree = "<group>"; };
 		57A7C86429AE125100E979CB /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
 		57A7F6FF29C1D462006EACCF /* UITextField + .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + .swift"; sourceTree = "<group>"; };
-		57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialsRootView.swift; sourceTree = "<group>"; };
-		57A7F71629C23508006EACCF /* EditCredentialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialModel.swift; sourceTree = "<group>"; };
-		57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialViewController.swift; sourceTree = "<group>"; };
-		57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialPresenter.swift; sourceTree = "<group>"; };
+		57A7F70729C20CC8006EACCF /* EditEmailRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailRootView.swift; sourceTree = "<group>"; };
+		57A7F71A29C30A25006EACCF /* EditEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailViewController.swift; sourceTree = "<group>"; };
+		57A7F71C29C30A4C006EACCF /* EditEmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailPresenter.swift; sourceTree = "<group>"; };
 		57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialRouter.swift; sourceTree = "<group>"; };
-		57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCredentialConfigurator.swift; sourceTree = "<group>"; };
+		57A7F72029C30AAA006EACCF /* EditEmailConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailConfigurator.swift; sourceTree = "<group>"; };
+		57A7F72429C4CC46006EACCF /* EditPasswordRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordRootView.swift; sourceTree = "<group>"; };
+		57A7F72629C4CC54006EACCF /* EditPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordViewController.swift; sourceTree = "<group>"; };
+		57A7F72829C4CE1F006EACCF /* EditPasswordConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordConfigurator.swift; sourceTree = "<group>"; };
+		57A7F72A29C4CEA4006EACCF /* EditPasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordPresenter.swift; sourceTree = "<group>"; };
 		57AAE78A29AFB0F7009FD328 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		57AAE78C29AFB109009FD328 /* FavoritesRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRootView.swift; sourceTree = "<group>"; };
 		57AAE78E29AFB122009FD328 /* FavoritesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewCell.swift; sourceTree = "<group>"; };
@@ -829,30 +835,33 @@
 		57A7F70129C20C73006EACCF /* EditCredentials */ = {
 			isa = PBXGroup;
 			children = (
-				57A7F71529C23491006EACCF /* Models */,
-				57A7F70229C20C8A006EACCF /* Views */,
-				57A7F71A29C30A25006EACCF /* EditCredentialViewController.swift */,
-				57A7F71C29C30A4C006EACCF /* EditCredentialPresenter.swift */,
+				57A7F72229C4CB91006EACCF /* EditEmail */,
+				57A7F72329C4CB96006EACCF /* EditPassword */,
 				57A7F71E29C30A88006EACCF /* EditCredentialRouter.swift */,
-				57A7F72029C30AAA006EACCF /* EditCredentialConfigurator.swift */,
 			);
 			path = EditCredentials;
 			sourceTree = "<group>";
 		};
-		57A7F70229C20C8A006EACCF /* Views */ = {
+		57A7F72229C4CB91006EACCF /* EditEmail */ = {
 			isa = PBXGroup;
 			children = (
-				57A7F70729C20CC8006EACCF /* EditCredentialsRootView.swift */,
+				57A7F70729C20CC8006EACCF /* EditEmailRootView.swift */,
+				57A7F71A29C30A25006EACCF /* EditEmailViewController.swift */,
+				57A7F71C29C30A4C006EACCF /* EditEmailPresenter.swift */,
+				57A7F72029C30AAA006EACCF /* EditEmailConfigurator.swift */,
 			);
-			path = Views;
+			path = EditEmail;
 			sourceTree = "<group>";
 		};
-		57A7F71529C23491006EACCF /* Models */ = {
+		57A7F72329C4CB96006EACCF /* EditPassword */ = {
 			isa = PBXGroup;
 			children = (
-				57A7F71629C23508006EACCF /* EditCredentialModel.swift */,
+				57A7F72429C4CC46006EACCF /* EditPasswordRootView.swift */,
+				57A7F72629C4CC54006EACCF /* EditPasswordViewController.swift */,
+				57A7F72A29C4CEA4006EACCF /* EditPasswordPresenter.swift */,
+				57A7F72829C4CE1F006EACCF /* EditPasswordConfigurator.swift */,
 			);
-			path = Models;
+			path = EditPassword;
 			sourceTree = "<group>";
 		};
 		57AAE78829AFB0D3009FD328 /* Favorites */ = {
@@ -1341,19 +1350,19 @@
 				5784000328D5FC7D003766F0 /* ProductsRootView.swift in Sources */,
 				5784001128D5FEBC003766F0 /* ProductsPresenter.swift in Sources */,
 				579404E8298FE2000048FD33 /* UIApplication + .swift in Sources */,
-				57A7F71729C23508006EACCF /* EditCredentialModel.swift in Sources */,
 				57B75D5429AA31DE0017E0F3 /* CartRouter.swift in Sources */,
-				57A7F71D29C30A4C006EACCF /* EditCredentialPresenter.swift in Sources */,
+				57A7F71D29C30A4C006EACCF /* EditEmailPresenter.swift in Sources */,
 				578DB1B12906D50D009C1FD2 /* ShimmerView.swift in Sources */,
 				57B75D5629AA31E90017E0F3 /* CartConfigurator.swift in Sources */,
 				57508A6B28BFDC8D000328AC /* CartGatewayImpl.swift in Sources */,
-				57A7F72129C30AAA006EACCF /* EditCredentialConfigurator.swift in Sources */,
+				57A7F72129C30AAA006EACCF /* EditEmailConfigurator.swift in Sources */,
 				5740C5A3298A87D5006B432E /* SplashScreen.swift in Sources */,
 				57E2F5FB29BC5ADE00A721FA /* OrdersConfigurator.swift in Sources */,
 				57508A6928BFDC71000328AC /* CartGateway.swift in Sources */,
 				57FF081728A503B600FE5FC9 /* ViewController.swift in Sources */,
-				57A7F70829C20CC8006EACCF /* EditCredentialsRootView.swift in Sources */,
+				57A7F70829C20CC8006EACCF /* EditEmailRootView.swift in Sources */,
 				5720BF6928D4E69A003EBAA6 /* LoginRouter.swift in Sources */,
+				57A7F72529C4CC46006EACCF /* EditPasswordRootView.swift in Sources */,
 				57E2F60229BC85F800A721FA /* OrderItemView.swift in Sources */,
 				57ED3DC428E755FB0015CFDE /* CategoryViewCell.swift in Sources */,
 				57E9DB372992554100EDE67E /* ForgotPasswordRootView.swift in Sources */,
@@ -1400,6 +1409,7 @@
 				57E9DB2D29924FD900EDE67E /* Routable.swift in Sources */,
 				57AAE79C29AFB978009FD328 /* FavoriteItemModel.swift in Sources */,
 				57508A6528BFD48A000328AC /* ProfileGateway.swift in Sources */,
+				57A7F72729C4CC54006EACCF /* EditPasswordViewController.swift in Sources */,
 				57E2F61629BE036800A721FA /* OrderSummaryCodable.swift in Sources */,
 				5784000F28D5FE68003766F0 /* ProductsViewController.swift in Sources */,
 				57D0828C28F317C5005FF050 /* ZoomableView.swift in Sources */,
@@ -1413,6 +1423,7 @@
 				571BC18529B7413300CD5D0E /* CheckoutPresenter.swift in Sources */,
 				571BC19B29BA04F400CD5D0E /* DeliveryInfoModel.swift in Sources */,
 				57A188B929AF768C009C3AE1 /* NetworkMonitor.swift in Sources */,
+				57A7F72B29C4CEA4006EACCF /* EditPasswordPresenter.swift in Sources */,
 				57508A5D28BFB34B000328AC /* ProductImagesAPI.swift in Sources */,
 				57ED3DBA28E5E9CC0015CFDE /* AccountMenuRouter.swift in Sources */,
 				5708386E29A4DE6900205B34 /* ProductDetailsViewModel.swift in Sources */,
@@ -1474,6 +1485,7 @@
 				57E2F60E29BE011000A721FA /* FavoriteItemCodable.swift in Sources */,
 				579404E3298D1D010048FD33 /* RegistrationRootView.swift in Sources */,
 				574F27AD28CB5A510092D293 /* Session.swift in Sources */,
+				57A7F72929C4CE1F006EACCF /* EditPasswordConfigurator.swift in Sources */,
 				5720BF6728D4E646003EBAA6 /* LoginConfigurator.swift in Sources */,
 				57508A6728BFD525000328AC /* ProfileGatewayImpl.swift in Sources */,
 				57B75D4C29AA31A70017E0F3 /* CartRootView.swift in Sources */,
@@ -1494,7 +1506,7 @@
 				5774FE0D29BF878200744524 /* ProductCodable.swift in Sources */,
 				57BDD19328D7886400A9007B /* ProductDetailsRootView.swift in Sources */,
 				579404E6298D604B0048FD33 /* Alerts.swift in Sources */,
-				57A7F71B29C30A25006EACCF /* EditCredentialViewController.swift in Sources */,
+				57A7F71B29C30A25006EACCF /* EditEmailViewController.swift in Sources */,
 				571BC18929B7414800CD5D0E /* CheckoutConfigurator.swift in Sources */,
 				57B75D4229A92CD00017E0F3 /* FavoriteGatewayImpl.swift in Sources */,
 				57E2F5EE29BB91DB00A721FA /* ThankYouViewController.swift in Sources */,

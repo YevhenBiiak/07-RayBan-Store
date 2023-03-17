@@ -1,5 +1,5 @@
 //
-//  EditCredentialsRootView.swift
+//  EditEmailRootView.swift
 //  07 RayBan Store
 //
 //  Created by Yevhen Biiak on 15.03.2023.
@@ -8,7 +8,7 @@
 import UIKit
 import Stevia
 
-class EditCredentialsRootView: UIView {
+class EditEmailRootView: UIView {
     
     let contentView: UIView = {
         let view = UIView()
@@ -28,7 +28,7 @@ class EditCredentialsRootView: UIView {
         label.numberOfLines = 0
         label.font = UIFont.Oswald.bold.withSize(19)
         label.textAlignment = .center
-        label.text = "CHANGE CREDENTIAL"
+        label.text = "CHANGE EMAIL ADDRESS"
         return label
     }()
     
@@ -38,25 +38,27 @@ class EditCredentialsRootView: UIView {
         label.font = UIFont.Lato.regular
         label.textColor = .appDarkGray
         label.textAlignment = .center
-        label.text = "This is the credential you use to login in app."
+        label.text = "This is the e-mail you use to login to the app."
         return label
     }()
-    
-    let newValueTextField: RequiredTextField = {
+
+    let newEmailTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .done
-        textField.attributedPlaceholder = NSAttributedString(string: "New value*", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.keyboardType = .emailAddress
+        textField.attributedPlaceholder = NSAttributedString(string: "New email address*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
-    let confirmValueTextField: RequiredTextField = {
+    let confirmEmailTextField: RequiredTextField = {
         let textField = RequiredTextField()
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .done
-        textField.attributedPlaceholder = NSAttributedString(string: "Confirm New value*", attributes: [.foregroundColor: UIColor.appDarkGray])
+        textField.keyboardType = .emailAddress
+        textField.attributedPlaceholder = NSAttributedString(string: "Confirm new email address*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()
     
@@ -104,7 +106,7 @@ class EditCredentialsRootView: UIView {
         fieldsStack.distribution = .fill
         fieldsStack.spacing = 30
         
-        [newValueTextField, confirmValueTextField, passwordTextField].forEach {
+        [newEmailTextField, confirmEmailTextField, passwordTextField].forEach {
             fieldsStack.addArrangedSubview($0)
         }
         

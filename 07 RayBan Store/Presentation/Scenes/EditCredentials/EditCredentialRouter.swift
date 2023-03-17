@@ -7,11 +7,16 @@
 
 import UIKit
 
+@MainActor
+protocol EditCredentialsRouter {
+    func dismiss(animated: Bool)
+}
+
 class EditCredentialsRouterImpl: Routable, EditCredentialsRouter {
     
-    weak var viewController: EditCredentialsViewController!
+    weak var viewController: UIViewController!
     
-    required init(viewController: EditCredentialsViewController) {
+    required init(viewController: UIViewController) {
         self.viewController = viewController
     }
     

@@ -24,24 +24,24 @@ class PersonalDetailsRouterImpl: Routable, PersonalDetailsRouter {
     }
     
     func presentEditEmail(onSuccess: (() async -> Void)?) {
-        let editCredentialsViewController = EditCredentialsViewController()
-        let editCredentialsConfiguratorImpl = EditCredentialsConfiguratorImpl(changeType: .email, successCompletion: onSuccess)
+        let editEmailViewController = EditEmailViewController()
+        let editEmailConfigurator = EditEmailConfiguratorImpl(successHandler: onSuccess)
 
-        editCredentialsViewController.configurator = editCredentialsConfiguratorImpl
-        editCredentialsViewController.modalTransitionStyle = .crossDissolve
-        editCredentialsViewController.modalPresentationStyle = .overFullScreen
+        editEmailViewController.configurator = editEmailConfigurator
+        editEmailViewController.modalTransitionStyle = .crossDissolve
+        editEmailViewController.modalPresentationStyle = .overFullScreen
         
-        viewController?.present(editCredentialsViewController, animated: true)
+        viewController?.present(editEmailViewController, animated: true)
     }
     
     func presentEditPassword() {
-        let editCredentialsViewController = EditCredentialsViewController()
-        let editCredentialsConfiguratorImpl = EditCredentialsConfiguratorImpl(changeType: .password)
+        let editPasswordViewController = EditPasswordViewController()
+        let editPasswordConfigurator = EditPasswordConfiguratorImpl()
 
-        editCredentialsViewController.configurator = editCredentialsConfiguratorImpl
-        editCredentialsViewController.modalTransitionStyle = .crossDissolve
-        editCredentialsViewController.modalPresentationStyle = .overFullScreen
+        editPasswordViewController.configurator = editPasswordConfigurator
+        editPasswordViewController.modalTransitionStyle = .crossDissolve
+        editPasswordViewController.modalPresentationStyle = .overFullScreen
         
-        viewController?.present(editCredentialsViewController, animated: true)
+        viewController?.present(editPasswordViewController, animated: true)
     }
 }

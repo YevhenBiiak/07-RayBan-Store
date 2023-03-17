@@ -1,38 +1,28 @@
 //
-//  EditCredentialViewController.swift
+//  EditPasswordViewController.swift
 //  07 RayBan Store
 //
-//  Created by Yevhen Biiak on 16.03.2023.
+//  Created by Yevhen Biiak on 17.03.2023.
 //
 
 import UIKit
 
-class EditCredentialsViewController: UIViewController {
+class EditPasswordViewController: UIViewController {
     
-    var configurator: EditCredentialsConfigurator!
-    var presenter: EditCredentialsPresenter!
-    var rootView: EditCredentialsRootView!
-    
-    var viewModel: EditCredentialModel? {
-        didSet {
-            rootView.titleLabel.text = viewModel?.title
-            rootView.subtitleLabel.text = viewModel?.subtitle
-            rootView.newValueTextField.setAttributedPlaceholder(text: viewModel?.newValuePlaceholder)
-            rootView.confirmValueTextField.setAttributedPlaceholder(text: viewModel?.confirmValuePlaceholder)
-        }
-    }
+    var configurator: EditPasswordConfigurator!
+    var presenter: EditPasswordPresenter!
+    var rootView: EditPasswordRootView!
     
     // MARK: - Life Cycle and overridden methods
     
     override func loadView() {
-        configurator.configure(editCredentialsViewController: self)
+        configurator.configure(editPasswordViewController: self)
         view = rootView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActions()
-        Task { await presenter.viewDidLoad() }
     }
     
     private func setupActions() {
@@ -51,9 +41,9 @@ class EditCredentialsViewController: UIViewController {
         
         rootView.confirmButton.addAction { [weak self] in
             Task { await self?.presenter.saveButtonTapped(
-                newValue: self?.rootView.newValueTextField.text ?? "",
-                confirmValue: self?.rootView.confirmValueTextField.text ?? "",
-                password: self?.rootView.passwordTextField.text ?? ""
+                newPassword: self?.rootView.newPasswordTextField.text ?? "",
+                confirmPassword: self?.rootView.confirmPasswordTextField.text ?? "",
+                currentPassword: self?.rootView.currentPasswordTextField.text ?? ""
             )}
         }
     }
@@ -63,22 +53,18 @@ class EditCredentialsViewController: UIViewController {
     }
 }
 
-extension EditCredentialsViewController: EditCredentialsView {
+extension EditPasswordViewController: EditPasswordView {
     
-    func display(viewModel: EditCredentialModel) {
-        self.viewModel = viewModel
+    func display(newPasswordFieldError: String) {
+        rootView.newPasswordTextField.triggerRequirements(with: newPasswordFieldError)
     }
     
-    func display(newValueFieldError: String) {
-        rootView.newValueTextField.triggerRequirements(with: newValueFieldError)
+    func display(confirmPasswordFieldError: String) {
+        rootView.confirmPasswordTextField.triggerRequirements(with: confirmPasswordFieldError)
     }
     
-    func display(confirmValueFieldError: String) {
-        rootView.confirmValueTextField.triggerRequirements(with: confirmValueFieldError)
-    }
-    
-    func display(passwordFieldError: String) {
-        rootView.passwordTextField.triggerRequirements(with: passwordFieldError)
+    func display(currentPasswordFieldError: String) {
+        rootView.currentPasswordTextField.triggerRequirements(with: currentPasswordFieldError)
     }
     
     func display(activityIndicator show: Bool) {
@@ -99,9 +85,6 @@ extension EditCredentialsViewController: EditCredentialsView {
         showAlert(title: title, message: message, action: {
             Task { await completion() }
         })
-    }
-    func displayAlert(title: String, message: String?) {
-        
     }
     
     func displayError(title: String, message: String?) {

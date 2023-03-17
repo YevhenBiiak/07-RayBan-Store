@@ -122,8 +122,9 @@ extension UIViewController {
         let fieldBottom = focusedField.convert(focusedField.bounds, to: nil).maxY
         let offset = (scrollView?.contentOffset.y ?? 0) + max(0, fieldBottom - keyboardTop + 12)
         
-        self.constraint?.constant = keyboardHeigh
-        self.scrollView?.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+        constraint?.constant = scrollView == nil ? max(0, fieldBottom - keyboardTop + 12) : keyboardHeigh
+        
+        scrollView?.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
         
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
@@ -134,7 +135,7 @@ extension UIViewController {
         guard let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         else { return }
         
-        self.constraint?.constant = defaultConstant ?? 0
+        constraint?.constant = defaultConstant ?? 0
         
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
