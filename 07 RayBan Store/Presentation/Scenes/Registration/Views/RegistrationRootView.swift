@@ -75,6 +75,7 @@ class RegistrationRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
+        textField.keyboardType = .emailAddress
         textField.attributedPlaceholder = NSAttributedString(string: "E-mail adress*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()

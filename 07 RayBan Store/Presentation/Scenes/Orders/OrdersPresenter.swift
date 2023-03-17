@@ -9,6 +9,7 @@ import Foundation
 
 @MainActor
 protocol OrdersRouter {
+    func presentShoppingCart()
 }
 
 @MainActor
@@ -20,6 +21,7 @@ protocol OrdersView: AnyObject {
 
 protocol OrdersPresenter {
     func viewDidLoad() async
+    func viewWillAppear() async
 }
 
 class OrdersPresenterImpl {
@@ -40,13 +42,11 @@ class OrdersPresenterImpl {
 extension OrdersPresenterImpl: OrdersPresenter {
     
     func viewDidLoad() async {
-        await with(errorHandler) {
-            await view?.display(title: "ORDER HISTORY")
-            let request = OrdersRequest(user: Session.shared.user)
-            let orders = try await orderUseCase.execute(request)
-            let models = orders.map(createOrderModel)
-            await view?.display(viewModels: models)
-        }
+        await displayOrders()
+    }
+    
+    func viewWillAppear() async {
+        await displayOrders()
     }
 }
 
@@ -54,23 +54,43 @@ extension OrdersPresenterImpl: OrdersPresenter {
 
 private extension OrdersPresenterImpl {
     
-    func createOrderModel(with order: Order) -> OrderModel {
-        OrderModel(
+    func displayOrders() async {
+        await with(errorHandler) {
+            await view?.display(title: "ORDER HISTORY")
+            let request = OrdersRequest(user: Session.shared.user)
+            let orders = try await orderUseCase.execute(request)
+            let models = try await orders.concurrentMap(createOrderModel)
+            await view?.display(viewModels: models)
+        }
+    }
+    
+    func createOrderModel(with order: Order) async throws -> OrderModel {
+        var isItemsInCart = false
+        
+        try await order.items.compactMap{ $0.product.variations.first }.concurrentForEach { [weak self] variation in
+            let inCartRequest = IsProductInCartRequset(user: Session.shared.user, productID: variation.productID)
+            isItemsInCart = try await self?.cartUseCase.execute(inCartRequest) ?? false
+        }
+        
+        return .init(
             date: order.date.formatted(date: .abbreviated, time: .shortened),
             items: order.items.compactMap(createOrderItemModel),
+            isItemsInCart: isItemsInCart,
             total: "TOTAL: $ " + String(format: "%.2f", Double(order.summary.total) / 100.0),
             deleteOrderButtonTapped: { [weak self] in
                 await self?.deleteButtonTapped(order.orderID)
-            },
-            addToCartButtonTapped: { [weak self] in
+            }, addToCartButtonTapped: { [weak self] in
                 await self?.addToCartButtonTapped(order)
+            }, showCartButtonTapped: { [weak self] in
+                await self?.router.presentShoppingCart()
             }
         )
     }
     
     func createOrderItemModel(with orderItem: OrderItem) -> OrderItemModel? {
         guard let variation = orderItem.product.variations.first else { return nil }
-        return OrderItemModel(
+        
+        return .init(
             productID: variation.productID,
             name: orderItem.product.name.uppercased(),
             color: "\(variation.frameColor)/\(variation.lenseColor)",
@@ -84,7 +104,7 @@ private extension OrdersPresenterImpl {
         await with(errorHandler) {
             let request = DeleteOrderRequest(user: Session.shared.user, orderID: orderID)
             let orders = try await orderUseCase.execute(request)
-            let models = orders.map(createOrderModel)
+            let models = try await orders.concurrentMap(createOrderModel)
             await view?.display(viewModels: models)
         }
     }
@@ -95,6 +115,7 @@ private extension OrdersPresenterImpl {
                 let addRequest = AddCartItemRequest(user: Session.shared.user, product: item.product, amount: 1)
                 try await cartUseCase.execute(addRequest)
             }
+            await displayOrders()
         }
     }
     

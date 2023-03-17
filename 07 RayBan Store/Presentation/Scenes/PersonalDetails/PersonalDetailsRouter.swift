@@ -25,7 +25,7 @@ class PersonalDetailsRouterImpl: Routable, PersonalDetailsRouter {
     
     func presentEditEmail(onSuccess: (() async -> Void)?) {
         let editCredentialsViewController = EditCredentialsViewController()
-        let editCredentialsConfiguratorImpl = EditCredentialsConfiguratorImpl(changeType: .email, onSuccessHandler: onSuccess)
+        let editCredentialsConfiguratorImpl = EditCredentialsConfiguratorImpl(changeType: .email, successCompletion: onSuccess)
 
         editCredentialsViewController.configurator = editCredentialsConfiguratorImpl
         editCredentialsViewController.modalTransitionStyle = .crossDissolve

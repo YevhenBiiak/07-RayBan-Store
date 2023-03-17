@@ -47,6 +47,7 @@ class LoginRootView: UIView {
         textField.font = UIFont.Lato.regular
         textField.textColor = UIColor.appBlack
         textField.returnKeyType = .next
+        textField.keyboardType = .emailAddress
         textField.attributedPlaceholder = NSAttributedString(string: "E-mail address*", attributes: [.foregroundColor: UIColor.appDarkGray])
         return textField
     }()

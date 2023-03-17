@@ -37,14 +37,14 @@ class EditCredentialsPresenterImpl {
     private let router: EditCredentialsRouter
     private let authUseCase: AuthUseCase
     private let changeType: CredentialType
-    private let onSuccessHandler: (() async -> Void)?
+    private let successCompletion: (() async -> Void)?
     
-    init(view: EditCredentialsView?, router: EditCredentialsRouter, authUseCase: AuthUseCase, changeType: CredentialType, onSuccessHandler: (() async -> Void)?) {
+    init(view: EditCredentialsView?, router: EditCredentialsRouter, authUseCase: AuthUseCase, changeType: CredentialType, successCompletion: (() async -> Void)?) {
         self.view = view
         self.router = router
         self.authUseCase = authUseCase
         self.changeType = changeType
-        self.onSuccessHandler = onSuccessHandler
+        self.successCompletion = successCompletion
     }
 }
 
@@ -70,14 +70,14 @@ extension EditCredentialsPresenterImpl: EditCredentialsPresenter {
             case .email:
                 let request = UpdateEmailRequest(user: Session.shared.user, newEmail: newValue, confirmEmail: confirmValue, password: password)
                 try await authUseCase.execute(request)
-                await onSuccessHandler?()
+                await successCompletion?()
                 await view?.displayAlert(title: "Success", message: "Your email address have been changed to: \(newValue)") { [weak self] in
                     await self?.router.dismiss(animated: true)
                 }
             case .password:
                 let request = UpdatePasswordRequest(user: Session.shared.user, newPassword: newValue, confirmPassword: confirmValue, accountPassword: password)
                 try await authUseCase.execute(request)
-                await onSuccessHandler?()
+                await successCompletion?()
                 await view?.displayAlert(title: "Success", message: "Your password have been changed") { [weak self] in
                     await self?.router.dismiss(animated: true)
                 }

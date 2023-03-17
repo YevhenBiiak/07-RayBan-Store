@@ -13,11 +13,11 @@ protocol EditCredentialsConfigurator {
 class EditCredentialsConfiguratorImpl: EditCredentialsConfigurator {
     
     private let changeType: CredentialType
-    private let onSuccessHandler: (() async -> Void)?
+    private let successCompletion: (() async -> Void)?
     
-    init(changeType: CredentialType, onSuccessHandler: (() async -> Void)? = nil) {
+    init(changeType: CredentialType, successCompletion: (() async -> Void)? = nil) {
         self.changeType = changeType
-        self.onSuccessHandler = onSuccessHandler
+        self.successCompletion = successCompletion
     }
     
     func configure(editCredentialsViewController: EditCredentialsViewController) {
@@ -35,7 +35,7 @@ class EditCredentialsConfiguratorImpl: EditCredentialsConfigurator {
                                                      router: router,
                                                      authUseCase: authUseCase,
                                                      changeType: changeType,
-                                                     onSuccessHandler: onSuccessHandler)
+                                                     successCompletion: successCompletion)
         
         editCredentialsViewController.presenter = presenter
         editCredentialsViewController.rootView = rootView

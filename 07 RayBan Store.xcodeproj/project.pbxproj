@@ -71,7 +71,6 @@
 		575F562A28EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */; };
 		575F562C28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */; };
 		575F562E28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */; };
-		577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */ = {isa = PBXBuildFile; fileRef = 577301F928BBFB4E007FB72F /* ClassDiagram.mdj */; };
 		577301FC28BBFD29007FB72F /* AppDesign.png in Resources */ = {isa = PBXBuildFile; fileRef = 577301FB28BBFD29007FB72F /* AppDesign.png */; };
 		5773020428BBFE9A007FB72F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020328BBFE9A007FB72F /* Product.swift */; };
 		5773020628BBFF6E007FB72F /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5773020528BBFF6E007FB72F /* Profile.swift */; };
@@ -264,7 +263,6 @@
 		575F562928EC95BD00A44E6D /* EyeglassesCategoriesConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesConfigurator.swift; sourceTree = "<group>"; };
 		575F562B28EC95FF00A44E6D /* EyeglassesCategoriesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesPresenter.swift; sourceTree = "<group>"; };
 		575F562D28EC965A00A44E6D /* EyeglassesCategoriesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeglassesCategoriesRouter.swift; sourceTree = "<group>"; };
-		577301F928BBFB4E007FB72F /* ClassDiagram.mdj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ClassDiagram.mdj; sourceTree = "<group>"; };
 		577301FB28BBFD29007FB72F /* AppDesign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppDesign.png; sourceTree = "<group>"; };
 		5773020328BBFE9A007FB72F /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		5773020528BBFF6E007FB72F /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -654,7 +652,6 @@
 			isa = PBXGroup;
 			children = (
 				577301FB28BBFD29007FB72F /* AppDesign.png */,
-				577301F928BBFB4E007FB72F /* ClassDiagram.mdj */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -1254,7 +1251,6 @@
 				57BDD18728D77E4500A9007B /* Oswald-Regular.ttf in Resources */,
 				57BDD18428D77E4500A9007B /* Oswald-Bold.ttf in Resources */,
 				57BDD17F28D77E4500A9007B /* Lato-Thin.ttf in Resources */,
-				577301FA28BBFB4E007FB72F /* ClassDiagram.mdj in Resources */,
 				57BDD18228D77E4500A9007B /* Lato-Regular.ttf in Resources */,
 				57BDD18328D77E4500A9007B /* Lato-Light.ttf in Resources */,
 				57BDD18128D77E4500A9007B /* Lato-Black.ttf in Resources */,

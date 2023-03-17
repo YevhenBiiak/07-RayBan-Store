@@ -14,4 +14,12 @@ class OrdersRouterImpl: Routable, OrdersRouter {
     required init(viewController: OrdersViewController) {
         self.viewController = viewController
     }
+    
+    func presentShoppingCart() {
+        let cartViewController = CartViewController()
+        let cartConfigurator = CartConfiguratorImpl()
+        
+        cartViewController.configurator = cartConfigurator
+        navigationController?.pushViewController(cartViewController, animated: true)
+    }
 }

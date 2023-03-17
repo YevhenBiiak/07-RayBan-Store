@@ -11,9 +11,11 @@ import Stevia
 protocol OrderViewModel: ViewModel {
     var date: String { get }
     var items: [OrderItemViewModel] { get }
+    var isItemsInCart: Bool { get }
     var total: String { get }
     var deleteOrderButtonTapped: () async -> Void { get }
     var addToCartButtonTapped: () async -> Void { get }
+    var showCartButtonTapped: () async -> Void { get }
 }
 
 class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
@@ -52,12 +54,10 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
         return label
     }()
     
-    private let addToCartButton: UIButton = {
+    private let cartButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.Oswald.bold
-        button.backgroundColor = .appBlack
-        button.tintColor = .appWhite
-        button.setTitle("ADD TO BAG", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         return button
     }()
     
@@ -70,6 +70,10 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
             itemsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             orderDateLabel.text = orderViewModel.date
             totalLabel.text = orderViewModel.total
+            let title = orderViewModel.isItemsInCart ? "SHOPPING BAG" : "ADD TO BAG"
+            let color = orderViewModel.isItemsInCart ? UIColor.appBlack : UIColor.appRed
+            cartButton.setTitle(title, for: .normal)
+            cartButton.backgroundColor = color
             
             for item in orderViewModel.items {
                 let itemView = OrderItemView()
@@ -109,8 +113,12 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
             }
         }
         
-        addToCartButton.addAction { [weak self] in
-            Task { await self?.orderViewModel?.addToCartButtonTapped() }
+        cartButton.addAction { [weak self] in
+            if self?.orderViewModel?.isItemsInCart == true {
+                Task { await self?.orderViewModel?.showCartButtonTapped() }
+            } else {
+                Task { await self?.orderViewModel?.addToCartButtonTapped() }
+            }
         }
     }
     
@@ -121,16 +129,16 @@ class OrderItemsViewCell: UICollectionViewCell, ViewModelRepresentable {
             deleteOrderButton,
             itemsStackView,
             totalLabel,
-            addToCartButton
+            cartButton
         )
         
         let padding = 0.05 * frame.width
         orderDateLabel.left(padding).CenterY == deleteOrderButton.CenterY
         deleteOrderButton.top(padding).right(padding).Left == orderDateLabel.Right + 8
         itemsStackView.left(padding/2).right(0).Top == orderDateLabel.Bottom + 12
-        totalLabel.left(padding).Right == addToCartButton.Left - 8
-        addToCartButton.width(40%).right(padding).bottom(padding).Top == itemsStackView.Bottom + 8
-        addToCartButton.CenterY == totalLabel.CenterY
+        totalLabel.left(padding).Right == cartButton.Left - 8
+        cartButton.width(40%).right(padding).bottom(10).Top == itemsStackView.Bottom + 8
+        cartButton.CenterY == totalLabel.CenterY
         
         deleteOrderButton.setContentHuggingPriority(.required, for: .horizontal)
         deleteOrderButton.setContentCompressionResistancePriority(.required, for: .horizontal)

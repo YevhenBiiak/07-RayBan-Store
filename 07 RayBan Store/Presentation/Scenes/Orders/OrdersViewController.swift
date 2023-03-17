@@ -28,6 +28,11 @@ class OrdersViewController: UIViewController {
         Task { await presenter.viewDidLoad() }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { await presenter.viewWillAppear() }
+    }
+    
     private func setupCollectionView() {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
