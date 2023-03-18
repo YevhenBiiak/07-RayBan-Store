@@ -122,7 +122,8 @@ private extension PersonalDetailsPresenterImpl {
     func errorHandler(_ error: Error) async {
         if let error = error as? AppError {
             switch error {
-            case .networkError:          await view?.displayError(title: "Error", message: error.localizedDescription)
+            case .networkError,
+                 .userProfileNotFound:   await view?.displayError(title: "Error", message: error.localizedDescription)
 
             case .firstNameValueIsEmpty: await displayUpdatedPersonalDetails(firstNameError: error.localizedDescription)
                 
@@ -136,7 +137,7 @@ private extension PersonalDetailsPresenterImpl {
             
             case .addressValueIsEmpty,
                  .addressFormatIsWrong:  await displayUpdatedPersonalDetails(addressError: error.localizedDescription)
-            
+                
             case .unknown:
                 fatalError(error.localizedDescription)
             default:

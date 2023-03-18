@@ -61,8 +61,9 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
     
     func viewDidLoad() async {
         await with(errorHandler) {
-            // display product with single main image
-            try await displayUpdatedViewModel()
+            // display the product passed to the initializer 
+            let viewModel = createProductViewModel(with: product, isInCart: false, isInFavorite: false)
+            await view?.display(viewModel: viewModel)
             
             // display cart badge
             let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
@@ -135,20 +136,22 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
 extension ProductDetailsPresenterImpl {
     
     private func displayUpdatedViewModel() async throws {
-        let viewModel = try await createProductViewModel(with: product)
-        await view?.display(viewModel: viewModel)
-    }
-    
-    private func createProductViewModel(with product: Product) async throws -> ProductDetailsViewModel {
-        let selectedVariation = product.variations[currentVariationIndex]
-        
-        let inCartRequest = IsProductInCartRequset(user: Session.shared.user, productID: selectedVariation.productID)
+        let inCartRequest = IsProductInCartRequset(
+            user: Session.shared.user,
+            productID: product.variations[currentVariationIndex].productID
+        )
         let isInCart = try await cartUseCase.execute(inCartRequest)
         
         let inFavoriteRequest = IsItemInFavoriteRequset(user: Session.shared.user, product: product)
         let isInFavorite = try await favoriteUseCase.execute(inFavoriteRequest)
         
-        return ProductDetailsViewModel(
+        let viewModel = createProductViewModel(with: product, isInCart: isInCart, isInFavorite: isInFavorite)
+        await view?.display(viewModel: viewModel)
+    }
+    
+    private func createProductViewModel(with product: Product, isInCart: Bool, isInFavorite: Bool) -> ProductDetailsViewModel {
+        let selectedVariation = product.variations[currentVariationIndex]
+        return .init(
             modelID: product.modelID,
             productID: selectedVariation.productID,
             isInCart: isInCart,

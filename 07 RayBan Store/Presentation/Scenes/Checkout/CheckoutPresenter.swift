@@ -193,7 +193,8 @@ private extension CheckoutPresenterImpl {
     func errorHandler(_ error: Error) async {
         if let error = error as? AppError {
             switch error {
-            case .networkError:          await view?.displayError(title: "Error", message: error.localizedDescription)
+            case .networkError,
+                 .userProfileNotFound:   await view?.displayError(title: "Error", message: error.localizedDescription)
 
             case .firstNameValueIsEmpty: await displayUpdatedDeliveryInfo(firstNameError: error.localizedDescription)
                 

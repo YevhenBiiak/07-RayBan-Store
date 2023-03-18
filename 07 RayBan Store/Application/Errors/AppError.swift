@@ -70,6 +70,8 @@ enum AppError: LocalizedError {
     case invalidProductIndex
     /// Database: permissions denied
     case permissionsDenied
+    /// The user profile associated with this account could not be found.
+    case userProfileNotFound
     
     var errorDescription: String? {
         switch self {
@@ -105,6 +107,7 @@ enum AppError: LocalizedError {
         case .invalidProductModelID:    return "Invalid product model identifier"
         case .invalidProductIndex:      return "Invalid product index"
         case .permissionsDenied:        return "Database: permissions denied"
+        case .userProfileNotFound:      return "The user profile associated with this account could not be found."
         }
     }
 }

@@ -109,7 +109,7 @@ extension RemoteRepositoryImpl: OrderAPI {
     
     func fetchShippingMethods() async throws -> [ShippingMethodCodable] {
         try await with(errorHandler) {
-            try await database.child("shipping").value.decode([ShippingMethodCodable].self)
+            try await database.child("shipping").value.decodeArray(of: ShippingMethodCodable.self)
         }
     }
 }
@@ -147,7 +147,9 @@ extension RemoteRepositoryImpl: FavoriteItemsAPI {
 private extension RemoteRepositoryImpl {
     
     func errorHandler(_ error: Error) -> Error {
-        error.localizedDescription == "Permission Denied"
+        if error is AppError { return error }
+        
+        return error.localizedDescription == "Permission Denied"
             ? AppError.permissionsDenied
             : AppError.unknown(error)
     }
@@ -167,8 +169,10 @@ extension DatabaseReference {
     }
 }
 
-extension Any? {
+private extension Any? {
     func decode<T: Decodable>(_ type: T.Type) throws -> T {
+        if self is NSNull { throw AppError.userProfileNotFound }
+        
         let data = try JSONSerialization.data(withJSONObject: self as Any)
         return try JSONDecoder().decode(T.self, from: data)
     }
@@ -191,7 +195,7 @@ private extension Array where Element: Codable {
     }
 }
 
-extension Encodable {
+private extension Encodable {
     var asFIRDictionary: [String: Any] {
         guard let jsonData = try? JSONEncoder().encode(self) else { return [:] }
         guard let dictionary = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else { return [:] }
