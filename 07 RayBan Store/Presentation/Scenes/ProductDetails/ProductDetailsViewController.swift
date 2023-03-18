@@ -47,6 +47,7 @@ class ProductDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard viewModel != nil else { return }
         Task { await presenter.viewWillAppear() }
     }
     

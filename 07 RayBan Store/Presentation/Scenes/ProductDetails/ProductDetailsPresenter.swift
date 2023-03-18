@@ -69,11 +69,6 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
             let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
             isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
             
-            // load and display all images for first product variation
-            let productIDRequest = ProductWithIDRequest(productID: product.variations[0].productID, options: .image(res: .max))
-            product.variations[0] = try await getProductsUseCase.execute(productIDRequest).variations[0]
-            try await displayUpdatedViewModel()
-            
             // load all images for variations and display selected
             let request = ProductWithModelIDRequest(modelID: product.modelID)
             product = try await getProductsUseCase.execute(request)
@@ -86,8 +81,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
             // display cart badge
             let isCartEmptyRequest = IsCartEmptyRequest(user: Session.shared.user)
             let isCartEmpty = try await cartUseCase.execute(isCartEmptyRequest)
-            isCartEmpty ? await view?.hideCartBadge()
-                        : await view?.displayCartBadge()
+            isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
 
             try await displayUpdatedViewModel()
         }

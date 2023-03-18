@@ -333,12 +333,14 @@ extension ProductDetailsRootView: UICollectionViewDataSource {
 extension ProductDetailsRootView: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let addToCartButtonIsVisible = scrollView.bounds.intersects(priceLabel.frame)
+        let addBtnTop = addToCartButton.convert(addToCartButton.bounds, to: nil).minY
+        let trailingBtnTop = trailingBuyButton.frame.minY
         
-        if addToCartButtonIsVisible, trailingBuyButton.isHidden == true {
+        if addBtnTop > trailingBtnTop, trailingBuyButton.isHidden {
             trailingBuyButton.isHidden = false
         }
-        if !addToCartButtonIsVisible, trailingBuyButton.isHidden == false {
+        
+        if addBtnTop < trailingBtnTop, !trailingBuyButton.isHidden {
             trailingBuyButton.isHidden = true
         }
     }

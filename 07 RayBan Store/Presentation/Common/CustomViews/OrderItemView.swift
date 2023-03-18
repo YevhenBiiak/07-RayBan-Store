@@ -46,7 +46,7 @@ class OrderItemView: UIView {
     let quantityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appDarkGray
-        label.font = .Lato.medium
+        label.font = .Lato.regular.withSize(15)
         label.textAlignment = .right
         label.text = "qty: 2"
         return label
