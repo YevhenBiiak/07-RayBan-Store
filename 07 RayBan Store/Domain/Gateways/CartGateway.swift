@@ -6,6 +6,6 @@
 //
 
 protocol CartGateway {
-    func fetchCartItems(for user: User, includeImages: Bool) async throws -> [CartItem]
+    func fetchCartItems(for user: User, options: ImageOption) async throws -> [CartItem]
     func saveCartItems(_ items: [CartItem], for user: User) async throws
 }

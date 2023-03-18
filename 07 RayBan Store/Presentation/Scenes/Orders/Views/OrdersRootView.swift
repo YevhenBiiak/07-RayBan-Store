@@ -12,7 +12,9 @@ class OrdersRootView: UIView {
     
     var сollectionView: UICollectionView!
     
-    private let emptyStateView: EmptyStateView = {
+    let activityIndicator = ActivityIndicatorView()
+    
+    let emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
         view.image = UIImage(named: "image_placeholder")
         view.title = "There are no orders in your order history."
@@ -33,14 +35,14 @@ class OrdersRootView: UIView {
     
     private func setupViews() {
         сollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        emptyStateView.observeCollectionView(сollectionView)
     }
     
     private func configureLayout() {
         
         subviews(
             сollectionView.subviews(
-                emptyStateView
+                emptyStateView,
+                activityIndicator
             )
         )
         
@@ -48,6 +50,9 @@ class OrdersRootView: UIView {
         emptyStateView.Left == safeAreaLayoutGuide.Left
         emptyStateView.Right == safeAreaLayoutGuide.Right
         emptyStateView.Bottom == сollectionView.CenterY
+        
+        activityIndicator.CenterX == safeAreaLayoutGuide.CenterX
+        activityIndicator.CenterY == safeAreaLayoutGuide.CenterY
     }
     
     private func createLayout() -> UICollectionViewLayout {

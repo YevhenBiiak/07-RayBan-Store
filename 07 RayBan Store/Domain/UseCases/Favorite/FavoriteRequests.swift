@@ -22,5 +22,5 @@ struct AddFavoriteItemRequest {
 struct DeleteFavoriteItemRequest {
     let user: User
     let modelID: ModelID
-    let includeImages: Bool
+    let options: ImageOption
 }

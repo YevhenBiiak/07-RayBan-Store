@@ -39,7 +39,7 @@ extension SunglassesCategoriesPresenterImpl: CategoriesPresenter {
         await view?.display(productSection: productSection)
         
         await with(errorHandler) {
-            let request = ProductStylesRequest(category: .sunglasses, includeImages: true)
+            let request = ProductStylesRequest(category: .sunglasses, options: .image(res: .medium))
             let products = try await getProductsUseCase.execute(request)
             isLoading = false
             
@@ -69,7 +69,7 @@ extension SunglassesCategoriesPresenterImpl: CategoriesPresenter {
     
     func didSelectProduct(at index: Int) async {
         await with(errorHandler) {
-            let request = ProductStylesRequest(category: .sunglasses, includeImages: false)
+            let request = ProductStylesRequest(category: .sunglasses, options: .noImages)
             let products = try await getProductsUseCase.execute(request)
             guard index < products.count else { return }
             await router.presentProducts(style: products[index].style)

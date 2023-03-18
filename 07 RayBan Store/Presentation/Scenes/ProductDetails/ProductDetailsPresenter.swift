@@ -70,7 +70,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
             isCartEmpty ? await view?.hideCartBadge() : await view?.displayCartBadge()
             
             // load and display all images for first product variation
-            let productIDRequest = ProductWithIDRequest(productID: product.variations[0].productID)
+            let productIDRequest = ProductWithIDRequest(productID: product.variations[0].productID, options: .image(res: .max))
             product.variations[0] = try await getProductsUseCase.execute(productIDRequest).variations[0]
             try await displayUpdatedViewModel()
             
@@ -102,7 +102,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
     
     func addToCartButtonTapped(productID: Int) async {
         await with(errorHandler) {
-            let productRequest = ProductWithIDRequest(productID: productID)
+            let productRequest = ProductWithIDRequest(productID: productID, options: .noImages)
             let product = try await getProductsUseCase.execute(productRequest)
             
             let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)
@@ -119,7 +119,7 @@ extension ProductDetailsPresenterImpl: ProductDetailsPresenter {
                 let request = AddFavoriteItemRequest(user: Session.shared.user, product: product)
                 try await favoriteUseCase.execute(request)
             } else {
-                let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: product.modelID, includeImages: false)
+                let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: product.modelID, options: .noImages)
                 try await favoriteUseCase.execute(request)
             }
         }

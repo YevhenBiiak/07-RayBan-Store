@@ -23,10 +23,10 @@ class FavoriteGatewayImpl {
 
 extension FavoriteGatewayImpl: FavoriteGateway {
     
-    func fetchFavoriteItems(for user: User, includeImages: Bool) async throws -> [FavoriteItem] {
+    func fetchFavoriteItems(for user: User, options: ImageOption) async throws -> [FavoriteItem] {
         let items = try await favoriteItemsAPI.fetchFavoriteItems(for: user)
         let favoriteItems = try await items.concurrentMap { [unowned self] item in
-            let product = try await productGateway.fetchProduct(modelID: item.modelID, includeImages: includeImages)
+            let product = try await productGateway.fetchProduct(modelID: item.modelID, options: options)
             return FavoriteItem(product: product)
         }
         return favoriteItems

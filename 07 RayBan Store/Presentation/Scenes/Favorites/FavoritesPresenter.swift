@@ -101,7 +101,7 @@ private extension FavoritesPresenterImpl {
     
     func deleteFavoriteItem(modelID: ModelID) async {
         await with(errorHandler) {
-            let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: modelID, includeImages: true)
+            let request = DeleteFavoriteItemRequest(user: Session.shared.user, modelID: modelID, options: .image(res: .low))
             let favoriteItems = try await favoriteUseCase.execute(request)
             await display(favoriteItems: favoriteItems)
         }

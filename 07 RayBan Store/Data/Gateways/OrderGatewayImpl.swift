@@ -33,10 +33,10 @@ extension OrderGatewayImpl: OrderGateway {
         try await orderAPI.saveOrders(orders, for: user)
     }
     
-    func fetchOrders(for user: User) async throws -> [Order] {
+    func fetchOrders(for user: User, options: ImageOption) async throws -> [Order] {
         let orders = try await orderAPI.fetchOrders(for: user).concurrentMap { order in
             let items = try await order.items.concurrentMap { [unowned self] item in
-                let product = try await productGateway.fetchProduct(productID: item.productID, includeImages: true)
+                let product = try await productGateway.fetchProduct(productID: item.productID, options: options)
                 return OrderItem(product: product, amount: item.amount)
             }
             return Order(

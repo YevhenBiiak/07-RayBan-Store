@@ -16,6 +16,7 @@ class FavoritesConfiguratorImpl: FavoritesConfigurator {
         
         let productImagesApi = Session.shared.productImagesAPI
         let remoteRepository = Session.shared.remoteRepositoryAPI
+        
         let productGateway = ProductGatewayImpl(productsAPI: remoteRepository, imagesApi: productImagesApi)
         
         let favoriteGateway = FavoriteGatewayImpl(favoriteAPI: remoteRepository, productGateway: productGateway)

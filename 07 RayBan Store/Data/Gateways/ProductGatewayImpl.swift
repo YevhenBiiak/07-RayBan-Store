@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ImagesAPI {
-    func loadImages(_ types: [ImageType], imageId: Int, bgColor: UIColor) async throws -> [Data]
+    func loadImages(_ types: [ImageType], imageId: Int, imageRes: ImageResolution, bgColor: UIColor) async throws -> [Data]
 }
 
 protocol ProductsAPI {
@@ -28,19 +28,19 @@ class ProductGatewayImpl {
 
 extension ProductGatewayImpl: ProductGateway {
     
-    func fetchProduct(modelID: String, includeImages: Bool) async throws -> Product {
+    func fetchProduct(modelID: String, options: ImageOption) async throws -> Product {
         guard let productCodable = try await productsAPI.fetchProducts().first(where: { $0.modelID == modelID })
         else { throw AppError.invalidProductModelID }
         
         var product = Product(productCodable)
-        guard includeImages else { return product }
+        guard case let .image(res: res) = options else { return product }
         
         // load images for all product variants
-        try await loadImages(for: &product, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], bgColor: .appLightGray)
+        try await loadImages(for: &product, imgTypes: [.main, .front2, .main2, .perspective, .left, .back], imageRes: res, bgColor: .appLightGray)
         return product
     }
     
-    func fetchProduct(productID: Int, includeImages: Bool) async throws -> Product {
+    func fetchProduct(productID: Int, options: ImageOption) async throws -> Product {
         guard let productCodable = try await productsAPI.fetchProducts().first(where: { $0.variations.contains { $0.productID == productID }}),
               let variation = productCodable.variations.first(where: { $0.productID == productID })
         else { throw AppError.invalidProductIdentifier }
@@ -48,10 +48,10 @@ extension ProductGatewayImpl: ProductGateway {
         var product = Product(productCodable)
         product.variations = [ProductVariation(variation)]
         
-        guard includeImages else { return product }
+        guard case let .image(res: res) = options else { return product }
         
         // load images for product variant with productID
-        try await loadImages(for: &product, withID: productID, imgTypes: [.main], bgColor: .appLightGray)
+        try await loadImages(for: &product, withID: productID, imgTypes: [.main], imageRes: res, bgColor: .appLightGray)
         return product
     }
     
@@ -65,7 +65,7 @@ extension ProductGatewayImpl: ProductGateway {
         var product = products[index]
         
         // load images for first product variant
-        try await loadImages(for: &product, withID: product.variations.first?.productID, imgTypes: [.main], bgColor: .appLightGray)
+        try await loadImages(for: &product, withID: product.variations.first?.productID, imgTypes: [.main], imageRes: .medium, bgColor: .appLightGray)
         return product
     }
     
@@ -79,7 +79,7 @@ extension ProductGatewayImpl: ProductGateway {
         products = Array(products[range])
         
         // load images for first product variant
-        try await loadImages(for: &products, imgTypes: [.main], bgColor: .appLightGray)
+        try await loadImages(for: &products, imgTypes: [.main], imageRes: .medium, bgColor: .appLightGray)
         return products
     }
     
@@ -92,14 +92,15 @@ extension ProductGatewayImpl: ProductGateway {
     }
     
     // Representation Of Product Styles Of Category
-    func fetchProductStyles(category: Product.Category, includeImages: Bool) async throws -> [Product] {
+    func fetchProductStyles(category: Product.Category, options: ImageOption) async throws -> [Product] {
         var products = try await productsAPI.fetchProducts()
             .map(Product.init)
             .filter(category: category)
             .parseProductStyles()
         
-        guard includeImages else { return products }
-        try await loadImages(for: &products, imgTypes: [.main], bgColor: .appWhite)
+        guard case let .image(res: res) = options else { return products }
+        
+        try await loadImages(for: &products, imgTypes: [.main], imageRes: res, bgColor: .appWhite)
         return products
     }
 }
@@ -108,25 +109,25 @@ extension ProductGatewayImpl: ProductGateway {
 
 private extension ProductGatewayImpl {
     
-    func loadImages(for product: inout Product, withID productID: Int? = nil, imgTypes: [ImageType], bgColor: UIColor) async throws {
+    func loadImages(for product: inout Product, withID productID: Int? = nil, imgTypes: [ImageType], imageRes: ImageResolution, bgColor: UIColor) async throws {
         if let productID {
             guard let index = product.variations.firstIndex(where: { $0.productID == productID }) else { return }
-            product.variations[index].imageData = try await imagesApi.loadImages(imgTypes, imageId: productID, bgColor: bgColor)
+            product.variations[index].imageData = try await imagesApi.loadImages(imgTypes, imageId: productID, imageRes: imageRes, bgColor: bgColor)
             
         } else {
             product.variations = try await product.variations.concurrentMap { [weak self] in var variation = $0
-                let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, bgColor: bgColor)
+                let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, imageRes: imageRes, bgColor: bgColor)
                 variation.imageData = imageData
                 return variation
             }
         }
     }
     
-    func loadImages(for products: inout [Product], imgTypes: [ImageType], bgColor: UIColor) async throws {
+    func loadImages(for products: inout [Product], imgTypes: [ImageType], imageRes: ImageResolution, bgColor: UIColor) async throws {
         products = try await products.concurrentMap { [weak self] in var product = $0
             guard let variation = product.variations.first else { return product }
             
-            let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, bgColor: bgColor)
+            let imageData = try await self?.imagesApi.loadImages(imgTypes, imageId: variation.productID, imageRes: imageRes, bgColor: bgColor)
             product.variations[0].imageData = imageData
             
             return product

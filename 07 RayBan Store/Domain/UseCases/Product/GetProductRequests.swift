@@ -7,11 +7,12 @@
 
 struct ProductStylesRequest {
     let category: Product.Category
-    let includeImages: Bool
+    let options: ImageOption
 }
 
 struct ProductWithIDRequest {
-    var productID: Int
+    let productID: Int
+    let options: ImageOption
 }
 
 struct ProductWithModelIDRequest {

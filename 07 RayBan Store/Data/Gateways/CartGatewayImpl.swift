@@ -23,10 +23,10 @@ class CartGatewayImpl {
 
 extension CartGatewayImpl: CartGateway {
     
-    func fetchCartItems(for user: User, includeImages: Bool) async throws -> [CartItem] {
+    func fetchCartItems(for user: User, options: ImageOption) async throws -> [CartItem] {
         let items = try await cartAPI.fetchCartItems(for: user)
         let cartItems = try await items.concurrentMap { [unowned self] item in
-            let product = try await productGateway.fetchProduct(productID: item.productID, includeImages: includeImages)
+            let product = try await productGateway.fetchProduct(productID: item.productID, options: options)
             return CartItem(product: product, amount: item.amount)
         }
         return cartItems

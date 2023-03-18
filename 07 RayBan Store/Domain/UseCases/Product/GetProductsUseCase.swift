@@ -29,13 +29,13 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     
     // get the product for cart or order
     func execute(_ request: ProductWithIDRequest) async throws -> Product {
-        try await productGateway.fetchProduct(productID: request.productID, includeImages: true)
+        try await productGateway.fetchProduct(productID: request.productID, options: request.options)
         // here can be some domain logic
     }
     
     // get the product for product details
     func execute(_ request: ProductWithModelIDRequest) async throws -> Product {
-        try await productGateway.fetchProduct(modelID: request.modelID, includeImages: true)
+        try await productGateway.fetchProduct(modelID: request.modelID, options: .image(res: .max))
         // here can be some domain logic
     }
     
@@ -59,7 +59,7 @@ extension GetProductsUseCaseImpl: GetProductsUseCase {
     
     // get the products for categories screen
     func execute(_ request: ProductStylesRequest) async throws -> [Product] {
-        try await productGateway.fetchProductStyles(category: request.category, includeImages: request.includeImages)
+        try await productGateway.fetchProductStyles(category: request.category, options: request.options)
         // here can be some domain logic
     }
 }

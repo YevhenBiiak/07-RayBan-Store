@@ -11,6 +11,8 @@ enum ImageType: CaseIterable {
     case main, main2, back, front, left, front2, perspective
 }
 
+enum ImageResolution { case low, medium, height, max }
+
 class ProductImagesApiImpl: ImagesAPI {
     
     private let session: URLSession = {
@@ -26,10 +28,11 @@ class ProductImagesApiImpl: ImagesAPI {
     func loadImages(
         _ types: [ImageType],
         imageId: Int,
+        imageRes: ImageResolution,
         bgColor: UIColor
     ) async throws -> [Data] {
         try await types.concurrentMap { type in
-            let url = self.configureURL(type: type, imageId: imageId, bgColor: bgColor)
+            let url = self.configureURL(type: type, imageId: imageId, imageRes: imageRes, bgColor: bgColor)
             let (data, response) = try await self.session.data(from: url)
             guard (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
             return data
@@ -41,19 +44,26 @@ class ProductImagesApiImpl: ImagesAPI {
     private func configureURL(
         type: ImageType,
         imageId: Int,
+        imageRes: ImageResolution,
         bgColor: UIColor
     ) -> URL {
-        var imgName = "\(imageId)"
-        var imgWidth = 2048
-        // https://images.ray-ban.com/is/image/RayBan/805289126577__001.png
+        
+        let imgName: String
         switch type {
-        case .main:   imgName += "__001.png"; imgWidth = 400
-        case .main2:  imgName += "__002.png"
-        case .back:   imgName += "__STD__shad__bk.png"
-        case .left:   imgName += "__STD__shad__lt.png"
-        case .front:  imgName += "__STD__shad__fr.png"
-        case .front2: imgName += "__STD__shad__cfr.png"
-        case .perspective: imgName += "__STD__shad__al2.png" }
+        case .main:   imgName = "\(imageId)__001.png"
+        case .main2:  imgName = "\(imageId)__002.png"
+        case .back:   imgName = "\(imageId)__STD__shad__bk.png"
+        case .left:   imgName = "\(imageId)__STD__shad__lt.png"
+        case .front:  imgName = "\(imageId)__STD__shad__fr.png"
+        case .front2: imgName = "\(imageId)__STD__shad__cfr.png"
+        case .perspective: imgName = "\(imageId)__STD__shad__al2.png" }
+        
+        let imgWidth: String
+        switch imageRes {
+        case .low:    imgWidth = "320"
+        case .medium: imgWidth = "640"
+        case .height: imgWidth = "1024"
+        case .max:    imgWidth = "2048" }
         
         var urlComponent = URLComponents()
         urlComponent.scheme = "https"

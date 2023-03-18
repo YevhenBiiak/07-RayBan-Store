@@ -24,7 +24,7 @@ class FavoritesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        setupViews()
         Task { await presenter.viewDidLoad() }
     }
     
@@ -34,10 +34,12 @@ class FavoritesViewController: UIViewController {
         Task { await presenter.viewWillAppear() }
     }
     
-    private func setupCollectionView() {
+    private func setupViews() {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
         rootView.сollectionView.register(FavoritesViewCell.self, forCellWithReuseIdentifier: FavoritesViewCell.reuseId)
+        
+        rootView.activityIndicator.startAnimating()
     }
 }
 
@@ -50,6 +52,11 @@ extension FavoritesViewController: FavoritesView {
     func display(section: Sectionable) {
         self.section = section
         rootView.сollectionView.reloadData()
+        
+        rootView.activityIndicator.stopAnimating()
+        section.items.isEmpty
+            ? rootView.emptyStateView.show()
+            : rootView.emptyStateView.hide()
     }
     
     func displayError(title: String, message: String?) {

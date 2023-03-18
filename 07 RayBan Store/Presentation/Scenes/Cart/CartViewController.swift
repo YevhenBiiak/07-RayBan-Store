@@ -25,7 +25,7 @@ class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        setupViews()
         Task { await presenter.viewDidLoad() }
     }
     
@@ -34,11 +34,14 @@ class CartViewController: UIViewController {
         Task { await presenter.viewWillAppear() }
     }
     
-    private func setupCollectionView() {
+    private func setupViews() {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
+        
         rootView.сollectionView.register(CartItemViewCell.self, forCellWithReuseIdentifier: CartItemViewCell.reuseId)
         rootView.сollectionView.register(CartSummaryViewCell.self, forCellWithReuseIdentifier: CartSummaryViewCell.reuseId)
+        
+        rootView.activityIndicator.startAnimating()
     }
 }
 
@@ -51,6 +54,11 @@ extension CartViewController: CartView {
     func display(cartSection: any Sectionable) {
         self.itemsSection = cartSection
         rootView.сollectionView.reloadData()
+        
+        rootView.activityIndicator.stopAnimating()
+        itemsSection.items.isEmpty
+            ? rootView.emptyStateView.show()
+            : rootView.emptyStateView.hide()
     }
     
     func display(cartSummary: CartSummaryViewModel) {
@@ -66,7 +74,8 @@ extension CartViewController: CartView {
 extension CartViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        itemsSection?.items.count == 0 ? 0 : 2
+        guard itemsSection?.items.count != nil else { return 0 }
+        return itemsSection.items.count == 0 ? 0 : 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

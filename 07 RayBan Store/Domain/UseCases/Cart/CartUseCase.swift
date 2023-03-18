@@ -32,25 +32,25 @@ class CartUseCaseImpl {
 extension CartUseCaseImpl: CartUseCase {
     
     func execute(_ request: IsCartEmptyRequest) async throws -> Bool {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .noImages)
         let cart = Cart(items: cartItems)
         return cart.isCartEmpty
     }
     
     func execute(_ request: IsProductInCartRequset) async throws -> Bool {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .noImages)
         let cart = Cart(items: cartItems)
         return cart.contains(request.productID)
     }
     
     func execute(_ request: GetCartItemsRequest) async throws -> [CartItem] {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .image(res: .low))
         let cart = Cart(items: cartItems)
         return cart.items
     }
     
     func execute(_ request: AddCartItemRequest) async throws -> [CartItem] {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: false)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .noImages)
         var cart = Cart(items: cartItems)
         
         cart.add(product: request.product, amount: request.amount)
@@ -59,7 +59,7 @@ extension CartUseCaseImpl: CartUseCase {
     }
     
     func execute(_ request: DeleteCartItemRequest) async throws -> [CartItem] {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .image(res: .low))
         var cart = Cart(items: cartItems)
         
         cart.delete(productID: request.productID)
@@ -68,7 +68,7 @@ extension CartUseCaseImpl: CartUseCase {
     }
     
     func execute(_ request: UpdateCartItemRequest) async throws -> [CartItem] {
-        let cartItems = try await cartGateway.fetchCartItems(for: request.user, includeImages: true)
+        let cartItems = try await cartGateway.fetchCartItems(for: request.user, options: .image(res: .low))
         var cart = Cart(items: cartItems)
         
         cart.update(productID: request.productID, amount: request.amount)

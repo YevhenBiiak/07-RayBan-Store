@@ -44,12 +44,12 @@ class EmptyStateView: UIView {
     
     required init?(coder: NSCoder) { fatalError() }
     
-    func observeCollectionView(_ collectionView: UICollectionView) {
-        observation = collectionView.observe(\.contentSize, options: .new) { [weak self] (_, change) in
-            guard let self else { return }
-            collectionView.sendSubviewToBack(self)
-            self.isHidden = change.newValue?.height ?? 0 > 50
-        }
+    func show() {
+        self.isHidden = false
+    }
+    
+    func hide() {
+        self.isHidden = true
     }
     
     private func configureLayout() {

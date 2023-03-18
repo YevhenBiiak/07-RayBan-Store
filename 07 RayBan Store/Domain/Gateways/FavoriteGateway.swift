@@ -6,6 +6,6 @@
 //
 
 protocol FavoriteGateway {
-    func fetchFavoriteItems(for user: User, includeImages: Bool) async throws -> [FavoriteItem]
+    func fetchFavoriteItems(for user: User, options: ImageOption) async throws -> [FavoriteItem]
     func saveFavoriteItems(_ items: [FavoriteItem], for user: User) async throws
 }

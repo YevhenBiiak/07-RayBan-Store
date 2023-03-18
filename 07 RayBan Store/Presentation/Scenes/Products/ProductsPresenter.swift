@@ -208,7 +208,7 @@ private extension ProductsPresenterImpl {
     
     func addButtonTapped(productID: ProductID, at index: Int) async {
         await with(errorHandler) {
-            let productRequest = ProductWithIDRequest(productID: productID)
+            let productRequest = ProductWithIDRequest(productID: productID, options: .image(res: .medium))
             let product = try await getProductsUseCase.execute(productRequest)
             
             let addRequest = AddCartItemRequest(user: Session.shared.user, product: product, amount: 1)

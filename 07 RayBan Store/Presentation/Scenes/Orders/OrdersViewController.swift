@@ -24,7 +24,7 @@ class OrdersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        setupViews()
         Task { await presenter.viewDidLoad() }
     }
     
@@ -33,10 +33,12 @@ class OrdersViewController: UIViewController {
         Task { await presenter.viewWillAppear() }
     }
     
-    private func setupCollectionView() {
+    private func setupViews() {
         rootView.сollectionView.delegate = self
         rootView.сollectionView.dataSource = self
         rootView.сollectionView.register(OrderItemsViewCell.self, forCellWithReuseIdentifier: OrderItemsViewCell.reuseId)
+        
+        rootView.activityIndicator.startAnimating()
     }
     
 }
@@ -50,6 +52,11 @@ extension OrdersViewController: OrdersView {
     func display(viewModels: [ViewModel]) {
         self.viewModels = viewModels
         rootView.сollectionView.reloadData()
+        
+        rootView.activityIndicator.stopAnimating()
+        viewModels.isEmpty
+            ? rootView.emptyStateView.show()
+            : rootView.emptyStateView.hide()
     }
     
     func displayError(title: String, message: String?) {

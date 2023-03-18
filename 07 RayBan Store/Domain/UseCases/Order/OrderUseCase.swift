@@ -29,11 +29,11 @@ class OrderUseCaseImpl {
 extension OrderUseCaseImpl: OrderUseCase {
 
     func execute(_ request: OrdersRequest) async throws -> [Order] {
-        try await orderGateway.fetchOrders(for: request.user)
+        try await orderGateway.fetchOrders(for: request.user, options: .image(res: .low))
     }
     
     func execute(_ request: DeleteOrderRequest) async throws -> [Order] {
-        let orders = try await orderGateway.fetchOrders(for: request.user)
+        let orders = try await orderGateway.fetchOrders(for: request.user, options: .image(res: .low))
         var orderList = OrderList(orders: orders)
         orderList.delete(orderID: request.orderID)
         
@@ -58,7 +58,7 @@ extension OrderUseCaseImpl: OrderUseCase {
         let newOrder = cart.createOrder(deliveryInfo: request.deliveryInfo, shippingMethod: request.shippingMethod)
         
         // fetch orders, create order list, add created order to list
-        let orders = try await orderGateway.fetchOrders(for: request.user)
+        let orders = try await orderGateway.fetchOrders(for: request.user, options: .noImages)
         var orderList = OrderList(orders: orders)
         orderList.add(order: newOrder)
         

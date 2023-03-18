@@ -12,7 +12,7 @@ class ProductsRootView: UIView {
     
     var collectionView: UICollectionView!
     
-    private let emptyStateView: EmptyStateView = {
+    let emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
         view.image = UIImage(named: "image_placeholder")
         view.title = "There are no products in this category."
@@ -32,7 +32,6 @@ class ProductsRootView: UIView {
     
     private func configureCollectinView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        emptyStateView.observeCollectionView(collectionView)
         
         subviews(
             collectionView.subviews (
