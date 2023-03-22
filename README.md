@@ -1,20 +1,26 @@
 # 07-RayBan-Store
 <p align="center" width="100%">
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226192639-a10dba70-ec3e-47e4-90a0-86b4c1b6f367.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226192677-10842365-fa6e-4deb-9928-263124b6908e.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226192728-6ce98b9f-433a-44e5-bd4f-b8f71ed03dc5.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226193737-ec85fe0f-56ca-4a82-acb1-05ebfa353ced.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194576-148be03a-b965-40d6-8200-ba1189b2634e.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194616-7389fe01-6eb4-4158-a71b-74463643353c.PNG"/>
+  <img width=23% src="https://user-images.githubusercontent.com/80542175/226192639-a10dba70-ec3e-47e4-90a0-86b4c1b6f367.PNG">
+  <img width=23% src="https://user-images.githubusercontent.com/80542175/226192728-6ce98b9f-433a-44e5-bd4f-b8f71ed03dc5.PNG">
+  <img width=23% src="https://user-images.githubusercontent.com/80542175/226193737-ec85fe0f-56ca-4a82-acb1-05ebfa353ced.PNG">
+  <img width=23% src="https://user-images.githubusercontent.com/80542175/226194586-e73f63bb-5b75-41ed-9cb5-ae38bd4a8518.PNG">
 </p>
-<p align="center" width="100%">
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194586-e73f63bb-5b75-41ed-9cb5-ae38bd4a8518.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194594-d0b5088d-3436-4dca-b5f5-f01330bee437.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194613-17438830-36d6-4792-b75b-7395bd25dbd8.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194603-cc1bca8d-cbeb-4dde-b98b-4720e0e365f3.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194617-c4b1c6e9-6ee2-4645-9716-ad1dbb347cde.PNG"/>
-  <img width=16% src="https://user-images.githubusercontent.com/80542175/226194618-76c7cbd1-420e-491f-8caf-52fc107f6566.PNG"/>
-</p>
+
+<details><summary>More screenshots</summary>
+  <p align="center" width="100%">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226192677-10842365-fa6e-4deb-9928-263124b6908e.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194576-148be03a-b965-40d6-8200-ba1189b2634e.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194616-7389fe01-6eb4-4158-a71b-74463643353c.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194617-c4b1c6e9-6ee2-4645-9716-ad1dbb347cde.PNG">
+  </p>
+  <p align="center" width="100%">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194594-d0b5088d-3436-4dca-b5f5-f01330bee437.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194613-17438830-36d6-4792-b75b-7395bd25dbd8.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194603-cc1bca8d-cbeb-4dde-b98b-4720e0e365f3.PNG">
+    <img width=23% src="https://user-images.githubusercontent.com/80542175/226194618-76c7cbd1-420e-491f-8caf-52fc107f6566.PNG">
+  </p>
+</details>
+
 
 #### Description 
 This is a full-featured app (excluding purchases) that allows users to order glasses from the online store. The app has a shopping cart where users can add and remove items, as well as a wish list where they can keep their favorite items for future purchases. Users can also place orders, choose shipping options, and enter their address for delivery. The app also has a feature that allows users to view their order history.
@@ -24,7 +30,7 @@ This is a full-featured app (excluding purchases) that allows users to order gla
 
 The project was developed for the purpose of studying Clean Architecture and MVP presentation pattern, as well as for learning Firebase frameworks such as AuthFirebase and RealtimeDatabase. Storyboards were not used in the project.
 
-The project's goal was to build an application with a complex, scalable, and maintainable architecture that adheres to SOLID principles, featuring multiple screens (15), and real-time database communication.
+The goal of the project was to build a complex, scalable, and maintainable application that adheres to SOLID principles, features multiple screens (15), and communicates with a real-time database.
 
 
 ## Features and Implementation
@@ -32,9 +38,9 @@ The project's goal was to build an application with a complex, scalable, and mai
 One of the key features of the app is its use of async/await concurrency. This enables the app to perform multiple tasks at once, such as loading images, fetching product data, and updating the UI, without causing the app to freeze or crash.
 
 For the product list screen was implemented infinite scrolling (with a batch size of 6 products) and shimmer view as a loading indicator. 
-As a network layer for obtaining images, an API was implemented using URLSession and custom configuration for image caching.
+As a network layer for obtaining images was implemented an API using URLSession and custom configuration for image caching.
 
-In addition, the project implements my own approach to error handling and display (since I couldn't find similar articles on the internet). Product data was collected from a website with the same name and converted into a JSON structure for the database.
+In addition, the project implements my own approach to handling and displaying errors (since I couldn't find similar articles on the internet). Product data was collected from a website with the same name and converted into a JSON structure for the database.
 
 The AuthFirebase framework was used to implement:
   * facebook login (Facebook SDK)
@@ -60,10 +66,25 @@ The application uses five types of alerts (see spoiler):
   - <details><summary>alert (simple alert with one action for error or success messages)</summary><br>
       <img width=300 title="alert" src="https://user-images.githubusercontent.com/80542175/226196414-31b6a211-af05-4415-9af8-d81174a32c98.PNG"/>
     </details>
+    
+## Used frameworks
+
+- `UIKit`
+- `Stevia`
+- `CoreAnimation`
+- `Firebase SDK` (`FirebaseAuth`, `FirebaseDatabase`)
+- `Facebook SDK`
+- `Network` (`NWPathMonitor`)
+- `URLSession`
 
 ## The technology stack
 
-Swift, CocoaPods, SwiftLint, Stevia, UIKit, AutoLayout, Firebase (AuthFirebase, RealtimeDatabase), Facebook SDK, async/await, URLSession, JSON
+- `Swift`
+- `CocoaPods`
+- `SwiftLint`
+- `AutoLayout`
+- `Concurrency` (`async/await`)
+- `JSON`
 
 
 ## Video demo
